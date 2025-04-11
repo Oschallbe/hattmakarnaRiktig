@@ -181,49 +181,49 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void KalenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KalenderActionPerformed
         // TODO add your handling code here:
-       //new KalenderSchema(idb, inloggadAnvandare).setVisible();
+       new KalenderSchema(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_KalenderActionPerformed
 
     private void SeBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeBestallningActionPerformed
         // TODO add your handling code here:
-       //new SeBestallning(idb, inloggadAnvandare).setVisible();
+       //new SeBestallning(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeBestallningActionPerformed
 
     private void SeKunderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeKunderActionPerformed
         // TODO add your handling code here:
-       //new AllaKunder(idb, inloggadAnvandare).setVisible();
+       //new AllaKunder(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeKunderActionPerformed
 
     private void SeProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeProduktActionPerformed
         // TODO add your handling code here:
-       //new SeAllaProdukter(idb, inloggadAnvandare).setVisible();
+       //new SeAllaProdukter(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeProduktActionPerformed
 
     private void SkapaBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkapaBestallningActionPerformed
         // TODO add your handling code here:
-       //new SkapaVanligOrder(idb, inloggadAnvandare).setVisible();
+       //new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SkapaBestallningActionPerformed
 
     private void SkapaBestallningSpecialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkapaBestallningSpecialActionPerformed
         // TODO add your handling code here:
-       //new SkapaSpecialOrder(idb, inloggadAnvandare).setVisible();
+       new SkapaSpecialOrder(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SkapaBestallningSpecialActionPerformed
 
     private void ForsaljningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForsaljningActionPerformed
         // TODO add your handling code here:
-       //new SeForsalningsstatistik(idb, inloggadAnvandare).setVisible();
+       new SeForsaljningsstatistik(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_ForsaljningActionPerformed
 
     private void HanteraAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HanteraAnstalldActionPerformed
         // TODO add your handling code here:
-       //new AllaAnstallda(idb, inloggadAnvandare).setVisible();
+       //new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_HanteraAnstalldActionPerformed
 
