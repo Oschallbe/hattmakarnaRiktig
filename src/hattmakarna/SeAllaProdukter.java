@@ -18,11 +18,11 @@ import java.awt.event.MouseEvent;
  *
  * @author oscar
  */
-public class SeAllaLagerfordaProdukter extends javax.swing.JFrame {
+public class SeAllaProdukter extends javax.swing.JFrame {
     
     private InfDB idb;
 
-    public SeAllaLagerfordaProdukter(InfDB idb) {
+    public SeAllaProdukter(InfDB idb) {
         this.idb = idb;
         initComponents();
         seLagerfordaProdukter();
