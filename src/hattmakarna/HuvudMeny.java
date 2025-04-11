@@ -187,7 +187,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void SeBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeBestallningActionPerformed
         // TODO add your handling code here:
-       //new SeBestallning(idb, inloggadAnvandare).setVisible(true);
+       new SeBestallning(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeBestallningActionPerformed
 
@@ -199,7 +199,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void SeProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeProduktActionPerformed
         // TODO add your handling code here:
-       //new SeAllaProdukter(idb, inloggadAnvandare).setVisible(true);
+       new SeAllaProdukter(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeProduktActionPerformed
 
