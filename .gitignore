@@ -34,3 +34,5 @@ replay_pid*
 Hattmakarna/nbproject/project.properties
 /nbproject/private/
 /dist/
+build/classes/hattmakarna/HuvudMeny.class
+build/
