@@ -6,23 +6,40 @@ package hattmakarna;
 import oru.inf.InfDB; 
 import oru.inf.InfException; 
 import javax.swing.JOptionPane; 
+import java.util.Random; 
+import java.util.ArrayList; 
+import java.sql.PreparedStatement; 
 /**
  *
- * @author Fam van L
+ * @author Elin
  */
 public class SkapaVanligOrder extends javax.swing.JFrame {
 
         private HuvudMeny oldWindow; 
         private InfDB idb; 
+        private String inloggadAnvandare; 
     /**
      * Creates new form SkapaVanligOrder
      */
-    public SkapaVanligOrder(InfDB idb, HuvudMeny oldWindow) {
+    public SkapaVanligOrder(InfDB idb, String ePost) {
         initComponents();
-        this.idb = idb; 
-        this.oldWindow = oldWindow; 
+        this.idb = idb;
+        this.inloggadAnvandare = ePost;
+        //this.oldWindow = oldWindow; 
+    }
+    
+    private void nollställTextfält() {
+        txtfOrdernummer.setText(""); 
+        txtfKundnummer.setText(""); 
+        txtfDatum.setText(""); 
+        txtfPris.setText(""); 
+        txtfArtikelnummer.setText(""); 
+        txtfNamn.setText(""); 
+        txtfPris2.setText(""); 
+        txtfAntal.setText(""); 
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,16 +63,16 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
         btnTillbaka = new javax.swing.JButton();
         lblExpressleverans = new javax.swing.JLabel();
         cbJa = new javax.swing.JCheckBox();
-        cbNej = new javax.swing.JCheckBox();
         lblProduktlista = new javax.swing.JLabel();
         lblArtikelnummer = new javax.swing.JLabel();
         lblNamn = new javax.swing.JLabel();
         lblPris2 = new javax.swing.JLabel();
         lblAntal = new javax.swing.JLabel();
-        txtfArtikelummer = new javax.swing.JTextField();
+        txtfArtikelnummer = new javax.swing.JTextField();
         txtfNamn = new javax.swing.JTextField();
         txtfPris2 = new javax.swing.JTextField();
         txtfAntal = new javax.swing.JTextField();
+        btnGenerera = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -69,9 +86,20 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
 
         lblDatum.setText("Datum:");
 
-        lblPris.setText("Pris:");
+        lblPris.setText("Totalapriset");
+
+        txtfOrdernummer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtfOrdernummerActionPerformed(evt);
+            }
+        });
 
         btnSpara.setText("Spara");
+        btnSpara.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSparaActionPerformed(evt);
+            }
+        });
 
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
@@ -80,7 +108,7 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
             }
         });
 
-        lblExpressleverans.setText("Expressleverans");
+        lblExpressleverans.setText("Expressleverans?");
 
         cbJa.setText("Ja");
         cbJa.addActionListener(new java.awt.event.ActionListener() {
@@ -88,8 +116,6 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                 cbJaActionPerformed(evt);
             }
         });
-
-        cbNej.setText("Nej");
 
         lblProduktlista.setText("Produktlista");
 
@@ -101,9 +127,16 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
 
         lblAntal.setText("Antal");
 
-        txtfArtikelummer.addActionListener(new java.awt.event.ActionListener() {
+        txtfArtikelnummer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtfArtikelummerActionPerformed(evt);
+                txtfArtikelnummerActionPerformed(evt);
+            }
+        });
+
+        btnGenerera.setText("Generera");
+        btnGenerera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenereraActionPerformed(evt);
             }
         });
 
@@ -118,16 +151,20 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(175, 175, 175))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblExpressleverans)
-                        .addGap(68, 68, 68))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnTillbaka)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblExpressleverans)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbJa))
+                            .addComponent(btnSpara))
+                        .addGap(29, 29, 29))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblProduktlista)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbJa)
-                        .addGap(9, 9, 9))
+                        .addGap(9, 207, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblOrdernummer)
@@ -135,45 +172,34 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                             .addComponent(lblDatum)
                             .addComponent(lblPris)
                             .addComponent(lblArtikelnummer)
-                            .addComponent(txtfArtikelummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtfArtikelnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfPris, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfKundnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblNamn)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(txtfNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                                .addComponent(txtfPris2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(lblPris2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(27, 27, 27)
+                                        .addComponent(lblNamn))
+                                    .addComponent(txtfNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(9, 9, 9)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                                        .addComponent(txtfPris2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(35, 35, 35)
+                                        .addComponent(lblPris2)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(btnGenerera)))
+                            .addComponent(txtfDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfKundnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfPris, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(37, 37, 37)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAntal)
-                                    .addComponent(txtfAntal, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbNej)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnTillbaka)
-                            .addComponent(btnSpara))
-                        .addGap(40, 40, 40))))
+                    .addComponent(lblAntal)
+                    .addComponent(txtfAntal, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +210,8 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblOrdernummer)
                     .addComponent(txtfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSpara))
+                    .addComponent(btnSpara)
+                    .addComponent(btnGenerera))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblKundnummer)
@@ -198,29 +225,24 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPris)
                     .addComponent(txtfPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addComponent(lblExpressleverans)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(lblProduktlista)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblArtikelnummer)
-                            .addComponent(lblNamn)
-                            .addComponent(lblPris2)
-                            .addComponent(lblAntal))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtfArtikelummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfPris2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfAntal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbJa)
-                            .addComponent(cbNej))))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblExpressleverans)
+                    .addComponent(cbJa))
+                .addGap(9, 9, 9)
+                .addComponent(lblProduktlista)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblArtikelnummer)
+                    .addComponent(lblNamn)
+                    .addComponent(lblPris2)
+                    .addComponent(lblAntal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtfArtikelnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtfNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtfPris2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtfAntal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
@@ -228,17 +250,62 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJaActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here: 
     }//GEN-LAST:event_cbJaActionPerformed
 
-    private void txtfArtikelummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfArtikelummerActionPerformed
+    private void txtfArtikelnummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfArtikelnummerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtfArtikelummerActionPerformed
+    }//GEN-LAST:event_txtfArtikelnummerActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn. 
         oldWindow.setVisible(true); 
         this.dispose(); 
     }//GEN-LAST:event_btnTillbakaActionPerformed
+
+    private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
+        //Hämtar värden från textfälten. 
+        String artikelnummer = txtfArtikelnummer.getText(); 
+        String kundnummer = txtfKundnummer.getText(); 
+        String datum = txtfDatum.getText(); 
+        String pris = txtfPris.getText(); 
+        String ordernummer = txtfOrdernummer.getText(); 
+        String namn = txtfNamn.getText(); 
+        String pris2 = txtfPris2.getText(); 
+        String antal = txtfAntal.getText(); 
+         
+
+       String sqlFraga = "select oi.OrderItemID AS Artikelnummer, b.KundID AS Kundnummer, b.Datum,(sp.Pris * oi.AntalProdukter) AS TotaltPris, b.BestallningID AS Ordernummer, sp.Namn AS ProduktNamn, sp.Pris AS ArtikelPris "
+     + "FROM OrderItem oi JOIN Bestallning b ON oi.BestallningID = b.BestallningID JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID UNION "
+     + "SELECT oi.OrderItemID AS Artikelnummer, b.KundID AS Kundnummer, b.Datum, (sp2.Pris * oi.AntalProdukter) AS TotaltPris, b.BestallningID AS Ordernummer,"
+     + "sp2.Modell AS ProduktNamn, sp2.Pris AS ArtikelPris FROM OrderItem oi JOIN Bestallning b ON oi.BestallningID = b.BestallningID JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID";
+        
+     try {
+     idb.insert(sqlFraga);
+     JOptionPane.showMessageDialog(null,"Order sparad");
+     System.out.println("Ordernummer: " + ordernummer + ", Artikel: " + namn + ", Pris: " + pris);
+    } catch (InfException e) {
+     JOptionPane.showMessageDialog(null, "Fel vid inhämtning av orderdata:" + e.getMessage());
+}
+
+    }//GEN-LAST:event_btnSparaActionPerformed
+
+    private void txtfOrdernummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfOrdernummerActionPerformed
+     
+    }//GEN-LAST:event_txtfOrdernummerActionPerformed
+
+    private void btnGenereraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenereraActionPerformed
+        // Kod som genererar ett unikt slumpmässigt ordernr för varje order som skapas.
+        int langdOrdernr = 10;
+        String allaTecken = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890";
+        StringBuilder slumpatOrdernr = new StringBuilder();
+        java.util.Random random = new java.util.Random();
+        for (int i=0; i<langdOrdernr; i++) {
+            int x = random.nextInt(allaTecken.length());
+            slumpatOrdernr.append(allaTecken.charAt(x));
+        }
+        txtfOrdernummer.setText(slumpatOrdernr.toString());
+    }//GEN-LAST:event_btnGenereraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -277,10 +344,10 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerera;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JCheckBox cbJa;
-    private javax.swing.JCheckBox cbNej;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblAntal;
@@ -294,7 +361,7 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     private javax.swing.JLabel lblPris2;
     private javax.swing.JLabel lblProduktlista;
     private javax.swing.JTextField txtfAntal;
-    private javax.swing.JTextField txtfArtikelummer;
+    private javax.swing.JTextField txtfArtikelnummer;
     private javax.swing.JTextField txtfDatum;
     private javax.swing.JTextField txtfKundnummer;
     private javax.swing.JTextField txtfNamn;

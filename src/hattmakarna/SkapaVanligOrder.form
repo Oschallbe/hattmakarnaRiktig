@@ -38,8 +38,16 @@
                       <EmptySpace min="-2" pref="175" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="lblExpressleverans" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="lblExpressleverans" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="cbJa" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="btnSpara" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -48,9 +56,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblProduktlista" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="cbJa" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <EmptySpace min="9" pref="207" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -59,63 +65,45 @@
                           <Component id="lblDatum" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lblPris" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lblArtikelnummer" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfArtikelummer" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                          <Component id="txtfArtikelnummer" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                      <Component id="lblNamn" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="txtfNamn" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                                   <Component id="txtfOrdernummer" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="txtfPris" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="txtfKundnummer" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="txtfDatum" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="lblNamn" min="-2" max="-2" attributes="0"/>
                               </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtfNamn" min="-2" pref="71" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace pref="27" max="32767" attributes="0"/>
-                              <Component id="txtfPris2" min="-2" pref="71" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                              <Component id="lblPris2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblAntal" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtfAntal" min="-2" pref="71" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace pref="29" max="32767" attributes="0"/>
+                                      <Component id="txtfPris2" min="-2" pref="71" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                                      <Component id="lblPris2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="btnGenerera" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cbNej" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="txtfDatum" min="-2" pref="71" max="-2" attributes="0"/>
+                          <Component id="txtfKundnummer" min="-2" pref="71" max="-2" attributes="0"/>
+                          <Component id="txtfPris" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnSpara" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblAntal" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtfAntal" min="-2" pref="71" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -129,6 +117,7 @@
                   <Component id="lblOrdernummer" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtfOrdernummer" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSpara" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnGenerera" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -146,34 +135,26 @@
                   <Component id="lblPris" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtfPris" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Component id="lblExpressleverans" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                      <Component id="lblProduktlista" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblArtikelnummer" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblNamn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblPris2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblAntal" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtfArtikelummer" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfNamn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfPris2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfAntal" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cbJa" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbNej" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblExpressleverans" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbJa" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+              <Component id="lblProduktlista" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblArtikelnummer" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblNamn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblPris2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblAntal" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtfArtikelnummer" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtfNamn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtfPris2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtfAntal" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="32" max="32767" attributes="0"/>
           </Group>
@@ -203,10 +184,13 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblPris">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Pris:"/>
+        <Property name="text" type="java.lang.String" value="Totalapriset"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfOrdernummer">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtfOrdernummerActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfDatum">
     </Component>
@@ -218,6 +202,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Spara"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSparaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnTillbaka">
       <Properties>
@@ -229,7 +216,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblExpressleverans">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Expressleverans"/>
+        <Property name="text" type="java.lang.String" value="Expressleverans?"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbJa">
@@ -239,11 +226,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbJaActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="cbNej">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Nej"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblProduktlista">
       <Properties>
@@ -270,9 +252,9 @@
         <Property name="text" type="java.lang.String" value="Antal"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtfArtikelummer">
+    <Component class="javax.swing.JTextField" name="txtfArtikelnummer">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtfArtikelummerActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtfArtikelnummerActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfNamn">
@@ -280,6 +262,14 @@
     <Component class="javax.swing.JTextField" name="txtfPris2">
     </Component>
     <Component class="javax.swing.JTextField" name="txtfAntal">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnGenerera">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generera"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenereraActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

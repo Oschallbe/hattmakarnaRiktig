@@ -205,7 +205,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void SkapaBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkapaBestallningActionPerformed
         // TODO add your handling code here:
-       //new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
+       new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SkapaBestallningActionPerformed
 
