@@ -223,7 +223,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void HanteraAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HanteraAnstalldActionPerformed
         // TODO add your handling code here:
-       //new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
+       new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_HanteraAnstalldActionPerformed
 
