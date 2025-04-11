@@ -10,6 +10,7 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.table.DefaultTableModel;
 
+
 /**
  *
  * @author oscar
@@ -22,6 +23,11 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JFrame {
         this.idb = idb;
         initComponents();
         seLagerfordaProdukter();
+        
+        
+        jTable1.addMouseListener(new java.awt.event.MouseAda)
+        
+        
         
     }
     
@@ -54,6 +60,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JFrame {
     }
     
     
+
     
 
     

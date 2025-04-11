@@ -26,8 +26,7 @@ public class materialLista extends javax.swing.JFrame {
         initComponents();
         seMaterialLista();
     }
-    
-     private void seMaterialLista) {
+     private void seMaterialLista()) {
         try {
             // SQL-fråga för att hämta data från databasen
             String query = "SELECT artikelnummer, namn, pris, matt FROM standardprodukt";
@@ -54,6 +53,18 @@ public class materialLista extends javax.swing.JFrame {
             System.out.println("Fel vid hämtning av data: " + e.getMessage());
         }
     }
+    
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
     
     
     
