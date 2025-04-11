@@ -3,27 +3,58 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import oru.inf.InfDB;
+import oru.inf.InfException;
 
 /**
  *
  * @author linodeluca
  */
 public class SeBestallning extends javax.swing.JFrame {
-
+private String inloggadAnvandare;
+private HuvudMeny oldWindow;
+private InfDB idb;
     /**
      * Creates new form SeBestallning
      */
-    public SeBestallning() {
+    public SeBestallning(InfDB idb, String ePost) {
         initComponents();
-        
-        
-        
-        
-        
+        this.idb = idb;
+        this.inloggadAnvandare = ePost;
+        //this.oldWindow = oldWindow;
+        //String fraga = "select BestallningID, Status, Datum, Expressbestallning, Pris, Ordertyp, Kundnummer from Bestallning;";
+        String fraga = "select BestallningID, KundID, Status, Datum from Bestallning;";
+        fyllTable(fraga);
     }
     
-    public void fyllTable(){
-        
+    public void fyllTable(String fraga){
+        try {
+            List<HashMap<String, String>> result = idb.fetchRows(fraga);
+
+            DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+            model.setRowCount(0); // Rensa gamla data
+            if (result != null) {
+                for (HashMap<String, String> row : result) {
+                    // Lägg till en rad i JTable
+                    model.addRow(new Object[]{
+                        row.get("BestallningID"),
+                        row.get("KundID"),
+                        row.get("Status"),
+                        row.get("Datum"),
+                    });
+                }
+            } else {
+                System.out.println("Ingen data hittades i tabellen.");
+            }
+
+        } catch (InfException e) {
+            System.out.println("Fel vid hämtning av data: " + e.getMessage());
+        }   
     }
 
     /**
@@ -36,7 +67,7 @@ public class SeBestallning extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        BestallningsLista = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -46,22 +77,22 @@ public class SeBestallning extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        BestallningsLista.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Ordertyp", "Ordernummer", "Kundnummer", "Status", "Pris", "Datum"
+                "Ordertyp", "Ordernummer", "Kundnummer", "Status", "Pris", "Datum", "Expressbestallning"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(BestallningsLista);
 
         jTextField1.setText("jTextField1");
 
@@ -124,9 +155,9 @@ public class SeBestallning extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable BestallningsLista;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
