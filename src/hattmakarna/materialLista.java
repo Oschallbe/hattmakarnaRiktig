@@ -24,35 +24,10 @@ public class materialLista extends javax.swing.JFrame {
     public materialLista() {
         this.idb = idb;
         initComponents();
-        seMaterialLista();
+        
     }
-     private void seMaterialLista()) {
-        try {
-            // SQL-fråga för att hämta data från databasen
-            String query = "SELECT artikelnummer, namn, pris, matt FROM standardprodukt";
-            List<HashMap<String, String>> result = idb.fetchRows(query);
-
-            // Hämta JTable:s modell
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Rensa gamla data
-
-            if (result != null) {
-                for (HashMap<String, String> row : result) {
-                    // Lägg till en rad i JTable
-                    model.addRow(new Object[]{
-                        row.get("artikelnummer"),
-                        row.get("namn"),
-                        row.get("pris"),
-                        row.get("matt"),
-                    });
-                }
-            } else {
-                System.out.println("Ingen data hittades i tabellen.");
-            }
-        } catch (InfException e) {
-            System.out.println("Fel vid hämtning av data: " + e.getMessage());
-        }
-    }
+     
+    
     
      
      

@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 /**
@@ -25,7 +28,15 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JFrame {
         seLagerfordaProdukter();
         
         
-        jTable1.addMouseListener(new java.awt.event.MouseAda)
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int rad = jTable1.rowAtPoint(evt.getPoint());
+            int kolumn = jTable1.columnAtPoint(evt.getPoint());
+
+            // Kolumn 4 = "Materiallista"
+            if (kolumn == 4 && rad >= 0) {
+                String artikelnummer = jTable1.getValueAt(rad, 0).toString();
+                visaMaterialLista(artikelnummer);}}});
         
         
         
@@ -58,6 +69,39 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JFrame {
             System.out.println("Fel vid hämtning av data: " + e.getMessage());
         }
     }
+    
+    private void visaMaterialLista(String artikelnummer) {
+    try {
+        // SQL-fråga: hämta material kopplat till artikelnumret
+        String sql = "SELECT m.namn, m.typ, m.farg " +
+             "FROM material m " +
+             "JOIN standardprodukt sp ON m.standardproduktid = sp.standardproduktid " +
+             "WHERE sp.artikelnummer = '" + artikelnummer + "'";
+
+        List<HashMap<String, String>> material = idb.fetchRows(sql);
+
+        StringBuilder info = new StringBuilder();
+
+        if (material != null && !material.isEmpty()) {
+            for (HashMap<String, String> rad : material) {
+                info.append(rad.get("namn"))
+                    .append(" – ")
+                    .append(rad.get("typ"))
+                    .append(" – ")
+                    .append(rad.get("farg"))
+                    .append("\n");
+            }
+        } else {
+            info.append("Inget material hittades.");
+        }
+
+        JOptionPane.showMessageDialog(this, info.toString(), "Materiallista", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
     
     
 
