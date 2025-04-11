@@ -21,6 +21,8 @@ public class Inloggningssida extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         lblFelMeddelande.setVisible(false); 
+        txtfEmail.setText("karin@hattmakarna.se");
+        pswfLosenord.setText("hatt123");
     }
 
     /**
