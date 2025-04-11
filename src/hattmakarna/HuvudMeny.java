@@ -20,7 +20,7 @@ public class HuvudMeny extends javax.swing.JFrame {
     public HuvudMeny(InfDB idb, String ePost) {
         initComponents();
         this.idb = idb; 
-        this.inloggadAnvandare = inloggadAnvandare; 
+        this.inloggadAnvandare = ePost; 
     }
 
     /**
