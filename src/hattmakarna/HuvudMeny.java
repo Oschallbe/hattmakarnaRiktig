@@ -187,7 +187,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void SeBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeBestallningActionPerformed
         // TODO add your handling code here:
-       //new SeBestallning(idb, inloggadAnvandare).setVisible(true);
+       new SeBestallning(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeBestallningActionPerformed
 
@@ -205,7 +205,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void SkapaBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkapaBestallningActionPerformed
         // TODO add your handling code here:
-       //new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
+       new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SkapaBestallningActionPerformed
 
@@ -223,7 +223,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void HanteraAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HanteraAnstalldActionPerformed
         // TODO add your handling code here:
-       //new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
+       new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_HanteraAnstalldActionPerformed
 
