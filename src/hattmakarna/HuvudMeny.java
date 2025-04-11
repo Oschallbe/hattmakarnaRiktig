@@ -20,9 +20,25 @@ public class HuvudMeny extends javax.swing.JFrame {
     public HuvudMeny(InfDB idb, String ePost) {
         initComponents();
         this.idb = idb; 
-        this.inloggadAnvandare = ePost; 
+        this.inloggadAnvandare = ePost;
+        hanteraAnstallda();
     }
-
+    
+    public void hanteraAnstallda(){
+        try{
+            String hamtaAnstallda = "select Behorighet from Anstalld where Epost = '" + inloggadAnvandare + "';";
+            String behorighet = idb.fetchSingle(hamtaAnstallda);         
+                if(behorighet.equals("1")){
+                    HanteraAnstalld.setVisible(false);
+                }
+                else if(behorighet.equals("2")){
+                    HanteraAnstalld.setVisible(true);
+                }
+        }
+        catch(InfException ex){
+            System.out.println(ex);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,20 +69,60 @@ public class HuvudMeny extends javax.swing.JFrame {
         });
 
         SeBestallning.setText("Se alla beställningar");
+        SeBestallning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SeBestallningActionPerformed(evt);
+            }
+        });
 
         SeKunder.setText("Se alla kunder");
+        SeKunder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SeKunderActionPerformed(evt);
+            }
+        });
 
         SeProdukt.setText("Se alla produkter");
+        SeProdukt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SeProduktActionPerformed(evt);
+            }
+        });
 
         SkapaBestallning.setText("Skapa ny beställning");
+        SkapaBestallning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SkapaBestallningActionPerformed(evt);
+            }
+        });
 
         SkapaBestallningSpecial.setText("Skapa ny specialbeställning");
+        SkapaBestallningSpecial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SkapaBestallningSpecialActionPerformed(evt);
+            }
+        });
 
         Forsaljning.setText("Försäljningsstatistik");
+        Forsaljning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ForsaljningActionPerformed(evt);
+            }
+        });
 
         HanteraAnstalld.setText("Hantera anställda");
+        HanteraAnstalld.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HanteraAnstalldActionPerformed(evt);
+            }
+        });
 
         LoggaUt.setText("Logga ut");
+        LoggaUt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoggaUtActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Huvudmeny");
 
@@ -125,9 +181,57 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void KalenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KalenderActionPerformed
         // TODO add your handling code here:
-        //new KalenderSchema(idb, inloggadAnvandare).setVisible();
-       // this.setVisible(false);
+       new KalenderSchema(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
     }//GEN-LAST:event_KalenderActionPerformed
+
+    private void SeBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeBestallningActionPerformed
+        // TODO add your handling code here:
+       //new SeBestallning(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_SeBestallningActionPerformed
+
+    private void SeKunderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeKunderActionPerformed
+        // TODO add your handling code here:
+       //new AllaKunder(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_SeKunderActionPerformed
+
+    private void SeProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeProduktActionPerformed
+        // TODO add your handling code here:
+       //new SeAllaProdukter(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_SeProduktActionPerformed
+
+    private void SkapaBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkapaBestallningActionPerformed
+        // TODO add your handling code here:
+       //new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_SkapaBestallningActionPerformed
+
+    private void SkapaBestallningSpecialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkapaBestallningSpecialActionPerformed
+        // TODO add your handling code here:
+       new SkapaSpecialOrder(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_SkapaBestallningSpecialActionPerformed
+
+    private void ForsaljningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForsaljningActionPerformed
+        // TODO add your handling code here:
+       new SeForsaljningsstatistik(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_ForsaljningActionPerformed
+
+    private void HanteraAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HanteraAnstalldActionPerformed
+        // TODO add your handling code here:
+       //new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_HanteraAnstalldActionPerformed
+
+    private void LoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoggaUtActionPerformed
+        // TODO add your handling code here:
+        new Inloggningssida(idb).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_LoggaUtActionPerformed
 
     
 

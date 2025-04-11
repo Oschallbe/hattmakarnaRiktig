@@ -92,41 +92,65 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Se alla best&#xe4;llningar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SeBestallningActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="SeKunder">
       <Properties>
         <Property name="text" type="java.lang.String" value="Se alla kunder"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SeKunderActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="SeProdukt">
       <Properties>
         <Property name="text" type="java.lang.String" value="Se alla produkter"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SeProduktActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="SkapaBestallning">
       <Properties>
         <Property name="text" type="java.lang.String" value="Skapa ny best&#xe4;llning"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SkapaBestallningActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="SkapaBestallningSpecial">
       <Properties>
         <Property name="text" type="java.lang.String" value="Skapa ny specialbest&#xe4;llning"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SkapaBestallningSpecialActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="Forsaljning">
       <Properties>
         <Property name="text" type="java.lang.String" value="F&#xf6;rs&#xe4;ljningsstatistik"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ForsaljningActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="HanteraAnstalld">
       <Properties>
         <Property name="text" type="java.lang.String" value="Hantera anst&#xe4;llda"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="HanteraAnstalldActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="LoggaUt">
       <Properties>
         <Property name="text" type="java.lang.String" value="Logga ut"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LoggaUtActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
