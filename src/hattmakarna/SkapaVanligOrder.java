@@ -3,18 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
-
+import oru.inf.InfDB; 
+import oru.inf.InfException; 
+import javax.swing.JOptionPane; 
 /**
  *
  * @author Fam van L
  */
 public class SkapaVanligOrder extends javax.swing.JFrame {
 
+        private HuvudMeny oldWindow; 
+        private InfDB idb; 
     /**
      * Creates new form SkapaVanligOrder
      */
-    public SkapaVanligOrder() {
+    public SkapaVanligOrder(InfDB idb, HuvudMeny oldWindow) {
         initComponents();
+        this.idb = idb; 
+        this.oldWindow = oldWindow; 
     }
 
     /**
@@ -26,21 +32,213 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblOrdernummer = new javax.swing.JLabel();
+        lblKundnummer = new javax.swing.JLabel();
+        lblDatum = new javax.swing.JLabel();
+        lblPris = new javax.swing.JLabel();
+        txtfOrdernummer = new javax.swing.JTextField();
+        txtfDatum = new javax.swing.JTextField();
+        txtfKundnummer = new javax.swing.JTextField();
+        txtfPris = new javax.swing.JTextField();
+        btnSpara = new javax.swing.JButton();
+        btnTillbaka = new javax.swing.JButton();
+        lblExpressleverans = new javax.swing.JLabel();
+        cbJa = new javax.swing.JCheckBox();
+        cbNej = new javax.swing.JCheckBox();
+        lblProduktlista = new javax.swing.JLabel();
+        lblArtikelnummer = new javax.swing.JLabel();
+        lblNamn = new javax.swing.JLabel();
+        lblPris2 = new javax.swing.JLabel();
+        lblAntal = new javax.swing.JLabel();
+        txtfArtikelummer = new javax.swing.JTextField();
+        txtfNamn = new javax.swing.JTextField();
+        txtfPris2 = new javax.swing.JTextField();
+        txtfAntal = new javax.swing.JTextField();
+
+        jButton1.setText("jButton1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Skapa order");
+
+        lblOrdernummer.setText("Ordernummer:");
+
+        lblKundnummer.setText("Kundnummer:");
+
+        lblDatum.setText("Datum:");
+
+        lblPris.setText("Pris:");
+
+        btnSpara.setText("Spara");
+
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTillbakaActionPerformed(evt);
+            }
+        });
+
+        lblExpressleverans.setText("Expressleverans");
+
+        cbJa.setText("Ja");
+        cbJa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbJaActionPerformed(evt);
+            }
+        });
+
+        cbNej.setText("Nej");
+
+        lblProduktlista.setText("Produktlista");
+
+        lblArtikelnummer.setText("Artikelnummer");
+
+        lblNamn.setText("Namn");
+
+        lblPris2.setText("Pris");
+
+        lblAntal.setText("Antal");
+
+        txtfArtikelummer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtfArtikelummerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(175, 175, 175))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblExpressleverans)
+                        .addGap(68, 68, 68))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblProduktlista)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbJa)
+                        .addGap(9, 9, 9))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblOrdernummer)
+                            .addComponent(lblKundnummer)
+                            .addComponent(lblDatum)
+                            .addComponent(lblPris)
+                            .addComponent(lblArtikelnummer)
+                            .addComponent(txtfArtikelummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtfPris, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtfKundnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtfDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblNamn)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(txtfNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                .addComponent(txtfPris2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(lblPris2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblAntal)
+                                    .addComponent(txtfAntal, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbNej)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnTillbaka)
+                            .addComponent(btnSpara))
+                        .addGap(40, 40, 40))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblOrdernummer)
+                    .addComponent(txtfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSpara))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblKundnummer)
+                    .addComponent(txtfKundnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTillbaka))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDatum)
+                    .addComponent(txtfDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPris)
+                    .addComponent(txtfPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addComponent(lblExpressleverans)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(lblProduktlista)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblArtikelnummer)
+                            .addComponent(lblNamn)
+                            .addComponent(lblPris2)
+                            .addComponent(lblAntal))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtfArtikelummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfPris2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfAntal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbJa)
+                            .addComponent(cbNej))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbJaActionPerformed
+
+    private void txtfArtikelummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfArtikelummerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtfArtikelummerActionPerformed
+
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+        oldWindow.setVisible(true); 
+        this.dispose(); 
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,15 +266,40 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(SkapaVanligOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SkapaVanligOrder().setVisible(true);
+            //    new SkapaVanligOrder().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSpara;
+    private javax.swing.JButton btnTillbaka;
+    private javax.swing.JCheckBox cbJa;
+    private javax.swing.JCheckBox cbNej;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblAntal;
+    private javax.swing.JLabel lblArtikelnummer;
+    private javax.swing.JLabel lblDatum;
+    private javax.swing.JLabel lblExpressleverans;
+    private javax.swing.JLabel lblKundnummer;
+    private javax.swing.JLabel lblNamn;
+    private javax.swing.JLabel lblOrdernummer;
+    private javax.swing.JLabel lblPris;
+    private javax.swing.JLabel lblPris2;
+    private javax.swing.JLabel lblProduktlista;
+    private javax.swing.JTextField txtfAntal;
+    private javax.swing.JTextField txtfArtikelummer;
+    private javax.swing.JTextField txtfDatum;
+    private javax.swing.JTextField txtfKundnummer;
+    private javax.swing.JTextField txtfNamn;
+    private javax.swing.JTextField txtfOrdernummer;
+    private javax.swing.JTextField txtfPris;
+    private javax.swing.JTextField txtfPris2;
     // End of variables declaration//GEN-END:variables
 }
