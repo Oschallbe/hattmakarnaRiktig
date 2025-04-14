@@ -51,6 +51,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         txtModell = new javax.swing.JTextField();
         txtText = new javax.swing.JTextField();
         tillbakaknapp = new javax.swing.JButton();
+        laggTillMaterial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,6 +99,13 @@ public class LaggTillProdukt extends javax.swing.JFrame {
             }
         });
 
+        laggTillMaterial.setText("Lägg till material");
+        laggTillMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laggTillMaterialActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,24 +133,29 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                                     .addComponent(txtArtikelnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                                     .addComponent(txtNamn))))))
                 .addContainerGap(122, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnLaggTill)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(huvudmatt)
-                        .addComponent(pris)
-                        .addComponent(modell)
-                        .addComponent(text)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                        .addComponent(tillbakaknapp)
-                        .addGap(75, 75, 75)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addComponent(laggTillMaterial)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnLaggTill)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(huvudmatt)
+                                .addComponent(pris)
+                                .addComponent(modell)
+                                .addComponent(text)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                                .addComponent(tillbakaknapp)
+                                .addGap(75, 75, 75)))
+                        .addContainerGap(40, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +184,9 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text)
                     .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                .addComponent(laggTillMaterial)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLaggTill)
                     .addComponent(tillbakaknapp))
@@ -217,7 +232,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
             idb.insert(fragaLaggTill);
             JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
             
-            new LaggTillMaterial(idb, inloggadAnvandare).setVisible(true);
+            
         }
         catch (InfException e){
             JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
@@ -234,12 +249,19 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_tillbakaknappActionPerformed
 
+    private void laggTillMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillMaterialActionPerformed
+        // TODO add your handling code here:
+        new LaggTillMaterial(idb, inloggadAnvandare, this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_laggTillMaterialActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel artikelNummer;
     private javax.swing.JButton btnLaggTill;
     private javax.swing.JLabel huvudmatt;
+    private javax.swing.JButton laggTillMaterial;
     private javax.swing.JLabel modell;
     private javax.swing.JLabel namn;
     private javax.swing.JLabel pris;

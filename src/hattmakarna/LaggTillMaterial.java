@@ -19,12 +19,14 @@ import javax.swing.table.DefaultTableModel;
 public class LaggTillMaterial extends javax.swing.JFrame {
 
         private InfDB idb;
-        private String inloggadAnvandare; 
+        private String inloggadAnvandare;
+        private Object forraFonster;
 
-    public LaggTillMaterial(InfDB idb, String ePost) {
+    public LaggTillMaterial(InfDB idb, String ePost, Object forraFonster) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = ePost;
+        this.forraFonster = forraFonster;
     }
 
     /**
@@ -175,9 +177,19 @@ public class LaggTillMaterial extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPrisActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn. 
-        new SkapaSpecialOrder(idb, inloggadAnvandare).setVisible(true);
+        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn.
+        
+        if (forraFonster instanceof SkapaSpecialOrder) {
+        ((SkapaSpecialOrder) forraFonster).setVisible(true);
         this.dispose();
+    }
+        
+        if (forraFonster instanceof LaggTillProdukt){
+                ((LaggTillProdukt) forraFonster).setVisible(true);
+                this.dispose();
+                }
+        
+      
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed

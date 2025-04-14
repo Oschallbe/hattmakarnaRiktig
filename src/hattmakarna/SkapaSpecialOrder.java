@@ -364,7 +364,7 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void btnLaggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillNyttMaterialActionPerformed
-    new LaggTillMaterial(idb,inloggadAnvandare).setVisible(true);
+    new LaggTillMaterial(idb,inloggadAnvandare, this).setVisible(true);
     this.setVisible(false);
     }//GEN-LAST:event_btnLaggTillNyttMaterialActionPerformed
 
