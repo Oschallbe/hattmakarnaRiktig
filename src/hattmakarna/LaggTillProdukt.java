@@ -4,17 +4,30 @@
  */
 package hattmakarna;
 
+import java.util.HashMap;
+import java.util.List;
+import oru.inf.InfDB;
+import oru.inf.InfException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 /**
  *
  * @author oscar
  */
 public class LaggTillProdukt extends javax.swing.JFrame {
-
-    /**
+    private InfDB idb;
+    private String inloggadAnvandare;
+    private SeAllaProdukter oldWindow;
+    /*
      * Creates new form LaggTillProdukt
      */
-    public LaggTillProdukt() {
+    public LaggTillProdukt(InfDB idb, String inloggadAnvandare) {
         initComponents();
+        this.idb = idb;
+        this.inloggadAnvandare = inloggadAnvandare;
+        //this.oldWindow = oldWindow;
     }
 
     /**
@@ -26,57 +39,233 @@ public class LaggTillProdukt extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        artikelNummer = new javax.swing.JLabel();
+        namn = new javax.swing.JLabel();
+        pris = new javax.swing.JLabel();
+        huvudmatt = new javax.swing.JLabel();
+        txtArtikelnummer = new javax.swing.JTextField();
+        txtNamn = new javax.swing.JTextField();
+        txtPris = new javax.swing.JTextField();
+        txtHuvudmatt = new javax.swing.JTextField();
+        btnLaggTill = new javax.swing.JButton();
+        modell = new javax.swing.JLabel();
+        farg = new javax.swing.JLabel();
+        typ = new javax.swing.JLabel();
+        text = new javax.swing.JLabel();
+        dekoration = new javax.swing.JLabel();
+        txtModell = new javax.swing.JTextField();
+        txtTyp = new javax.swing.JTextField();
+        txtFarg = new javax.swing.JTextField();
+        txtText = new javax.swing.JTextField();
+        txtDekoration = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        artikelNummer.setText("Artikelnummer");
+
+        namn.setText("Namn");
+
+        pris.setText("Pris");
+
+        huvudmatt.setText("Huvudmått");
+
+        txtArtikelnummer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtArtikelnummerActionPerformed(evt);
+            }
+        });
+
+        txtNamn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNamnActionPerformed(evt);
+            }
+        });
+
+        txtPris.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrisActionPerformed(evt);
+            }
+        });
+
+        btnLaggTill.setText("Lägg till");
+        btnLaggTill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLaggTillActionPerformed(evt);
+            }
+        });
+
+        modell.setText("Modell");
+
+        farg.setText("Färg");
+
+        typ.setText("Typ");
+
+        text.setText("Text");
+
+        dekoration.setText("Dekoration");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(txtModell, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(txtHuvudmatt, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(31, 31, 31)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(artikelNummer)
+                                        .addComponent(namn))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtArtikelnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                                        .addComponent(txtNamn))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnLaggTill)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(huvudmatt)
+                                .addComponent(pris)
+                                .addComponent(modell)
+                                .addComponent(typ)
+                                .addComponent(farg)
+                                .addComponent(text)
+                                .addComponent(dekoration)))
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtFarg, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                            .addComponent(txtTyp)
+                            .addComponent(txtText)
+                            .addComponent(txtDekoration))))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(artikelNummer)
+                    .addComponent(txtArtikelnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(namn)
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pris)
+                    .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(huvudmatt)
+                    .addComponent(txtHuvudmatt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(modell)
+                    .addComponent(txtModell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(typ)
+                    .addComponent(txtTyp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(farg)
+                    .addComponent(txtFarg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(text)
+                    .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dekoration)
+                    .addComponent(txtDekoration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addComponent(btnLaggTill)
+                .addGap(37, 37, 37))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LaggTillProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LaggTillProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LaggTillProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LaggTillProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void txtNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNamnActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LaggTillProdukt().setVisible(true);
-            }
-        });
-    }
+    private void txtArtikelnummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtArtikelnummerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtArtikelnummerActionPerformed
+
+    private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
+        // TODO add your handling code here:
+        String textartikelNummer = txtArtikelnummer.getText();
+        String namn = txtNamn.getText();
+        String textPris = txtPris.getText();
+        String textHuvudmatt = txtHuvudmatt.getText();
+        String modell = txtModell.getText();
+        String typ = txtTyp.getText();
+        String farg = txtFarg.getText();
+        String text = txtText.getText();
+        String dekoration = txtDekoration.getText();
+        
+        int pris = Integer.parseInt(textPris);
+        int huvudmatt = Integer.parseInt(textHuvudmatt);
+        int artikelNummer = Integer.parseInt(textartikelNummer);
+        //Validering!!
+        
+        try{
+            String hamtaID = "Select max(StandardProduktID) from StandardProdukt;";
+            String nyHamtaID = idb.fetchSingle(hamtaID);
+            int nyID = Integer.parseInt(nyHamtaID) + 1;
+            
+            String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Typ, Farg, Text, Dekoration, Storlek, Pris, Artikelnummer) " +
+                       "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + typ + "', '" + farg + "', '" + text + "', '" + dekoration + "', " +
+                       huvudmatt + ", " + pris + ", " + artikelNummer + ");";
+
+                    
+            idb.insert(fragaLaggTill);
+            JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
+        }
+        catch (InfException e){
+            JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
+        }
+    }//GEN-LAST:event_btnLaggTillActionPerformed
+
+    private void txtPrisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrisActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel artikelNummer;
+    private javax.swing.JButton btnLaggTill;
+    private javax.swing.JLabel dekoration;
+    private javax.swing.JLabel farg;
+    private javax.swing.JLabel huvudmatt;
+    private javax.swing.JLabel modell;
+    private javax.swing.JLabel namn;
+    private javax.swing.JLabel pris;
+    private javax.swing.JLabel text;
+    private javax.swing.JTextField txtArtikelnummer;
+    private javax.swing.JTextField txtDekoration;
+    private javax.swing.JTextField txtFarg;
+    private javax.swing.JTextField txtHuvudmatt;
+    private javax.swing.JTextField txtModell;
+    private javax.swing.JTextField txtNamn;
+    private javax.swing.JTextField txtPris;
+    private javax.swing.JTextField txtText;
+    private javax.swing.JTextField txtTyp;
+    private javax.swing.JLabel typ;
     // End of variables declaration//GEN-END:variables
 }
