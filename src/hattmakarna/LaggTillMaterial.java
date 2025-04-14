@@ -19,14 +19,12 @@ import javax.swing.table.DefaultTableModel;
 public class LaggTillMaterial extends javax.swing.JFrame {
 
         private InfDB idb;
-        private String inloggadAnvandare;
-        private SkapaSpecialOrder oldWindow; 
+        private String inloggadAnvandare; 
 
-    public LaggTillMaterial(InfDB idb, String ePost, SkapaSpecialOrder oldWindow ) {
+    public LaggTillMaterial(InfDB idb, String ePost) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = ePost;
-        this.oldWindow = oldWindow;
     }
 
     /**
@@ -178,7 +176,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn. 
-        oldWindow.setVisible(true);
+        new SkapaSpecialOrder(idb, inloggadAnvandare).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
