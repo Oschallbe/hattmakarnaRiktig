@@ -82,7 +82,7 @@ public class HuvudMeny extends javax.swing.JFrame {
             }
         });
 
-        SeProdukt.setText("Se alla produkter");
+        SeProdukt.setText("Se alla standardprodukter");
         SeProdukt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SeProduktActionPerformed(evt);
