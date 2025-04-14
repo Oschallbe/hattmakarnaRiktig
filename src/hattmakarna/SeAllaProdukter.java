@@ -159,11 +159,6 @@ public class SeAllaProdukter extends javax.swing.JFrame {
         btnTaBort.setText("Ta bort");
 
         btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Produktlista");
@@ -192,12 +187,13 @@ public class SeAllaProdukter extends javax.swing.JFrame {
                                 .addGap(9, 9, 9)
                                 .addComponent(jLabel2))
                             .addComponent(btnLaggTill))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
                                 .addComponent(btnTillbaka)
                                 .addGap(46, 46, 46))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnTaBort)
                                 .addGap(34, 34, 34))))))
             .addGroup(layout.createSequentialGroup()
@@ -275,12 +271,6 @@ public class SeAllaProdukter extends javax.swing.JFrame {
         new LaggTillProdukt(idb, inloggadAnvandare).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnLaggTillActionPerformed
-
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        // TODO add your handling code here:
-        new HuvudMeny(idb, inloggadAnvandare).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
     
