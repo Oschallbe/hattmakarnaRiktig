@@ -193,7 +193,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void SeKunderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeKunderActionPerformed
         // TODO add your handling code here:
-       //new AllaKunder(idb, inloggadAnvandare).setVisible(true);
+       new AllaKunder(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeKunderActionPerformed
 
