@@ -56,7 +56,7 @@ private InfDB idb;
             }
 
         } catch (InfException e) {
-            System.out.println("Fel vid hämtning av data: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av data: " + e.getMessage());
         }   
     }
 

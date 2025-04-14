@@ -47,7 +47,7 @@ public class SeAllaProdukter extends javax.swing.JFrame {
     private void seLagerfordaProdukter() {
         try {
             // SQL-fråga för att hämta data från databasen
-            String query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt";
+            String query = "SELECT Artikelnummer, Namn, Pris, Storlek FROM StandardProdukt";
             List<HashMap<String, String>> result = idb.fetchRows(query);
 
             // Hämta JTable:s modell
@@ -61,7 +61,7 @@ public class SeAllaProdukter extends javax.swing.JFrame {
                         row.get("Artikelnummer"),
                         row.get("Namn"),
                         row.get("Pris"),
-                        row.get("Matt"),
+                        row.get("Storlek"),
                         "Se material",
                     });
                 }
@@ -268,7 +268,8 @@ public class SeAllaProdukter extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSokActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-        
+        new LaggTillProdukt(idb, inloggadAnvandare).setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
 
