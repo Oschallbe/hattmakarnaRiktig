@@ -82,7 +82,7 @@ public class HuvudMeny extends javax.swing.JFrame {
             }
         });
 
-        SeProdukt.setText("Se alla produkter");
+        SeProdukt.setText("Se alla standardprodukter");
         SeProdukt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SeProduktActionPerformed(evt);
@@ -187,7 +187,7 @@ public class HuvudMeny extends javax.swing.JFrame {
 
     private void SeBestallningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeBestallningActionPerformed
         // TODO add your handling code here:
-       new SeBestallning(idb, inloggadAnvandare, this).setVisible(true);
+       new SeBestallning(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_SeBestallningActionPerformed
 
