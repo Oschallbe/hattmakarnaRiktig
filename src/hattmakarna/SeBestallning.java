@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+import hattmakarna.SeVanligOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,16 +18,15 @@ import oru.inf.InfException;
  */
 public class SeBestallning extends javax.swing.JFrame {
 private String inloggadAnvandare;
-private HuvudMeny oldWindow;
 private InfDB idb;
+private String klickatOrderNr;
     /**
      * Creates new form SeBestallning
      */
-    public SeBestallning(InfDB idb, String ePost, HuvudMeny oldWindow) {
+    public SeBestallning(InfDB idb, String ePost) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = ePost;
-        this.oldWindow = oldWindow;
         String fraga = "select BestallningID, Status, Datum, Expressbestallning, TotalPris, Typ, KundID from Bestallning;";
         //String fraga = "select BestallningID, KundID, Status, Datum from Bestallning;";
         fyllTable(fraga);
@@ -59,6 +59,10 @@ private InfDB idb;
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av data: " + e.getMessage());
         }   
     }
+    
+   
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,6 +81,7 @@ private InfDB idb;
         jTextField4 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         tillbaka = new javax.swing.JButton();
+        btnSeOrder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,6 +119,13 @@ private InfDB idb;
             }
         });
 
+        btnSeOrder.setText("Se order");
+        btnSeOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -137,7 +149,10 @@ private InfDB idb;
                         .addGap(62, 62, 62)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSeOrder)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -145,7 +160,9 @@ private InfDB idb;
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(tillbaka)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSeOrder)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -162,14 +179,41 @@ private InfDB idb;
 
     private void tillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaActionPerformed
         // TODO add your handling code here:
-        oldWindow.setVisible(true);
+        new HuvudMeny(idb,inloggadAnvandare).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_tillbakaActionPerformed
+
+    private void btnSeOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeOrderActionPerformed
+        
+        try{
+            //Hämta raden som har markerats
+            int valdRad = BestallningsLista.getSelectedRow();
+            
+            if(valdRad == -1){
+                javax.swing.JOptionPane.showMessageDialog(this, "Markera en beställningsrad för att se ordern.");
+                return;
+            }
+                
+                
+                        
+            //Hämta Ordernr för den markerade raden.
+            String Oid = BestallningsLista.getValueAt(valdRad,1).toString();
+            klickatOrderNr = Oid;
+            
+            new SeVanligOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
+            this.dispose();
+    
+        }
+        catch(NumberFormatException ex){
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_btnSeOrderActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable BestallningsLista;
+    private javax.swing.JButton btnSeOrder;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
