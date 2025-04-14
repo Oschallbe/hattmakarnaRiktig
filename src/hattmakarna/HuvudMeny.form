@@ -106,7 +106,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="SeProdukt">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Se alla produkter"/>
+        <Property name="text" type="java.lang.String" value="Se alla standardprodukter"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SeProduktActionPerformed"/>
