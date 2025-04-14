@@ -19,7 +19,6 @@ import java.awt.event.MouseEvent;
 public class LaggTillProdukt extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
-    private SeAllaProdukter oldWindow;
     /*
      * Creates new form LaggTillProdukt
      */
@@ -27,7 +26,6 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
-        //this.oldWindow = oldWindow;
     }
 
     /**
@@ -49,15 +47,11 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         txtHuvudmatt = new javax.swing.JTextField();
         btnLaggTill = new javax.swing.JButton();
         modell = new javax.swing.JLabel();
-        farg = new javax.swing.JLabel();
-        typ = new javax.swing.JLabel();
         text = new javax.swing.JLabel();
-        dekoration = new javax.swing.JLabel();
         txtModell = new javax.swing.JTextField();
-        txtTyp = new javax.swing.JTextField();
-        txtFarg = new javax.swing.JTextField();
         txtText = new javax.swing.JTextField();
-        txtDekoration = new javax.swing.JTextField();
+        tillbakaknapp = new javax.swing.JButton();
+        laggTillMaterial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,13 +90,21 @@ public class LaggTillProdukt extends javax.swing.JFrame {
 
         modell.setText("Modell");
 
-        farg.setText("Färg");
-
-        typ.setText("Typ");
-
         text.setText("Text");
 
-        dekoration.setText("Dekoration");
+        tillbakaknapp.setText("Tillbaka");
+        tillbakaknapp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tillbakaknappActionPerformed(evt);
+            }
+        });
+
+        laggTillMaterial.setText("Lägg till material");
+        laggTillMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laggTillMaterialActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,46 +112,50 @@ public class LaggTillProdukt extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtModell, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
-                            .addComponent(txtModell, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtHuvudmatt, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(txtHuvudmatt, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(31, 31, 31)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(artikelNummer)
-                                        .addComponent(namn))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtArtikelnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                                        .addComponent(txtNamn))))))
+                                .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(artikelNummer)
+                                    .addComponent(namn))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtArtikelnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                                    .addComponent(txtNamn))))))
+                .addContainerGap(122, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addComponent(laggTillMaterial)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnLaggTill)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(huvudmatt)
                                 .addComponent(pris)
                                 .addComponent(modell)
-                                .addComponent(typ)
-                                .addComponent(farg)
-                                .addComponent(text)
-                                .addComponent(dekoration)))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtFarg, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                            .addComponent(txtTyp)
-                            .addComponent(txtText)
-                            .addComponent(txtDekoration))))
-                .addContainerGap(122, Short.MAX_VALUE))
+                                .addComponent(text)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                                .addComponent(tillbakaknapp)
+                                .addGap(75, 75, 75)))
+                        .addContainerGap(40, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,22 +182,14 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                     .addComponent(txtModell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(typ)
-                    .addComponent(txtTyp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(farg)
-                    .addComponent(txtFarg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text)
                     .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                .addComponent(laggTillMaterial)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dekoration)
-                    .addComponent(txtDekoration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addComponent(btnLaggTill)
+                    .addComponent(btnLaggTill)
+                    .addComponent(tillbakaknapp))
                 .addGap(37, 37, 37))
         );
 
@@ -213,10 +211,8 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         String textPris = txtPris.getText();
         String textHuvudmatt = txtHuvudmatt.getText();
         String modell = txtModell.getText();
-        String typ = txtTyp.getText();
-        String farg = txtFarg.getText();
         String text = txtText.getText();
-        String dekoration = txtDekoration.getText();
+        
         
         int pris = Integer.parseInt(textPris);
         int huvudmatt = Integer.parseInt(textHuvudmatt);
@@ -228,13 +224,15 @@ public class LaggTillProdukt extends javax.swing.JFrame {
             String nyHamtaID = idb.fetchSingle(hamtaID);
             int nyID = Integer.parseInt(nyHamtaID) + 1;
             
-            String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Typ, Farg, Text, Dekoration, Storlek, Pris, Artikelnummer) " +
-                       "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + typ + "', '" + farg + "', '" + text + "', '" + dekoration + "', " +
+            String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Text, Storlek, Pris, Artikelnummer) " +
+                       "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + text + "', " +
                        huvudmatt + ", " + pris + ", " + artikelNummer + ");";
 
                     
             idb.insert(fragaLaggTill);
             JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
+            
+            
         }
         catch (InfException e){
             JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
@@ -245,27 +243,35 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrisActionPerformed
 
+    private void tillbakaknappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaknappActionPerformed
+        // TODO add your handling code here:
+        new SeAllaProdukter(idb, inloggadAnvandare).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_tillbakaknappActionPerformed
+
+    private void laggTillMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillMaterialActionPerformed
+        // TODO add your handling code here:
+        new LaggTillMaterial(idb, inloggadAnvandare, this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_laggTillMaterialActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel artikelNummer;
     private javax.swing.JButton btnLaggTill;
-    private javax.swing.JLabel dekoration;
-    private javax.swing.JLabel farg;
     private javax.swing.JLabel huvudmatt;
+    private javax.swing.JButton laggTillMaterial;
     private javax.swing.JLabel modell;
     private javax.swing.JLabel namn;
     private javax.swing.JLabel pris;
     private javax.swing.JLabel text;
+    private javax.swing.JButton tillbakaknapp;
     private javax.swing.JTextField txtArtikelnummer;
-    private javax.swing.JTextField txtDekoration;
-    private javax.swing.JTextField txtFarg;
     private javax.swing.JTextField txtHuvudmatt;
     private javax.swing.JTextField txtModell;
     private javax.swing.JTextField txtNamn;
     private javax.swing.JTextField txtPris;
     private javax.swing.JTextField txtText;
-    private javax.swing.JTextField txtTyp;
-    private javax.swing.JLabel typ;
     // End of variables declaration//GEN-END:variables
 }
