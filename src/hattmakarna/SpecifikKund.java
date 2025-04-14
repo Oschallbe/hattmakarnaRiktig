@@ -4,6 +4,7 @@
  */
 package hattmakarna;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 import oru.inf.InfDB; 
 import oru.inf.InfException; 
 
@@ -24,27 +25,53 @@ public class SpecifikKund extends javax.swing.JFrame {
         this.kundID = kundID;
         initComponents();
         fyllKundDetaljer();
+        setEditable(false); // Gör fälten icke-redigerbara vid start
+
     }
 
     private void fyllKundDetaljer() {
         try {
-            String query = "SELECT * FROM kund WHERE KundID = " + kundID + ";";
+            String query = "SELECT * FROM Kund WHERE KundID = " + kundID + ";";
             HashMap<String, String> kundData = idb.fetchRow(query);
-
+            
             if (kundData != null) {
-                lblKundID.setText(kundData.get("KundID"));
-                lblFornamn.setText(kundData.get("Fornamn"));
-                lblEfternamn.setText(kundData.get("Efternamn"));
-                lblEpost.setText(kundData.get("Epost"));
-                lblTelefonnummer.setText(kundData.get("Telefonnummer"));
-                lblLeveransadress.setText(kundData.get("Leveransadress"));
-                lblFakturaadress.setText(kundData.get("Fakturaadress"));
-                
-            }
+                String fornamn = kundData.get("Fornamn");
+                String efternamn = kundData.get("Efternamn");
+                String epost = kundData.get("Epost");
+                String telefonnummer = kundData.get("Telefonnummer");
+                String ort = kundData.get("Ort");
+                String leveransAdress = kundData.get("LeveransAdress");
+                String fakturaAdress = kundData.get("FakturaAdress");
 
+                // Sätt värdena för textfälten
+                txtKundID.setText(String.valueOf(kundID));
+                txtFornamn.setText(fornamn);
+                txtEfternamn.setText(efternamn);
+                txtEpost.setText(epost);
+                txtTelefonnummer.setText(telefonnummer);
+                txtOrt.setText(ort);
+                txtLeveransAdress.setText(leveransAdress);
+                txtFakturaAdress.setText(fakturaAdress);
+                txtort.setText(ort);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Kunden kunde inte hittas.");
+            }
         } catch (InfException ex) {
-            System.out.println("Fel vid hämtning av kunddetaljer: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Ett fel inträffade vid hämtning av kundinfo: " + ex.getMessage());
         }
+    }
+    
+        // Gör alla textfält redigerbara eller inte
+    private void setEditable(boolean editable) {
+        txtFornamn.setEditable(editable);
+        txtEfternamn.setEditable(editable);
+        txtEpost.setEditable(editable);
+        txtTelefonnummer.setEditable(editable);
+        txtOrt.setEditable(editable);
+        txtLeveransAdress.setEditable(editable);
+        txtFakturaAdress.setEditable(editable);
+        BtnSpara.setEnabled(editable); // Spara-knappen kan bara användas om fälten är redigerbara
     }
 
     /**
@@ -68,13 +95,17 @@ public class SpecifikKund extends javax.swing.JFrame {
         BtnSpara = new javax.swing.JButton();
         btnTillbaka = new javax.swing.JButton();
         lblFakturaadress = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtKundID = new javax.swing.JTextField();
+        txtFornamn = new javax.swing.JTextField();
+        txtEfternamn = new javax.swing.JTextField();
+        txtEpost = new javax.swing.JTextField();
+        txtTelefonnummer = new javax.swing.JTextField();
+        txtLeveransAdress = new javax.swing.JTextField();
+        txtFakturaAdress = new javax.swing.JTextField();
+        txtOrt = new javax.swing.JTextField();
+        txtort = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,10 +125,25 @@ public class SpecifikKund extends javax.swing.JFrame {
         lblLeveransadress.setText("Leveransadress");
 
         BtnTaBort.setText("Ta bort");
+        BtnTaBort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnTaBortActionPerformed(evt);
+            }
+        });
 
         BtnRedigera.setText("Redigera");
+        BtnRedigera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRedigeraActionPerformed(evt);
+            }
+        });
 
         BtnSpara.setText("Spara");
+        BtnSpara.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSparaActionPerformed(evt);
+            }
+        });
 
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
@@ -108,59 +154,77 @@ public class SpecifikKund extends javax.swing.JFrame {
 
         lblFakturaadress.setText("Fakturaadress");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        jLabel2.setText("Ort");
+
+        jLabel3.setText("Ort");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BtnTaBort)
-                .addGap(36, 36, 36)
-                .addComponent(BtnRedigera)
-                .addGap(51, 51, 51)
-                .addComponent(BtnSpara)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                .addComponent(btnTillbaka)
-                .addGap(21, 21, 21))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(BtnTaBort)
+                        .addGap(36, 36, 36)
+                        .addComponent(BtnRedigera))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblLeveransadress)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtLeveransAdress))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblEfternamn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblFornamn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblKundID)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblFakturaadress)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtFakturaAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(lblEpost)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtEpost))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(lblTelefonnummer)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtTelefonnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblFakturaadress)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblLeveransadress)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTelefonnummer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEpost)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEfternamn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblFornamn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblKundID)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(BtnSpara)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                        .addComponent(btnTillbaka)
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 12, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtOrt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(80, 80, 80))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,31 +234,35 @@ public class SpecifikKund extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblKundID)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFornamn)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEfternamn)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEpost)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTelefonnummer)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefonnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLeveransadress)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLeveransAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOrt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFakturaadress)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFakturaAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnTaBort)
@@ -212,9 +280,109 @@ public class SpecifikKund extends javax.swing.JFrame {
     this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void BtnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSparaActionPerformed
+    // Hämta värden från textfälten
+    String fornamn = txtFornamn.getText();
+    String efternamn = txtEfternamn.getText();
+    String epost = txtEpost.getText();
+    String telefonnummer = txtTelefonnummer.getText();
+    String ort = txtOrt.getText();
+    String leveransAdress = txtLeveransAdress.getText();
+    String fakturaAdress = txtFakturaAdress.getText();
+
+    // Validera e-postadress
+    if (!Validering.valideringEmail(epost)) {
+        JOptionPane.showMessageDialog(this, "Ogiltig e-postadress.");
+        return;
+    }
+
+    // Validera telefonnummer
+    if (!Validering.valideringTelefon(telefonnummer)) {
+        JOptionPane.showMessageDialog(this, "Ogiltigt telefonnummer. Använd formatet 123-456-7890.");
+        return;
+    }
+
+    // Validera förnamn och efternamn
+    if (fornamn == null || fornamn.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Förnamn kan inte vara tomt.");
+        return;
+    }
+    if (efternamn == null || efternamn.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Efternamn kan inte vara tomt.");
+        return;
+    }
+
+    // Validera ort
+    if (ort == null || ort.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ort kan inte vara tom.");
+        return;
+    }
+
+    // Validera leveransadress
+    if (leveransAdress == null || leveransAdress.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Leveransadress kan inte vara tom.");
+        return;
+    }
+
+    // Validera fakturaadress
+    if (fakturaAdress == null || fakturaAdress.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Fakturaadress kan inte vara tom.");
+        return;
+    }
+
+    // Uppdatera kundens data i databasen om alla valideringar är godkända
+    try {
+        String updateQuery = "UPDATE Kund SET Fornamn = '" + fornamn + "', Efternamn = '" + efternamn + 
+                              "', Epost = '" + epost + "', Telefonnummer = '" + telefonnummer + 
+                              "', Ort = '" + ort + "', LeveransAdress = '" + leveransAdress + 
+                              "', FakturaAdress = '" + fakturaAdress + "' WHERE KundID = " + kundID;
+        idb.update(updateQuery);
+        JOptionPane.showMessageDialog(this, "Kundinformation har uppdaterats.");
+
+        // Gör textfälten icke-redigerbara igen
+        setEditable(false);
+        BtnRedigera.setEnabled(true); // Aktivera redigera-knappen igen
+        BtnSpara.setEnabled(false); // Inaktivera Spara-knappen
+
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(this, "Ett fel inträffade vid uppdatering av kundinformation: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_BtnSparaActionPerformed
+
+    private void BtnRedigeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRedigeraActionPerformed
+        setEditable(true); // Gör textfälten redigerbara
+        BtnSpara.setEnabled(true); // Aktivera Spara-knappen
+        BtnRedigera.setEnabled(false); // Deaktivera Redigera-knappen
+    }//GEN-LAST:event_BtnRedigeraActionPerformed
+
+    private void BtnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTaBortActionPerformed
+    try {
+        // Bekräftelse om användaren verkligen vill ta bort kundens uppgifter
+        int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort kundens uppgifter (förutom KundID)?", "Bekräfta", JOptionPane.YES_NO_OPTION);
+
+        if (svar == JOptionPane.YES_OPTION) {
+            // SQL-fråga med rätt kolumnnamn
+            String rensaKundUppgifter = "UPDATE Kund SET " +
+                "Fornamn = NULL, " +
+                "Efternamn = NULL, " +
+                "Epost = NULL, " +
+                "Telefonnummer = NULL, " +
+                "Ort = NULL, " +
+                "LeveransAdress = NULL, " +
+                "FakturaAdress = NULL " +
+                "WHERE KundID = " + kundID + ";";
+
+            // Utför uppdateringen
+            idb.update(rensaKundUppgifter);
+
+            // Feedback till användaren
+            JOptionPane.showMessageDialog(this, "Kundens uppgifter har rensats. KundID finns kvar.");
+            this.dispose();
+        }
+    } catch (InfException ex) {
+        JOptionPane.showMessageDialog(this, "Ett fel inträffade vid rensning av kundens uppgifter: " + ex.getMessage());
+    }
+    }//GEN-LAST:event_BtnTaBortActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,13 +425,8 @@ public class SpecifikKund extends javax.swing.JFrame {
     private javax.swing.JButton BtnTaBort;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblEfternamn;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblFakturaadress;
@@ -271,5 +434,14 @@ public class SpecifikKund extends javax.swing.JFrame {
     private javax.swing.JLabel lblKundID;
     private javax.swing.JLabel lblLeveransadress;
     private javax.swing.JLabel lblTelefonnummer;
+    private javax.swing.JTextField txtEfternamn;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JTextField txtFakturaAdress;
+    private javax.swing.JTextField txtFornamn;
+    private javax.swing.JTextField txtKundID;
+    private javax.swing.JTextField txtLeveransAdress;
+    private javax.swing.JTextField txtOrt;
+    private javax.swing.JTextField txtTelefonnummer;
+    private javax.swing.JTextField txtort;
     // End of variables declaration//GEN-END:variables
 }
