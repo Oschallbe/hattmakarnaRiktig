@@ -43,7 +43,7 @@
                       <Component id="jTextField3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                       <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="243" max="32767" attributes="0"/>
+                      <EmptySpace pref="307" max="32767" attributes="0"/>
                       <Component id="jTextField4" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -177,6 +177,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Tillbaka"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tillbakaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

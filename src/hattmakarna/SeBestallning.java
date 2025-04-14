@@ -22,13 +22,13 @@ private InfDB idb;
     /**
      * Creates new form SeBestallning
      */
-    public SeBestallning(InfDB idb, String ePost) {
+    public SeBestallning(InfDB idb, String ePost, HuvudMeny oldWindow) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = ePost;
-        //this.oldWindow = oldWindow;
-        //String fraga = "select BestallningID, Status, Datum, Expressbestallning, Pris, Ordertyp, Kundnummer from Bestallning;";
-        String fraga = "select BestallningID, KundID, Status, Datum from Bestallning;";
+        this.oldWindow = oldWindow;
+        String fraga = "select BestallningID, Status, Datum, Expressbestallning, TotalPris, Typ, KundID from Bestallning;";
+        //String fraga = "select BestallningID, KundID, Status, Datum from Bestallning;";
         fyllTable(fraga);
     }
     
@@ -42,10 +42,13 @@ private InfDB idb;
                 for (HashMap<String, String> row : result) {
                     // Lägg till en rad i JTable
                     model.addRow(new Object[]{
+                        row.get("Typ"),
                         row.get("BestallningID"),
                         row.get("KundID"),
                         row.get("Status"),
+                        row.get("TotalPris"),
                         row.get("Datum"),
+                        row.get("Expressbestallning")
                     });
                 }
             } else {
@@ -105,6 +108,11 @@ private InfDB idb;
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         tillbaka.setText("Tillbaka");
+        tillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tillbakaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -128,7 +136,7 @@ private InfDB idb;
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(62, 62, 62)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -151,6 +159,12 @@ private InfDB idb;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaActionPerformed
+        // TODO add your handling code here:
+        oldWindow.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_tillbakaActionPerformed
 
     
 
