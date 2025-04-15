@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  *
@@ -29,8 +30,49 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
+        fyllMaterialComboBox();
     }
 
+    private void fyllMaterialComboBox() {
+    try {
+        
+        comboMaterial.removeAllItems(); // Töm först
+        comboMaterial.addItem("Välj material"); // Dummy-post först
+        String sqlFraga = "SELECT Namn FROM Material";
+        ArrayList<String> materialLista = idb.fetchColumn(sqlFraga);
+
+        
+        for (String namn : materialLista) {
+            comboMaterial.addItem(namn);
+        }
+
+        } 
+            catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av material " + e.getMessage());
+        }
+    }
+    private void laggTillMaterialIRuta() {
+        try {
+            String valtMaterial = (String) comboMaterial.getSelectedItem();
+
+            // Hämta info om materialet från databasen
+            String sql = "SELECT Namn, Typ, Farg, Pris FROM Material WHERE Namn = '" + valtMaterial + "'";
+            HashMap<String, String> rad = idb.fetchRow(sql);
+
+            if (rad != null && !rad.isEmpty()) {
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+                model.addRow(new Object[]{
+                    rad.get("Namn"),
+                    rad.get("Typ"),
+                    rad.get("Farg"),
+                    rad.get("Pris")
+                });
+            }
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,7 +97,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         txtText = new javax.swing.JTextField();
         tillbakaknapp = new javax.swing.JButton();
         laggTillMaterialProdukt = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboMaterial = new javax.swing.JComboBox<>();
         laggTillNyttMaterial = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -114,7 +156,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboMaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         laggTillNyttMaterial.setText("Lägg till nytt material");
         laggTillNyttMaterial.addActionListener(new java.awt.event.ActionListener() {
@@ -127,10 +169,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -156,7 +195,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                                 .addGap(37, 37, 37)
                                 .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(laggTillNyttMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -226,7 +265,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                     .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(laggTillMaterialProdukt, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(laggTillNyttMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,20 +314,36 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                     String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Text, Storlek, Pris, Artikelnummer) "
                             + "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + text + "', "
                             + huvudmatt + ", " + pris + ", " + artikelNummer + ");";
-
                     idb.insert(fragaLaggTill);
+                    
+                    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+                    int rowCount = model.getRowCount();
+                    if (rowCount == 0) {
+                        JOptionPane.showMessageDialog(null, "Vänligen lägg till minst ett material till ordern.");
+                        return;
+                    }
+                    for (int i = 0; i < rowCount; i++) {
+                        String materialNamn = (String) model.getValueAt(i, 0);
+                        String materialID = idb.fetchSingle("SELECT MaterialID FROM Material WHERE Namn = '" + materialNamn + "'");
+                        String insertMaterial = "INSERT INTO StandardProdukt_Material (StandardProduktID, MaterialID) "
+                            + "VALUES (" + nyID + ", " + materialID + ")";
+                        idb.insert(insertMaterial);
+                    }
                     JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
 
-                } catch (InfException e) {
+                } 
+                catch (InfException e) {
                     JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Fälten får inte vara tomma!");
             }
-        } catch (NumberFormatException numb) {
+            new SeAllaProdukter(idb,inloggadAnvandare).setVisible(true);
+            this.dispose();
+        } 
+        catch (NumberFormatException numb) {
             JOptionPane.showMessageDialog(null, "Pris, huvudmått och artikelnummer måste innehålla endast siffror!");
         }
-
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void txtPrisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrisActionPerformed
@@ -303,21 +358,21 @@ public class LaggTillProdukt extends javax.swing.JFrame {
 
     private void laggTillMaterialProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillMaterialProduktActionPerformed
         // TODO add your handling code here:
-        
+        laggTillMaterialIRuta();
     }//GEN-LAST:event_laggTillMaterialProduktActionPerformed
 
     private void laggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillNyttMaterialActionPerformed
         // TODO add your handling code here:
         new LaggTillMaterial(idb,inloggadAnvandare, this).setVisible(true);
-        
+        this.dispose();
     }//GEN-LAST:event_laggTillNyttMaterialActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel artikelNummer;
     private javax.swing.JButton btnLaggTill;
+    private javax.swing.JComboBox<String> comboMaterial;
     private javax.swing.JLabel huvudmatt;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

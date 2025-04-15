@@ -19,9 +19,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
     private String inloggadAnvandare; 
     private String klickatOrderNr;
 
-    /**
-     * Creates new form SeVanligOrder
-     */
+    
     public SeVanligOrder(InfDB idb, String ePost, String klickatOrderNr) {
         initComponents();
         this.idb = idb; 
@@ -35,44 +33,45 @@ public class SeVanligOrder extends javax.swing.JFrame {
     public void fyllTabell(){
         try{
             //Skapar en array som lagrar kolumnnamnen.
-            String kolumnNamn[] = {"OrderItemID", "AntalProdukter", "AnstalldID", "Namn", "Pris"}; //OBS Namn och Pris ska läggas till
+            String kolumnNamn[] = {"OrderItemID", "Namn", "Pris", "AntalProdukter", "AnstalldID"};
             
             //Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
             DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0);
             
             //Hämtar alla anställdas id och lägger det i Arraylistan "id".
-            String selectOid = "select OrderItemID from orderitem order by(OrderItemID);";
+            String selectOid = "select OrderItemID from orderitem where BestallningID =" + klickatOrderNr + " order by(OrderItemID);";
             ArrayList<String> oid = idb.fetchColumn(selectOid);
             
             //Om AnstalldId inte är tom körs en for-each loop som för varje id hämtar id, förnamn och efternamn om det anställda som placeras i Hashmapen "Info".
             if(oid != null){
                 for(String ettOid: oid){
-                    String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, StandardProduktID from orderitem where OrderItemID = " + ettOid + ";"; //OBS Namn och Pris ska läggas till
+                    String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, StandardProduktID from orderitem where OrderItemID = " + ettOid + ";"; 
                     HashMap <String, String> info = idb.fetchRow(selectInfo);
                     
+                    //Hämtar pris och namn för produkten från tabellen "standardprodukt".
                     String ettProduktID = info.get("StandardProduktID");
                     String selectProdukt = "select Namn, Pris from standardprodukt where StandardProduktID = " + ettProduktID + ";";
                     HashMap<String, String> infoNamnPris = idb.fetchRow(selectProdukt);
                     
+                    //AnstalldID byts ut mot för- och efternamn på den anställde. 
+                    String aid = info.get("AnstalldID");
+                    String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld where AnstalldID = " + aid + ";";
+                    HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
+                    String hopslagetNamn = anstalldFornamnEfternamn.get("Fornamn") + " " + anstalldFornamnEfternamn.get("Efternamn");
+                    
+                    
+                    
+                    
                     //Skapar en array som håller data för en rad i tabellen.
                     Object[] enRad = new Object [kolumnNamn.length];
                     enRad[0] = info.get("OrderItemID");
-                    enRad[1] = info.get("AntalProdukter");
-                    enRad[2] = info.get("AnstalldID");
-                    enRad[3] = infoNamnPris.get("Namn");
-                    enRad[4] = infoNamnPris.get("Pris");
-                    
+                    enRad[1] = infoNamnPris.get("Namn");
+                    enRad[2] = infoNamnPris.get("Pris");
+                    enRad[3] = info.get("AntalProdukter");             
+                    enRad[4] = hopslagetNamn;
+                   
                     allaProdukter.addRow(enRad);
                     
-                    //for-each loop som går igenom varje kolumn i kolumnNamn där värdet för enKolumn läggs till i enRad;
-                 //   for(String enKolumn : kolumnNamn){
-                  //      enRad[index++] = info.get(enKolumn);
-                        
-                    //}
-                    
-                 //enRad läggs till i DefaultTableModel
-                // allaProdukter.addRow(enRad);
-                 
                 }
                 
             //Jtable sätts med data från DefaultTableModel.
@@ -83,14 +82,30 @@ public class SeVanligOrder extends javax.swing.JFrame {
             tblAllaProdukter.setAutoResizeMode(tblAllaProdukter.AUTO_RESIZE_OFF);
             
             //Sätter storleken på tabellen.
-            TableColumn col = tblAllaProdukter.getColumnModel().getColumn(0); //id.
+            TableColumn col = tblAllaProdukter.getColumnModel().getColumn(0); //id
             col.setPreferredWidth(100);
             
-            col = tblAllaProdukter.getColumnModel().getColumn(1); //Förnamn.
-            col.setPreferredWidth(149);
+            col = tblAllaProdukter.getColumnModel().getColumn(1); //namn.
+            col.setPreferredWidth(200);
             
-            col = tblAllaProdukter.getColumnModel().getColumn(2); //Efternamn.
-            col.setPreferredWidth(149);
+            col = tblAllaProdukter.getColumnModel().getColumn(2); //pris.
+            col.setPreferredWidth(75);
+            
+            col = tblAllaProdukter.getColumnModel().getColumn(3); //antal.
+            col.setPreferredWidth(75);
+            
+            col = tblAllaProdukter.getColumnModel().getColumn(4); //anstalldID.
+            col.setPreferredWidth(154);
+            
+            
+            //Ändrar rubrikerna i tabellen.
+            
+            tblAllaProdukter.getColumnModel().getColumn(0).setHeaderValue("Artikelnummer");
+            tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Namn");
+            tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Pris");
+            tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Antal");
+            tblAllaProdukter.getColumnModel().getColumn(4).setHeaderValue("Tilldelad:");
+            
         }
         
         catch(InfException ex){
@@ -101,15 +116,16 @@ public class SeVanligOrder extends javax.swing.JFrame {
     public void hamtaTotalPris(){        
         try{
             
+            //Sätter totalpris till 0 och hämtar Jtable och lägger i pristabell.
             double totalPris = 0.0;
             DefaultTableModel prisTabell = (DefaultTableModel) tblAllaProdukter.getModel();
-
+            
+            //Loopar igenom pristabellen och hämtar och lagrar pris och antal för varje rad.
             for(int i = 0; i < prisTabell.getRowCount(); i++) {
-                Object ettPris = prisTabell.getValueAt(i, 0); //Ändras till fyra när listan är klar!
-                Object ettAntal = prisTabell.getValueAt(i, 1);
-                System.out.println(ettPris);
-                System.out.println(ettAntal);
-                
+                Object ettPris = prisTabell.getValueAt(i, 2); 
+                Object ettAntal = prisTabell.getValueAt(i, 3);
+               
+                //Gör om pris och antal till String och beräknar totalpris.
                 try {
                     double pris = Double.parseDouble(ettPris.toString());
                     int antal = Integer.parseInt(ettAntal.toString());
@@ -122,6 +138,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 
             
             }
+            //Sätter label till det totalpris som beräknats.
             lblPris.setText(String.valueOf(totalPris));
         }
         catch (NumberFormatException ex){
@@ -133,6 +150,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
     public void fyllLables(){
         
         try {
+            //Fyller labeles med information från den specifika ordern man klickat på.
             String selectOrderNr = "select BestallningID from bestallning where BestallningID = '" + klickatOrderNr + "';";
             String orderNr = idb.fetchSingle(selectOrderNr);
             lblOrderNr.setText(orderNr);
@@ -148,12 +166,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
             String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
             String status = idb.fetchSingle(selectStatus);
             lblStatus.setText(status);
-            
-           // String selectPris = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
-           // String pris = idb.fetchSingle(selectStatus);
-          //  lblPris.setText(pris);
-            
-           
+                 
     }
         
         catch(InfException ex){
@@ -161,28 +174,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
             
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -207,8 +198,8 @@ public class SeVanligOrder extends javax.swing.JFrame {
         lblPris = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAllaProdukter = new javax.swing.JTable();
-        jLabel11 = new javax.swing.JLabel();
         btnTillbaka = new javax.swing.JButton();
+        btnAtaProdukt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -225,7 +216,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
         jLabel4.setText("Status:");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setText("Pris:");
+        jLabel5.setText("Totalpris:");
 
         lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblOrderNr.setText("jLabel6");
@@ -253,15 +244,20 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
+        tblAllaProdukter.setEnabled(false);
         jScrollPane1.setViewportView(tblAllaProdukter);
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel11.setText("Vald av:");
 
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTillbakaActionPerformed(evt);
+            }
+        });
+
+        btnAtaProdukt.setText("Åta produkt");
+        btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtaProduktActionPerformed(evt);
             }
         });
 
@@ -274,10 +270,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnTillbaka)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel11)
-                            .addGap(36, 36, 36)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -298,8 +290,10 @@ public class SeVanligOrder extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblKundNr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap(55, Short.MAX_VALUE))
+                                .addComponent(lblKundNr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAtaProdukt))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,13 +318,13 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblPris))
-                .addGap(11, 11, 11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(btnAtaProdukt)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(btnTillbaka)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(32, 32, 32))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -340,6 +334,10 @@ public class SeVanligOrder extends javax.swing.JFrame {
         new SeBestallning(idb, inloggadAnvandare).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
+
+    private void btnAtaProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtaProduktActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAtaProduktActionPerformed
 
     /**
      * @param args the command line arguments
@@ -377,9 +375,9 @@ public class SeVanligOrder extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtaProdukt;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
