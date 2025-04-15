@@ -55,4 +55,9 @@ public class Validering {
             return false;
         }
     }
+    
+        // Kontrollerar att ett fält inte är tomt
+    public static boolean faltInteTomt(String input) {
+        return input != null && !input.trim().isEmpty();
+    }
 }
