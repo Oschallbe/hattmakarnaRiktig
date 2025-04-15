@@ -61,7 +61,7 @@ public class Validering {
         return input != null && !input.trim().isEmpty();
     }
     //Kontrollerar endast siffror
-    public boolean arEndastSiffror(String input) {
+    public static boolean arEndastSiffror(String input) {
         return input.trim().matches("\\d+");
     }
 }
