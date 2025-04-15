@@ -42,7 +42,6 @@ private String klickatOrderNr;
                     String expressHamtning = row.get("Expressbestallning");
                     String expressOmvandling;
                     double totalPris = Double.parseDouble(row.get("TotalPris"));
-
                     if(expressHamtning.equals("1")){
                         expressOmvandling = "Ja";
                         totalPris = totalPris * 1.2;
