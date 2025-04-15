@@ -33,7 +33,8 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         fyllLabels();
         hamtaTotalPris();
     }
-
+    
+    //Metod för att fylla tabellerna med info från databasen. 
     public void fyllTabell() {
         try {
             String kolumnNamn[] = {"AntalProdukter", "Namn", "Pris", "Beskrivning"};
