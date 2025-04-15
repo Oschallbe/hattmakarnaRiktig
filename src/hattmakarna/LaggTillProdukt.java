@@ -12,13 +12,16 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 /**
  *
  * @author oscar
  */
 public class LaggTillProdukt extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
+
     /*
      * Creates new form LaggTillProdukt
      */
@@ -212,31 +215,39 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         String textHuvudmatt = txtHuvudmatt.getText();
         String modell = txtModell.getText();
         String text = txtText.getText();
-        
-        
-        int pris = Integer.parseInt(textPris);
-        int huvudmatt = Integer.parseInt(textHuvudmatt);
-        int artikelNummer = Integer.parseInt(textartikelNummer);
-        //Validering!!
-        
-        try{
-            String hamtaID = "Select max(StandardProduktID) from StandardProdukt;";
-            String nyHamtaID = idb.fetchSingle(hamtaID);
-            int nyID = Integer.parseInt(nyHamtaID) + 1;
-            
-            String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Text, Storlek, Pris, Artikelnummer) " +
-                       "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + text + "', " +
-                       huvudmatt + ", " + pris + ", " + artikelNummer + ");";
 
-                    
-            idb.insert(fragaLaggTill);
-            JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
-            
-            
+        try {
+            int pris = Integer.parseInt(textPris);
+            int huvudmatt = Integer.parseInt(textHuvudmatt);
+            int artikelNummer = Integer.parseInt(textartikelNummer);
+            if (Validering.faltInteTomt(textartikelNummer)
+                    && Validering.faltInteTomt(namn)
+                    && Validering.faltInteTomt(textPris)
+                    && Validering.faltInteTomt(textHuvudmatt)
+                    && Validering.faltInteTomt(modell)
+                    && Validering.faltInteTomt(text)) {
+                try {
+                    String hamtaID = "Select max(StandardProduktID) from StandardProdukt;";
+                    String nyHamtaID = idb.fetchSingle(hamtaID);
+                    int nyID = Integer.parseInt(nyHamtaID) + 1;
+
+                    String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Text, Storlek, Pris, Artikelnummer) "
+                            + "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + text + "', "
+                            + huvudmatt + ", " + pris + ", " + artikelNummer + ");";
+
+                    idb.insert(fragaLaggTill);
+                    JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
+
+                } catch (InfException e) {
+                    JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Fälten får inte vara tomma!");
+            }
+        } catch (NumberFormatException numb) {
+            JOptionPane.showMessageDialog(null, "Pris, huvudmått och artikelnummer måste innehålla endast siffror!");
         }
-        catch (InfException e){
-            JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
-        }
+
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void txtPrisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrisActionPerformed
@@ -255,7 +266,6 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_laggTillMaterialActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel artikelNummer;
