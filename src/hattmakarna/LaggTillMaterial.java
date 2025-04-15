@@ -179,18 +179,19 @@ public class LaggTillMaterial extends javax.swing.JFrame {
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn.
-        
+
         if (forraFonster instanceof SkapaSpecialOrder) {
-        ((SkapaSpecialOrder) forraFonster).setVisible(true);
-        this.dispose();
-    }
-        
-        if (forraFonster instanceof LaggTillProdukt){
-                ((LaggTillProdukt) forraFonster).setVisible(true);
-                this.dispose();
-                }
-        
-      
+            ((SkapaSpecialOrder) forraFonster).setVisible(true);
+            SkapaSpecialOrder specialOrder = (SkapaSpecialOrder) forraFonster;
+            specialOrder.fyllMaterialComboBox();
+            this.dispose();
+        }
+
+        if (forraFonster instanceof LaggTillProdukt) {
+            ((LaggTillProdukt) forraFonster).setVisible(true);
+            this.dispose();
+        }
+
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
