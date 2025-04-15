@@ -21,6 +21,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         private InfDB idb;
         private String inloggadAnvandare;
         private Object forraFonster;
+        private Validering validera;
 
     public LaggTillMaterial(InfDB idb, String ePost, Object forraFonster) {
         initComponents();
@@ -193,26 +194,45 @@ public class LaggTillMaterial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        //Hämta värden från textfälten
-        String namn = txtNamn.getText(); // från textrutan
-        String typ = comboTyp.getSelectedItem().toString(); // från comboboxen
-        String farg = txtFarg.getText(); // från textruta
-        double pris = Double.parseDouble(txtPris.getText()); // från textruta (konverterat till double)
+    // Hämta värden från textfälten
+    String namn = txtNamn.getText(); // från textruta
+    String typ = comboTyp.getSelectedItem().toString(); // från combobox
+    String farg = txtFarg.getText(); // från textruta
+    String prisText = txtPris.getText(); // från textruta (som text)
 
-     if (typ.equals("Välj typ")) {
-            JOptionPane.showMessageDialog(null, "Vänligen välj typ");
-            return;
-    }//GEN-LAST:event_btnSparaActionPerformed
-        try{
-            
-            String fraga = "INSERT INTO Material (Namn, Typ, Farg, Pris) VALUES ('" +namn+ "','" +typ+ "','" +farg+"','"+pris+"')";
-        idb.insert(fraga);
-        JOptionPane.showMessageDialog(null, "Material sparat!");
-        }
-            catch(InfException e){
-                JOptionPane.showMessageDialog(null, "Fel");
-        }
+    // Kontrollera att fälten inte är tomma
+    if (!Validering.faltInteTomt(namn) || !Validering.faltInteTomt(farg) || !Validering.faltInteTomt(prisText)) {
+        JOptionPane.showMessageDialog(null, "Fyll i alla fält!");
+        return;
     }
+    
+    if (!Validering.arEndastBokstaver(namn) || !Validering.arEndastBokstaver(farg) || !Validering.arEndastBokstaver(typ)) {
+        JOptionPane.showMessageDialog(null, "Namn, färg och typ ska endast innehålla bokstäver!");
+        return;
+    }
+
+    // Kontrollera att en giltig typ är vald
+    if (typ.equals("Välj typ")) {
+        JOptionPane.showMessageDialog(null, "Vänligen välj typ");
+        return;
+    }
+
+    try {
+        // Konvertera pris till double
+        double pris = Double.parseDouble(prisText);
+
+        // Skapa SQL-fråga
+        String fraga = "INSERT INTO Material (Namn, Typ, Farg, Pris) VALUES ('" + namn + "','" + typ + "','" + farg + "','" + pris + "')";
+        idb.insert(fraga);
+
+        JOptionPane.showMessageDialog(null, "Material sparat!");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Pris måste vara ett nummer.");
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(null, "Fel vid databasåtkomst.");
+    }    
+    }//GEN-LAST:event_btnSparaActionPerformed
+     
     /**
      * @param args the command line arguments
      */
