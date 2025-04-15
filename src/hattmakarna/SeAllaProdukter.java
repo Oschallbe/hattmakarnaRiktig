@@ -28,8 +28,6 @@ public class SeAllaProdukter extends javax.swing.JFrame {
         this.inloggadAnvandare = ePost;
         initComponents();
         seLagerfordaProdukter();
-        
-        
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             int rad = jTable1.rowAtPoint(evt.getPoint());
@@ -39,9 +37,6 @@ public class SeAllaProdukter extends javax.swing.JFrame {
             if (kolumn == 4 && rad >= 0) {
                 String artikelnummer = jTable1.getValueAt(rad, 0).toString();
                 visaMaterialLista(artikelnummer);}}});
-        
-        
-        
     }
     
     private void seLagerfordaProdukter() {
@@ -72,17 +67,24 @@ public class SeAllaProdukter extends javax.swing.JFrame {
             System.out.println("Fel vid hämtning av data: " + e.getMessage());
         }
     }
-    
     private void visaMaterialLista(String Artikelnummer) {
     try {
         // SQL-fråga: hämta material kopplat till artikelnumret
-        String sql = "SELECT M.Namn, M.Typ, M.Farg " +
+        /*String sql = "SELECT M.Namn, M.Typ, M.Farg " +
              "FROM Material M " +
              "JOIN StandardProdukt sp ON M.StandardProduktid = sp.StandardProduktID " +
              "WHERE sp.Artikelnummer = '" + Artikelnummer + "'";
 
         List<HashMap<String, String>> material = idb.fetchRows(sql);
-
+        */
+        String fragaMateriallista = 
+        "SELECT Material.Namn, Material.Typ, Material.Farg " +
+        "FROM Material " +
+        "JOIN StandardProdukt_Material " +
+        "ON Material.MaterialID = StandardProdukt_Material.MaterialID " +
+        "WHERE StandardProdukt_Material.StandardProduktID = " +
+        "(SELECT StandardProduktID FROM StandardProdukt WHERE StandardProdukt.Artikelnummer = '" + Artikelnummer + "');";
+        List<HashMap<String, String>> material = idb.fetchRows(fragaMateriallista);
         StringBuilder info = new StringBuilder();
 
         if (material != null && !material.isEmpty()) {
@@ -140,6 +142,11 @@ public class SeAllaProdukter extends javax.swing.JFrame {
                 "Art. no", "Namn", "Pris", "Huvudmått", "Materiallista"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         btnSok.setText("Sök");
@@ -282,6 +289,10 @@ public class SeAllaProdukter extends javax.swing.JFrame {
         new HuvudMeny(idb, inloggadAnvandare).setVisible(true); 
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
 
     
