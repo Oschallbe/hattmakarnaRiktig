@@ -182,6 +182,8 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         
         if (forraFonster instanceof SkapaSpecialOrder) {
         ((SkapaSpecialOrder) forraFonster).setVisible(true);
+        SkapaSpecialOrder specialOrder = (SkapaSpecialOrder) forraFonster;
+        specialOrder.fyllMaterialComboBox();
         this.dispose();
     }
         
