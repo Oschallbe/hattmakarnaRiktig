@@ -281,7 +281,7 @@ public class AllaKunder extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-    //new LaggTillKund(idb, inloggadAnvandare).setVisible(true);
+    new LäggTillNyKund(idb, inloggadAnvandare).setVisible(true);
     //this.setVisible(false);
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
