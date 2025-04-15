@@ -64,4 +64,9 @@ public class Validering {
     public static boolean arEndastSiffror(String input) {
         return input.trim().matches("\\d+");
     }
+    
+    // Kontrollerar att input endast innehåller bokstäver (inkl. svenska tecken)
+    public static boolean arEndastBokstaver(String input) {
+    return input.trim().matches("^[a-zA-ZåäöÅÄÖ]+$");
+}
 }
