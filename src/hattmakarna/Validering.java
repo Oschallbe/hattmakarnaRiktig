@@ -60,4 +60,8 @@ public class Validering {
     public static boolean faltInteTomt(String input) {
         return input != null && !input.trim().isEmpty();
     }
+    //Kontrollerar endast siffror
+    public boolean arEndastSiffror(String input) {
+        return input.trim().matches("\\d+");
+    }
 }
