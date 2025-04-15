@@ -12,13 +12,17 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 /**
  *
  * @author oscar
  */
 public class LaggTillProdukt extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
+
     /*
      * Creates new form LaggTillProdukt
      */
@@ -26,8 +30,49 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
+        fyllMaterialComboBox();
     }
 
+    private void fyllMaterialComboBox() {
+    try {
+        
+        comboMaterial.removeAllItems(); // Töm först
+        comboMaterial.addItem("Välj material"); // Dummy-post först
+        String sqlFraga = "SELECT Namn FROM Material";
+        ArrayList<String> materialLista = idb.fetchColumn(sqlFraga);
+
+        
+        for (String namn : materialLista) {
+            comboMaterial.addItem(namn);
+        }
+
+        } 
+            catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av material " + e.getMessage());
+        }
+    }
+    private void laggTillMaterialIRuta() {
+        try {
+            String valtMaterial = (String) comboMaterial.getSelectedItem();
+
+            // Hämta info om materialet från databasen
+            String sql = "SELECT Namn, Typ, Farg, Pris FROM Material WHERE Namn = '" + valtMaterial + "'";
+            HashMap<String, String> rad = idb.fetchRow(sql);
+
+            if (rad != null && !rad.isEmpty()) {
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+                model.addRow(new Object[]{
+                    rad.get("Namn"),
+                    rad.get("Typ"),
+                    rad.get("Farg"),
+                    rad.get("Pris")
+                });
+            }
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,7 +96,12 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         txtModell = new javax.swing.JTextField();
         txtText = new javax.swing.JTextField();
         tillbakaknapp = new javax.swing.JButton();
-        laggTillMaterial = new javax.swing.JButton();
+        laggTillMaterialProdukt = new javax.swing.JButton();
+        comboMaterial = new javax.swing.JComboBox<>();
+        laggTillNyttMaterial = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,63 +149,90 @@ public class LaggTillProdukt extends javax.swing.JFrame {
             }
         });
 
-        laggTillMaterial.setText("Lägg till material");
-        laggTillMaterial.addActionListener(new java.awt.event.ActionListener() {
+        laggTillMaterialProdukt.setText("Lägg till material för produkt");
+        laggTillMaterialProdukt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                laggTillMaterialActionPerformed(evt);
+                laggTillMaterialProduktActionPerformed(evt);
             }
         });
+
+        comboMaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        laggTillNyttMaterial.setText("Lägg till nytt material");
+        laggTillNyttMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laggTillNyttMaterialActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Tillagt material");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txtModell, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(txtHuvudmatt, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(artikelNummer)
-                                    .addComponent(namn))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtArtikelnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                                    .addComponent(txtNamn))))))
-                .addContainerGap(122, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(laggTillMaterial)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnLaggTill)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(huvudmatt)
-                                .addComponent(pris)
-                                .addComponent(modell)
-                                .addComponent(text)))
+                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(huvudmatt, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(pris, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(modell, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(text, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addGap(37, 37, 37)
                                 .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                                .addComponent(tillbakaknapp)
-                                .addGap(75, 75, 75)))
-                        .addContainerGap(40, Short.MAX_VALUE))))
+                                .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(laggTillNyttMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(laggTillMaterialProdukt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(txtModell, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(txtHuvudmatt, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(31, 31, 31)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(artikelNummer)
+                                            .addComponent(namn))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtArtikelnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                                            .addComponent(txtNamn))))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnLaggTill)
+                            .addComponent(tillbakaknapp)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,11 +240,13 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(artikelNummer)
-                    .addComponent(txtArtikelnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtArtikelnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLaggTill))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(namn)
-                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tillbakaknapp))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pris)
@@ -184,13 +263,17 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text)
                     .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
-                .addComponent(laggTillMaterial)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLaggTill)
-                    .addComponent(tillbakaknapp))
-                .addGap(37, 37, 37))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(laggTillMaterialProdukt, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(laggTillNyttMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -212,30 +295,54 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         String textHuvudmatt = txtHuvudmatt.getText();
         String modell = txtModell.getText();
         String text = txtText.getText();
-        
-        
-        int pris = Integer.parseInt(textPris);
-        int huvudmatt = Integer.parseInt(textHuvudmatt);
-        int artikelNummer = Integer.parseInt(textartikelNummer);
-        //Validering!!
-        
-        try{
-            String hamtaID = "Select max(StandardProduktID) from StandardProdukt;";
-            String nyHamtaID = idb.fetchSingle(hamtaID);
-            int nyID = Integer.parseInt(nyHamtaID) + 1;
-            
-            String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Text, Storlek, Pris, Artikelnummer) " +
-                       "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + text + "', " +
-                       huvudmatt + ", " + pris + ", " + artikelNummer + ");";
 
+        try {
+            int pris = Integer.parseInt(textPris);
+            int huvudmatt = Integer.parseInt(textHuvudmatt);
+            int artikelNummer = Integer.parseInt(textartikelNummer);
+            if (Validering.faltInteTomt(textartikelNummer)
+                    && Validering.faltInteTomt(namn)
+                    && Validering.faltInteTomt(textPris)
+                    && Validering.faltInteTomt(textHuvudmatt)
+                    && Validering.faltInteTomt(modell)
+                    && Validering.faltInteTomt(text)) {
+                try {
+                    String hamtaID = "Select max(StandardProduktID) from StandardProdukt;";
+                    String nyHamtaID = idb.fetchSingle(hamtaID);
+                    int nyID = Integer.parseInt(nyHamtaID) + 1;
+
+                    String fragaLaggTill = "INSERT INTO StandardProdukt (StandardProduktID, Namn, Modell, Text, Storlek, Pris, Artikelnummer) "
+                            + "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + text + "', "
+                            + huvudmatt + ", " + pris + ", " + artikelNummer + ");";
+                    idb.insert(fragaLaggTill);
                     
-            idb.insert(fragaLaggTill);
-            JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
-            
-            
-        }
-        catch (InfException e){
-            JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
+                    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+                    int rowCount = model.getRowCount();
+                    if (rowCount == 0) {
+                        JOptionPane.showMessageDialog(null, "Vänligen lägg till minst ett material till ordern.");
+                        return;
+                    }
+                    for (int i = 0; i < rowCount; i++) {
+                        String materialNamn = (String) model.getValueAt(i, 0);
+                        String materialID = idb.fetchSingle("SELECT MaterialID FROM Material WHERE Namn = '" + materialNamn + "'");
+                        String insertMaterial = "INSERT INTO StandardProdukt_Material (StandardProduktID, MaterialID) "
+                            + "VALUES (" + nyID + ", " + materialID + ")";
+                        idb.insert(insertMaterial);
+                    }
+                    JOptionPane.showMessageDialog(null, "Produkt är tillagd!");
+
+                } 
+                catch (InfException e) {
+                    JOptionPane.showMessageDialog(null, "Misslyckade att spara" + e.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Fälten får inte vara tomma!");
+            }
+            new SeAllaProdukter(idb,inloggadAnvandare).setVisible(true);
+            this.dispose();
+        } 
+        catch (NumberFormatException numb) {
+            JOptionPane.showMessageDialog(null, "Pris, huvudmått och artikelnummer måste innehålla endast siffror!");
         }
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
@@ -249,19 +356,28 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_tillbakaknappActionPerformed
 
-    private void laggTillMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillMaterialActionPerformed
+    private void laggTillMaterialProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillMaterialProduktActionPerformed
         // TODO add your handling code here:
-        new LaggTillMaterial(idb, inloggadAnvandare, this).setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_laggTillMaterialActionPerformed
+        laggTillMaterialIRuta();
+    }//GEN-LAST:event_laggTillMaterialProduktActionPerformed
 
-    
+    private void laggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillNyttMaterialActionPerformed
+        // TODO add your handling code here:
+        new LaggTillMaterial(idb,inloggadAnvandare, this).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_laggTillNyttMaterialActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel artikelNummer;
     private javax.swing.JButton btnLaggTill;
+    private javax.swing.JComboBox<String> comboMaterial;
     private javax.swing.JLabel huvudmatt;
-    private javax.swing.JButton laggTillMaterial;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JButton laggTillMaterialProdukt;
+    private javax.swing.JButton laggTillNyttMaterial;
     private javax.swing.JLabel modell;
     private javax.swing.JLabel namn;
     private javax.swing.JLabel pris;

@@ -30,146 +30,147 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="175" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="lblExpressleverans" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cbJa" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="btnSpara" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                      <Component id="lblOrdernummer" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblKundnummer" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblDatum" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblPris" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblProduktlista" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblNamn" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="cbNamn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtfNamn" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="txtfOrdernummer" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <Component id="lblArtikelnummer" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfPris" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                                  <Component id="lblPris2" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblAntal" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <EmptySpace pref="25" max="32767" attributes="0"/>
-                                      <Component id="txtfPris2" min="-2" pref="71" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                              <Component id="lblPris2" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="btnGenerera" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="tfAntal" pref="71" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <Component id="txtfDatum" min="-2" pref="71" max="-2" attributes="0"/>
-                          <Component id="txtfPris" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="btnLaggTill" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="lblExpressleverans" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnGaVidare" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbJa" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="cbKundnummer" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblArtikelnummer" min="-2" max="-2" attributes="0"/>
+                          <Component id="tfArtikelNummer" min="-2" pref="109" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblAntal" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfAntal" min="-2" pref="71" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Component id="lblProduktlista" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblNamn" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblOrdernummer" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblKundnummer" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDatum" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="cbKundnummer" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="txtfDatum" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtfOrdernummer" alignment="0" min="-2" pref="144" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="cbNamn" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblOrdernummer" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtfOrdernummer" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnSpara" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnGenerera" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblKundnummer" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnTillbaka" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      <Component id="lblKundnummer" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cbKundnummer" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblDatum" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtfDatum" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblPris" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfPris" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblExpressleverans" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cbJa" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="lblProduktlista" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="lblNamn" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+              <Component id="cbNamn" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblNamn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPris2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblAntal" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblArtikelnummer" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtfNamn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfPris2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfAntal" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cbNamn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfArtikelNummer" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfPris" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfAntal" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="32" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnLaggTill" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnGaVidare" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnTillbaka" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -177,6 +178,9 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Helvetica Neue" size="24" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Skapa order"/>
       </Properties>
     </Component>
@@ -195,27 +199,18 @@
         <Property name="text" type="java.lang.String" value="Datum:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblPris">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Totala priset: "/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JTextField" name="txtfOrdernummer">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtfOrdernummerActionPerformed"/>
-      </Events>
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfDatum">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtfPris">
-    </Component>
-    <Component class="javax.swing.JButton" name="btnSpara">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Spara"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSparaActionPerformed"/>
-      </Events>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+      </AccessibilityProperties>
     </Component>
     <Component class="javax.swing.JButton" name="btnTillbaka">
       <Properties>
@@ -240,6 +235,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblProduktlista">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Helvetica Neue" size="13" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Produktlista"/>
       </Properties>
     </Component>
@@ -263,19 +261,17 @@
         <Property name="text" type="java.lang.String" value="Antal"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtfNamn">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtfPris2">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtfAntal">
-    </Component>
-    <Component class="javax.swing.JButton" name="btnGenerera">
+    <Component class="javax.swing.JTextField" name="tfArtikelNummer">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Generera"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenereraActionPerformed"/>
-      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfPris">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfAntal">
     </Component>
     <Component class="javax.swing.JComboBox" name="cbKundnummer">
       <Properties>
@@ -288,6 +284,9 @@
           </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbKundnummerActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -306,6 +305,22 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnLaggTill">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="L&#xe4;gg till"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLaggTillActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnGaVidare">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="G&#xe5; vidare"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGaVidareActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
