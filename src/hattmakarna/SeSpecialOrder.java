@@ -31,7 +31,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         this.klickatOrderNr = klickatOrderNr;
         fyllTabell();
         fyllLabels();
-        hamtaTotalPris();
+        //hamtaTotalPris();
     }
     
     //Metod för att fylla tabellerna med info från databasen. 
@@ -92,7 +92,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         }
     }
 
-    public void hamtaTotalPris() {
+    /*public void hamtaTotalPris() {
         try {
             double totalPris = 0.0;
             DefaultTableModel prisTabell = (DefaultTableModel) tblTabell.getModel();
@@ -117,6 +117,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
+    /*
 
     /**
      * This method is called from within the constructor to initialize the form.

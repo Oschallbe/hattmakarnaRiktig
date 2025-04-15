@@ -28,7 +28,6 @@ private String klickatOrderNr;
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         String fraga = "select BestallningID, Status, Datum, Expressbestallning, TotalPris, Typ, KundID from Bestallning;";
-        //String fraga = "select BestallningID, KundID, Status, Datum from Bestallning;";
         fyllTable(fraga);
     }
     
@@ -186,22 +185,36 @@ private String klickatOrderNr;
     private void btnSeOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeOrderActionPerformed
         
         try{
-            //Hämta raden som har markerats
+            //Hämta raden som har markerats.
             int valdRad = BestallningsLista.getSelectedRow();
             
+            //Om en rad inte är vald, visa felmeddelande.
             if(valdRad == -1){
                 javax.swing.JOptionPane.showMessageDialog(this, "Markera en beställningsrad för att se ordern.");
                 return;
             }
-                
-                
-                        
-            //Hämta Ordernr för den markerade raden.
+            //Hämtar och lagrar orderns typ från den valda raden i Jtable.
+            String ordernsTyp = BestallningsLista.getValueAt(valdRad,0).toString();
+            String typ = ordernsTyp;
+           
+            
+            //Hämta Ordernr för den markerade raden och lagrar i klickatOrderNr så det kan skickas vidare till nästa klass.
             String Oid = BestallningsLista.getValueAt(valdRad,1).toString();
             klickatOrderNr = Oid;
             
-            new SeVanligOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
-            this.dispose();
+            //Om det är en standardbeställning skickas man vidare till en gränssnitt som visar en "vanlig order" och detta gränssnitt stängs ner.
+            if(typ.contains("Standard")){
+                     
+                new SeVanligOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
+                this.dispose();
+            }
+            
+            //Om beställningen är en specialbeställning visas gränssnittet för denna typ av beställning.
+            else{
+                new SeSpecialOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
+                this.dispose();
+                
+            }
     
         }
         catch(NumberFormatException ex){
