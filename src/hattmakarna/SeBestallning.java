@@ -39,18 +39,30 @@ private String klickatOrderNr;
             model.setRowCount(0); // Rensa gamla data
             if (result != null) {
                 for (HashMap<String, String> row : result) {
+                    String expressHamtning = row.get("Expressbestallning");
+                    String expressOmvandling;
+                    double totalPris = Double.parseDouble(row.get("TotalPris"));
+                    
+                    if(expressHamtning.equals("1")){
+                        expressOmvandling = "Ja";
+                        totalPris = totalPris * 1.2;
+                    }
+                    else{
+                        expressOmvandling = "Nej";
+                    }
                     // Lägg till en rad i JTable
                     model.addRow(new Object[]{
                         row.get("Typ"),
                         row.get("BestallningID"),
                         row.get("KundID"),
                         row.get("Status"),
-                        row.get("TotalPris"),
+                        totalPris,
                         row.get("Datum"),
-                        row.get("Expressbestallning")
+                        expressOmvandling
                     });
                 }
-            } else {
+            } 
+            else {
                 System.out.println("Ingen data hittades i tabellen.");
             }
 
