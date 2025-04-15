@@ -18,6 +18,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
     private InfDB idb; 
     private String inloggadAnvandare; 
     private String klickatOrderNr;
+    private String express;
 
     
     public SeVanligOrder(InfDB idb, String ePost, String klickatOrderNr) {
@@ -138,6 +139,11 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 
             
             }
+            
+            /*if(express.equals("Ja")){
+                totalPris = totalPris * 1.2;
+            }
+            */
             //Sätter label till det totalpris som beräknats.
             lblPris.setText(String.valueOf(totalPris));
         }
@@ -166,6 +172,18 @@ public class SeVanligOrder extends javax.swing.JFrame {
             String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
             String status = idb.fetchSingle(selectStatus);
             lblStatus.setText(status);
+            
+            String selectExpress = "select Expressbestallning from bestallning where BestallningID = '" + klickatOrderNr + "';";
+            express = idb.fetchSingle(selectExpress);
+            
+            if(express.equals("1")){
+                express = "Ja";
+            }
+            
+            else{
+                express = "Nej";
+            }
+            lblExpress.setText(express);
                  
     }
         
@@ -200,6 +218,9 @@ public class SeVanligOrder extends javax.swing.JFrame {
         tblAllaProdukter = new javax.swing.JTable();
         btnTillbaka = new javax.swing.JButton();
         btnAtaProdukt = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        lblExpress = new javax.swing.JLabel();
+        btnFraktsedel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -261,6 +282,19 @@ public class SeVanligOrder extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setText("Expressleverans:");
+
+        lblExpress.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblExpress.setText("jLabel7");
+
+        btnFraktsedel.setText("Skapa fraktsedel");
+        btnFraktsedel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFraktsedelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -268,7 +302,10 @@ public class SeVanligOrder extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnTillbaka)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnFraktsedel)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnTillbaka))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -291,7 +328,11 @@ public class SeVanligOrder extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblKundNr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(lblExpress)))
                     .addComponent(btnAtaProdukt))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
@@ -318,13 +359,19 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblPris))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(lblExpress))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(btnAtaProdukt)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(btnTillbaka)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTillbaka)
+                    .addComponent(btnFraktsedel))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -338,6 +385,10 @@ public class SeVanligOrder extends javax.swing.JFrame {
     private void btnAtaProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtaProduktActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAtaProduktActionPerformed
+
+    private void btnFraktsedelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFraktsedelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFraktsedelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -376,14 +427,17 @@ public class SeVanligOrder extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtaProdukt;
+    private javax.swing.JButton btnFraktsedel;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDatum;
+    private javax.swing.JLabel lblExpress;
     private javax.swing.JLabel lblKundNr;
     private javax.swing.JLabel lblOrderNr;
     private javax.swing.JLabel lblPris;
