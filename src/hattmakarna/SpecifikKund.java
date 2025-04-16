@@ -43,7 +43,8 @@ public class SpecifikKund extends javax.swing.JFrame {
                 String matt = kundData.get("Matt");
                 String epost = kundData.get("Epost");
                 String telefonnummer = kundData.get("Telefonnummer");
-                String ort = kundData.get("Ort");
+                String leveransOrt = kundData.get("LeveransOrt");
+                String fakturaOrt = kundData.get("FakturaOrt");
                 String leveransAdress = kundData.get("LeveransAdress");
                 String fakturaAdress = kundData.get("FakturaAdress");
 
@@ -54,10 +55,10 @@ public class SpecifikKund extends javax.swing.JFrame {
                 txtfHuvudmått.setText(matt);
                 txtEpost.setText(epost);
                 txtTelefonnummer.setText(telefonnummer);
-                txtOrt.setText(ort);
+                txtLeveransort.setText(leveransOrt);
                 txtLeveransAdress.setText(leveransAdress);
                 txtFakturaAdress.setText(fakturaAdress);
-                txtort.setText(ort);
+                txtFakturaort.setText(fakturaOrt);
 
             } else {
                 JOptionPane.showMessageDialog(this, "Kunden kunde inte hittas.");
@@ -74,7 +75,8 @@ public class SpecifikKund extends javax.swing.JFrame {
         txtfHuvudmått.setEditable(editable);
         txtEpost.setEditable(editable);
         txtTelefonnummer.setEditable(editable);
-        txtOrt.setEditable(editable);
+        txtLeveransort.setEditable(editable);
+        txtFakturaort.setEditable(editable);
         txtLeveransAdress.setEditable(editable);
         txtFakturaAdress.setEditable(editable);
         BtnSpara.setEnabled(editable); // Spara-knappen kan bara användas om fälten är redigerbara
@@ -108,10 +110,10 @@ public class SpecifikKund extends javax.swing.JFrame {
         txtTelefonnummer = new javax.swing.JTextField();
         txtLeveransAdress = new javax.swing.JTextField();
         txtFakturaAdress = new javax.swing.JTextField();
-        txtOrt = new javax.swing.JTextField();
-        txtort = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        txtLeveransort = new javax.swing.JTextField();
+        txtFakturaort = new javax.swing.JTextField();
+        lblFakturaort = new javax.swing.JLabel();
+        lblLeveransort = new javax.swing.JLabel();
         txtfHuvudmått = new javax.swing.JTextField();
         lblHuvudmått = new javax.swing.JLabel();
 
@@ -162,9 +164,9 @@ public class SpecifikKund extends javax.swing.JFrame {
 
         lblFakturaadress.setText("Fakturaadress");
 
-        jLabel2.setText("Ort");
+        lblFakturaort.setText("Ort");
 
-        jLabel3.setText("Ort");
+        lblLeveransort.setText("Ort");
 
         txtfHuvudmått.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,12 +236,12 @@ public class SpecifikKund extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                            .addComponent(lblFakturaort)
+                            .addComponent(lblLeveransort))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtOrt, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                            .addComponent(txtort))
+                            .addComponent(txtLeveransort, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                            .addComponent(txtFakturaort))
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
@@ -279,14 +281,14 @@ public class SpecifikKund extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLeveransadress)
                     .addComponent(txtLeveransAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtOrt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(txtLeveransort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLeveransort))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFakturaadress)
                     .addComponent(txtFakturaAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblFakturaort)
+                    .addComponent(txtFakturaort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnTaBort)
@@ -311,7 +313,8 @@ public class SpecifikKund extends javax.swing.JFrame {
         String matt = txtfHuvudmått.getText();
         String epost = txtEpost.getText();
         String telefonnummer = txtTelefonnummer.getText();
-        String ort = txtOrt.getText();
+        String leveransOrt = txtLeveransort.getText();
+        String fakturaOrt = txtFakturaort.getText();
         String leveransAdress = txtLeveransAdress.getText();
         String fakturaAdress = txtFakturaAdress.getText();
 
@@ -343,8 +346,14 @@ public class SpecifikKund extends javax.swing.JFrame {
             return;
         }
 
-        // Validera ort
-        if (ort == null || ort.isEmpty()) {
+        // Validera leveransort
+        if (leveransOrt == null || leveransOrt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ort kan inte vara tom.");
+            return;
+        }
+        
+        // Validera fakturaort
+        if (fakturaOrt == null || fakturaOrt.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ort kan inte vara tom.");
             return;
         }
@@ -365,7 +374,7 @@ public class SpecifikKund extends javax.swing.JFrame {
         try {
             String updateQuery = "UPDATE Kund SET Fornamn = '" + fornamn + "', Efternamn = '" + efternamn
                     + "', Matt = '" + matt + "', Epost = '" + epost + "', Telefonnummer = '" + telefonnummer
-                    + "', Ort = '" + ort + "', LeveransAdress = '" + leveransAdress
+                    + "', LeveransOrt = '" + leveransOrt + "', FakturaOrt = '" + fakturaOrt +"', LeveransAdress = '" + leveransAdress
                     + "', FakturaAdress = '" + fakturaAdress + "' WHERE KundID = " + kundID;
             idb.update(updateQuery);
             JOptionPane.showMessageDialog(this, "Kundinformation har uppdaterats.");
@@ -399,7 +408,8 @@ public class SpecifikKund extends javax.swing.JFrame {
                         + "Matt = NULL, "
                         + "Epost = NULL, "
                         + "Telefonnummer = NULL, "
-                        + "Ort = NULL, "
+                        + "LeveransOrt = NULL, "
+                        + "FakturaOrt = NULL"
                         + "LeveransAdress = NULL, "
                         + "FakturaAdress = NULL "
                         + "WHERE KundID = " + kundID + ";";
@@ -461,25 +471,25 @@ public class SpecifikKund extends javax.swing.JFrame {
     private javax.swing.JButton BtnTaBort;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblEfternamn;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblFakturaadress;
+    private javax.swing.JLabel lblFakturaort;
     private javax.swing.JLabel lblFornamn;
     private javax.swing.JLabel lblHuvudmått;
     private javax.swing.JLabel lblKundID;
     private javax.swing.JLabel lblLeveransadress;
+    private javax.swing.JLabel lblLeveransort;
     private javax.swing.JLabel lblTelefonnummer;
     private javax.swing.JTextField txtEfternamn;
     private javax.swing.JTextField txtEpost;
     private javax.swing.JTextField txtFakturaAdress;
+    private javax.swing.JTextField txtFakturaort;
     private javax.swing.JTextField txtFornamn;
     private javax.swing.JTextField txtKundID;
     private javax.swing.JTextField txtLeveransAdress;
-    private javax.swing.JTextField txtOrt;
+    private javax.swing.JTextField txtLeveransort;
     private javax.swing.JTextField txtTelefonnummer;
     private javax.swing.JTextField txtfHuvudmått;
-    private javax.swing.JTextField txtort;
     // End of variables declaration//GEN-END:variables
 }

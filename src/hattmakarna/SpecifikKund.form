@@ -96,13 +96,13 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFakturaort" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblLeveransort" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="txtOrt" pref="96" max="32767" attributes="0"/>
-                          <Component id="txtort" max="32767" attributes="0"/>
+                          <Component id="txtLeveransort" pref="96" max="32767" attributes="0"/>
+                          <Component id="txtFakturaort" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -154,15 +154,15 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblLeveransadress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtLeveransAdress" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtOrt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblLeveransort" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblFakturaadress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFakturaAdress" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblFakturaort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFakturaort" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="24" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -266,16 +266,16 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtFakturaAdress">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtOrt">
+    <Component class="javax.swing.JTextField" name="txtLeveransort">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtort">
+    <Component class="javax.swing.JTextField" name="txtFakturaort">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="lblFakturaort">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ort"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
+    <Component class="javax.swing.JLabel" name="lblLeveransort">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ort"/>
       </Properties>
