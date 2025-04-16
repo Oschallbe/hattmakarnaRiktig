@@ -10,6 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+import oru.inf.InfDB;
+import oru.inf.InfException;
 
 /**
  *
@@ -79,4 +82,26 @@ public class Validering {
     public static boolean arEndastBokstaver(String input) {
         return input.trim().matches("^[a-zA-ZåäöÅÄÖ]+$");
     }
+    
+    public static boolean finnsEpost(String epost, InfDB idb) {
+    try {
+        String fraga = "SELECT Epost FROM anstalld WHERE Epost = '" + epost + "';";
+        String resultat = idb.fetchSingle(fraga);
+        return resultat != null;
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(null, "Fel");
+        return false;
+    }}
+    
+    public static boolean arLosenordKorrekt(String epost, String losenord, InfDB idb) {
+    try {
+        String fraga = "SELECT Losenord FROM anstalld WHERE Epost = '" + epost + "';";
+        String dbLosen = idb.fetchSingle(fraga);
+        return losenord.equals(dbLosen);
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(null, "Fel");
+        return false;
+    }
+}
+
 }

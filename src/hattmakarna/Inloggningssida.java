@@ -3,26 +3,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
-import oru.inf.InfDB; 
-import oru.inf.InfException; 
-import javax.swing.JOptionPane; 
+
+import oru.inf.InfDB;
+import oru.inf.InfException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Elin
  */
 public class Inloggningssida extends javax.swing.JFrame {
-    
-    private Validering validera; 
-    private InfDB idb; 
+
+    private Validering validera;
+    private InfDB idb;
+
     /**
      * Creates new form Inloggningssida
      */
     public Inloggningssida(InfDB idb) {
         initComponents();
         this.idb = idb;
-        lblFelMeddelande.setVisible(false); 
+        lblFelMeddelande.setVisible(false);
         txtfEmail.setText("karin@hattmakarna.se");
         pswfLosenord.setText("hatt123");
+        lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
     }
 
     /**
@@ -43,6 +47,7 @@ public class Inloggningssida extends javax.swing.JFrame {
         lblFelMeddelande = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         lblInloggning.setText("Inloggning");
 
@@ -70,6 +75,7 @@ public class Inloggningssida extends javax.swing.JFrame {
         });
 
         lblFelMeddelande.setText("Felaktig inloggning! ");
+        lblFelMeddelande.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblFelMeddelande.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentHidden(java.awt.event.ComponentEvent evt) {
                 lblFelMeddelandeComponentHidden(evt);
@@ -81,97 +87,109 @@ public class Inloggningssida extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblEpost)
-                                .addComponent(lblLosenord))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(pswfLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                                .addComponent(txtfEmail)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(113, 113, 113)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnLoggaIn)
-                                .addComponent(lblFelMeddelande))))
-                    .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(147, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEpost)
+                            .addComponent(lblLosenord))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtfEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                            .addComponent(pswfLosenord)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(213, 213, 213)
+                        .addComponent(btnLoggaIn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(lblFelMeddelande))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(180, 180, 180)
+                        .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(21, 21, 21)
                 .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEpost))
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblLosenord))
-                .addGap(33, 33, 33)
+                    .addComponent(lblLosenord)
+                    .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
                 .addComponent(btnLoggaIn)
-                .addGap(18, 18, 18)
+                .addGap(40, 40, 40)
                 .addComponent(lblFelMeddelande)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtfEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfEmailActionPerformed
-        
+
     }//GEN-LAST:event_txtfEmailActionPerformed
 
     private void pswfLosenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswfLosenordActionPerformed
-        
+
     }//GEN-LAST:event_pswfLosenordActionPerformed
-        //Knapp för att logga in med inmatad e-Post och lösenord. 
+    //Knapp för att logga in med inmatad e-Post och lösenord. 
     private void btnLoggaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaInActionPerformed
         //Hämtar användarinmatning
         String ePost = txtfEmail.getText();
         char[] losenord = pswfLosenord.getPassword();
         String losen = new String(losenord);
-      
-        try{
-            //Hej
+
+        try {
             lblFelMeddelande.setVisible(false);
-            //Validerar inmatningen
-            if(validera.valideringEmail(ePost)){
-                String selectLosenord = "select losenord from anstalld where epost = '" + ePost + "';";
-                String dbLosen = idb.fetchSingle(selectLosenord); //dbLosen är den den variabel som får svaret ifrån frågan som skickas in. Använder objektet som har en databasuppkoppling
-                //Om inloggning lyckas öppnas nästa fönster. Vilket är huvudmenyn. 
-                if(losen.equals(dbLosen)){ //Viktigt att det som står före equals inte är null. Detta eftersom att null inte har några metoder (t.ex equals)
-                    new HuvudMeny(idb,ePost).setVisible(true); 
-                    this.setVisible(false); 
-                    }
-                //Är inloggningen fel visas istället ett felmeddelande. 
-                else{
-                    lblFelMeddelande.setVisible(true);
-                    lblFelMeddelande.setText("Fel epostadress eller lösenord");
-                    txtfEmail.setText("");
-                    pswfLosenord.setText("");
-                }
-            }
-            else{
+
+            //Kontrollera att fälten inte är tomma
+            if (!Validering.faltInteTomt(ePost) || !Validering.faltInteTomt(losen)) {
+                lblFelMeddelande.setText("Inget av fälten får vara tomma");
                 lblFelMeddelande.setVisible(true);
-                lblFelMeddelande.setText("Ange en korrekt epostadress");
-                txtfEmail.setText("");
-                pswfLosenord.setText("");
+                return;
             }
+
+            //Kontrollera att e-post är i korrekt format
+            if (!Validering.valideringEmail(ePost)) {
+                lblFelMeddelande.setText("Ange korrekt format för e-postadress");
+                lblFelMeddelande.setVisible(true);
+                return;
+            }
+
+            //Kolla om e-posten finns i databasen
+            if (!Validering.finnsEpost(ePost, idb)) {
+                lblFelMeddelande.setText("Finns ingen användare med denna epost");
+                lblFelMeddelande.setVisible(true);
+                return;
+            }
+
+            //Kolla om lösenordet stämmer överrens med angiven epostadress i databasen
+            if (!Validering.arLosenordKorrekt(ePost, losen, idb)) {
+                lblFelMeddelande.setText("Fel lösenord för denna användare");
+                lblFelMeddelande.setVisible(true);
+                pswfLosenord.setText("");
+                return;
+            }
+
+            //Om båda stämmer – logga in
+            new HuvudMeny(idb, ePost).setVisible(true);
+            this.setVisible(false);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Något gick fel: " + ex.getMessage());
         }
-        catch(InfException ex){
-            //kolla så att användaren faktiskt lagt in någonting i epost samt losen.
-            System.out.println(ex.getMessage());
-        }
+
+
     }//GEN-LAST:event_btnLoggaInActionPerformed
 
     private void lblFelMeddelandeComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_lblFelMeddelandeComponentHidden
-        
+
     }//GEN-LAST:event_lblFelMeddelandeComponentHidden
 
     /**
