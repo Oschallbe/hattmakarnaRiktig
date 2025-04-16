@@ -98,7 +98,7 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         }
 
         try {
-            String fraga = "INSERT INTO Kund (fornamn, efternamn, matt, epost, telefonnummer, leveransadress, fakturaadress, postnummer, ort) "
+            String fraga = "INSERT INTO Kund (Fornamn, Efternamn, Matt, Epost, Telefonnummer, LeveransAdress, FakturaAdress, LeveransPostnummer, LeveransOrt) "
                     + "VALUES ('" + förnamn + "', '" + efternamn + "', '" + matt + "', '" + epost + "', '" + telefonNummer + "', '" + leveransAdress + "', '" + fakturaAdress + "', '" + postNummer + "', '" + ort + "')";
 
 //kör sql-frågan och ser till att spara datan i databasen
