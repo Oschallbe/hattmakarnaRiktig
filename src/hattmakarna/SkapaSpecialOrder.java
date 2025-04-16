@@ -3,84 +3,84 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+
 /**
  *
  * @author mejaa
  */
 public class SkapaSpecialOrder extends javax.swing.JFrame {
+
     private static InfDB idb;
     private String inloggadAnvandare;
+
     /**
      * Creates new form SkapaSpecialOrder
      */
     public SkapaSpecialOrder(InfDB idb, String ePost) {
         initComponents();
-        this.idb=idb;
+        this.idb = idb;
         this.inloggadAnvandare = ePost;
         fyllMaterialComboBox();
         fyllKundComboBox();
         seOrderNummer();
     }
 
-    private void fyllMaterialComboBox() {
-    try {
-        
-        comboMaterial.removeAllItems(); // Töm först
-        comboMaterial.addItem("Välj material"); // Dummy-post först
-        String sqlFraga = "SELECT Namn FROM Material";
-        ArrayList<String> materialLista = idb.fetchColumn(sqlFraga);
+    public void fyllMaterialComboBox() {
+        try {
 
-        
-        for (String namn : materialLista) {
-            comboMaterial.addItem(namn);
-        }
+            comboMaterial.removeAllItems(); // Töm först
+            comboMaterial.addItem("Välj material"); // Dummy-post först
+            String sqlFraga = "SELECT Namn FROM Material";
+            ArrayList<String> materialLista = idb.fetchColumn(sqlFraga);
 
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid hämtning av material " + e.getMessage());
-    }
-}
-    //Enkel metod för att visa OrderID (Har ingen annan funktion än visuellt)
-    private void seOrderNummer(){
-        
-        try{
-        String sqlfraga = idb.fetchSingle("SELECT MAX(SpecialProduktID) FROM SpecialProdukt");
-        int ordernummer = Integer.parseInt(sqlfraga) + 1;
-        String produktID = String.valueOf(ordernummer);
-        txtOrderID.setText(produktID);
-        
-    }
-        catch(InfException e){
+            for (String namn : materialLista) {
+                comboMaterial.addItem(namn);
+            }
+
+        } catch (InfException e) {
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av material " + e.getMessage());
         }
     }
-    private void fyllKundComboBox() {
-    try {
-        
-        jComboKund.removeAllItems(); // Töm först
-        jComboKund.addItem("Välj kund"); // Dummy-post först
-        String sqlFraga = "SELECT KundID, Fornamn, Efternamn FROM Kund";
-        ArrayList<HashMap<String, String>> kunder = idb.fetchRows(sqlFraga);
 
-        
-        for (HashMap<String, String> kund : kunder) {
-            String kundID = kund.get("KundID");
-            String namn = kund.get("Fornamn") + " " + kund.get("Efternamn");
-            jComboKund.addItem(kundID + " - " + namn);
+    //Enkel metod för att visa OrderID, vilket i databasen är BeställningsID (Har ingen annan funktion än visuellt)
+    private void seOrderNummer() {
+
+        try {
+            String sqlfraga = idb.fetchSingle("SELECT MAX(BestallningID) FROM Bestallning");
+            int ordernummer = Integer.parseInt(sqlfraga) + 1;
+            String bestallningsID = String.valueOf(ordernummer);
+            txtOrderID.setText(bestallningsID);
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av material " + e.getMessage());
         }
-
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid hämtning av kund " + e.getMessage());
     }
-}
-    
-    
-    
-    
+
+    private void fyllKundComboBox() {
+        try {
+
+            jComboKund.removeAllItems(); // Töm först
+            jComboKund.addItem("Välj kund"); // Dummy-post först
+            String sqlFraga = "SELECT KundID, Fornamn, Efternamn FROM Kund";
+            ArrayList<HashMap<String, String>> kunder = idb.fetchRows(sqlFraga);
+
+            for (HashMap<String, String> kund : kunder) {
+                String kundID = kund.get("KundID");
+                String namn = kund.get("Fornamn") + " " + kund.get("Efternamn");
+                jComboKund.addItem(kundID + " - " + namn);
+            }
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av kund " + e.getMessage());
+        }
+    }
+
     private void laggTillMaterialIRuta() {
         try {
             String valtMaterial = (String) comboMaterial.getSelectedItem();
@@ -103,7 +103,7 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
         }
     }
-        
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -169,6 +169,12 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
         });
 
         jLabel5.setText("Totalt pris:");
+
+        txtPris.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrisActionPerformed(evt);
+            }
+        });
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -293,29 +299,27 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                                 .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(comboStorlek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31)
-                                .addComponent(btnLaggTillNyttMaterial))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtText, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTillverkningsTid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel9)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtText, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTillverkningsTid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
+                            .addComponent(comboStorlek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnLaggTillNyttMaterial)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(25, 25, 25)
-                                        .addComponent(jLabel12))
-                                    .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(26, 26, 26)
-                                .addComponent(btnLaggTillMaterialOrder)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(25, 25, 25)
+                                                .addComponent(jLabel12))
+                                            .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(26, 26, 26)
+                                        .addComponent(btnLaggTillMaterialOrder)))))
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGap(136, 136, 136)
@@ -358,11 +362,11 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(jCheckBox1))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -399,7 +403,8 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnTillbakaActionPerformed
-                
+        new HuvudMeny(idb, inloggadAnvandare).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jBtnTillbakaActionPerformed
 
     private void txtDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDatumActionPerformed
@@ -411,89 +416,144 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void btnLaggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillNyttMaterialActionPerformed
-    new LaggTillMaterial(idb,inloggadAnvandare, this).setVisible(true);
-    this.setVisible(false);
+        new LaggTillMaterial(idb, inloggadAnvandare, this).setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnLaggTillNyttMaterialActionPerformed
 
     private void comboMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMaterialActionPerformed
-        
-    
+
+
     }//GEN-LAST:event_comboMaterialActionPerformed
 
     private void btnLaggTillMaterialOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillMaterialOrderActionPerformed
-    laggTillMaterialIRuta();
-        
-        
+        laggTillMaterialIRuta();
+
+
     }//GEN-LAST:event_btnLaggTillMaterialOrderActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-         try {
-        //Kontrollera att kund är vald
-        String valdKund = (String) jComboKund.getSelectedItem();
-        if (valdKund.equals("Välj kund")) {
-            JOptionPane.showMessageDialog(null, "Vänligen välj en kund.");
-            return;
+        try {
+
+            //Kontrollera att kund är vald
+            String valdKund = (String) jComboKund.getSelectedItem();
+            if (valdKund.equals("Välj kund")) {
+                JOptionPane.showMessageDialog(null, "Vänligen välj en kund.");
+                return;
+            }
+            
+            //Kontrollera att en storlek är vald
+            String valdStorlek = (String) comboStorlek.getSelectedItem();
+            if (valdStorlek.equals("Välj Storlek")) {
+                JOptionPane.showMessageDialog(null, "Vänligen välj en storlek.");
+                return;
+            }
+
+            //Kontrollera att minst ett material är valt
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+            int rowCount = model.getRowCount();
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(null, "Vänligen lägg till minst ett material till ordern.");
+                return;
+            }
+            String datum = txtDatum.getText();
+            if (!Validering.valideringDatum(datum)) {
+                JOptionPane.showMessageDialog(null, "Ogiltigt datumformat (rätt format: yyyy-MM-dd).\n");
+                return;
+            }
+            
+            String prisText = txtPris.getText().replace(",", ".");
+            if (!Validering.faltInteTomt(prisText) || !Validering.arGiltigtDouble(prisText)) {
+                JOptionPane.showMessageDialog(null, "Pris måste vara ett giltigt tal, t.ex. 123.45.");
+                return;
+
+            }
+            String beskrivning1 = txtBeskrivning.getText();
+            if (!Validering.faltInteTomt(beskrivning1)) {
+                JOptionPane.showMessageDialog(null, "Fyll i beskrivning.");
+                return;
+            }
+            
+            String tillverkningsTidText = txtTillverkningsTid.getText().trim();
+
+            if (!Validering.faltInteTomt(tillverkningsTidText)) {
+                JOptionPane.showMessageDialog(null, "Fyll i tillverkningstid.");
+                return;
+            }
+
+            if (!Validering.arEndastSiffror(tillverkningsTidText)) {
+                JOptionPane.showMessageDialog(null, "Tillverkningstid måste bestå av siffror.");
+                return;
+            }
+
+
+
+            //Hämta data från alla boxar
+            int kundID = Integer.parseInt(valdKund.split(" - ")[0]); //Gör om String till INT
+
+            double totaltPris = Double.parseDouble(txtPris.getText().replace(",", ".")); //Gör om string till double
+            String beskrivning = txtBeskrivning.getText();
+            String tid = txtTillverkningsTid.getText().trim() + " dagar";
+            String text = txtText.getText();
+            boolean express = jCheckBox1.isSelected(); //Kollar det är en expressbeställning eller inte
+
+            // Validering
+            if (valdKund.equals("Välj kund")
+                    || !Validering.faltInteTomt(datum)
+                    || !Validering.faltInteTomt(beskrivning)
+                    || !Validering.faltInteTomt(tid)
+                    || !Validering.faltInteTomt(valdStorlek)) {
+                JOptionPane.showMessageDialog(null, "Fyll i alla fält(Utom text).");
+                return;
+            }
+
+            //Lägger till specialprodukt, statstik ID är 1 för nu, kanske behöver ändras senare
+            String insertProdukt = "INSERT INTO SpecialProdukt (Storlek, Text, Pris, Beskrivning, Tillverkningstid, StatistikID) "
+                    + "VALUES ('" + valdStorlek + "', '" + text + "', " + totaltPris + ", '" + beskrivning + "', '" + tid + "', 1)";
+            idb.insert(insertProdukt);
+
+            //Hämtar nytt SpecialProduktID som skapades för denna beställning för att kunna koppla material till detta ID
+            String produktID = idb.fetchSingle("SELECT MAX(SpecialProduktID) FROM SpecialProdukt");
+
+            //Lägg till materialrader från jTable till SpecialProdukt_Material-tabellen kopplat till denna beställning
+            for (int i = 0; i < rowCount; i++) {
+                String materialNamn = (String) model.getValueAt(i, 0);
+                String materialID = idb.fetchSingle("SELECT MaterialID FROM Material WHERE Namn = '" + materialNamn + "'");
+                String insertMaterial = "INSERT INTO SpecialProdukt_Material (SpecialProduktID, MaterialID, Antal, Beskrivning) "
+                        + "VALUES (" + produktID + ", " + materialID + ", 1, '" + materialNamn + "')";
+                idb.insert(insertMaterial);
+            }
+
+            //Skapar beställning. Fast status till "Under behandling", kan komma att ändra den senare.
+            String insertBestallning = "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, TotalPris, Typ) "
+                    + "VALUES ('Under behandling', '" + datum + "', " + express + ", " + kundID + ", " + totaltPris + ", 'Specialbeställning')";
+            idb.insert(insertBestallning);
+
+            //Hämta BestallningID
+            String bestallningID = idb.fetchSingle("SELECT MAX(BestallningID) FROM Bestallning");
+
+            //Lägg till i OrderItem. ProdSchema och AntstalldID är fasta, kan komma att ändras senare
+            String insertOrderItem = "INSERT INTO OrderItem (AntalProdukter, BestallningID, SpecialProduktID, ProduktionsSchemaID, AnstalldID) "
+                    + "VALUES (1, " + bestallningID + ", " + produktID + ", 1, NULL)";
+            idb.insert(insertOrderItem);
+
+            JOptionPane.showMessageDialog(null, "Specialbeställning sparad!");
+
+            new HuvudMeny(idb, inloggadAnvandare).setVisible(true);
+            this.dispose();
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material eller pris: " + e.getMessage());
         }
-
-        //Kontrollera att minst ett material är valt
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-        int rowCount = model.getRowCount();
-        if (rowCount == 0) {
-            JOptionPane.showMessageDialog(null, "Vänligen lägg till minst ett material till ordern.");
-            return;
-        }
-
-        //Hämta data från alla boxar
-        int kundID = Integer.parseInt(valdKund.split(" - ")[0]); //Gör om String till INT
-        String datum = txtDatum.getText();
-        double totaltPris = Double.parseDouble(txtPris.getText().replace(",", ".")); //Gör om string till double
-        String beskrivning = txtBeskrivning.getText();
-        String tid = txtTillverkningsTid.getText().trim() + " dagar";
-        String valdStorlek = (String) comboStorlek.getSelectedItem();
-        String text = txtText.getText();
-        boolean express = jCheckBox1.isSelected(); //Kollar det är en expressbeställning eller inte
-
-        //Lägger till specialprodukt, statstik ID är 1 för nu, kanske behöver ändras senare
-        String insertProdukt = "INSERT INTO SpecialProdukt (Storlek, Text, Pris, Beskrivning, Tillverkningstid, StatistikID) "
-            + "VALUES ('" + valdStorlek + "', '" + text + "', " + totaltPris + ", '" + beskrivning + "', '" + tid + "', 1)";
-        idb.insert(insertProdukt);
-
-        //Hämtar nytt SpecialProduktID som skapades för denna beställning för att kunna koppla material till detta ID
-        String produktID = idb.fetchSingle("SELECT MAX(SpecialProduktID) FROM SpecialProdukt");
-
-        //Lägg till materialrader från jTable till SpecialProdukt_Material-tabellen kopplat till denna beställning
-        for (int i = 0; i < rowCount; i++) {
-            String materialNamn = (String) model.getValueAt(i, 0);
-            String materialID = idb.fetchSingle("SELECT MaterialID FROM Material WHERE Namn = '" + materialNamn + "'");
-            String insertMaterial = "INSERT INTO SpecialProdukt_Material (SpecialProduktID, MaterialID, Antal, Beskrivning) "
-                + "VALUES (" + produktID + ", " + materialID + ", 1, '" + materialNamn + "')";
-            idb.insert(insertMaterial);
-        }
-
-        //Skapar beställning. Fast status till "Under behandling", kan komma att ändra den senare.
-        String insertBestallning = "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, TotalPris, Typ) "
-            + "VALUES ('Under behandling', '" + datum + "', " + express + ", " + kundID + ", " + totaltPris + ", 'Specialbeställning')";
-        idb.insert(insertBestallning);
-
-        //Hämta BestallningID
-        String bestallningID = idb.fetchSingle("SELECT MAX(BestallningID) FROM Bestallning");
-
-        //Lägg till i OrderItem. ProdSchema och AntstalldID är fasta, kan komma att ändras senare
-        String insertOrderItem = "INSERT INTO OrderItem (AntalProdukter, BestallningID, SpecialProduktID, ProduktionsSchemaID, AnstalldID) "
-            + "VALUES (1, " + bestallningID + ", " + produktID + ", 1, NULL)";
-        idb.insert(insertOrderItem);
-
-        JOptionPane.showMessageDialog(null, "Specialbeställning sparad!");
-
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material eller pris: " + e.getMessage());
-    }
 
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void txtTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTextActionPerformed
+
+    private void txtPrisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrisActionPerformed
 
     /**
      * @param args the command line arguments
