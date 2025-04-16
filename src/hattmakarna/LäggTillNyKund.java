@@ -51,7 +51,9 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         String fakturaAdress = (txtFakturaAdress.getText());
         String leveransAdress = (TxtLeveransAdress.getText());
         String postNummer = (txtPostNr.getText());
+        String fakturaPostNr = (txtfPostNrFaktura.getText());
         String ort = (txtOrt.getText());
+        String fakturaOrt = (txtfOrtFaktura.getText());
         String förnamn = (txtFornamn.getText());
         String efternamn = (TxtEfternamn.getText());
         String matt = (txtHuvudmått.getText());
@@ -61,7 +63,7 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         if (!Validering.faltInteTomt(förnamn) || !Validering.faltInteTomt(efternamn)
                 || !Validering.faltInteTomt(epost) || !Validering.faltInteTomt(matt) || !Validering.faltInteTomt(telefonNummer)
                 || !Validering.faltInteTomt(fakturaAdress) || !Validering.faltInteTomt(postNummer)
-                || !Validering.faltInteTomt(ort) || !Validering.faltInteTomt(leveransAdress)) {
+                || !Validering.faltInteTomt(ort) || !Validering.faltInteTomt(fakturaPostNr) || !Validering.faltInteTomt(fakturaOrt) || !Validering.faltInteTomt(leveransAdress)) {
 
             JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
             return;
@@ -96,10 +98,15 @@ public class LäggTillNyKund extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Postnummer får endast innehålla siffror", "Fel", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        if (!Validering.arEndastSiffror(fakturaPostNr)) {
+            JOptionPane.showMessageDialog(this, "Postnummer får endast innehålla siffror", "Fel", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         try {
-            String fraga = "INSERT INTO Kund (Fornamn, Efternamn, Matt, Epost, Telefonnummer, LeveransAdress, FakturaAdress, LeveransPostnummer, LeveransOrt) "
-                    + "VALUES ('" + förnamn + "', '" + efternamn + "', '" + matt + "', '" + epost + "', '" + telefonNummer + "', '" + leveransAdress + "', '" + fakturaAdress + "', '" + postNummer + "', '" + ort + "')";
+            String fraga = "INSERT INTO Kund (Fornamn, Efternamn, Matt, Epost, Telefonnummer, LeveransAdress, FakturaAdress, LeveransPostnummer, LeveransOrt, FakturaPostnummer, FakturaOrt) "
+                    + "VALUES ('" + förnamn + "', '" + efternamn + "', '" + matt + "', '" + epost + "', '" + telefonNummer + "', '" + leveransAdress + "', '" + fakturaAdress + "', '" + postNummer + "', '" + ort + "', '" + fakturaPostNr + "', '" + fakturaOrt + "')";
 
 //kör sql-frågan och ser till att spara datan i databasen
             idb.insert(fraga);
@@ -144,6 +151,10 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         txtFakturaAdress = new javax.swing.JTextField();
         lblHuvudmått = new javax.swing.JLabel();
         txtHuvudmått = new javax.swing.JTextField();
+        lblPostNrFaktura = new javax.swing.JLabel();
+        txtfPostNrFaktura = new javax.swing.JTextField();
+        lblOrtFaktura = new javax.swing.JLabel();
+        txtfOrtFaktura = new javax.swing.JTextField();
 
         jLabel8.setText("jLabel8");
 
@@ -155,6 +166,7 @@ public class LäggTillNyKund extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setText("Lägg till ny kund ");
 
         lblFörnamn.setText("Förnamn");
@@ -225,72 +237,77 @@ public class LäggTillNyKund extends javax.swing.JFrame {
 
         lblHuvudmått.setText("Huvudmått");
 
+        lblPostNrFaktura.setText("Postnummer");
+
+        lblOrtFaktura.setText("Ort");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTelefonnr)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFörnamn)
-                            .addComponent(lblEpost)
-                            .addComponent(jLabel1)
-                            .addComponent(lblLeveransAdress)
-                            .addComponent(lblFakturaAdress))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 198, Short.MAX_VALUE)
-                        .addComponent(lblPostNr)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPostNr, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(lblOrt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtOrt, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(87, 87, 87))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtHuvudmått)
-                            .addComponent(TxtEpost, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTelefonNr, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TxtEfternamn, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFornamn, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TxtLeveransAdress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                            .addComponent(txtFakturaAdress, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnTillbaka)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSpara)
-                        .addGap(20, 20, 20))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEfternamn)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblHuvudmått)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTelefonnr)
+                            .addComponent(lblEpost)
+                            .addComponent(lblFörnamn)
+                            .addComponent(lblEfternamn)
+                            .addComponent(lblHuvudmått)
+                            .addComponent(lblLeveransAdress)
+                            .addComponent(lblFakturaAdress))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtFakturaAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TxtLeveransAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTelefonNr, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TxtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtHuvudmått, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TxtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblPostNr)
+                            .addComponent(lblPostNrFaktura))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPostNr, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                            .addComponent(txtfPostNrFaktura))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSpara, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblOrt)
+                                    .addComponent(lblOrtFaktura))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtfOrtFaktura, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                                    .addComponent(txtOrt))
+                                .addGap(10, 10, 10)))
+                        .addGap(16, 16, 16))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(13, 13, 13)
                 .addComponent(jLabel1)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFörnamn))
+                    .addComponent(lblFörnamn)
+                    .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEfternamn)
                     .addComponent(TxtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblHuvudmått)
                     .addComponent(txtHuvudmått, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -298,23 +315,27 @@ public class LäggTillNyKund extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEpost)
                     .addComponent(TxtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTelefonNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTelefonnr))
-                .addGap(25, 25, 25)
+                    .addComponent(lblTelefonnr)
+                    .addComponent(txtTelefonNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtLeveransAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblLeveransAdress)
                     .addComponent(lblPostNr)
                     .addComponent(txtPostNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblOrt)
                     .addComponent(txtOrt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblOrt))
-                .addGap(22, 22, 22)
+                    .addComponent(lblLeveransAdress))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFakturaAdress)
-                    .addComponent(txtFakturaAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                    .addComponent(txtFakturaAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPostNrFaktura)
+                    .addComponent(txtfPostNrFaktura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblOrtFaktura)
+                    .addComponent(txtfOrtFaktura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTillbaka)
                     .addComponent(btnSpara))
@@ -409,7 +430,9 @@ public class LäggTillNyKund extends javax.swing.JFrame {
     private javax.swing.JLabel lblHuvudmått;
     private javax.swing.JLabel lblLeveransAdress;
     private javax.swing.JLabel lblOrt;
+    private javax.swing.JLabel lblOrtFaktura;
     private javax.swing.JLabel lblPostNr;
+    private javax.swing.JLabel lblPostNrFaktura;
     private javax.swing.JLabel lblTelefonnr;
     private javax.swing.JTextField txtFakturaAdress;
     private javax.swing.JTextField txtFornamn;
@@ -417,5 +440,7 @@ public class LäggTillNyKund extends javax.swing.JFrame {
     private javax.swing.JTextField txtOrt;
     private javax.swing.JTextField txtPostNr;
     private javax.swing.JTextField txtTelefonNr;
+    private javax.swing.JTextField txtfOrtFaktura;
+    private javax.swing.JTextField txtfPostNrFaktura;
     // End of variables declaration//GEN-END:variables
 }
