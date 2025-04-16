@@ -45,46 +45,50 @@ public class OrderSammanfattning extends javax.swing.JFrame {
 
     
     private void setupTextFieldsAndButtons() {
-        tfKundID.setText(kundID);
-        tfOrdernummer.setText(ordernummer);
+    tfKundID.setText(kundID);
+    tfOrdernummer.setText(ordernummer);
 
-        // Fyll tabellen
-        String[] kolumner = {"Produkt", "Antal", "Pris per st", "Totalt"};
-        DefaultTableModel modell = new DefaultTableModel(kolumner, 0);
-
-        for (SkapaVanligOrder.Orderrad rad : orderrader) {
-            String produktNamn = rad.getNamn();
-            int antal = rad.getAntal();
-            double prisPerSt = rad.getPris();
-            double totalRadPris = rad.totalPris();
-
-            Object[] radData = {
-                produktNamn,
-                antal,
-                String.format("%.2f kr", prisPerSt).replace(",", "."),
-                String.format("%.2f kr", totalRadPris).replace(",", ".")
-            };
-            modell.addRow(radData);
+    String[] kolumner = {"Produkt", "Antal", "Pris per st", "Totalt"};
+    
+    DefaultTableModel modell = new DefaultTableModel(kolumner, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return redigeringsLage && column == 1; // Endast kolumn 1 ("Antal") är redigerbar i redigeringsläge
         }
+    };
 
-        double expressAvgift = 0;
-        if (express) {
-            expressAvgift = totalpris * 0.2;
-        }
-        double slutpris = totalpris + expressAvgift;
-        tfExpress.setText(express ? String.format("%.2f kr", expressAvgift).replace(",", ".") : "0 kr");
-        tfTotalpris.setText(String.format("%.2f kr", slutpris).replace(",", "."));
+    // Fyll tabellen med data från orderrader
+    for (SkapaVanligOrder.Orderrad rad : orderrader) {
+        String produktNamn = rad.getNamn();
+        int antal = rad.getAntal();
+        double prisPerSt = rad.getPris();
+        double totalRadPris = rad.totalPris();
 
-        tblOrdersammanfattning.setModel(modell);
-        if (tblOrdersammanfattning.getRowCount() > 0) {
-            tblOrdersammanfattning.setRowSelectionInterval(0, 0);
-        }
-
-        // Förhindra redigering av tabellen innan "Redigera" trycks
-        tblOrdersammanfattning.setDefaultEditor(Object.class, null);
-        btnSpara.setEnabled(false);
-        btnTaBort.setEnabled(false);
+        Object[] radData = {
+            produktNamn,
+            antal,
+            String.format("%.2f kr", prisPerSt).replace(",", "."),
+            String.format("%.2f kr", totalRadPris).replace(",", ".")
+        };
+        modell.addRow(radData);
     }
+
+    // Beräkna expressavgift och totalpris
+    double expressAvgift = express ? totalpris * 0.2 : 0;
+    double slutpris = totalpris + expressAvgift;
+
+    tfExpress.setText(express ? String.format("%.2f kr", expressAvgift).replace(",", ".") : "0 kr");
+    tfTotalpris.setText(String.format("%.2f kr", slutpris).replace(",", "."));
+
+    tblOrdersammanfattning.setModel(modell);
+    if (tblOrdersammanfattning.getRowCount() > 0) {
+        tblOrdersammanfattning.setRowSelectionInterval(0, 0);
+    }
+
+    btnSpara.setEnabled(false);
+    btnTaBort.setEnabled(false);
+    uppdateraTotalpris();
+}
     
     private void andraAntal(int andring) {
         if (!redigeringsLage) {
@@ -331,61 +335,80 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRedigeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraActionPerformed
-    redigeringsLage = true;  // Sätt redigeringsläget till sant
+    redigeringsLage = true;
     btnSpara.setEnabled(true);
     btnTaBort.setEnabled(true);
     btnRedigera.setEnabled(false);
 
-    tblOrdersammanfattning.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
-
-    for (int i = 0; i < tblOrdersammanfattning.getColumnCount(); i++) {
-        if (i != 1) {
-            tblOrdersammanfattning.getColumnModel().getColumn(i).setCellEditor(null);
-        }
-    }                                                                               
+    tblOrdersammanfattning.repaint(); // Säkerställ att tabellen uppdateras visuellt
     }//GEN-LAST:event_btnRedigeraActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true); 
-    this.dispose();     
+   int val = JOptionPane.showConfirmDialog(
+        this,
+        "Vill du avbryta beställningen och rensa varukorgen?",
+        "Avbryt beställning",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.WARNING_MESSAGE
+    );
+
+    if (val == JOptionPane.YES_OPTION) {
+        new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true); 
+        this.dispose();     
+    }
+    // Om användaren väljer "Nej" görs inget alls
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-try {
-        // Uppdatera totalpriset innan sparandet
-        uppdateraTotalpris();
-        
-        // Hämta det uppdaterade totalpriset från textfältet
-        String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
-        double totalprisDouble = Double.parseDouble(totalprisStr);  // Omvandlar korrekt till double
+    // Säkerställ att pågående cellredigering avslutas
+    if (tblOrdersammanfattning.isEditing()) {
+        tblOrdersammanfattning.getCellEditor().stopCellEditing();
+    }
 
-        // Formatera totalpris med två decimaler, och ersätt komma med punkt
-        String totalprisFormatted = String.format("%.2f", totalprisDouble).replace(",", ".");
+    DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+    boolean valid = true;
 
-        // Status och datum
-        String status = "Skickad";
-        String datum = java.time.LocalDate.now().toString();
-        String expressBool = express ? "1" : "0";  // Om expressbeställning
+    // Gå igenom alla rader och validera antal
+    for (int i = 0; i < modell.getRowCount(); i++) {
+        Object cellValue = modell.getValueAt(i, 1); // kolumn "Antal"
+        try {
+            String cellStr = cellValue.toString().trim();
 
-        // Skapa SQL-sats för Bestallning
-        String sql = String.format(
-            "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, Totalpris, Typ) " +
-            "VALUES ('%s', '%s', %s, %s, NULL, %s, '%s')",
-            status, datum, expressBool, kundID, totalprisFormatted, typ
-        );
+            // Kontrollera om cellen är tom
+            if (cellStr.isEmpty()) {
+                throw new NumberFormatException("Tomt antal");
+            }
 
-        // Utför insert-operationen för Bestallning
-        idb.insert(sql);
+            // Försök konvertera till ett heltal
+            int antal = Integer.parseInt(cellStr);
 
-        // Meddelande när beställningen sparas
-        JOptionPane.showMessageDialog(this, "Beställning sparad i databasen!");
+            // Kontrollera om antalet är positivt
+            if (antal <= 0) {
+                JOptionPane.showMessageDialog(this, "Antalet måste vara ett positivt heltal.");
+                valid = false;  // Valideringen misslyckades
+                break;  // Avbryt loopen om valideringen misslyckas
+            }
 
-    } catch (NumberFormatException e) {
-        // Felhantering om totalpris inte kan tolkas korrekt
-        JOptionPane.showMessageDialog(this, "Fel: Totalpris kunde inte tolkas. Kontrollera prisformatet!");
-    } catch (InfException ex) {
-        // Felhantering för problem med databasen
-        JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
+            // Om antalet är giltigt, uppdatera orderraden och totalpris
+            orderrader.get(i).setAntal(antal); 
+            modell.setValueAt(String.format("%.2f kr", antal * orderrader.get(i).getPris()), i, 3); // Uppdatera totalsumma
+
+        } catch (NumberFormatException e) {
+            // Visa felmeddelande för ogiltigt antal
+            JOptionPane.showMessageDialog(this, "Antalet är inte ett giltigt heltal.");
+            valid = false;  // Valideringen misslyckades
+            break;  // Avbryt loopen om det finns ogiltigt värde
+        }
+    }
+
+    // Om alla värden är giltiga, uppdatera totalpris och visa meddelande om sparade ändringar
+    if (valid) {
+        uppdateraTotalpris();  // Uppdatera totalpris efter validering
+        JOptionPane.showMessageDialog(this, "Ändringar har sparats i varukorgen! Klicka på 'Bekräfta' för att skicka beställningen.");
+        redigeringsLage = false;
+        btnSpara.setEnabled(false);
+        btnTaBort.setEnabled(false);
+        btnRedigera.setEnabled(true);
     }
     }//GEN-LAST:event_btnSparaActionPerformed
 
@@ -418,40 +441,65 @@ try {
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed
-    try {
+    if (tblOrdersammanfattning.isEditing()) {
+        tblOrdersammanfattning.getCellEditor().stopCellEditing();
+    }
+
+    // Här gör vi en validering för att säkerställa att alla antal är giltiga innan vi sparar till databasen
+    DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+    boolean valid = true;
+
+    // Validera alla antal innan vi försöker spara till databasen
+    for (int i = 0; i < modell.getRowCount(); i++) {
+        Object cellValue = modell.getValueAt(i, 1); // kolumn "Antal"
+        try {
+            int antal = Integer.parseInt(cellValue.toString());
+            if (antal <= 0) {
+                JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " måste vara ett positivt heltal.");
+                valid = false;  // Valideringen misslyckades
+                break;
+            } else {
+                orderrader.get(i).setAntal(antal); // Uppdatera i modellen
+                modell.setValueAt(String.format("%.2f kr", antal * orderrader.get(i).getPris()), i, 3); // Uppdatera radens total
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " är inte ett giltigt heltal.");
+            valid = false;  // Valideringen misslyckades
+            break;
+        }
+    }
+
+    // Om all validering lyckades, uppdatera totalpris och spar till databasen
+    if (valid) {
+        uppdateraTotalpris();  // Uppdatera totalpris och expresskostnad
+
         // Status och datum
         String status = "Under behandling";
         String datum = java.time.LocalDate.now().toString();
-        String expressBool = express ? "1" : "0";  // Om expressbeställning
+        String expressBool = express ? "1" : "0";
 
         // Validera och konvertera totalpris
         String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
         double totalprisDouble = Double.parseDouble(totalprisStr);
-        
-        // Formatera totalpris så att den alltid använder punkt som decimaltecken
         String formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
-        
-        // Skapa SQL-satsen för Bestallning
+
+        // Skapa och kör SQL
         String sql = String.format(
             "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, Totalpris, Typ) " +
             "VALUES ('%s', '%s', %s, %s, NULL, %s, '%s')",
             status, datum, expressBool, kundID, formattedTotalpris, typ
         );
 
-        System.out.println("SQL: " + sql);  // För att dubbelkolla
-
-        idb.insert(sql);
-
-        JOptionPane.showMessageDialog(this, "Beställning sparad i databasen!");
-        new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
-        this.dispose(); // Stäng nuvarande fönster
-
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Fel: Totalpris kunde inte tolkas. Kontrollera prisformatet!");
-    } catch (InfException ex) {
-        JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
-    }
+        try {
+             idb.insert(sql);  // Spara i databasen
+             JOptionPane.showMessageDialog(this, "Ordern har skickats iväg!");
+             new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
+             this.dispose();
+         } catch (InfException ex) {
+             // Hantera om det uppstår ett problem med databasoperationen
+             JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
+         }
+     }
     }//GEN-LAST:event_btnBekraftaActionPerformed
 
     /**
