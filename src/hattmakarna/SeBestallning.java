@@ -288,21 +288,26 @@ private String klickatOrderNr;
 
     try {
         String query = "";
-        
+
         if (kund.contains(" ")) {
             // Förnamn + Efternamn
             String[] delar = kund.trim().split("\\s+", 2);
             String fornamn = delar[0].toLowerCase().replace("'", "''");
             String efternamn = delar[1].toLowerCase().replace("'", "''");
 
-            query = "SELECT KundID, Fornamn, Efternamn FROM Kund " +
-                    "WHERE LOWER(Fornamn) = '" + fornamn + "' " +
-                    "AND LOWER(Efternamn) = '" + efternamn + "';";
+            query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                    "FROM Kund k " +
+                    "JOIN Bestallning b ON k.KundID = b.KundID " +
+                    "WHERE LOWER(k.Fornamn) = '" + fornamn + "' " +
+                    "AND LOWER(k.Efternamn) = '" + efternamn + "'";
         } else {
             // KundID
             try {
                 int kundID = Integer.parseInt(kund);
-                query = "SELECT KundID, Fornamn, Efternamn FROM Kund WHERE KundID = " + kundID + ";";
+                query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                        "FROM Kund k " +
+                        "JOIN Bestallning b ON k.KundID = b.KundID " +
+                        "WHERE k.KundID = " + kundID;
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Ogiltigt KundID. Ange ett numeriskt värde eller namn.");
                 return;
@@ -316,7 +321,6 @@ private String klickatOrderNr;
             return;
         }
 
-        // Exempel: Visa i tabell (jTable1)
         DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
         model.setRowCount(0); // Rensa gammal data
 
@@ -324,7 +328,11 @@ private String klickatOrderNr;
             model.addRow(new Object[]{
                 kundData.get("KundID"),
                 kundData.get("Fornamn"),
-                kundData.get("Efternamn")
+                kundData.get("Efternamn"),
+                kundData.get("Datum"),
+                kundData.get("Status"),
+                kundData.get("TotalPris"),
+                kundData.get("Expressbestallning")
             });
         }
 
