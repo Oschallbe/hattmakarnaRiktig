@@ -24,16 +24,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="BtnTaBort" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="BtnRedigera" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="lblLeveransadress" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -52,11 +46,10 @@
                                       <Component id="txtFornamn" min="-2" pref="89" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <Component id="lblKundID" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="txtKundID" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="lblFakturaadress" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -78,32 +71,56 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="lblLeveransPostNr" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFakturaPostNr" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtLeveransPostNr" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFakturaPostNr" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="BtnTaBort" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
+                      <Component id="BtnRedigera" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="BtnSpara" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="72" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtOrt" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtLeveransOrt" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtort" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFakturaOrt" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtLeveransLand" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFakturaLand" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="94" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -113,13 +130,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblKundID" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtKundID" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtKundID" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblFornamn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFornamn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -143,17 +158,25 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblLeveransadress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtLeveransAdress" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtOrt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransOrt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblLeveransPostNr" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransPostNr" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransLand" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblFakturaadress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFakturaAdress" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFakturaOrt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblFakturaPostNr" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFakturaPostNr" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFakturaLand" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="40" max="32767" attributes="0"/>
+              <EmptySpace pref="58" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="BtnTaBort" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BtnRedigera" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -172,11 +195,6 @@
           <Font name="Helvetica Neue" size="18" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Kund"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblKundID">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="KundID"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblFornamn">
@@ -242,6 +260,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtKundID">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtFornamn">
     </Component>
@@ -255,9 +276,9 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtFakturaAdress">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtOrt">
+    <Component class="javax.swing.JTextField" name="txtLeveransOrt">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtort">
+    <Component class="javax.swing.JTextField" name="txtFakturaOrt">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -268,6 +289,34 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ort"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblLeveransPostNr">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Postnummer"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblFakturaPostNr">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Postnummer"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtLeveransPostNr">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtFakturaPostNr">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Land"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Land"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtLeveransLand">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtFakturaLand">
     </Component>
   </SubComponents>
 </Form>

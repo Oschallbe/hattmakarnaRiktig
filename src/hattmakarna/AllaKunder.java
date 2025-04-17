@@ -33,49 +33,47 @@ public class AllaKunder extends javax.swing.JFrame {
      // Laddar alla kunder till tabellen
     public void fyllKundTabell() {
         try {
-            // Kolumnnamn för tabellen (endast KundID, Fornamn och Efternamn)
-            String[] kolumnNamn = {
-                "KundID", "Fornamn", "Efternamn"
-            };
-
-            // Skapar en DefaultTableModel
+            // Kolumnnamn för tabellen (endast Fornamn och Efternamn visas – KundID används men döljs)
+            String[] kolumnNamn = {"KundID", "Fornamn", "Efternamn"};
             DefaultTableModel kundModel = new DefaultTableModel(kolumnNamn, 0);
 
-            // Hämtar alla KundID i ordning
             String selectKundID = "SELECT KundID FROM kund ORDER BY KundID ASC;";
             ArrayList<String> kundIDList = idb.fetchColumn(selectKundID);
 
-            // Om vi har några KundID, börjar vi lägga till data i tabellen
             if (kundIDList != null) {
                 for (String ettID : kundIDList) {
-                    // Hämtar all data för varje KundID
                     String selectInfo = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = " + ettID + ";";
                     HashMap<String, String> info = idb.fetchRow(selectInfo);
 
-                    // Skapa en rad för tabellen baserat på hämtad data
-                    Object[] enRad = new Object[kolumnNamn.length];
-                    enRad[0] = info.get("KundID") != null ? info.get("KundID") : "Saknas";
-                    enRad[1] = info.get("Fornamn") != null ? info.get("Fornamn") : "Saknas";
-                    enRad[2] = info.get("Efternamn") != null ? info.get("Efternamn") : "Saknas";
+                    String fornamn = info.get("Fornamn");
+                    String efternamn = info.get("Efternamn");
 
-                    // Lägg till raden i DefaultTableModel
+                    // Hoppa över kunder som saknar namn
+                    if (fornamn == null || efternamn == null || fornamn.trim().isEmpty() || efternamn.trim().isEmpty()) {
+                        continue;
+                    }
+
+                    Object[] enRad = new Object[kolumnNamn.length];
+                    enRad[0] = info.get("KundID");
+                    enRad[1] = fornamn;
+                    enRad[2] = efternamn;
+
                     kundModel.addRow(enRad);
                 }
 
-                // Sätt modellen för tabellen
                 TblAllaKunder.setModel(kundModel);
             }
 
-            // Ställ in automatisk storleksändring för tabellen
+            // Ställ in kolumnstorlekar
             TblAllaKunder.setAutoResizeMode(TblAllaKunder.AUTO_RESIZE_OFF);
+            TblAllaKunder.getColumnModel().getColumn(0).setPreferredWidth(60); // KundID
+            TblAllaKunder.getColumnModel().getColumn(1).setPreferredWidth(100); // Förnamn
+            TblAllaKunder.getColumnModel().getColumn(2).setPreferredWidth(100); // Efternamn
 
-            // Ställ in kolumnbredder
-            TableColumn col = TblAllaKunder.getColumnModel().getColumn(0); // KundID
-            col.setPreferredWidth(60);
-            col = TblAllaKunder.getColumnModel().getColumn(1); // Förnamn
-            col.setPreferredWidth(100);
-            col = TblAllaKunder.getColumnModel().getColumn(2); // Efternamn
-            col.setPreferredWidth(100);
+            // Dölj KundID-kolumnen men behåll datan i modellen
+            TblAllaKunder.getColumnModel().getColumn(0).setMinWidth(0);
+            TblAllaKunder.getColumnModel().getColumn(0).setMaxWidth(0);
+            TblAllaKunder.getColumnModel().getColumn(0).setWidth(0);
 
         } catch (InfException ex) {
             System.out.println("Fel vid hämtning av kunddata: " + ex.getMessage());
@@ -87,11 +85,16 @@ public class AllaKunder extends javax.swing.JFrame {
         // Be användaren om sökterm
         String sokTerm = JOptionPane.showInputDialog("Ange KundID, eller Förnamn och Efternamn, för att söka efter en kund:");
 
-        if (sokTerm == null || sokTerm.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Du måste ange en sökterm!");
-            return;
-        }
+            if (sokTerm == null) {
+                // Användaren tryckte på Avbryt — gör inget
+                return;
+            }
 
+            if (sokTerm.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Du måste ange en sökterm!");
+                return;
+            }
+            
         try {
             String query = "";
             DefaultTableModel tomModell = new DefaultTableModel(new String[]{
