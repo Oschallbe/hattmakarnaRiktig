@@ -20,40 +20,61 @@
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaOrdrarMenuSelected"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
+        <Menu class="javax.swing.JMenu" name="seAllaKunder">
           <Properties>
             <Property name="text" type="java.lang.String" value="Se alla kunder"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaKunderMenuSelected"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu5">
+        <Menu class="javax.swing.JMenu" name="seAllaLagerfordaProdukter">
           <Properties>
             <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaLagerfordaProdukterMenuSelected"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu6">
+        <Menu class="javax.swing.JMenu" name="skapaNyOrder">
           <Properties>
             <Property name="text" type="java.lang.String" value="Skapa ny order"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="skapaNyOrderMenuSelected"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu7">
+        <Menu class="javax.swing.JMenu" name="skapaNySpecialorder">
           <Properties>
             <Property name="text" type="java.lang.String" value="Skapa ny specialorder"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="skapaNySpecialorderMenuSelected"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu8">
+        <Menu class="javax.swing.JMenu" name="forsalningsstatistik">
           <Properties>
             <Property name="text" type="java.lang.String" value="F&#xf6;rs&#xe4;ljningsstatistik"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="forsalningsstatistikMenuSelected"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu9">
+        <Menu class="javax.swing.JMenu" name="hanteraAnstallda">
           <Properties>
             <Property name="text" type="java.lang.String" value="Hantera anst&#xe4;llda"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="hanteraAnstalldaMenuSelected"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="loggaUt">
           <Properties>
             <Property name="text" type="java.lang.String" value="Logga ut"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="loggaUtMenuSelected"/>
+          </Events>
         </Menu>
       </SubComponents>
     </Menu>
