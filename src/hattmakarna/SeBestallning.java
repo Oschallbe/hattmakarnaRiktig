@@ -329,9 +329,9 @@ private String klickatOrderNr;
                 kundData.get("KundID"),
                 kundData.get("Fornamn"),
                 kundData.get("Efternamn"),
-                kundData.get("Datum"),
                 kundData.get("Status"),
                 kundData.get("TotalPris"),
+                kundData.get("Datum"),
                 kundData.get("Expressbestallning")
             });
         }
