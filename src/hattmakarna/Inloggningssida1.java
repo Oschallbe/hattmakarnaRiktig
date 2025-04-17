@@ -21,6 +21,8 @@ public class Inloggningssida1 extends javax.swing.JPanel {
      */
     public Inloggningssida1(InfDB idb) {
         initComponents();
+        
+
         this.idb = idb;
         lblFelMeddelande.setVisible(false);
         txtfEmail.setText("karin@hattmakarna.se");

@@ -14,6 +14,9 @@ import oru.inf.InfDB;
  */
 public class MainFrame extends javax.swing.JFrame {
     private static InfDB idb;
+    private Inloggningssida1 inloggningsPanel;
+    private HuvudMeny1 huvudMenyPanel;
+
     
     
     /**
@@ -21,7 +24,14 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame(InfDB idb) {
         initComponents();
+        jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
+
+        inloggningsPanel = new Inloggningssida1(idb);
+        jPanel1.add(inloggningsPanel, "inlogg");
+
+        inloggningsPanel = new Inloggningssida1(idb);
         this.idb = idb;
+        
         
 
         
@@ -37,7 +47,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -46,8 +55,6 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.CardLayout());
-
-        jButton1.setText("jButton1");
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -65,6 +72,15 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("jMenu3");
+        jMenu3.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenu3MenuSelected(evt);
+            }
+        });
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -74,23 +90,16 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(jButton1)))
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addGap(109, 109, 109)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(859, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(126, 126, 126)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(207, Short.MAX_VALUE))
+                .addContainerGap(386, Short.MAX_VALUE))
         );
 
         pack();
@@ -99,28 +108,22 @@ public class MainFrame extends javax.swing.JFrame {
     private void jMenu2MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu2MenuSelected
         // TODO add your handling code here:
        // Kontrollera om "inlogg" redan finns
-    boolean redanLagd = false;
-    for (Component c : jPanel1.getComponents()) {
-        if (c.getName() != null && c.getName().equals("inlogg")) {
-            redanLagd = true;
-            break;
-        }
-    }
-
-    if (!redanLagd) {
-        Inloggningssida1 inloggningsPanel = new Inloggningssida1(idb);
-        inloggningsPanel.setName("inlogg");
-        jPanel1.add(inloggningsPanel, "inlogg");
-    }
-
-    CardLayout cl = (CardLayout)(jPanel1.getLayout());
-    cl.show(jPanel1, "inlogg");
+        CardLayout cl = (CardLayout)(jPanel1.getLayout());
+        cl.show(jPanel1, "inlogg");
     }//GEN-LAST:event_jMenu2MenuSelected
+
+    private void jMenu3MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu3MenuSelected
+        // TODO add your handling code here:jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
+
+        huvudMenyPanel = new HuvudMeny1(idb);
+        jPanel1.add(huvudMenyPanel, "Meny");
+
+        huvudMenyPanel = new HuvudMeny1(idb);
+    }//GEN-LAST:event_jMenu3MenuSelected
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
