@@ -270,7 +270,37 @@ private String klickatOrderNr;
     }//GEN-LAST:event_btnSeOrderActionPerformed
 
     private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
-        // TODO add your handling code here:
+        String valdStatus = cbStatus.getSelectedItem().toString();
+
+    try {
+        String query = "SELECT b.Typ, b.BestallningID, b.KundID, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                       "FROM Bestallning b " +
+                       "JOIN Kund k ON k.KundID = b.KundID";
+
+        if (!valdStatus.equalsIgnoreCase("Status")) {
+            query += " WHERE b.Status = '" + valdStatus.replace("'", "''") + "'";
+        }
+
+        List<HashMap<String, String>> bestallningar = idb.fetchRows(query);
+
+        DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+        model.setRowCount(0); // Rensa tidigare data
+
+        for (HashMap<String, String> rad : bestallningar) {
+            model.addRow(new Object[]{
+                rad.get("Typ"),
+                rad.get("BestallningID"),
+                rad.get("KundID"),
+                rad.get("Status"),
+                rad.get("TotalPris"),
+                rad.get("Datum"),
+                rad.get("Expressbestallning")
+            });
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid filtrering: " + e.getMessage());
+    }
     }//GEN-LAST:event_cbStatusActionPerformed
 
     private void txtDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDatumActionPerformed
