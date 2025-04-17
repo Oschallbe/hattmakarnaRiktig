@@ -295,7 +295,7 @@ private String klickatOrderNr;
             String fornamn = delar[0].toLowerCase().replace("'", "''");
             String efternamn = delar[1].toLowerCase().replace("'", "''");
 
-            query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+            query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.BestallningID, b.Typ, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
                     "FROM Kund k " +
                     "JOIN Bestallning b ON k.KundID = b.KundID " +
                     "WHERE LOWER(k.Fornamn) = '" + fornamn + "' " +
@@ -304,7 +304,7 @@ private String klickatOrderNr;
             // KundID
             try {
                 int kundID = Integer.parseInt(kund);
-                query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.BestallningID, b.Typ , b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
                         "FROM Kund k " +
                         "JOIN Bestallning b ON k.KundID = b.KundID " +
                         "WHERE k.KundID = " + kundID;
@@ -326,9 +326,9 @@ private String klickatOrderNr;
 
         for (HashMap<String, String> kundData : kunder) {
             model.addRow(new Object[]{
+                kundData.get("Typ"),
+                kundData.get("BestallningID"),
                 kundData.get("KundID"),
-                kundData.get("Fornamn"),
-                kundData.get("Efternamn"),
                 kundData.get("Status"),
                 kundData.get("TotalPris"),
                 kundData.get("Datum"),
