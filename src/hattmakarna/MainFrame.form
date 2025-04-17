@@ -68,13 +68,23 @@
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="hanteraAnstalldaMenuSelected"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="loggaUt">
+        <Menu class="javax.swing.JMenu" name="installningar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Logga ut"/>
+            <Property name="text" type="java.lang.String" value="Inst&#xe4;llningar"/>
           </Properties>
           <Events>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="loggaUtMenuSelected"/>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="installningarMenuSelected"/>
           </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="loggaUt">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Logga ut"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loggaUtActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>

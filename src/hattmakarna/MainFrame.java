@@ -22,9 +22,9 @@ public class MainFrame extends javax.swing.JFrame {
     private SeAllaLagerfordaProdukter allaLagerfordaProdukterPanel;
     private SkapaNyOrder nyOrderPanel;
     private SkapaNySpecialOrder allaSpecialOrdrarPanel;
-    //private SeAllaOrdrar allaOrdrarPanel;
-    //private SeAllaOrdrar allaOrdrarPanel;
-    //private SeAllaOrdrar allaOrdrarPanel;
+    private SeForsaljningsstatistik1 seForsaljningsstatistikPanel;
+    private HanteraAllaAnstallda hanteraAllaAnstalldaPanel;
+    //private MainFrame loggaUt;
 
     private Validering validera;
     private MainFrame parentFrame;  // referens till MainFrame
@@ -44,9 +44,21 @@ public class MainFrame extends javax.swing.JFrame {
         pswfLosenord.setText("hatt123");
         lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jMenuBar1.setVisible(false);
+        
+        
+        
+        
     }
 
-        
+        private void loggaUt() {
+        int svar = JOptionPane.showConfirmDialog(this, "Vill du logga ut?", "Bekräfta", JOptionPane.YES_NO_OPTION);
+        if (svar == JOptionPane.YES_OPTION) {
+        this.dispose();
+        MainFrame nyMainFrame = new MainFrame(idb);
+        nyMainFrame.setVisible(true);
+    }
+}
+
     
     
     public void addPanelToCardLayout(JPanel panel, String name) {
@@ -88,7 +100,8 @@ public class MainFrame extends javax.swing.JFrame {
         skapaNySpecialorder = new javax.swing.JMenu();
         forsalningsstatistik = new javax.swing.JMenu();
         hanteraAnstallda = new javax.swing.JMenu();
-        loggaUt = new javax.swing.JMenu();
+        installningar = new javax.swing.JMenu();
+        loggaUt = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -223,17 +236,26 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(hanteraAnstallda);
 
-        loggaUt.setText("Logga ut");
-        loggaUt.addMenuListener(new javax.swing.event.MenuListener() {
+        installningar.setText("Inställningar");
+        installningar.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
-                loggaUtMenuSelected(evt);
+                installningarMenuSelected(evt);
             }
         });
-        jMenuBar1.add(loggaUt);
+
+        loggaUt.setText("Logga ut");
+        loggaUt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loggaUtActionPerformed(evt);
+            }
+        });
+        installningar.add(loggaUt);
+
+        jMenuBar1.add(installningar);
 
         setJMenuBar(jMenuBar1);
 
@@ -422,15 +444,27 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void forsalningsstatistikMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_forsalningsstatistikMenuSelected
         // TODO add your handling code here:
+        seForsaljningsstatistikPanel = new SeForsaljningsstatistik1(idb, txtfEmail.getText());
+        addPanelToCardLayout(seForsaljningsstatistikPanel, "Försäljningsstatistik");
+        showPanel("Försäljningsstatistik");
     }//GEN-LAST:event_forsalningsstatistikMenuSelected
 
     private void hanteraAnstalldaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_hanteraAnstalldaMenuSelected
         // TODO add your handling code here:
+        hanteraAllaAnstalldaPanel = new HanteraAllaAnstallda(idb, txtfEmail.getText());
+        addPanelToCardLayout(hanteraAllaAnstalldaPanel, "Hantera Anställda");
+        showPanel("Hantera Anställda");
     }//GEN-LAST:event_hanteraAnstalldaMenuSelected
 
-    private void loggaUtMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_loggaUtMenuSelected
+    private void installningarMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_installningarMenuSelected
         // TODO add your handling code here:
-    }//GEN-LAST:event_loggaUtMenuSelected
+        
+    }//GEN-LAST:event_installningarMenuSelected
+
+    private void loggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loggaUtActionPerformed
+        // TODO add your handling code here:
+        loggaUt();
+    }//GEN-LAST:event_loggaUtActionPerformed
 
     
 
@@ -438,13 +472,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnLoggaIn;
     private javax.swing.JMenu forsalningsstatistik;
     private javax.swing.JMenu hanteraAnstallda;
+    private javax.swing.JMenu installningar;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblFelMeddelande;
     private javax.swing.JLabel lblInloggning;
     private javax.swing.JLabel lblLosenord;
-    private javax.swing.JMenu loggaUt;
+    private javax.swing.JMenuItem loggaUt;
     private javax.swing.JPasswordField pswfLosenord;
     private javax.swing.JMenu seAllaKunder;
     private javax.swing.JMenu seAllaLagerfordaProdukter;
