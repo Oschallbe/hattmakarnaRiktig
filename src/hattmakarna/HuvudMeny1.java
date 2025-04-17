@@ -20,10 +20,10 @@ public class HuvudMeny1 extends javax.swing.JPanel {
     public HuvudMeny1(InfDB idb) {
         initComponents();
         this.idb = idb;
-        hanteraAnstallda();
+       // hanteraAnstallda();
     }
     
-    public void hanteraAnstallda(){
+    /*public void hanteraAnstallda(){
         try{
             String hamtaAnstallda = "select Behorighet from Anstalld where Epost = '" + inloggadAnvandare + "';";
             String behorighet = idb.fetchSingle(hamtaAnstallda);         
@@ -37,7 +37,7 @@ public class HuvudMeny1 extends javax.swing.JPanel {
         catch(InfException ex){
             System.out.println(ex);
         }
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
