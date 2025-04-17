@@ -7,15 +7,15 @@ import oru.inf.InfDB;
 import oru.inf.InfException; 
 import javax.swing.JOptionPane; 
 import java.util.ArrayList; 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.time.LocalDate;
 import javax.swing.*;
-import java.util.HashMap;
-
 /**
  *
  * @author iftinserar
  */
-public class SkapaVanligOrder extends javax.swing.JFrame { 
+public class SkapaVanligOrder extends javax.swing.JFrame {
  
         private static InfDB idb; 
         private String inloggadAnvandare; 
@@ -60,26 +60,19 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
         }
     }
     
-    private void fyllKundIDComboBox() {
+    private void fyllKundIDComboBox(){
         try {
-            cbKundnummer.removeAllItems();
-            cbKundnummer.addItem("Välj KundID");
-
-            ArrayList<HashMap<String, String>> kunder = idb.fetchRows("SELECT KundID, Fornamn, Efternamn FROM kund WHERE Fornamn IS NOT NULL");
-
-            for (HashMap<String, String> kund : kunder) {
-                String kundID = kund.get("KundID");
-                String fornamn = kund.get("Fornamn");
-                String efternamn = kund.get("Efternamn");
-                cbKundnummer.addItem(kundID + " - " + fornamn + " " + efternamn);
+            cbKundnummer.removeAllItems();  // Rensar alla tidigare objekt
+            cbKundnummer.addItem("Välj KundID");  // Lägg till "Välj KundID" som första alternativ
+            ArrayList<String> kundIDLista = idb.fetchColumn("SELECT KundID FROM kund");
+            for (String id : kundIDLista) {
+                cbKundnummer.addItem(id);  // Lägg till de faktiska kundID:n
             }
 
             cbKundnummer.addActionListener(e -> {
                 String valdKund = (String) cbKundnummer.getSelectedItem();
 
                 if (valdKund != null && !valdKund.equals("Välj KundID")) {
-                    String valdKundID = valdKund.split(" - ")[0];  // Hämta bara själva ID:t
-
                     if (!orderrader.isEmpty()) {
                         int svar = JOptionPane.showConfirmDialog(
                             null,
@@ -89,30 +82,18 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                         );
 
                         if (svar == JOptionPane.YES_OPTION) {
-                            resetOrder();
-                            inloggadKundID = valdKundID;
+                            resetOrder();  // <--- HÄR är ändringen
                         } else {
-                            // Återställ till tidigare kund
-                            for (int i = 0; i < cbKundnummer.getItemCount(); i++) {
-                                String item = cbKundnummer.getItemAt(i);
-                                if (item.startsWith(inloggadKundID + " - ")) {
-                                    cbKundnummer.setSelectedIndex(i);
-                                    break;
-                                }
-                            }
+                            cbKundnummer.setSelectedItem(inloggadKundID); // Återställ till tidigare kund
                         }
-                    } else {
-                        inloggadKundID = valdKundID;
                     }
                 }
             });
 
         } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av kundinformation: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av KundID: " + e.getMessage());
         }
     }
-    
-    
     
     private void resetOrder() {
     orderrader.clear();
@@ -432,66 +413,76 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_txtfDatumActionPerformed
 
     private void btnGaVidareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaVidareActionPerformed
+    // Kontrollera om det finns några orderrader
     if (orderrader.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt.");
-        return;
+        return; // Avbryt om inga produkter har lagts till
     }
 
-    if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
+    // Kontrollera om ett giltigt kundnummer har valts
+    String kundID = (String) cbKundnummer.getSelectedItem();
+    if (kundID == null || kundID.equals("Välj KundID")) {
         JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
-        return;
+        return; // Avbryt om ingen kund har valts
     }
 
-    double totalpris = 0;
+        double totalpris = 0;
     for (Orderrad rad : orderrader) {
         totalpris += rad.totalPris();
     }
 
     if (express) {
-        totalpris += totalpris * 0.2;
+        double expressAvgift = totalpris * 0.2;
+        totalpris += expressAvgift;
     }
-
+    // Hämta ordernummer från textfältet
     String ordernummer = txtfOrdernummer.getText();
     if (ordernummer.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
-        return;
+        return; // Avbryt om inget ordernummer har angetts
     }
 
-    OrderSammanfattning os = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris,
-            inloggadKundID, ordernummer, express,"Standardbeställning");
+    // Skicka till OrderSammanfattning fönstret med nödvändig data
+   OrderSammanfattning os = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris, kundID, ordernummer, express, "Standardbeställning"
+    );
     os.setVisible(true);
-    this.dispose();
+    this.dispose(); // Stäng nuvarande fönster
     }//GEN-LAST:event_btnGaVidareActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-    if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
-          JOptionPane.showMessageDialog(null, "Du måste välja ett giltigt kundnummer innan du kan lägga till produkter.");
-          return;
-      }
+    // Kontrollera om ett giltigt kund-ID har valts
+        String kundID = (String) cbKundnummer.getSelectedItem();
+        if (kundID == null || kundID.equals("Välj KundID")) {
+            JOptionPane.showMessageDialog(null, "Du måste välja ett giltigt kundnummer innan du kan lägga till produkter.");
+            return;
+        }
 
-      try {
-          int antal = Integer.parseInt(tfAntal.getText());
-          double pris = Double.parseDouble(tfPris.getText());
-          String artikelnummer = tfArtikelNummer.getText();
-          Object selectedItem = cbNamn.getSelectedItem();
+        try {
+            // Försök att lägga till produkten
+            int antal = Integer.parseInt(tfAntal.getText());
+            double pris = Double.parseDouble(tfPris.getText());
+            String artikelnummer = tfArtikelNummer.getText();
+            Object selectedItem = cbNamn.getSelectedItem();
 
-          if (selectedItem == null || selectedItem.equals("Välj vara")) {
-              JOptionPane.showMessageDialog(null, "Välj en produkt först.");
-              return;
-          }
+            if (selectedItem == null || selectedItem.equals("Välj vara")) {
+                JOptionPane.showMessageDialog(null, "Välj en produkt först.");
+                return;
+            }
 
-          String namn = selectedItem.toString();
-          orderrader.add(new Orderrad(artikelnummer, namn, antal, pris));
+            String namn = selectedItem.toString();
 
-          JOptionPane.showMessageDialog(null, "Produkt tillagd!");
+            orderrader.add(new Orderrad(artikelnummer, namn, antal, pris));
 
-          tfAntal.setText("");
-          tfArtikelNummer.setText("");
-          tfPris.setText("");
-          cbNamn.setSelectedIndex(0);
-      } catch (NumberFormatException e) {
-          JOptionPane.showMessageDialog(null, "Ange ett giltigt värde för antal.");
-      }
+            JOptionPane.showMessageDialog(null, "Produkt tillagd!");
+
+            // Nollställ textfälten och comboboxen efter att produkten har lagts till.
+            tfAntal.setText("");
+            tfArtikelNummer.setText("");
+            tfPris.setText("");
+            cbNamn.setSelectedIndex(0);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ange ett giltigt värde för antal.");
+        }
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void cbKundnummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKundnummerActionPerformed

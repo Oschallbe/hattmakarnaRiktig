@@ -120,6 +120,18 @@ public class OrderSammanfattning extends javax.swing.JFrame {
 
         uppdateraTotalpris();
     }
+    
+    private void nollstallOrder() {
+    orderrader.clear();
+    express = false;
+    tfExpress.setText("0 kr");
+    tfTotalpris.setText("0 kr");
+
+    DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+    modell.setRowCount(0);  // Rensa tabellen
+
+    JOptionPane.showMessageDialog(this, "Varukorgen är tom och expresskostnad har nollställts.");
+    }
 
     private void uppdateraTotalpris() {
         totalpris = 0;
@@ -327,7 +339,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     btnSpara.setEnabled(true);
     btnTaBort.setEnabled(true);
     btnRedigera.setEnabled(false);
-    btnBekrafta.setEnabled(true);
 
     tblOrdersammanfattning.repaint(); // Säkerställ att tabellen uppdateras visuellt
     }//GEN-LAST:event_btnRedigeraActionPerformed
@@ -402,7 +413,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-       int valdRad = tblOrdersammanfattning.getSelectedRow();
+    int valdRad = tblOrdersammanfattning.getSelectedRow();
 
     if (valdRad == -1) {
         JOptionPane.showMessageDialog(this, "Välj en produkt att ta bort.");
@@ -422,11 +433,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
         uppdateraTotalpris();
 
         if (orderrader.isEmpty()) {
-            express = false;
-            tfExpress.setText("0 kr");
-            tfTotalpris.setText("0 kr");
-
-            JOptionPane.showMessageDialog(this, "Varukorgen är tom och expresskostnad har nollställts.");
+            nollstallOrder();  // << Nollställ express och totalpris om varukorgen är tom!
         }
 
         JOptionPane.showMessageDialog(this, "Produkten togs bort.");
