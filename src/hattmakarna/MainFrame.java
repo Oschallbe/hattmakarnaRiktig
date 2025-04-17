@@ -25,51 +25,7 @@ public class MainFrame extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
 
-        setTitle("Hattmakarna - Huvudmeny");
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        // Menybar
-        JMenuBar menyBar = new JMenuBar();
-        JMenu meny = new JMenu("Meny");
-
-        // Menyalternativ för att byta vy
-        JMenuItem kundVy = new JMenuItem("Lägg till kund");
-        kundVy.addActionListener(e -> visaVy("kund"));
-
-        JMenuItem startsida = new JMenuItem("Startsida");
-        startsida.addActionListener(e -> visaVy("startsida"));
-
-        meny.add(startsida);
-        meny.add(kundVy);
-        menyBar.add(meny);
-        setJMenuBar(menyBar);
-
-        // Panel + layout för innehåll
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
-
-        // Lägg till vyer
-        mainPanel.add(new StartsidaPanel(), "startsida");
-        mainPanel.add(new test2(idb,inloggadAnvandare), "kund");
-
-        add(mainPanel);
-
-        // Visa startsida först
-        visaVy("startsida");
-    }
-    
-    // Startsida-panel (du kan designa den snyggare själv)
-    private static class StartsidaPanel extends JPanel {
-        public StartsidaPanel() {
-            setLayout(new BorderLayout());
-            add(new JLabel("Välkommen till Hattmakarna!", JLabel.CENTER), BorderLayout.CENTER);
-        }
-    }
-    // Funktion för att byta vy
-    private void visaVy(String namn) {
-        cardLayout.show(mainPanel, namn);
+        
     }
 
     /**
