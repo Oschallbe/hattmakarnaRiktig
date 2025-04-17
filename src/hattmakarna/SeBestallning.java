@@ -158,6 +158,11 @@ private String klickatOrderNr;
         });
 
         btnSökDatum.setText("Sök");
+        btnSökDatum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSökDatumActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -370,6 +375,49 @@ private String klickatOrderNr;
         JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
     }
     }//GEN-LAST:event_btnSökKundActionPerformed
+
+    private void btnSökDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökDatumActionPerformed
+        String datum = txtDatum.getText().trim();
+
+    // Validera att användaren har skrivit ett korrekt datum
+    if (!Validering.valideringDatum(datum)) {
+        JOptionPane.showMessageDialog(this, "Datumet måste vara i formatet YYYY-MM-DD.");
+        return;
+    }
+
+    try {
+        String query = "SELECT k.KundID, b.BestallningID, b.Typ, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                       "FROM Kund k " +
+                       "JOIN Bestallning b ON k.KundID = b.KundID " +
+                       "WHERE b.Datum = '" + datum.replace("'", "''") + "'";
+
+        List<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+        if (resultat == null || resultat.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Inga beställningar hittades för det angivna datumet.");
+            return;
+        }
+
+        // Uppdatera tabellen
+        DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+        model.setRowCount(0); // Rensa tidigare data
+
+        for (HashMap<String, String> rad : resultat) {
+            model.addRow(new Object[]{
+                rad.get("Typ"),
+                rad.get("BestallningID"),
+                rad.get("KundID"),
+                rad.get("Status"),
+                rad.get("TotalPris"),
+                rad.get("Datum"),
+                rad.get("Expressbestallning")
+            });
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid filtrering: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnSökDatumActionPerformed
 
     
 
