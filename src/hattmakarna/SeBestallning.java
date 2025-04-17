@@ -86,13 +86,16 @@ private String klickatOrderNr;
 
         jScrollPane1 = new javax.swing.JScrollPane();
         BestallningsLista = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
         tillbaka = new javax.swing.JButton();
         btnSeOrder = new javax.swing.JButton();
+        cbStatus = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        txtDatum = new javax.swing.JTextField();
+        txtKund = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btnSökKund = new javax.swing.JButton();
+        btnSökDatum = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,16 +116,6 @@ private String klickatOrderNr;
         ));
         jScrollPane1.setViewportView(BestallningsLista);
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField1");
-
-        jTextField3.setText("jTextField1");
-
-        jTextField4.setText("jTextField1");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         tillbaka.setText("Tillbaka");
         tillbaka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,52 +130,99 @@ private String klickatOrderNr;
             }
         });
 
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Status:", "Packas", "Skickad", "Produktion pågår", "Under behandling", "Levererad" }));
+        cbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStatusActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Filtrera efter: ");
+
+        txtDatum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDatumActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("KundID eller för- och efternamn: ");
+
+        jLabel3.setText("Datum:");
+
+        btnSökKund.setText("Sök");
+        btnSökKund.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSökKundActionPerformed(evt);
+            }
+        });
+
+        btnSökDatum.setText("Sök");
+        btnSökDatum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSökDatumActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(274, 274, 274)
-                        .addComponent(tillbaka)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSeOrder)))
+                        .addComponent(btnSeOrder)
+                        .addGap(47, 47, 47)
+                        .addComponent(tillbaka)
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(46, 46, 46)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtKund, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnSökKund, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(187, 187, 187)
+                .addComponent(btnSökDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tillbaka)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSeOrder)
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tillbaka)
+                    .addComponent(btnSeOrder))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(77, 77, 77))
+                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtKund, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSökKund)
+                    .addComponent(btnSökDatum))
+                .addGap(48, 48, 48))
         );
 
         pack();
@@ -234,17 +274,165 @@ private String klickatOrderNr;
         }
     }//GEN-LAST:event_btnSeOrderActionPerformed
 
+    private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
+        String valdStatus = cbStatus.getSelectedItem().toString();
+
+    try {
+        String query = "SELECT b.Typ, b.BestallningID, b.KundID, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                       "FROM Bestallning b " +
+                       "JOIN Kund k ON k.KundID = b.KundID";
+
+        if (!valdStatus.equalsIgnoreCase("Status")) {
+            query += " WHERE b.Status = '" + valdStatus.replace("'", "''") + "'";
+        }
+
+        List<HashMap<String, String>> bestallningar = idb.fetchRows(query);
+
+        DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+        model.setRowCount(0); // Rensa tidigare data
+
+        for (HashMap<String, String> rad : bestallningar) {
+            model.addRow(new Object[]{
+                rad.get("Typ"),
+                rad.get("BestallningID"),
+                rad.get("KundID"),
+                rad.get("Status"),
+                rad.get("TotalPris"),
+                rad.get("Datum"),
+                rad.get("Expressbestallning")
+            });
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid filtrering: " + e.getMessage());
+    }
+    }//GEN-LAST:event_cbStatusActionPerformed
+
+    private void txtDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDatumActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDatumActionPerformed
+
+    private void btnSökKundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökKundActionPerformed
+        // 
+        String kund = txtKund.getText().trim(); 
+        
+       if (kund.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Du måste ange KundID eller namn.");
+        return;
+    }
+
+    try {
+        String query = "";
+
+        if (kund.contains(" ")) {
+            // Förnamn + Efternamn
+            String[] delar = kund.trim().split("\\s+", 2);
+            String fornamn = delar[0].toLowerCase().replace("'", "''");
+            String efternamn = delar[1].toLowerCase().replace("'", "''");
+
+            query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.BestallningID, b.Typ, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                    "FROM Kund k " +
+                    "JOIN Bestallning b ON k.KundID = b.KundID " +
+                    "WHERE LOWER(k.Fornamn) = '" + fornamn + "' " +
+                    "AND LOWER(k.Efternamn) = '" + efternamn + "'";
+        } else {
+            // KundID
+            try {
+                int kundID = Integer.parseInt(kund);
+                query = "SELECT k.KundID, k.Fornamn, k.Efternamn, b.BestallningID, b.Typ , b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                        "FROM Kund k " +
+                        "JOIN Bestallning b ON k.KundID = b.KundID " +
+                        "WHERE k.KundID = " + kundID;
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Ogiltigt KundID. Ange ett numeriskt värde eller namn.");
+                return;
+            }
+        }
+
+        List<HashMap<String, String>> kunder = idb.fetchRows(query);
+
+        if (kunder == null || kunder.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingen kund hittades.");
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+        model.setRowCount(0); // Rensa gammal data
+
+        for (HashMap<String, String> kundData : kunder) {
+            model.addRow(new Object[]{
+                kundData.get("Typ"),
+                kundData.get("BestallningID"),
+                kundData.get("KundID"),
+                kundData.get("Status"),
+                kundData.get("TotalPris"),
+                kundData.get("Datum"),
+                kundData.get("Expressbestallning")
+            });
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnSökKundActionPerformed
+
+    private void btnSökDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökDatumActionPerformed
+        String datum = txtDatum.getText().trim();
+
+    // Validera att användaren har skrivit ett korrekt datum
+    if (!Validering.valideringDatum(datum)) {
+        JOptionPane.showMessageDialog(this, "Datumet måste vara i formatet YYYY-MM-DD.");
+        return;
+    }
+
+    try {
+        String query = "SELECT k.KundID, b.BestallningID, b.Typ, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
+                       "FROM Kund k " +
+                       "JOIN Bestallning b ON k.KundID = b.KundID " +
+                       "WHERE b.Datum = '" + datum.replace("'", "''") + "'";
+
+        List<HashMap<String, String>> resultat = idb.fetchRows(query);
+
+        if (resultat == null || resultat.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Inga beställningar hittades för det angivna datumet.");
+            return;
+        }
+
+        // Uppdatera tabellen
+        DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+        model.setRowCount(0); // Rensa tidigare data
+
+        for (HashMap<String, String> rad : resultat) {
+            model.addRow(new Object[]{
+                rad.get("Typ"),
+                rad.get("BestallningID"),
+                rad.get("KundID"),
+                rad.get("Status"),
+                rad.get("TotalPris"),
+                rad.get("Datum"),
+                rad.get("Expressbestallning")
+            });
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid filtrering: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnSökDatumActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable BestallningsLista;
     private javax.swing.JButton btnSeOrder;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnSökDatum;
+    private javax.swing.JButton btnSökKund;
+    private javax.swing.JComboBox<String> cbStatus;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JButton tillbaka;
+    private javax.swing.JTextField txtDatum;
+    private javax.swing.JTextField txtKund;
     // End of variables declaration//GEN-END:variables
 }
