@@ -24,86 +24,74 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="BtnTaBort" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="BtnRedigera" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblEfternamn" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lblKundID" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="lblFornamn" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblHuvudmått" min="-2" pref="69" max="-2" attributes="0"/>
+                          <Component id="lblEpost" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtfHuvudmått" min="-2" pref="109" max="-2" attributes="0"/>
+                          <Component id="txtEpost" min="-2" pref="154" max="-2" attributes="0"/>
+                          <Component id="txtEfternamn" min="-2" pref="95" max="-2" attributes="0"/>
+                          <Component id="txtFornamn" min="-2" pref="89" max="-2" attributes="0"/>
+                          <Component id="txtKundID" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblTelefonnummer" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblLeveransadress" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                              <Component id="BtnTaBort" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblFakturaadress" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="lblLeveransadress" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtLeveransAdress" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblEfternamn" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="txtEfternamn" min="-2" pref="95" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblFornamn" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtFornamn" min="-2" pref="89" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblKundID" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtKundID" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblFakturaadress" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="txtFakturaAdress" min="-2" pref="121" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="lblEpost" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtEpost" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Component id="lblTelefonnummer" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtTelefonnummer" min="-2" pref="106" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
+                                  <Component id="txtTelefonnummer" min="-2" pref="106" max="-2" attributes="0"/>
+                                  <Component id="txtLeveransAdress" min="-2" pref="135" max="-2" attributes="0"/>
+                                  <Component id="txtFakturaAdress" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                              <Component id="BtnRedigera" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblFakturaort" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblLeveransort" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="BtnSpara" alignment="1" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="BtnSpara" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="72" max="32767" attributes="0"/>
-                      <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="txtLeveransort" pref="96" max="32767" attributes="0"/>
+                          <Component id="txtFakturaort" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtOrt" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtort" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                      <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -112,9 +100,9 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblKundID" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtKundID" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -129,7 +117,12 @@
                   <Component id="lblEfternamn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtEfternamn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblHuvudmått" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtfHuvudmått" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblEpost" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtEpost" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -139,21 +132,25 @@
                   <Component id="lblTelefonnummer" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtTelefonnummer" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblLeveransadress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtLeveransAdress" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtOrt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblLeveransort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransort" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblFakturaadress" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtFakturaAdress" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtort" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="lblFakturaadress" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtFakturaAdress" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                      <Component id="lblFakturaort" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtFakturaort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="40" max="32767" attributes="0"/>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="BtnTaBort" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BtnRedigera" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -254,19 +251,32 @@
     <Component class="javax.swing.JTextField" name="txtLeveransAdress">
     </Component>
     <Component class="javax.swing.JTextField" name="txtFakturaAdress">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFakturaAdressActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtOrt">
+    <Component class="javax.swing.JTextField" name="txtLeveransort">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtort">
+    <Component class="javax.swing.JTextField" name="txtFakturaort">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="lblFakturaort">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ort"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
+    <Component class="javax.swing.JLabel" name="lblLeveransort">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ort"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtfHuvudm&#xe5;tt">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtfHuvudm&#xe5;ttActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblHuvudm&#xe5;tt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Huvudm&#xe5;tt"/>
       </Properties>
     </Component>
   </SubComponents>
