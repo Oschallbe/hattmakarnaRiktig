@@ -56,7 +56,7 @@ public class SeAllaProdukter extends javax.swing.JFrame {
                         row.get("Artikelnummer"),
                         row.get("Namn"),
                         row.get("Pris"),
-                        row.get("Mått"),
+                        row.get("Matt"),
                         "Se material",
                     });
                 }
