@@ -16,7 +16,7 @@ import oru.inf.InfException;
 public class MainFrame extends javax.swing.JFrame {
     private static InfDB idb;
     
-    //private HuvudMeny1 huvudMenyPanel;
+    //Skapar fält för varje panel som ska visas i menyn
     private KalenderSchema1 kalenderPanel;
     private SeAllaOrdrar allaOrdrarPanel;
     private SeAllaKunder allaKunderPanel;
@@ -25,10 +25,9 @@ public class MainFrame extends javax.swing.JFrame {
     private SkapaNySpecialOrder skapaSpecialOrderPanel;
     private SeForsaljningsstatistik1 seForsaljningsstatistikPanel;
     private HanteraAllaAnstallda hanteraAllaAnstalldaPanel;
-    //private MainFrame loggaUt;
-
+    //Fält för att anropa validerings klassen
     private Validering validera;
-    private MainFrame parentFrame;  // referens till MainFrame
+    //private MainFrame parentFrame;  // referens till MainFrame
 
 
     
@@ -38,47 +37,51 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame(InfDB idb) {
         initComponents();
-                // Se till att layouten på MainFrame är BorderLayout
+        // Se till att layouten på MainFrame är BorderLayout
         this.setLayout(new BorderLayout());
 
         // Lägg till jPanel1 i mitten
         this.add(jPanel1, BorderLayout.CENTER);
 
-        // (Valfritt) Lägg padding runt om
+        //Lägg padding runt om
         jPanel1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        this.idb = idb;
         jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
+        this.idb = idb;
         lblFelMeddelande.setVisible(false);
         txtfEmail.setText("karin@hattmakarna.se");
         pswfLosenord.setText("hatt123");
         lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenuBar1.setVisible(false);   
+        //Vi vill inte att menyn ska visas förens vi loggat in
+        jMenuBar1.setVisible(false);
     }
 
         private void loggaUt() {
+        //När man trycker på logga ut får man upp ett fönster där mna behöver bekräfta utloggning
         int svar = JOptionPane.showConfirmDialog(this, "Vill du logga ut?", "Bekräfta", JOptionPane.YES_NO_OPTION);
+        //Om man väljer jag loggas man ut
         if (svar == JOptionPane.YES_OPTION) {
-        this.dispose();
-        MainFrame nyMainFrame = new MainFrame(idb);
-        nyMainFrame.setVisible(true);
+            this.dispose();
+            MainFrame nyMainFrame = new MainFrame(idb);
+            nyMainFrame.setVisible(true);
+        }
     }
-}
 
-    /*public void hanteraAnstallda(){
+
+    public void hanteraAnstallda(){
         try{
-            String hamtaAnstallda = "select Behorighet from Anstalld where Epost = '" + inloggadAnvandare + "';";
-            String behorighet = idb.fetchSingle(hamtaAnstallda);         
+            String hamtaAnstallda = "select Behorighet from Anstalld where Epost = '" + txtfEmail.getText() + "';";
+            String behorighet = idb.fetchSingle(hamtaAnstallda); 
                 if(behorighet.equals("1")){
-                    HanteraAnstalld.setVisible(false);
+                    hanteraAnstallda.setVisible(false);
                 }
-                else if(behorighet.equals("2")){
-                    HanteraAnstalld.setVisible(true);
+                else if(behorighet.equals("2")){                           
+                    hanteraAnstallda.setVisible(true);
                 }
         }
         catch(InfException ex){
             System.out.println(ex);
         }
-    }*/
+    }
     
     public void addPanelToCardLayout(JPanel panel, String name) {
         jPanel1.add(panel, name);
@@ -88,6 +91,7 @@ public class MainFrame extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, name);
     }
+   
     
 
    
@@ -127,12 +131,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.CardLayout());
 
         lblInloggning.setText("Inloggning");
-
-        txtfEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtfEmailActionPerformed(evt);
-            }
-        });
 
         lblEpost.setText("E-post");
 
@@ -283,55 +281,54 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(109, 109, 109)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1010, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(318, 318, 318)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblEpost)
-                                .addComponent(lblLosenord))
-                            .addGap(50, 50, 50)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtfEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                                .addComponent(pswfLosenord)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(167, 167, 167)
-                            .addComponent(btnLoggaIn))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(112, 112, 112)
-                            .addComponent(lblFelMeddelande))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(134, 134, 134)
-                            .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap(469, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(109, 109, 109)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(360, 360, 360)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblLosenord)
+                            .addComponent(lblEpost)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(525, 525, 525)
+                        .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 446, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(426, 426, 426))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblFelMeddelande)
+                        .addGap(492, 492, 492))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnLoggaIn)
+                        .addGap(507, 507, 507))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(126, 126, 126)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(571, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(112, 112, 112)
-                    .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(42, 42, 42)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblEpost))
-                    .addGap(49, 49, 49)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblLosenord)
-                        .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(41, 41, 41)
-                    .addComponent(btnLoggaIn)
-                    .addGap(40, 40, 40)
-                    .addComponent(lblFelMeddelande)
-                    .addContainerGap(288, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEpost))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLosenord))
+                .addGap(18, 18, 18)
+                .addComponent(btnLoggaIn)
+                .addGap(32, 32, 32)
+                .addComponent(lblFelMeddelande)
+                .addGap(263, 263, 263))
         );
 
         pack();
@@ -376,10 +373,6 @@ public class MainFrame extends javax.swing.JFrame {
         // Visa
         showPanel("Alla ordrar");
     }//GEN-LAST:event_seAllaOrdrarMenuSelected
-
-    private void txtfEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfEmailActionPerformed
-
-    }//GEN-LAST:event_txtfEmailActionPerformed
 
     private void pswfLosenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswfLosenordActionPerformed
 
@@ -436,6 +429,7 @@ public class MainFrame extends javax.swing.JFrame {
             lblFelMeddelande.setVisible(false);
 
             jMenuBar1.setVisible(true);
+            hanteraAnstallda();
             kalenderPanel = new KalenderSchema1(idb, txtfEmail.getText());
 
             // Skapa en wrapper-panel med centrerad layout
