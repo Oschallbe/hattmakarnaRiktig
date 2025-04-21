@@ -433,7 +433,7 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
 
     private void btnGaVidareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaVidareActionPerformed
     if (orderrader.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt.");
+        JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
         return;
     }
 
