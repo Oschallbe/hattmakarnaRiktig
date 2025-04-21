@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.FileAlreadyExistsException;
 
 
 
@@ -563,15 +564,25 @@ public class OrderSammanfattning extends javax.swing.JFrame {
 }
 
      
+        Path admin = null;
    
         // skapa PDF
         try {
            // gör en ny mapp som heter hattadmin, dit pdf-erna sparas
-           Path admin = Paths.get(System.getProperty("user.home"), "hattadmin");
+           admin = Paths.get(System.getProperty("user.home"), "hattadmin");
            Files.createDirectory(admin);
-           
+        } catch (FileAlreadyExistsException ex) {
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Fel vid skapande av admin-mapp: " + ex.getMessage());
+        }
+
+
+        try {
            // sparar pdf-en med åtta siffror inklusive inledande nollor för att kunna listas alfanumerisk ordning
-           Path path = Paths.get(admin.toString(), "Orderbekr_" + String.format("%08d", Integer.valueOf(ordernummer)) + ".pdf");
+           Path path = Paths.get(
+                   admin.toString(),
+                   "Orderbekr_" + String.format("%08d", Integer.parseInt(ordernummer)) + ".pdf");
            PdfDocument pdf = new PdfDocument(new PdfWriter(path.toString()));
 
            Document document = new Document(pdf);
@@ -598,15 +609,15 @@ public class OrderSammanfattning extends javax.swing.JFrame {
 
            document.add(new Paragraph("Beställning:").setFont(bold));
 
-        for (BestallningsRad rad : pdforderlista) {
-            document.add( new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ",  totalt: " + rad.totaltRadPris));
-           }
+          for (BestallningsRad rad : pdforderlista) {
+               document.add( new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ",  totalt: " + rad.totaltRadPris));
+          }
           document.add(new Paragraph(" "));
           document.add(new Paragraph(" "));
           document.add(new Paragraph("Vid frågor, kontakta oss via mail och ange ordernummer" + " "+ ordernummer));
 
 
-        document.close();
+          document.close();
 
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + ex.getMessage());
