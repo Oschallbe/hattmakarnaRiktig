@@ -208,7 +208,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 
             
             }
-
             //Om expressleverans är satt till "Ja" multipliceras totalpriset med 1,2 och det totala priset uppdateras.
             if(express.equals("Ja")){
                 totalPris = totalPris * 1.2;
@@ -246,10 +245,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
             String selectExpress = "select Expressbestallning from bestallning where BestallningID = '" + klickatOrderNr + "';";
             express = idb.fetchSingle(selectExpress);
             
-<<<<<<< HEAD
             //Om värdet som hämtas från databasen för expressleverans är "1" ska det bytas ut mot "ja", annars sätt expressleveransen till "nej".
-=======
->>>>>>> 6f527f7 (ignorera ds_store)
             if(express.equals("1")){
                 express = "Ja";
             }
@@ -317,14 +313,11 @@ public class SeVanligOrder extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         lblExpress = new javax.swing.JLabel();
         btnFraktsedel = new javax.swing.JButton();
-<<<<<<< HEAD
         btnSpara = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAllaAnstallda = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-=======
->>>>>>> 6f527f7 (ignorera ds_store)
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -399,7 +392,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
             }
         });
 
-<<<<<<< HEAD
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -426,15 +418,12 @@ public class SeVanligOrder extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel8.setText("Hitta rätt anställningsnummer här!");
 
-=======
->>>>>>> 6f527f7 (ignorera ds_store)
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-<<<<<<< HEAD
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,14 +452,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 33, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-=======
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnFraktsedel)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnTillbaka))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
->>>>>>> 6f527f7 (ignorera ds_store)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -488,19 +469,9 @@ public class SeVanligOrder extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblKundNr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-<<<<<<< HEAD
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnFraktsedel)
                         .addGap(84, 84, 84))))
-=======
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(lblExpress)))
-                    .addComponent(btnAtaProdukt))
-                .addContainerGap(50, Short.MAX_VALUE))
->>>>>>> 6f527f7 (ignorera ds_store)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -534,7 +505,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblPris))
-<<<<<<< HEAD
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -552,21 +522,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnTillbaka)))
                 .addContainerGap(20, Short.MAX_VALUE))
-=======
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(lblExpress))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(btnAtaProdukt)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTillbaka)
-                    .addComponent(btnFraktsedel))
-                .addContainerGap(16, Short.MAX_VALUE))
->>>>>>> 6f527f7 (ignorera ds_store)
         );
 
         pack();
@@ -598,7 +553,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFraktsedelActionPerformed
 
-<<<<<<< HEAD
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         try {
             //Hämtar datan från tblAllaProdukter och lägger den i "tabell".
@@ -645,8 +599,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
-=======
->>>>>>> 6f527f7 (ignorera ds_store)
     /**
      * @param args the command line arguments
      */
@@ -685,10 +637,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtaProdukt;
     private javax.swing.JButton btnFraktsedel;
-<<<<<<< HEAD
     private javax.swing.JButton btnSpara;
-=======
->>>>>>> 6f527f7 (ignorera ds_store)
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -696,11 +645,8 @@ public class SeVanligOrder extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-<<<<<<< HEAD
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-=======
->>>>>>> 6f527f7 (ignorera ds_store)
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDatum;

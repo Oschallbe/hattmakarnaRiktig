@@ -42,10 +42,7 @@ private String klickatOrderNr;
                     String expressHamtning = row.get("Expressbestallning");
                     String expressOmvandling;
                     double totalPris = Double.parseDouble(row.get("TotalPris"));
-<<<<<<< HEAD
-
-=======
->>>>>>> acb0596 (stuff)
+                    
                     if(expressHamtning.equals("1")){
                         expressOmvandling = "Ja";
                         totalPris = totalPris * 1.2;
@@ -71,7 +68,7 @@ private String klickatOrderNr;
 
         } catch (InfException e) {
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av data: " + e.getMessage());
-        }
+        }   
     }
     
    

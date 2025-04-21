@@ -35,7 +35,7 @@ Hattmakarna/nbproject/project.properties
 /nbproject/private/
 /dist/
 build/classes/hattmakarna/HuvudMeny.class
-build/
+build/*
 dist/lib/javadoc_InfDB.zip
 build/classes/hattmakarna/HuvudMeny.class
 build/classes/hattmakarna/HuvudMeny.class
