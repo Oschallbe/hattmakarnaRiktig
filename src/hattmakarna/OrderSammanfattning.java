@@ -3,16 +3,38 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+
 import oru.inf.InfDB;
 import oru.inf.InfException; 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+
+
+//package com.itextpdf.highlevel.chapter01;
+
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+
+
 /**
  *
  * @author iftinserar
  */
+
+
 public class OrderSammanfattning extends javax.swing.JFrame {
     private InfDB idb; 
     private String inloggadAnvandare; 
@@ -404,66 +426,92 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
        int valdRad = tblOrdersammanfattning.getSelectedRow();
 
-    if (valdRad == -1) {
-        JOptionPane.showMessageDialog(this, "Välj en produkt att ta bort.");
-        return;
-    }
-
-    int bekrafta = JOptionPane.showConfirmDialog(this, 
-        "Vill du verkligen ta bort den här produkten?", 
-        "Bekräfta borttagning", 
-        JOptionPane.YES_NO_OPTION);
-
-    if (bekrafta == JOptionPane.YES_OPTION) {
-        DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
-        modell.removeRow(valdRad);
-        orderrader.remove(valdRad);
-
-        uppdateraTotalpris();
-
-        if (orderrader.isEmpty()) {
-            express = false;
-            tfExpress.setText("0 kr");
-            tfTotalpris.setText("0 kr");
-
-            JOptionPane.showMessageDialog(this, "Varukorgen är tom och expresskostnad har nollställts.");
+        if (valdRad == -1) {
+            JOptionPane.showMessageDialog(this, "Välj en produkt att ta bort.");
+            return;
         }
 
-        JOptionPane.showMessageDialog(this, "Produkten togs bort.");
-    }
+        int bekrafta = JOptionPane.showConfirmDialog(this, 
+            "Vill du verkligen ta bort den här produkten?", 
+            "Bekräfta borttagning", 
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (bekrafta == JOptionPane.YES_OPTION) {
+            DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+            modell.removeRow(valdRad);
+            orderrader.remove(valdRad);
+
+            uppdateraTotalpris();
+
+            if (orderrader.isEmpty()) {
+                express = false;
+                tfExpress.setText("0 kr");
+                tfTotalpris.setText("0 kr");
+
+                JOptionPane.showMessageDialog(this, "Varukorgen är tom och expresskostnad har nollställts.");
+            }
+
+            JOptionPane.showMessageDialog(this, "Produkten togs bort.");
+        }
     }//GEN-LAST:event_btnTaBortActionPerformed
+    
 
+        private class BestallningsRad
+        {
+            public String produktNamn   = "";
+            public int    antal         = -1;
+            public String styckPris     = "";
+            public String totaltRadPris = "";
+        };
+
+    
     private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed
-    if (tblOrdersammanfattning.isEditing()) {
-        tblOrdersammanfattning.getCellEditor().stopCellEditing();
-    }
+        if (tblOrdersammanfattning.isEditing()) {
+            tblOrdersammanfattning.getCellEditor().stopCellEditing(); // FIXME: sparas automatiskt utan att behöva trycka på Save-knappen. Vill vi det?
+        }
 
-    // Här gör vi en validering för att säkerställa att alla antal är giltiga innan vi sparar till databasen
-    DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
-    boolean valid = true;
+        // Här gör vi en validering för att säkerställa att alla antal är giltiga innan vi sparar till databasen
+        DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+        boolean valid = true;
+        
+        ArrayList<BestallningsRad> pdforderlista = new ArrayList<BestallningsRad>();
 
-    // Validera alla antal innan vi försöker spara till databasen
-    for (int i = 0; i < modell.getRowCount(); i++) {
-        Object cellValue = modell.getValueAt(i, 1); // kolumn "Antal"
-        try {
-            int antal = Integer.parseInt(cellValue.toString());
-            if (antal <= 0) {
-                JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " måste vara ett positivt heltal.");
+        // Validera alla antal innan vi försöker spara till databasen
+        for (int i = 0; i < modell.getRowCount(); i++) {
+            BestallningsRad rad = new BestallningsRad();
+
+            
+            Object cellValue = modell.getValueAt(i, 1); // kolumn "Antal"
+            try {
+                int antal = Integer.parseInt(cellValue.toString());
+                if (antal <= 0) {
+                    JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " måste vara ett positivt heltal.");
+                    valid = false;  // Valideringen misslyckades
+                    break;
+                } else {
+                    rad.produktNamn = modell.getValueAt(i, 0).toString();
+                    rad.styckPris   = modell.getValueAt(i, 2).toString();
+                    orderrader.get(i).setAntal(antal); // Uppdatera i modellen
+                    rad.antal = antal;
+                    rad.totaltRadPris = String.format("%.2f kr", antal * orderrader.get(i).getPris());
+                    modell.setValueAt(rad.totaltRadPris, i, 3); // Uppdatera radens total
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " är inte ett giltigt heltal.");
                 valid = false;  // Valideringen misslyckades
                 break;
-            } else {
-                orderrader.get(i).setAntal(antal); // Uppdatera i modellen
-                modell.setValueAt(String.format("%.2f kr", antal * orderrader.get(i).getPris()), i, 3); // Uppdatera radens total
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " är inte ett giltigt heltal.");
-            valid = false;  // Valideringen misslyckades
-            break;
+            // skapas för att användas i pdf-en 
+            pdforderlista.add(rad);
         }
-    }
+        
+        if (!valid) {
+           return; // FIXME visa att det gått fel här
+        }
 
-    // Om all validering lyckades, uppdatera totalpris och spar till databasen
-    if (valid) {
+        String formattedTotalpris = "";
+        
         uppdateraTotalpris();  // Uppdatera totalpris och expresskostnad
 
         // Status och datum
@@ -474,7 +522,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
         // Validera och konvertera totalpris
         String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
         double totalprisDouble = Double.parseDouble(totalprisStr);
-        String formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
+        formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
 
         // Skapa och kör SQL
         String sql = String.format(
@@ -492,7 +540,77 @@ public class OrderSammanfattning extends javax.swing.JFrame {
              // Hantera om det uppstår ett problem med databasoperationen
              JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
          }
-     }
+        
+        String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, Ort, LeveransAdress, FakturaAdress FROM Kund WHERE KundID = " + kundID + ";";
+           
+           HashMap<String, String> kundInfo = new HashMap<>();
+
+            
+        try {
+            HashMap<String, String> result = idb.fetchRow(kundQuery);
+    
+        if (result != null) {
+            kundInfo.putAll(result);
+             
+        }
+            
+        else {
+        JOptionPane.showMessageDialog(this, "Kundinformation kunde inte hämtas.");
+    }
+} 
+        catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av kunddata: " + e.getMessage());
+}
+
+     
+   
+        // skapa PDF
+        try {
+           // gör en ny mapp som heter hattadmin, dit pdf-erna sparas
+           Path admin = Paths.get(System.getProperty("user.home"), "hattadmin");
+           Files.createDirectory(admin);
+           
+           // sparar pdf-en med åtta siffror inklusive inledande nollor för att kunna listas alfanumerisk ordning
+           Path path = Paths.get(admin.toString(), "Orderbekr_" + String.format("%08d", Integer.valueOf(ordernummer)) + ".pdf");
+           PdfDocument pdf = new PdfDocument(new PdfWriter(path.toString()));
+
+           Document document = new Document(pdf);
+
+          
+           PdfFont bold  = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
+         
+           document.add(new Paragraph("Orderbekräftelse " + datum).setFont(bold));
+           document.add(new Paragraph(" "));
+           document.add(new Paragraph("Hej! " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
+           document.add(new Paragraph("Tack för din beställning hos oss på Hattmakarna"));
+           document.add(new Paragraph("Vi har nu mottagit din order och kommer påbörja tillverkningen"));
+           document.add(new Paragraph(" "));
+           document.add(new Paragraph(" "));
+           document.add(new Paragraph("Kundinformation:").setFont(bold));
+           document.add(new Paragraph("Namn: " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
+           document.add(new Paragraph("E-post: " + kundInfo.get("Epost")));
+           document.add(new Paragraph("Telefonnummer: " + kundInfo.get("Telefonnummer")));
+           document.add(new Paragraph("Ort: " + kundInfo.get("Ort")));
+           document.add(new Paragraph("Leveransadress: " + kundInfo.get("LeveransAdress")));
+           document.add(new Paragraph("Fakturaadress: " + kundInfo.get("FakturaAdress")));
+           document.add(new Paragraph(" "));
+           document.add(new Paragraph(" "));
+
+           document.add(new Paragraph("Beställning:").setFont(bold));
+
+        for (BestallningsRad rad : pdforderlista) {
+            document.add( new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ",  totalt: " + rad.totaltRadPris));
+           }
+          document.add(new Paragraph(" "));
+          document.add(new Paragraph(" "));
+          document.add(new Paragraph("Vid frågor, kontakta oss via mail och ange ordernummer" + " "+ ordernummer));
+
+
+        document.close();
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnBekraftaActionPerformed
 
     /**
