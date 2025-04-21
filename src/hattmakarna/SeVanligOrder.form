@@ -85,9 +85,18 @@
                               <Component id="lblKundNr" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+<<<<<<< HEAD
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnFraktsedel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+=======
+                      <Component id="jScrollPane1" min="-2" pref="607" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="lblExpress" min="-2" max="-2" attributes="0"/>
+                      </Group>
+>>>>>>> 6f527f7 (ignorera ds_store)
                   </Group>
               </Group>
           </Group>
@@ -134,6 +143,7 @@
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPris" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+<<<<<<< HEAD
               <EmptySpace pref="22" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -156,6 +166,23 @@
                   </Group>
               </Group>
               <EmptySpace pref="20" max="32767" attributes="0"/>
+=======
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblExpress" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <Component id="btnAtaProdukt" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="151" max="-2" attributes="0"/>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnTillbaka" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnFraktsedel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
+>>>>>>> 6f527f7 (ignorera ds_store)
           </Group>
       </Group>
     </DimensionLayout>
@@ -336,6 +363,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFraktsedelActionPerformed"/>
       </Events>
     </Component>
+<<<<<<< HEAD
     <Component class="javax.swing.JButton" name="btnSpara">
       <Properties>
         <Property name="text" type="java.lang.String" value="Spara"/>
@@ -396,5 +424,7 @@
         <Property name="text" type="java.lang.String" value="Hitta r&#xe4;tt anst&#xe4;llningsnummer h&#xe4;r!"/>
       </Properties>
     </Component>
+=======
+>>>>>>> 6f527f7 (ignorera ds_store)
   </SubComponents>
 </Form>

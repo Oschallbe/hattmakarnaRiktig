@@ -50,3 +50,4 @@ dist/Hattmakarna.jar
 nbproject/private/private.properties
 nbproject/private/private.properties
 *.properties
+.DS_Store
