@@ -71,7 +71,6 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        btnTillbaka = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -86,13 +85,6 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Försäljningsstatistik");
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -146,46 +138,44 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addGap(76, 76, 76)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(203, 203, 203)
                 .addComponent(jLabel3)
-                .addGap(99, 99, 99))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(129, 129, 129)
-                        .addComponent(btnTillbaka)))
+                        .addGap(24, 24, 24)
+                        .addComponent(txtHatt, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSokDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSokDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnFiltrera)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSummera))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(334, 334, 334)))))
                 .addGap(16, 16, 16))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(txtHatt, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSokDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSokDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnFiltrera)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(btnSummera)
-                .addGap(0, 19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(btnTillbaka))
-                .addGap(26, 26, 26)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
@@ -214,12 +204,33 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
     private void btnSummeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSummeraActionPerformed
         String hatt = txtHatt.getText();
+        String fran = txtSokDatumFran.getText();
+        String till = txtSokDatumTill.getText();
+        
+        //Validera eventuella datum
+        if ((!fran.isEmpty() && !Validering.valideringDatum(fran)) || (!till.isEmpty() && !Validering.valideringDatum(till))) {
+            JOptionPane.showMessageDialog(this, "Datum måste anges i formatet ÅÅÅÅ-MM-DD.");
+            return;
+        }
         try {
             String fraga = "SELECT sp.Namn AS Namn, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
                     + "FROM OrderItem oi "
                     + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
                     + "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID "
-                    + "WHERE b.Status = 'Levererad' AND sp.Namn = '" + hatt + "'";
+                    + "WHERE b.Status = 'Levererad'";
+            
+            // Lägg till filtrering om fält är ifyllda
+            if (!hatt.isEmpty()) {
+                fraga += " AND sp.Namn = '" + hatt + "'";
+            }
+            if (!fran.isEmpty() && !till.isEmpty()) {
+                fraga += " AND b.Datum >= '" + fran + "' AND b.Datum <= '" + till + "'";
+            } 
+            else if (!fran.isEmpty() || !till.isEmpty()) {
+                // Ett av datumen är ifyllt men inte båda
+                JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
+                return;
+            }
 
             List<HashMap<String, String>> resultat = idb.fetchRows(fraga);
 
@@ -244,12 +255,16 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
                     }
                 }
 
-                //Lägg till EN rad med summering
+                String datumText = "";
+                if (!fran.isEmpty() && !till.isEmpty()) {
+                    datumText = "Från: " + fran + " till " + till;
+                }
+
                 model.addRow(new Object[]{
                     "Totalt för: " + hatt,
                     String.format("%.2f kr", totalPris),
                     totalAntal,
-                    "" // Datumfältet tomt
+                    datumText
                 });
 
             } else {
@@ -261,41 +276,36 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSummeraActionPerformed
 
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        //XD
-    }//GEN-LAST:event_btnTillbakaActionPerformed
-
     private void btnFiltreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraActionPerformed
-        String hatt = txtHatt.getText().trim();
-        String fran = txtSokDatumFran.getText().trim();
-        String till = txtSokDatumTill.getText().trim();
+        String hatt = txtHatt.getText();
+        String fran = txtSokDatumFran.getText();
+        String till = txtSokDatumTill.getText();
 
         //Validera eventuella datum
-        if ((!fran.isEmpty() && !Validering.valideringDatum(fran))
-                || (!till.isEmpty() && !Validering.valideringDatum(till))) {
+        if ((!fran.isEmpty() && !Validering.valideringDatum(fran)) || (!till.isEmpty() && !Validering.valideringDatum(till))) {
             JOptionPane.showMessageDialog(this, "Datum måste anges i formatet ÅÅÅÅ-MM-DD.");
             return;
         }
 
         try {
             //Bygg basfråga
-            StringBuilder fraga = new StringBuilder(
-                    "SELECT sp.Namn AS Namn, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
+            String fraga = "SELECT sp.Namn AS Namn, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
                     + "FROM OrderItem oi "
                     + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
                     + "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID "
-                    + "WHERE b.Status = 'Levererad'"
-            );
+                    + "WHERE b.Status = 'Levererad'";
 
             // Lägg till filtrering om fält är ifyllda
             if (!hatt.isEmpty()) {
-                fraga.append(" AND sp.Namn = '").append(hatt).append("'");
+                fraga += " AND sp.Namn = '" + hatt + "'";
             }
-            if (!fran.isEmpty()) {
-                fraga.append(" AND b.Datum >= '").append(fran).append("'");
-            }
-            if (!till.isEmpty()) {
-                fraga.append(" AND b.Datum <= '").append(till).append("'");
+            if (!fran.isEmpty() && !till.isEmpty()) {
+                fraga += " AND b.Datum >= '" + fran + "' AND b.Datum <= '" + till + "'";
+            } 
+            else if (!fran.isEmpty() || !till.isEmpty()) {
+                // Ett av datumen är ifyllt men inte båda
+                JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
+                return;
             }
 
             List<HashMap<String, String>> resultat = idb.fetchRows(fraga.toString());
@@ -308,7 +318,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
                     model.addRow(new Object[]{
                         rad.get("Namn"),
                         rad.get("Pris"),
-                        rad.get("Antal"),
+                        rad.get("AntalProdukter"),
                         rad.get("Datum")
                     });
                 }
@@ -387,7 +397,6 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrera;
     private javax.swing.JButton btnSummera;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
