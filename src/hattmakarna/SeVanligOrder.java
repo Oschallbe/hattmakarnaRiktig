@@ -238,10 +238,13 @@ public class SeVanligOrder extends javax.swing.JFrame {
             String datum = idb.fetchSingle(selectDatum);
             lblDatum.setText(datum);
             
+            //Hämtar statusen och sätter comboboxen till det värdet. Gör även så att comboboxen inte går att redigera till en början.
             String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
             String status = idb.fetchSingle(selectStatus);
-            lblStatus.setText(status);
+            comboStatus.setSelectedItem(status);
+            comboStatus.setEnabled(false);
             
+                     
             String selectExpress = "select Expressbestallning from bestallning where BestallningID = '" + klickatOrderNr + "';";
             express = idb.fetchSingle(selectExpress);
             
@@ -285,7 +288,64 @@ public class SeVanligOrder extends javax.swing.JFrame {
             col.setPreferredWidth(154);
     }
     
+    public void sparaTilldelad(){
+        try {
+            //Hämtar datan från tblAllaProdukter och lägger den i "tabell".
+            DefaultTableModel tabell = (DefaultTableModel) tblAllaProdukter.getModel();
+
+            //Går igenom varje rad i tabellen "tabell".
+            for (int i = 0; i < tabell.getRowCount(); i++) {
+
+                //Försöker hämta artikelnummer och anställningsid från kolumn 1(0) och 5(4) för varje rad.
+                try {
+                    String artNR = tabell.getValueAt(i, 0).toString();
+                    String anstID = tabell.getValueAt(i, 4).toString();
+
+                    //Skapar lokalvariabeln uppdateraDatabas.
+                    String uppdateraDatabas;
+
+                    //Om anstID är null eller rutan är tom så ändras uppdateraDatabas till att AnstalldID ska vara null för den raden 
+                    if (anstID == null || anstID.isEmpty()) {
+                        uppdateraDatabas = "update orderitem set AnstalldID = null where OrderItemID = " + artNR + ";";
+                    } 
+                    
+                    //Annars sätts AnstalldID till det anställningsid som hämtas och läggs i uppdateraDatabas
+                    else {
+                        uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
+                    }
+
+                    //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
+                    idb.update(uppdateraDatabas);
+
+                } 
+                
+                catch (NumberFormatException ex) {
+                    System.out.println("Fel på rad: " + i + ":" + ex.getMessage());
+                }
+            }
+           
+
+            fyllTabell();
+            
+        } 
+        catch (InfException ex) {
+            System.out.println(ex);
+        }
+    }
     
+    public void sparaStatus(){
+        try{
+            //Hämtar status från comboboxen och uppdaterar databasen till det nya värdet.
+            String status = (String) comboStatus.getSelectedItem();
+            String updateStatus = "update bestallning set status = '" + status + "' where BestallningID = '" + klickatOrderNr + "';";
+            idb.update(updateStatus);
+           
+        }
+        
+        catch(InfException ex){
+            System.out.println(ex);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -304,7 +364,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
         lblOrderNr = new javax.swing.JLabel();
         lblKundNr = new javax.swing.JLabel();
         lblDatum = new javax.swing.JLabel();
-        lblStatus = new javax.swing.JLabel();
         lblPris = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAllaProdukter = new javax.swing.JTable();
@@ -318,6 +377,8 @@ public class SeVanligOrder extends javax.swing.JFrame {
         tblAllaAnstallda = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        comboStatus = new javax.swing.JComboBox<>();
+        btnRedigeraStatus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -344,9 +405,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
 
         lblDatum.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDatum.setText("jLabel8");
-
-        lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblStatus.setText("jLabel9");
 
         lblPris.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblPris.setText("jLabel10");
@@ -418,6 +476,16 @@ public class SeVanligOrder extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel8.setText("Hitta rätt anställningsnummer här!");
 
+        comboStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad" }));
+
+        btnRedigeraStatus.setText("Redigera status");
+        btnRedigeraStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRedigeraStatusActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -442,6 +510,8 @@ public class SeVanligOrder extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnRedigeraStatus)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(btnAtaProdukt)
                                                 .addGap(18, 18, 18)
                                                 .addComponent(btnSpara)))
@@ -459,8 +529,8 @@ public class SeVanligOrder extends javax.swing.JFrame {
                                 .addComponent(lblDatum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -496,16 +566,16 @@ public class SeVanligOrder extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(lblStatus))
+                    .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(lblExpress))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblExpress)
+                    .addComponent(jLabel6))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblPris))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8))
@@ -516,12 +586,13 @@ public class SeVanligOrder extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAtaProdukt)
-                            .addComponent(btnSpara)))
+                            .addComponent(btnSpara)
+                            .addComponent(btnRedigeraStatus)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnTillbaka)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -555,49 +626,21 @@ public class SeVanligOrder extends javax.swing.JFrame {
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         try {
-            //Hämtar datan från tblAllaProdukter och lägger den i "tabell".
-            DefaultTableModel tabell = (DefaultTableModel) tblAllaProdukter.getModel();
-
-            //Går igenom varje rad i tabellen "tabell".
-            for (int i = 0; i < tabell.getRowCount(); i++) {
-
-                //Försöker hämta artikelnummer och anställningsid från kolumn 1(0) och 5(4) för varje rad.
-                try {
-                    String artNR = tabell.getValueAt(i, 0).toString();
-                    String anstID = tabell.getValueAt(i, 4).toString();
-
-                    //Skapar lokalvariabeln uppdateraDatabas.
-                    String uppdateraDatabas;
-
-                    //Om anstID är null eller rutan är tom så ändras uppdateraDatabas till att AnstalldID ska vara null för den raden 
-                    if (anstID == null || anstID.isEmpty()) {
-                        uppdateraDatabas = "update orderitem set AnstalldID = null where OrderItemID = " + artNR + ";";
-                    } 
-                    
-                    //Annars sätts AnstalldID till det anställningsid som hämtas och läggs i uppdateraDatabas
-                    else {
-                        uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
-                    }
-
-                    //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
-                    idb.update(uppdateraDatabas);
-
-                } 
-                
-                catch (NumberFormatException ex) {
-                    System.out.println("Fel på rad: " + i + ":" + ex.getMessage());
-                }
-            }
-            
+            sparaTilldelad();
+            sparaStatus();   
+            comboStatus.setEnabled(false);
             JOptionPane.showMessageDialog(null, "Ändring sparad!");
-
-            fyllTabell();
-            
+           
         } 
-        catch (InfException ex) {
+        catch(NumberFormatException ex) {
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
+
+    private void btnRedigeraStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraStatusActionPerformed
+       comboStatus.setEnabled(true);
+       
+    }//GEN-LAST:event_btnRedigeraStatusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -637,8 +680,10 @@ public class SeVanligOrder extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtaProdukt;
     private javax.swing.JButton btnFraktsedel;
+    private javax.swing.JButton btnRedigeraStatus;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTillbaka;
+    private javax.swing.JComboBox<String> comboStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -654,7 +699,6 @@ public class SeVanligOrder extends javax.swing.JFrame {
     private javax.swing.JLabel lblKundNr;
     private javax.swing.JLabel lblOrderNr;
     private javax.swing.JLabel lblPris;
-    private javax.swing.JLabel lblStatus;
     private javax.swing.JTable tblAllaAnstallda;
     private javax.swing.JTable tblAllaProdukter;
     // End of variables declaration//GEN-END:variables
