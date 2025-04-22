@@ -56,34 +56,33 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
 
     private void visaSpecifikProdukt() {
         try {
-            String query = "SELECT sp.Artikelnummer, sp.Namn, sp.Pris, sp.Matt, mb.Antal " +
-                           "FROM StandardProdukt sp " +
-                           "LEFT JOIN MaterialBestallning mb ON sp.Namn = mb.Namn " +
-                           "WHERE sp.Artikelnummer = '" + klickatArtikelNr + "'";
+            String query = "SELECT sp.SpecialProduktID AS Artikelnummer, sp.Beskrivning, sp.Pris, sp.Matt, oi.AntalProdukter AS Antal " +
+                           "FROM specialprodukt sp " +
+                           "JOIN orderitem oi ON sp.SpecialProduktID = oi.SpecialProduktID " +
+                           "WHERE sp.SpecialProduktID = '" + klickatArtikelNr + "'";
 
             List<HashMap<String, String>> result = idb.fetchRows(query);
 
-            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
-            model.setRowCount(0); // Rensa gammal data
+        DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
+        model.setRowCount(0); // Rensa tabellen först
 
-            if (result != null && !result.isEmpty()) {
-                for (HashMap<String, String> row : result) {
-                    model.addRow(new Object[] {
-                        row.get("Artikelnummer"),
-                        row.get("Namn"),
-                        row.get("Pris"),
-                        row.get("Antal") != null ? row.get("Antal") : "0",
-                        row.get("Matt"),
-                        "Se material"
-                    });
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Ingen produktinformation hittades för artikelnummer: " + klickatArtikelNr);
+        if (result != null && !result.isEmpty()) {
+            for (HashMap<String, String> row : result) {
+                model.addRow(new Object[]{
+                    row.get("Artikelnummer"),
+                    row.get("Beskrivning"),
+                    row.get("Pris"),
+                    row.get("AntalProdukter"),
+                    row.get("Matt"),
+                    "Se material"
+                });
             }
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
-        } 
-    }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingen produktinformation hittades för artikelnummer: " + klickatArtikelNr);
+        }
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
+    }    }
     
     private void visaMaterialLista(String artikelnummer) {
         try {

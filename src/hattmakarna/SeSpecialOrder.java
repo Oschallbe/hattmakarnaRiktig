@@ -8,6 +8,7 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -300,26 +301,20 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                             .addComponent(lblKund))
                         .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTillverkningstid2)
+                            .addComponent(lblKund2)
+                            .addComponent(lblStatus2)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTillverkningstid2)
-                                    .addComponent(lblKund2))
-                                .addContainerGap(344, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblStatus2)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblSpecialorder)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(lblOrderNr))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnTillbaka)
-                                .addComponent(btnSeSpecifikProdukt)))
-                        .addContainerGap())))
+                                .addComponent(lblSpecialorder)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblOrderNr)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnTillbaka))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSeSpecifikProdukt)))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,10 +323,8 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSpecialorder)
                     .addComponent(lblOrderNr)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(btnTillbaka)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                    .addComponent(btnTillbaka))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblKund)
                     .addComponent(lblKund2))
@@ -358,25 +351,26 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSeSpecifikProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeSpecifikProduktActionPerformed
-        try{
-            //Hämta raden som har markerats.
-            int valdRad = tblAllaProdukter.getSelectedRow();
+        try {
+        int valdRad = tblAllaProdukter.getSelectedRow();
 
-            //Om en rad inte är vald, visa felmeddelande.
-            if(valdRad == -1){
-                javax.swing.JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
-                return;
-            }
-            //Hämtar och lagrar orderns typ från den valda raden i Jtable.
-            String artikelNr = tblAllaProdukter.getValueAt(valdRad, 0).toString();
+        if (valdRad == -1) {
+            JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
+            return;
+        }
 
-            // Skicka rätt artikelnummer till nästa fönster!
-            new SeSpecifikProdukt(idb, inloggadAnvandare, artikelNr).setVisible(true);
-    
-        }
-        catch(NumberFormatException ex){
-            System.out.println(ex);
-        }
+        // Hämtar korrekt artikelnummer från kolumn 0
+        String artikelNr = tblAllaProdukter.getValueAt(valdRad, 0).toString();
+
+        System.out.println("DEBUG: skickar artikelnummer = " + artikelNr);
+
+        // Skickar endast artikelnummer till nästa vy
+        new SeSpecifikProdukt(idb, inloggadAnvandare, artikelNr).setVisible(true);
+
+    } catch (Exception ex) {
+        System.out.println("Fel i btnSeSpecifikProduktActionPerformed: " + ex.getMessage());
+    }
+
     }//GEN-LAST:event_btnSeSpecifikProduktActionPerformed
 
     /**
