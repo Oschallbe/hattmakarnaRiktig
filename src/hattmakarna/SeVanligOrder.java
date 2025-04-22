@@ -599,7 +599,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        new SeBestallning(idb, inloggadAnvandare).setVisible(true);
+        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 

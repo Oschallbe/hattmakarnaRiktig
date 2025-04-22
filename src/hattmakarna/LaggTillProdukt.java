@@ -95,7 +95,6 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         text = new javax.swing.JLabel();
         txtModell = new javax.swing.JTextField();
         txtText = new javax.swing.JTextField();
-        tillbakaknapp = new javax.swing.JButton();
         laggTillMaterialProdukt = new javax.swing.JButton();
         comboMaterial = new javax.swing.JComboBox<>();
         laggTillNyttMaterial = new javax.swing.JButton();
@@ -141,13 +140,6 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         modell.setText("Modell");
 
         text.setText("Text");
-
-        tillbakaknapp.setText("Tillbaka");
-        tillbakaknapp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tillbakaknappActionPerformed(evt);
-            }
-        });
 
         laggTillMaterialProdukt.setText("Lägg till material för produkt");
         laggTillMaterialProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -223,9 +215,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                                             .addComponent(txtArtikelnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                                             .addComponent(txtNamn))))))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnLaggTill)
-                            .addComponent(tillbakaknapp)))
+                        .addComponent(btnLaggTill))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(139, 139, 139)
                         .addComponent(jLabel1))
@@ -245,9 +235,8 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(namn)
-                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tillbakaknapp))
-                .addGap(22, 22, 22)
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pris)
                     .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -338,8 +327,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Fälten får inte vara tomma!");
             }
-            new SeAllaProdukter(idb,inloggadAnvandare).setVisible(true);
-            this.dispose();
+            new SeAllaLagerfordaProdukter(idb,inloggadAnvandare).setVisible(true);
         } 
         catch (NumberFormatException numb) {
             JOptionPane.showMessageDialog(null, "Pris, huvudmått och artikelnummer måste innehålla endast siffror!");
@@ -350,12 +338,6 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrisActionPerformed
 
-    private void tillbakaknappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaknappActionPerformed
-        // TODO add your handling code here:
-        new SeAllaProdukter(idb, inloggadAnvandare).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_tillbakaknappActionPerformed
-
     private void laggTillMaterialProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillMaterialProduktActionPerformed
         // TODO add your handling code here:
         laggTillMaterialIRuta();
@@ -363,7 +345,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
 
     private void laggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillNyttMaterialActionPerformed
         // TODO add your handling code here:
-        new LaggTillMaterial(idb,inloggadAnvandare, this).setVisible(true);
+        new LaggTillMaterial(idb,inloggadAnvandare).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_laggTillNyttMaterialActionPerformed
 
@@ -382,7 +364,6 @@ public class LaggTillProdukt extends javax.swing.JFrame {
     private javax.swing.JLabel namn;
     private javax.swing.JLabel pris;
     private javax.swing.JLabel text;
-    private javax.swing.JButton tillbakaknapp;
     private javax.swing.JTextField txtArtikelnummer;
     private javax.swing.JTextField txtHuvudmatt;
     private javax.swing.JTextField txtModell;

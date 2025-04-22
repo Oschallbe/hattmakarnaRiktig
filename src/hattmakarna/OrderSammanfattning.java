@@ -41,7 +41,7 @@ import java.nio.file.FileAlreadyExistsException;
 public class OrderSammanfattning extends javax.swing.JFrame {
     private InfDB idb; 
     private String inloggadAnvandare; 
-    private ArrayList<SkapaVanligOrder.Orderrad> orderrader;
+    private ArrayList<SkapaNyOrder.Orderrad> orderrader;
     private double totalpris;
     private String kundID;
     private String ordernummer;
@@ -53,7 +53,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     /**
      * Creates new form OrderSammanfattning
      */
-    public OrderSammanfattning(InfDB idb, String inloggadAnvandare, ArrayList<SkapaVanligOrder.Orderrad> orderrader, double totalpris, String kundID, String ordernummer, boolean express,  String typ) {
+    public OrderSammanfattning(InfDB idb, String inloggadAnvandare, ArrayList<SkapaNyOrder.Orderrad> orderrader, double totalpris, String kundID, String ordernummer, boolean express,  String typ) {
     initComponents();
     this.idb = idb;
     this.inloggadAnvandare = inloggadAnvandare;
@@ -83,7 +83,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     };
 
     // Fyll tabellen med data från orderrader
-    for (SkapaVanligOrder.Orderrad rad : orderrader) {
+    for (SkapaNyOrder.Orderrad rad : orderrader) {
         String produktNamn = rad.getNamn();
         int antal = rad.getAntal();
         double prisPerSt = rad.getPris();
@@ -128,7 +128,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
             return;
         }
 
-        SkapaVanligOrder.Orderrad rad = orderrader.get(valdRad);
+        SkapaNyOrder.Orderrad rad = orderrader.get(valdRad);
         int nuvarandeAntal = rad.getAntal(); // Använd getter
         int nyttAntal = nuvarandeAntal + andring;
 
@@ -148,7 +148,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
 
     private void uppdateraTotalpris() {
         totalpris = 0;
-        for (SkapaVanligOrder.Orderrad rad : orderrader) {
+        for (SkapaNyOrder.Orderrad rad : orderrader) {
             totalpris += rad.totalPris();
         }
 
@@ -177,7 +177,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
         tblOrdersammanfattning = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnBekrafta = new javax.swing.JButton();
-        btnTillbaka = new javax.swing.JButton();
         btnRedigera = new javax.swing.JButton();
         btnSpara = new javax.swing.JButton();
         btnTaBort = new javax.swing.JButton();
@@ -215,13 +214,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
         btnBekrafta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBekraftaActionPerformed(evt);
-            }
-        });
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
             }
         });
 
@@ -275,9 +267,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
                 .addComponent(tfExpress, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addComponent(btnTillbaka)
-                .addGap(18, 18, 18)
+                .addGap(186, 186, 186)
                 .addComponent(btnRedigera)
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,7 +327,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBekrafta)
-                    .addComponent(btnTillbaka)
                     .addComponent(btnRedigera)
                     .addComponent(btnSpara)
                     .addComponent(btnTaBort))
@@ -356,22 +345,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
 
     tblOrdersammanfattning.repaint(); // Säkerställ att tabellen uppdateras visuellt
     }//GEN-LAST:event_btnRedigeraActionPerformed
-
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-   int val = JOptionPane.showConfirmDialog(
-        this,
-        "Vill du avbryta beställningen och rensa varukorgen?",
-        "Avbryt beställning",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.WARNING_MESSAGE
-    );
-
-    if (val == JOptionPane.YES_OPTION) {
-        new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true); 
-        this.dispose();     
-    }
-    // Om användaren väljer "Nej" görs inget alls
-    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
     // Säkerställ att pågående cellredigering avslutas
@@ -525,7 +498,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
         idb.insert(sql);
         ordernummer = idb.getAutoIncrement("Bestallning", "BestallningID");
         JOptionPane.showMessageDialog(this, "Ordern har skickats iväg!");
-        new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
         this.dispose();
     } catch (InfException ex) {
         JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
@@ -679,7 +651,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     private javax.swing.JButton btnRedigera;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTaBort;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

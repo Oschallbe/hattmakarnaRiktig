@@ -42,7 +42,6 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
         txtEpost = new javax.swing.JTextField();
         txtLosenord = new javax.swing.JTextField();
         BtnLaggTill = new javax.swing.JButton();
-        btnTillbaka = new javax.swing.JButton();
         btnSlumpaLosenord = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,13 +61,6 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
         BtnLaggTill.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnLaggTillActionPerformed(evt);
-            }
-        });
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
             }
         });
 
@@ -94,7 +86,9 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(39, 39, 39)
-                        .addComponent(btnSlumpaLosenord))
+                        .addComponent(btnSlumpaLosenord)
+                        .addGap(18, 18, 18)
+                        .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -107,13 +101,7 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
                         .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(159, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(btnTillbaka, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,21 +124,13 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSlumpaLosenord))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTillbaka, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
+                    .addComponent(btnSlumpaLosenord)
+                    .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
-    this.setVisible(false);
-    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void BtnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLaggTillActionPerformed
     String fornamn = txtFornamn.getText().trim();
@@ -175,12 +155,13 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
     try {
         idb.insert(sql);
         JOptionPane.showMessageDialog(this, "Anställd tillagd!\nLösenord: " + losenord);
-
+        
         // Tömmer fälten
         txtFornamn.setText("");
         txtEfternamn.setText("");
         txtEpost.setText("");
         txtLosenord.setText("");
+        this.dispose();
     } catch (InfException ex) {
         JOptionPane.showMessageDialog(this, "Fel vid insättning: " + ex.getMessage());
     }
@@ -239,7 +220,6 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLaggTill;
     private javax.swing.JButton btnSlumpaLosenord;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

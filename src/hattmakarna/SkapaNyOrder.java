@@ -15,7 +15,7 @@ import java.util.HashMap;
  *
  * @author iftinserar
  */
-public class SkapaVanligOrder extends javax.swing.JFrame { 
+public class SkapaNyOrder extends javax.swing.JPanel { 
  
         private static InfDB idb; 
         private String inloggadAnvandare; 
@@ -26,7 +26,7 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     /**
      * Creates new form SkapaVanligOrder
      */
-    public SkapaVanligOrder(InfDB idb,  String inloggadAnvandare) {
+    public SkapaNyOrder(InfDB idb,  String inloggadAnvandare) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
@@ -200,76 +200,26 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        lblOrdernummer = new javax.swing.JLabel();
-        lblKundnummer = new javax.swing.JLabel();
-        lblDatum = new javax.swing.JLabel();
-        txtfOrdernummer = new javax.swing.JTextField();
-        txtfDatum = new javax.swing.JTextField();
-        btnTillbaka = new javax.swing.JButton();
-        lblExpressleverans = new javax.swing.JLabel();
-        cbJa = new javax.swing.JCheckBox();
-        lblProduktlista = new javax.swing.JLabel();
-        lblArtikelnummer = new javax.swing.JLabel();
-        lblNamn = new javax.swing.JLabel();
-        lblPris2 = new javax.swing.JLabel();
-        lblAntal = new javax.swing.JLabel();
-        tfArtikelNummer = new javax.swing.JTextField();
-        tfPris = new javax.swing.JTextField();
         tfAntal = new javax.swing.JTextField();
         cbKundnummer = new javax.swing.JComboBox<>();
+        lblExpressleverans = new javax.swing.JLabel();
         cbNamn = new javax.swing.JComboBox<>();
+        cbJa = new javax.swing.JCheckBox();
         btnLaggTill = new javax.swing.JButton();
+        lblProduktlista = new javax.swing.JLabel();
         btnGaVidare = new javax.swing.JButton();
-
-        jButton1.setText("jButton1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        jLabel1.setText("Skapa order");
-
-        lblOrdernummer.setText("Ordernummer:");
-
-        lblKundnummer.setText("Kundnummer:");
-
-        lblDatum.setText("Datum:");
-
-        txtfOrdernummer.setEnabled(false);
-
-        txtfDatum.setEnabled(false);
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
-
-        lblExpressleverans.setText("Expressleverans?");
-
-        cbJa.setText("Ja");
-        cbJa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbJaActionPerformed(evt);
-            }
-        });
-
-        lblProduktlista.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        lblProduktlista.setText("Produktlista");
-
-        lblArtikelnummer.setText("Artikelnummer");
-
-        lblNamn.setText("Namn");
-
-        lblPris2.setText("Pris");
-
-        lblAntal.setText("Antal");
-
-        tfArtikelNummer.setEnabled(false);
-
-        tfPris.setEnabled(false);
+        lblArtikelnummer = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblNamn = new javax.swing.JLabel();
+        lblOrdernummer = new javax.swing.JLabel();
+        lblPris2 = new javax.swing.JLabel();
+        lblKundnummer = new javax.swing.JLabel();
+        lblAntal = new javax.swing.JLabel();
+        lblDatum = new javax.swing.JLabel();
+        tfArtikelNummer = new javax.swing.JTextField();
+        txtfOrdernummer = new javax.swing.JTextField();
+        tfPris = new javax.swing.JTextField();
+        txtfDatum = new javax.swing.JTextField();
 
         cbKundnummer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbKundnummer.addActionListener(new java.awt.event.ActionListener() {
@@ -278,7 +228,16 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
             }
         });
 
+        lblExpressleverans.setText("Expressleverans?");
+
         cbNamn.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cbJa.setText("Ja");
+        cbJa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbJaActionPerformed(evt);
+            }
+        });
 
         btnLaggTill.setText("Lägg till");
         btnLaggTill.addActionListener(new java.awt.event.ActionListener() {
@@ -287,6 +246,9 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
             }
         });
 
+        lblProduktlista.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        lblProduktlista.setText("Produktlista");
+
         btnGaVidare.setText("Gå vidare");
         btnGaVidare.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -294,18 +256,41 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        lblArtikelnummer.setText("Artikelnummer");
+
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        jLabel1.setText("Skapa order");
+
+        lblNamn.setText("Namn");
+
+        lblOrdernummer.setText("Ordernummer:");
+
+        lblPris2.setText("Pris");
+
+        lblKundnummer.setText("Kundnummer:");
+
+        lblAntal.setText("Antal");
+
+        lblDatum.setText("Datum:");
+
+        tfArtikelNummer.setEnabled(false);
+
+        txtfOrdernummer.setEnabled(false);
+
+        tfPris.setEnabled(false);
+
+        txtfDatum.setEnabled(false);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnTillbaka)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(89, 89, 89)
+                                .addGap(171, 171, 171)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(tfPris, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblPris2))
@@ -313,7 +298,7 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblAntal)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(tfAntal, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                                        .addComponent(tfAntal)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -401,131 +386,94 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLaggTill)
-                    .addComponent(btnGaVidare)
-                    .addComponent(btnTillbaka))
+                    .addComponent(btnGaVidare))
                 .addGap(20, 20, 20))
         );
-
-        txtfDatum.getAccessibleContext().setAccessibleName("");
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJaActionPerformed
-    if (cbJa.isSelected()) {
-        express = true;
-        JOptionPane.showMessageDialog(null, "Expressbeställning aktiverad! 20% tillägg kommer att appliceras.");
-    } else {
-        express = false;
-        JOptionPane.showMessageDialog(null, "Expressbeställning är avaktiverad.");
-    }
-    }//GEN-LAST:event_cbJaActionPerformed
-
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn. 
-        new HuvudMeny(idb, inloggadAnvandare).setVisible(true); 
-        this.dispose(); 
-    }//GEN-LAST:event_btnTillbakaActionPerformed
-
-    private void txtfDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfDatumActionPerformed
-//
-    }//GEN-LAST:event_txtfDatumActionPerformed
-
-    private void btnGaVidareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaVidareActionPerformed
-    if (orderrader.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
-        return;
-    }
-
-    if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
-        JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
-        return;
-    }
-
-    double totalpris = 0;
-    for (Orderrad rad : orderrader) {
-        totalpris += rad.totalPris();
-    }
-
-    if (express) {
-        totalpris += totalpris * 0.2;
-    }
-
-    String ordernummer = txtfOrdernummer.getText();
-    if (ordernummer.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
-        return;
-    }
-
-    OrderSammanfattning os = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris,
-            inloggadKundID, ordernummer, express,"Standardbeställning");
-    os.setVisible(true);
-    this.dispose();
-    }//GEN-LAST:event_btnGaVidareActionPerformed
-
-    private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-    if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
-          JOptionPane.showMessageDialog(null, "Du måste välja ett giltigt kundnummer innan du kan lägga till produkter.");
-          return;
-      }
-
-      try {
-          int antal = Integer.parseInt(tfAntal.getText());
-          double pris = Double.parseDouble(tfPris.getText());
-          String artikelnummer = tfArtikelNummer.getText();
-          Object selectedItem = cbNamn.getSelectedItem();
-
-          if (selectedItem == null || selectedItem.equals("Välj vara")) {
-              JOptionPane.showMessageDialog(null, "Välj en produkt först.");
-              return;
-          }
-
-          String namn = selectedItem.toString();
-          orderrader.add(new Orderrad(artikelnummer, namn, antal, pris));
-
-          JOptionPane.showMessageDialog(null, "Produkt tillagd!");
-
-          tfAntal.setText("");
-          tfArtikelNummer.setText("");
-          tfPris.setText("");
-          cbNamn.setSelectedIndex(0);
-      } catch (NumberFormatException e) {
-          JOptionPane.showMessageDialog(null, "Ange ett giltigt värde för antal.");
-      }
-    }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void cbKundnummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKundnummerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbKundnummerActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        //</editor-fold>
-        //</editor-fold>
+    private void cbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJaActionPerformed
+        if (cbJa.isSelected()) {
+            express = true;
+            JOptionPane.showMessageDialog(null, "Expressbeställning aktiverad! 20% tillägg kommer att appliceras.");
+        } else {
+            express = false;
+            JOptionPane.showMessageDialog(null, "Expressbeställning är avaktiverad.");
+        }
+    }//GEN-LAST:event_cbJaActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-            //    new SkapaVanligOrder().setVisible(true);
+    private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
+        if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
+            JOptionPane.showMessageDialog(null, "Du måste välja ett giltigt kundnummer innan du kan lägga till produkter.");
+            return;
+        }
+
+        try {
+            int antal = Integer.parseInt(tfAntal.getText());
+            double pris = Double.parseDouble(tfPris.getText());
+            String artikelnummer = tfArtikelNummer.getText();
+            Object selectedItem = cbNamn.getSelectedItem();
+
+            if (selectedItem == null || selectedItem.equals("Välj vara")) {
+                JOptionPane.showMessageDialog(null, "Välj en produkt först.");
+                return;
             }
-        });
-    }
+
+            String namn = selectedItem.toString();
+            orderrader.add(new Orderrad(artikelnummer, namn, antal, pris));
+
+            JOptionPane.showMessageDialog(null, "Produkt tillagd!");
+
+            tfAntal.setText("");
+            tfArtikelNummer.setText("");
+            tfPris.setText("");
+            cbNamn.setSelectedIndex(0);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ange ett giltigt värde för antal.");
+        }
+    }//GEN-LAST:event_btnLaggTillActionPerformed
+
+    private void btnGaVidareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaVidareActionPerformed
+        if (orderrader.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
+            return;
+        }
+
+        if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
+            JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
+            return;
+        }
+
+        double totalpris = 0;
+        for (Orderrad rad : orderrader) {
+            totalpris += rad.totalPris();
+        }
+
+        if (express) {
+            totalpris += totalpris * 0.2;
+        }
+
+        String ordernummer = txtfOrdernummer.getText();
+        if (ordernummer.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
+            return;
+        }
+
+        OrderSammanfattning os = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris,
+                inloggadKundID, ordernummer, express, "Standardbeställning");
+        os.setVisible(true);
+    }//GEN-LAST:event_btnGaVidareActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGaVidare;
     private javax.swing.JButton btnLaggTill;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JCheckBox cbJa;
     private javax.swing.JComboBox<String> cbKundnummer;
     private javax.swing.JComboBox<String> cbNamn;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblAntal;
     private javax.swing.JLabel lblArtikelnummer;

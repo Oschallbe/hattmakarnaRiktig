@@ -15,14 +15,14 @@ import javax.swing.table.TableColumn;
  *
  * @author iftinserar
  */
-public class AllaKunder extends javax.swing.JFrame {
+public class SeAllaKunder extends javax.swing.JPanel {
     private static InfDB idb;
     private String inloggadAnvandare; 
     private boolean harFiltrerat = false;
     /**
      * Creates new form AllaKunder
      */
-    public AllaKunder(InfDB idb, String inloggadAnvandare) {
+    public SeAllaKunder(InfDB idb, String inloggadAnvandare) {
         this.inloggadAnvandare = inloggadAnvandare;
         this.idb = idb;
         initComponents();
@@ -184,21 +184,11 @@ public class AllaKunder extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnTillbaka = new javax.swing.JButton();
         btnLaggTill = new javax.swing.JButton();
         BtnSok = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TblAllaKunder = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
 
         btnLaggTill.setText("Lägg till ny kund");
         btnLaggTill.addActionListener(new java.awt.event.ActionListener() {
@@ -231,27 +221,25 @@ public class AllaKunder extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel1.setText("Alla kunder");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(btnLaggTill)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnSok)
-                .addGap(35, 35, 35)
-                .addComponent(btnTillbaka)
-                .addGap(34, 34, 34))
+                        .addGap(14, 14, 14)
+                        .addComponent(btnLaggTill)
+                        .addGap(152, 152, 152)
+                        .addComponent(BtnSok))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(149, 149, 149)
+                            .addComponent(jLabel1))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,30 +250,14 @@ public class AllaKunder extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTillbaka)
                     .addComponent(btnLaggTill)
                     .addComponent(BtnSok))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-     if (harFiltrerat) {
-        // Om listan har filtrerats, återställ tabellen till alla kunder
-        fyllKundTabell();  // Ladda om alla kunder
-        harFiltrerat = false;  // Återställ flaggan
-        } else {
-        // Om ingen filtrering har skett, gå tillbaka till huvudmenyn
-        new HuvudMeny(idb, inloggadAnvandare).setVisible(true);
-        this.dispose();
-     }
-    }//GEN-LAST:event_btnTillbakaActionPerformed
-
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-    new LäggTillNyKund(idb, inloggadAnvandare).setVisible(true);
-    //this.setVisible(false);
+        new LäggTillNyKund(idb, inloggadAnvandare).setVisible(true);
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void TblAllaKunderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblAllaKunderMouseClicked
@@ -307,46 +279,11 @@ public class AllaKunder extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TblAllaKunderMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AllaKunder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AllaKunder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AllaKunder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AllaKunder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new AllaKunder().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnSok;
     private javax.swing.JTable TblAllaKunder;
     private javax.swing.JButton btnLaggTill;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
