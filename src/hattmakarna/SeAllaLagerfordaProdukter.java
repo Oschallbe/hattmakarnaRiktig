@@ -42,11 +42,11 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
     private void seLagerfordaProdukter() {
         try {
             // SQL-fråga för att hämta data från databasen
-            String query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt";
+            String query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE Aktiv = TRUE";
             List<HashMap<String, String>> result = idb.fetchRows(query);
 
             // Hämta JTable:s modell
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0); // Rensa gamla data
 
             if (result != null) {
@@ -251,30 +251,32 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
         String artikelnummer = txtSok.getText().trim();
 
-        try {
-            String sql = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE Artikelnummer = '" + artikelnummer + "'";
-            List<HashMap<String, String>> produkter = idb.fetchRows(sql);
+    try {
+        String sql = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt " +
+                     "WHERE Artikelnummer = '" + artikelnummer + "' AND Aktiv = TRUE";
+        
+        List<HashMap<String, String>> produkter = idb.fetchRows(sql);
 
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Rensa gammal data
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Rensa gammal data
 
-            if (produkter != null && !produkter.isEmpty()) {
-                for (HashMap<String, String> produkt : produkter) {
-                    model.addRow(new Object[]{
-                        produkt.get("Artikelnummer"),
-                        produkt.get("Namn"),
-                        produkt.get("Pris"),
-                        produkt.get("Matt"),
-                        "Se material"
-                    });
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Ingen produkt hittades med det artikelnumret.");
+        if (produkter != null && !produkter.isEmpty()) {
+            for (HashMap<String, String> produkt : produkter) {
+                model.addRow(new Object[]{
+                    produkt.get("Artikelnummer"),
+                    produkt.get("Namn"),
+                    produkt.get("Pris"),
+                    produkt.get("Matt"),
+                    "Se material"
+                });
             }
-
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingen aktiv produkt hittades med det artikelnumret.");
         }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnSokActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
@@ -282,7 +284,31 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-        // TODO add your handling code here:
+ int rad = jTable1.getSelectedRow();
+    if (rad == -1) {
+        JOptionPane.showMessageDialog(this, "Välj en produkt att ta bort.");
+        return;
+    }
+
+    String artikelnummer = jTable1.getValueAt(rad, 0).toString();
+
+    int svar = JOptionPane.showConfirmDialog(this, "Är du säker på att du vill ta bort produkten?", 
+                                             "Bekräfta", JOptionPane.YES_NO_OPTION);
+
+    if (svar == JOptionPane.YES_OPTION) {
+        try {
+            String sql = "UPDATE StandardProdukt SET Aktiv = FALSE WHERE Artikelnummer = '" + artikelnummer + "'";
+            idb.update(sql);
+            JOptionPane.showMessageDialog(this, "Produkten togs bort (inaktiverades).");
+            seLagerfordaProdukter(); // ladda om tabellen
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid borttagning: " + e.getMessage());
+
+
+        }
+    }
+        
+        
     }//GEN-LAST:event_btnTaBortActionPerformed
 
 
