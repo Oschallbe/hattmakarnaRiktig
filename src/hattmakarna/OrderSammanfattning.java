@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 
 
 //package com.itextpdf.highlevel.chapter01;
@@ -468,160 +470,188 @@ public class OrderSammanfattning extends javax.swing.JFrame {
 
     
     private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed
-        if (tblOrdersammanfattning.isEditing()) {
-            tblOrdersammanfattning.getCellEditor().stopCellEditing(); // FIXME: sparas automatiskt utan att behöva trycka på Save-knappen. Vill vi det?
-        }
+    if (tblOrdersammanfattning.isEditing()) {
+        tblOrdersammanfattning.getCellEditor().stopCellEditing();
+    }
 
-        // Här gör vi en validering för att säkerställa att alla antal är giltiga innan vi sparar till databasen
-        DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
-        boolean valid = true;
-        
-        ArrayList<BestallningsRad> pdforderlista = new ArrayList<BestallningsRad>();
+    DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+    boolean valid = true;
+    ArrayList<BestallningsRad> pdforderlista = new ArrayList<>();
 
-        // Validera alla antal innan vi försöker spara till databasen
-        for (int i = 0; i < modell.getRowCount(); i++) {
-            BestallningsRad rad = new BestallningsRad();
-
-            
-            Object cellValue = modell.getValueAt(i, 1); // kolumn "Antal"
-            try {
-                int antal = Integer.parseInt(cellValue.toString());
-                if (antal <= 0) {
-                    JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " måste vara ett positivt heltal.");
-                    valid = false;  // Valideringen misslyckades
-                    break;
-                } else {
-                    rad.produktNamn = modell.getValueAt(i, 0).toString();
-                    rad.styckPris   = modell.getValueAt(i, 2).toString();
-                    orderrader.get(i).setAntal(antal); // Uppdatera i modellen
-                    rad.antal = antal;
-                    rad.totaltRadPris = String.format("%.2f kr", antal * orderrader.get(i).getPris());
-                    modell.setValueAt(rad.totaltRadPris, i, 3); // Uppdatera radens total
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " är inte ett giltigt heltal.");
-                valid = false;  // Valideringen misslyckades
+    for (int i = 0; i < modell.getRowCount(); i++) {
+        BestallningsRad rad = new BestallningsRad();
+        Object cellValue = modell.getValueAt(i, 1);
+        try {
+            int antal = Integer.parseInt(cellValue.toString());
+            if (antal <= 0) {
+                JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " måste vara ett positivt heltal.");
+                valid = false;
                 break;
+            } else {
+                rad.produktNamn = modell.getValueAt(i, 0).toString();
+                rad.styckPris = modell.getValueAt(i, 2).toString();
+                orderrader.get(i).setAntal(antal);
+                rad.antal = antal;
+                rad.totaltRadPris = String.format("%.2f kr", antal * orderrader.get(i).getPris());
+                modell.setValueAt(rad.totaltRadPris, i, 3);
             }
-            // skapas för att användas i pdf-en 
-            pdforderlista.add(rad);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " är inte ett giltigt heltal.");
+            valid = false;
+            break;
         }
-        
-        if (!valid) {
-           return; // FIXME visa att det gått fel här
+        pdforderlista.add(rad);
+    }
+
+    if (!valid) return;
+
+    uppdateraTotalpris();
+    String status = "Under behandling";
+    String datum = java.time.LocalDate.now().toString();
+    String expressBool = express ? "1" : "0";
+
+    String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
+    double totalprisDouble = Double.parseDouble(totalprisStr);
+    String formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
+
+    String sql = String.format(
+        "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, Totalpris, Typ) " +
+        "VALUES ('%s', '%s', %s, %s, NULL, %s, '%s')",
+        status, datum, expressBool, kundID, formattedTotalpris, typ
+    );
+
+    String ordernummer = "";
+    try {
+        idb.insert(sql);
+        ordernummer = idb.getAutoIncrement("Bestallning", "BestallningID");
+        JOptionPane.showMessageDialog(this, "Ordern har skickats iväg!");
+        new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
+        this.dispose();
+    } catch (InfException ex) {
+        JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
+    }
+
+    String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, " +
+        "LeveransOrt, LeveransAdress, LeveransPostnummer, LeveransLand, " +
+        "FakturaAdress, FakturaPostnummer, FakturaOrt, FakturaLand " +
+        "FROM Kund WHERE KundID = " + kundID + ";";
+
+    HashMap<String, String> kundInfo = new HashMap<>();
+    try {
+        HashMap<String, String> result = idb.fetchRow(kundQuery);
+        if (result != null) kundInfo.putAll(result);
+        else JOptionPane.showMessageDialog(this, "Kundinformation kunde inte hämtas.");
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av kunddata: " + e.getMessage());
+    }
+
+    Path admin = null;
+    try {
+        admin = Paths.get(System.getProperty("user.home"), "hattadmin");
+        Files.createDirectory(admin);
+    } catch (FileAlreadyExistsException ex) {
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Fel vid skapande av admin-mapp: " + ex.getMessage());
+    }
+
+    // Skapa Orderbekräftelse PDF
+    try {
+        Path path = Paths.get(admin.toString(), "Orderbekr_" + String.format("%08d", Integer.parseInt(ordernummer)) + ".pdf");
+        PdfDocument pdf = new PdfDocument(new PdfWriter(path.toString()));
+        Document document = new Document(pdf);
+        PdfFont bold = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
+
+        document.add(new Paragraph("Orderbekräftelse " + datum).setFont(bold));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Hej! " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
+        document.add(new Paragraph("Tack för din beställning hos oss på Hattmakarna"));
+        document.add(new Paragraph("Vi har nu mottagit din order och kommer påbörja tillverkningen"));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Kundinformation:").setFont(bold));
+        document.add(new Paragraph("Namn: " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
+        document.add(new Paragraph("E-post: " + kundInfo.get("Epost")));
+        document.add(new Paragraph("Telefonnummer: " + kundInfo.get("Telefonnummer")));
+        document.add(new Paragraph("Leveransadress: " + kundInfo.get("LeveransAdress")));
+        document.add(new Paragraph("Postnummer: " + kundInfo.get("LeveransPostnummer")));
+        document.add(new Paragraph("Ort: " + kundInfo.get("LeveransOrt")));
+        document.add(new Paragraph("Land: " + kundInfo.get("LeveransLand")));
+        document.add(new Paragraph("Fakturaadress: " + kundInfo.get("FakturaAdress")));
+        document.add(new Paragraph("Postnummer: " + kundInfo.get("FakturaPostnummer")));
+        document.add(new Paragraph("Ort: " + kundInfo.get("FakturaOrt")));
+        document.add(new Paragraph("Land: " + kundInfo.get("FakturaLand")));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Beställning:").setFont(bold));
+        for (BestallningsRad rad : pdforderlista) {
+            document.add(new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ", totalt: " + rad.totaltRadPris));
         }
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Vid frågor, kontakta oss via mail och ange ordernummer " + ordernummer));
+        document.close();
 
-        String formattedTotalpris = "";
-        
-        uppdateraTotalpris();  // Uppdatera totalpris och expresskostnad
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().open(path.toFile());
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + e.getMessage());
+    }
 
-        // Status och datum
-        String status = "Under behandling";
-        String datum = java.time.LocalDate.now().toString();
-        String expressBool = express ? "1" : "0";
+    // ✅ SKAPA FRAKTSEDEL
+    try {
+        String adress = kundInfo.get("LeveransAdress");
+        String mottagare = kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn");
+        String avsandare = "Hattmakarna AB";
+        String innehall = pdforderlista.stream()
+            .map(r -> r.antal + "x " + r.produktNamn)
+            .collect(Collectors.joining(", "));
+        String exportkod = "SE-EU";
+        double moms = totalprisDouble * 0.25;
+        double prisInklMoms = totalprisDouble + moms;
+        double vikt = 0.5 * pdforderlista.size(); // t.ex. 0.5kg per produkt
 
-        // Validera och konvertera totalpris
-        String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
-        double totalprisDouble = Double.parseDouble(totalprisStr);
-        formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
-
-        // Skapa och kör SQL
-        String sql = String.format(
-            "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, Totalpris, Typ) " +
-            "VALUES ('%s', '%s', %s, %s, NULL, %s, '%s')",
-            status, datum, expressBool, kundID, formattedTotalpris, typ
+        String fraktSQL = String.format(
+            "INSERT INTO Fraktsedel (Adress, Avsandare, Mottagare, Innehåll, Exportkod, Pris, Datum, Vikt, Moms, PrisInklMoms) " +
+            "VALUES ('%s', '%s', '%s', '%s', '%s', %.2f, '%s', %.2f, %.2f, %.2f)",
+            adress, avsandare, mottagare, innehall, exportkod,
+            totalprisDouble, datum, vikt, moms, prisInklMoms
         );
 
-        try {
-             idb.insert(sql);  // Spara i databasen
-             JOptionPane.showMessageDialog(this, "Ordern har skickats iväg!");
-             new SkapaVanligOrder(idb, inloggadAnvandare).setVisible(true);
-             this.dispose();
-         } catch (InfException ex) {
-             // Hantera om det uppstår ett problem med databasoperationen
-             JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
-         }
-        
-        String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, LeveransOrt, LeveransAdress, FakturaAdress FROM Kund WHERE KundID = " + kundID + ";";
-           
-           HashMap<String, String> kundInfo = new HashMap<>();
+        idb.insert(fraktSQL);
+        String fraktsedelID = idb.getAutoIncrement("Fraktsedel", "FraktsedelID");
 
-            
-        try {
-            HashMap<String, String> result = idb.fetchRow(kundQuery);
-    
-        if (result != null) {
-            kundInfo.putAll(result);
-             
+        // Koppla till beställning
+        String koppla = "UPDATE Bestallning SET FraktsedelID = " + fraktsedelID + " WHERE BestallningID = " + ordernummer;
+        idb.update(koppla);
+
+        // Skapa fraktsedel-PDF
+        Path fraktPath = Paths.get(admin.toString(), "Fraktsedel_" + String.format("%08d", Integer.parseInt(fraktsedelID)) + ".pdf");
+        PdfDocument pdf = new PdfDocument(new PdfWriter(fraktPath.toString()));
+        Document doc = new Document(pdf);
+        PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+
+        doc.add(new Paragraph("FRAKTSEDEL").setFont(bold).setFontSize(16));
+        doc.add(new Paragraph("Datum: " + datum));
+        doc.add(new Paragraph("Fraktsedel-ID: " + fraktsedelID));
+        doc.add(new Paragraph(" "));
+        doc.add(new Paragraph("Avsändare: " + avsandare));
+        doc.add(new Paragraph("Mottagare: " + mottagare));
+        doc.add(new Paragraph("Adress: " + adress));
+        doc.add(new Paragraph("Exportkod: " + exportkod));
+        doc.add(new Paragraph(" "));
+        doc.add(new Paragraph("Innehåll: " + innehall));
+        doc.add(new Paragraph("Vikt: " + String.format("%.2f", vikt) + " kg"));
+        doc.add(new Paragraph("Pris exkl. moms: " + String.format("%.2f", totalprisDouble) + " kr"));
+        doc.add(new Paragraph("Moms (25%): " + String.format("%.2f", moms) + " kr"));
+        doc.add(new Paragraph("Totalt pris inkl. moms: " + String.format("%.2f", prisInklMoms) + " kr"));
+
+        doc.close();
+
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().open(fraktPath.toFile());
         }
-            
-        else {
-        JOptionPane.showMessageDialog(this, "Kundinformation kunde inte hämtas.");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Fel vid skapande av fraktsedel: " + e.getMessage());
     }
-} 
-        catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av kunddata: " + e.getMessage());
-}
-
-     
-        Path admin = null;
-   
-        // skapa PDF
-        try {
-           // gör en ny mapp som heter hattadmin, dit pdf-erna sparas
-           admin = Paths.get(System.getProperty("user.home"), "hattadmin");
-           Files.createDirectory(admin);
-        } catch (FileAlreadyExistsException ex) {
-
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Fel vid skapande av admin-mapp: " + ex.getMessage());
-        }
-
-
-        try {
-           // sparar pdf-en med åtta siffror inklusive inledande nollor för att kunna listas alfanumerisk ordning
-           Path path = Paths.get(
-                   admin.toString(),
-                   "Orderbekr_" + String.format("%08d", Integer.parseInt(ordernummer)) + ".pdf");
-           PdfDocument pdf = new PdfDocument(new PdfWriter(path.toString()));
-
-           Document document = new Document(pdf);
-
-          
-           PdfFont bold  = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
-         
-           document.add(new Paragraph("Orderbekräftelse " + datum).setFont(bold));
-           document.add(new Paragraph(" "));
-           document.add(new Paragraph("Hej! " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
-           document.add(new Paragraph("Tack för din beställning hos oss på Hattmakarna"));
-           document.add(new Paragraph("Vi har nu mottagit din order och kommer påbörja tillverkningen"));
-           document.add(new Paragraph(" "));
-           document.add(new Paragraph(" "));
-           document.add(new Paragraph("Kundinformation:").setFont(bold));
-           document.add(new Paragraph("Namn: " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
-           document.add(new Paragraph("E-post: " + kundInfo.get("Epost")));
-           document.add(new Paragraph("Telefonnummer: " + kundInfo.get("Telefonnummer")));
-           document.add(new Paragraph("Ort: " + kundInfo.get("Ort")));
-           document.add(new Paragraph("Leveransadress: " + kundInfo.get("LeveransAdress")));
-           document.add(new Paragraph("Fakturaadress: " + kundInfo.get("FakturaAdress")));
-           document.add(new Paragraph(" "));
-           document.add(new Paragraph(" "));
-
-           document.add(new Paragraph("Beställning:").setFont(bold));
-
-          for (BestallningsRad rad : pdforderlista) {
-               document.add( new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ",  totalt: " + rad.totaltRadPris));
-          }
-          document.add(new Paragraph(" "));
-          document.add(new Paragraph(" "));
-          document.add(new Paragraph("Vid frågor, kontakta oss via mail och ange ordernummer" + " "+ ordernummer));
-
-
-          document.close();
-
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + ex.getMessage());
-        }
     }//GEN-LAST:event_btnBekraftaActionPerformed
 
     /**

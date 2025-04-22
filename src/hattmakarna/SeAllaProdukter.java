@@ -78,7 +78,7 @@ public class SeAllaProdukter extends javax.swing.JFrame {
         List<HashMap<String, String>> material = idb.fetchRows(sql);
         */
         String fragaMateriallista = 
-        "SELECT Material.Namn, Material.Typ, Material.Farg " +
+        "SELECT Material.Namn, Material.Typ, Material.Farg, StandardProdukt_Material.Mängd, Material.Enhet " +
         "FROM Material " +
         "JOIN StandardProdukt_Material " +
         "ON Material.MaterialID = StandardProdukt_Material.MaterialID " +
@@ -94,6 +94,11 @@ public class SeAllaProdukter extends javax.swing.JFrame {
                     .append(rad.get("Typ"))
                     .append(" – ")
                     .append(rad.get("Farg"))
+                    .append(" – ")
+                    .append("Mängd: ")
+                    .append(rad.get("Mängd"))
+                    .append(" ") 
+                    .append(rad.get("Enhet"))
                     .append("\n");
             }
         } else {
