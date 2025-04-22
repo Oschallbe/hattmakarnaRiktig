@@ -25,6 +25,7 @@ public class MainFrame extends javax.swing.JFrame {
     private SkapaNySpecialOrder skapaSpecialOrderPanel;
     private SeForsaljningsstatistik1 seForsaljningsstatistikPanel;
     private HanteraAllaAnstallda hanteraAllaAnstalldaPanel;
+    private SkapaNyFraktsedel fraktsedelPanel;
     //Fält för att anropa validerings klassen
     private Validering validera;
     //private MainFrame parentFrame;  // referens till MainFrame
@@ -123,6 +124,7 @@ public class MainFrame extends javax.swing.JFrame {
         skapaNySpecialorder = new javax.swing.JMenu();
         forsalningsstatistik = new javax.swing.JMenu();
         hanteraAnstallda = new javax.swing.JMenu();
+        skapaNyFraktsedel = new javax.swing.JMenu();
         installningar = new javax.swing.JMenu();
         loggaUt = new javax.swing.JMenuItem();
 
@@ -261,6 +263,18 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(hanteraAnstallda);
 
+        skapaNyFraktsedel.setText("Skapa ny fraktsedel");
+        skapaNyFraktsedel.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                skapaNyFraktsedelMenuSelected(evt);
+            }
+        });
+        jMenuBar1.add(skapaNyFraktsedel);
+
         installningar.setText("Inställningar");
         installningar.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
@@ -291,7 +305,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(109, 109, 109)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(991, Short.MAX_VALUE))
+                .addContainerGap(1139, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(386, 386, 386)
@@ -313,14 +327,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addGap(130, 130, 130)
                             .addComponent(btnLoggaIn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap(387, Short.MAX_VALUE)))
+                    .addContainerGap(514, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(126, 126, 126)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(574, Short.MAX_VALUE))
+                .addContainerGap(575, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(83, 83, 83)
@@ -337,7 +351,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(btnLoggaIn)
                     .addGap(127, 127, 127)
                     .addComponent(lblFelMeddelande)
-                    .addContainerGap(83, Short.MAX_VALUE)))
+                    .addContainerGap(92, Short.MAX_VALUE)))
         );
 
         pack();
@@ -560,6 +574,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lblFelMeddelandeComponentHidden
 
+    private void skapaNyFraktsedelMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_skapaNyFraktsedelMenuSelected
+     // TODO add your handling code here:
+        fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText());
+
+        // Skapa en wrapper-panel med centrerad layout
+        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
+        wrapper.add(fraktsedelPanel); // lägg SeAllaOrdrar i mitten
+
+        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
+        addPanelToCardLayout(wrapper, "Fraktsedel");
+
+        // Visa
+        showPanel("Fraktsedel");
+    }//GEN-LAST:event_skapaNyFraktsedelMenuSelected
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -578,6 +607,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu seAllaKunder;
     private javax.swing.JMenu seAllaLagerfordaProdukter;
     private javax.swing.JMenu seAllaOrdrar;
+    private javax.swing.JMenu skapaNyFraktsedel;
     private javax.swing.JMenu skapaNyOrder;
     private javax.swing.JMenu skapaNySpecialorder;
     private javax.swing.JTextField txtfEmail;
