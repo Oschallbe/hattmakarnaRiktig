@@ -27,6 +27,7 @@ public class Inloggningssida extends javax.swing.JFrame {
         txtfEmail.setText("karin@hattmakarna.se");
         pswfLosenord.setText("hatt123");
         lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
     }
 
     /**
