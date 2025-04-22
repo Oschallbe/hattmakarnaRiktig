@@ -10,7 +10,10 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 /**
  *
  * @author mejaa
@@ -28,7 +31,11 @@ public class SeForsaljningsstatistik extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         DefaultTableModel model = new DefaultTableModel(
+<<<<<<< Updated upstream
                 new Object[]{"Namn", "Pris", "Antal", "Datum"}, 0
+=======
+        new Object[]{"Namn", "Pris", "Antal", "Datum"}, 0
+>>>>>>> Stashed changes
         );
         jTable1.setModel(model);
 
@@ -107,6 +114,7 @@ public class SeForsaljningsstatistik extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+<<<<<<< Updated upstream
         txtHatt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtHattActionPerformed(evt);
@@ -130,16 +138,27 @@ public class SeForsaljningsstatistik extends javax.swing.JFrame {
             }
         });
 
+=======
+        jLabel2.setText("Sortera efter hatt");
+
+        btnSortera.setText("Sortera");
+
+        jLabel3.setText("Sök efter datum");
+
+>>>>>>> Stashed changes
         jLabel4.setText("Från:");
 
         jLabel5.setText("Till:");
 
         btnSorteraDatum.setText("Sortera");
+<<<<<<< Updated upstream
         btnSorteraDatum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSorteraDatumActionPerformed(evt);
             }
         });
+=======
+>>>>>>> Stashed changes
 
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
@@ -149,11 +168,14 @@ public class SeForsaljningsstatistik extends javax.swing.JFrame {
         });
 
         btnSummera.setText("Summera");
+<<<<<<< Updated upstream
         btnSummera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSummeraActionPerformed(evt);
             }
         });
+=======
+>>>>>>> Stashed changes
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -228,6 +250,7 @@ public class SeForsaljningsstatistik extends javax.swing.JFrame {
         new HuvudMeny(idb, inloggadAnvandare).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
+<<<<<<< Updated upstream
 
     private void txtHattActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHattActionPerformed
         // TODO add your handling code here:
@@ -355,7 +378,10 @@ public class SeForsaljningsstatistik extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSokDatumFranActionPerformed
 
+=======
+>>>>>>> Stashed changes
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSortera;
     private javax.swing.JButton btnSorteraDatum;

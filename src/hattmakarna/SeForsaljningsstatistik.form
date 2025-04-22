@@ -157,9 +157,12 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="txtHatt">
+<<<<<<< Updated upstream
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtHattActionPerformed"/>
       </Events>
+=======
+>>>>>>> Stashed changes
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -170,9 +173,12 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Sortera"/>
       </Properties>
+<<<<<<< Updated upstream
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSorteraActionPerformed"/>
       </Events>
+=======
+>>>>>>> Stashed changes
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -180,9 +186,12 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtSokDatumFran">
+<<<<<<< Updated upstream
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSokDatumFranActionPerformed"/>
       </Events>
+=======
+>>>>>>> Stashed changes
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -200,9 +209,12 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Sortera"/>
       </Properties>
+<<<<<<< Updated upstream
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSorteraDatumActionPerformed"/>
       </Events>
+=======
+>>>>>>> Stashed changes
     </Component>
     <Component class="javax.swing.JButton" name="btnTillbaka">
       <Properties>
@@ -216,9 +228,12 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Summera"/>
       </Properties>
+<<<<<<< Updated upstream
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSummeraActionPerformed"/>
       </Events>
+=======
+>>>>>>> Stashed changes
     </Component>
   </SubComponents>
 </Form>
