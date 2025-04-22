@@ -23,7 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
     private SeAllaLagerfordaProdukter allaLagerfordaProdukterPanel;
     private SkapaNyOrder nyOrderPanel;
     private SkapaNySpecialOrder skapaSpecialOrderPanel;
-    private SeForsaljningsstatistik1 seForsaljningsstatistikPanel;
+    private SeForsaljningsstatistik seForsaljningsstatistikPanel;
     private HanteraAllaAnstallda hanteraAllaAnstalldaPanel;
     private SkapaNyFraktsedel fraktsedelPanel;
     //Fält för att anropa validerings klassen
@@ -459,7 +459,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void forsalningsstatistikMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_forsalningsstatistikMenuSelected
         // TODO add your handling code here:
-        seForsaljningsstatistikPanel = new SeForsaljningsstatistik1(idb, txtfEmail.getText());
+        seForsaljningsstatistikPanel = new SeForsaljningsstatistik(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
         JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
