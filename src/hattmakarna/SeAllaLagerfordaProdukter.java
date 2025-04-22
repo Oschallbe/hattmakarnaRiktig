@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
 
@@ -56,7 +56,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                         row.get("Artikelnummer"),
                         row.get("Namn"),
                         row.get("Pris"),
-                        row.get("Mått"),
+                        row.get("Matt"),
                         "Se material",
                     });
                 }
@@ -78,7 +78,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         List<HashMap<String, String>> material = idb.fetchRows(sql);
         */
         String fragaMateriallista = 
-        "SELECT Material.Namn, Material.Typ, Material.Farg " +
+        "SELECT Material.Namn, Material.Typ, Material.Farg, StandardProdukt_Material.Mängd, Material.Enhet " +
         "FROM Material " +
         "JOIN StandardProdukt_Material " +
         "ON Material.MaterialID = StandardProdukt_Material.MaterialID " +
@@ -94,6 +94,11 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                     .append(rad.get("Typ"))
                     .append(" – ")
                     .append(rad.get("Farg"))
+                    .append(" – ")
+                    .append("Mängd: ")
+                    .append(rad.get("Mängd"))
+                    .append(" ") 
+                    .append(rad.get("Enhet"))
                     .append("\n");
             }
         } else {
@@ -106,6 +111,8 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
     }
 }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,7 +129,6 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         btnSok = new javax.swing.JButton();
         btnLaggTill = new javax.swing.JButton();
         btnTaBort = new javax.swing.JButton();
-        btnTillbaka = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -171,11 +177,9 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         });
 
         btnTaBort.setText("Ta bort");
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+        btnTaBort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
+                btnTaBortActionPerformed(evt);
             }
         });
 
@@ -208,9 +212,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                                         .addGap(20, 20, 20)
                                         .addComponent(btnSok)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnTaBort, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnTillbaka, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(btnTaBort)
                         .addGap(34, 34, 34))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(206, 206, 206)
@@ -224,17 +226,12 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSok)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(btnTillbaka)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSok))
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnTaBort)
@@ -252,7 +249,6 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
-
         String artikelnummer = txtSok.getText().trim();
 
         try {
@@ -279,25 +275,21 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
         }
-
     }//GEN-LAST:event_btnSokActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
         new LaggTillProdukt(idb, inloggadAnvandare).setVisible(true);
-        this.setVisible(false);
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn.
-
-    }//GEN-LAST:event_btnTillbakaActionPerformed
+    private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTaBortActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLaggTill;
     private javax.swing.JButton btnSok;
     private javax.swing.JButton btnTaBort;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -1,21 +1,21 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
 import oru.inf.InfDB; 
 import oru.inf.InfException; 
 import javax.swing.JOptionPane; 
 import java.util.ArrayList; 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.time.LocalDate;
 import javax.swing.*;
+import java.util.HashMap;
+
 /**
  *
  * @author iftinserar
  */
-public class SkapaNyOrder extends javax.swing.JPanel {
+public class SkapaNyOrder extends javax.swing.JPanel { 
  
         private static InfDB idb; 
         private String inloggadAnvandare; 
@@ -60,19 +60,26 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         }
     }
     
-    private void fyllKundIDComboBox(){
+    private void fyllKundIDComboBox() {
         try {
-            cbKundnummer.removeAllItems();  // Rensar alla tidigare objekt
-            cbKundnummer.addItem("Välj KundID");  // Lägg till "Välj KundID" som första alternativ
-            ArrayList<String> kundIDLista = idb.fetchColumn("SELECT KundID FROM kund");
-            for (String id : kundIDLista) {
-                cbKundnummer.addItem(id);  // Lägg till de faktiska kundID:n
+            cbKundnummer.removeAllItems();
+            cbKundnummer.addItem("Välj KundID");
+
+            ArrayList<HashMap<String, String>> kunder = idb.fetchRows("SELECT KundID, Fornamn, Efternamn FROM kund WHERE Fornamn IS NOT NULL");
+
+            for (HashMap<String, String> kund : kunder) {
+                String kundID = kund.get("KundID");
+                String fornamn = kund.get("Fornamn");
+                String efternamn = kund.get("Efternamn");
+                cbKundnummer.addItem(kundID + " - " + fornamn + " " + efternamn);
             }
 
             cbKundnummer.addActionListener(e -> {
                 String valdKund = (String) cbKundnummer.getSelectedItem();
 
                 if (valdKund != null && !valdKund.equals("Välj KundID")) {
+                    String valdKundID = valdKund.split(" - ")[0];  // Hämta bara själva ID:t
+
                     if (!orderrader.isEmpty()) {
                         int svar = JOptionPane.showConfirmDialog(
                             null,
@@ -82,18 +89,30 @@ public class SkapaNyOrder extends javax.swing.JPanel {
                         );
 
                         if (svar == JOptionPane.YES_OPTION) {
-                            resetOrder();  // <--- HÄR är ändringen
+                            resetOrder();
+                            inloggadKundID = valdKundID;
                         } else {
-                            cbKundnummer.setSelectedItem(inloggadKundID); // Återställ till tidigare kund
+                            // Återställ till tidigare kund
+                            for (int i = 0; i < cbKundnummer.getItemCount(); i++) {
+                                String item = cbKundnummer.getItemAt(i);
+                                if (item.startsWith(inloggadKundID + " - ")) {
+                                    cbKundnummer.setSelectedIndex(i);
+                                    break;
+                                }
+                            }
                         }
+                    } else {
+                        inloggadKundID = valdKundID;
                     }
                 }
             });
 
         } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av KundID: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av kundinformation: " + e.getMessage());
         }
     }
+    
+    
     
     private void resetOrder() {
     orderrader.clear();
@@ -134,7 +153,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     }
 }
     
-    public class Orderrad {
+    public static class Orderrad {
         String artikelnummer;
         String namn;
         int antal;
@@ -171,7 +190,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             this.antal = nyttAntal;
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -182,7 +201,6 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     private void initComponents() {
 
         tfAntal = new javax.swing.JTextField();
-        btnTillbaka = new javax.swing.JButton();
         cbKundnummer = new javax.swing.JComboBox<>();
         lblExpressleverans = new javax.swing.JLabel();
         cbNamn = new javax.swing.JComboBox<>();
@@ -202,13 +220,6 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         txtfOrdernummer = new javax.swing.JTextField();
         tfPris = new javax.swing.JTextField();
         txtfDatum = new javax.swing.JTextField();
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
 
         cbKundnummer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbKundnummer.addActionListener(new java.awt.event.ActionListener() {
@@ -277,11 +288,9 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnTillbaka)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(89, 89, 89)
+                                .addGap(171, 171, 171)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(tfPris, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblPris2))
@@ -377,15 +386,10 @@ public class SkapaNyOrder extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLaggTill)
-                    .addComponent(btnGaVidare)
-                    .addComponent(btnTillbaka))
+                    .addComponent(btnGaVidare))
                 .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn.
-    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void cbKundnummerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKundnummerActionPerformed
         // TODO add your handling code here:
@@ -402,15 +406,12 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_cbJaActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-        // Kontrollera om ett giltigt kund-ID har valts
-        String kundID = (String) cbKundnummer.getSelectedItem();
-        if (kundID == null || kundID.equals("Välj KundID")) {
+        if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
             JOptionPane.showMessageDialog(null, "Du måste välja ett giltigt kundnummer innan du kan lägga till produkter.");
             return;
         }
 
         try {
-            // Försök att lägga till produkten
             int antal = Integer.parseInt(tfAntal.getText());
             double pris = Double.parseDouble(tfPris.getText());
             String artikelnummer = tfArtikelNummer.getText();
@@ -422,12 +423,10 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             }
 
             String namn = selectedItem.toString();
-
             orderrader.add(new Orderrad(artikelnummer, namn, antal, pris));
 
             JOptionPane.showMessageDialog(null, "Produkt tillagd!");
 
-            // Nollställ textfälten och comboboxen efter att produkten har lagts till.
             tfAntal.setText("");
             tfArtikelNummer.setText("");
             tfPris.setText("");
@@ -438,18 +437,14 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnGaVidareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaVidareActionPerformed
-        // Kontrollera om det finns några orderrader
-        /*
         if (orderrader.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt.");
-            return; // Avbryt om inga produkter har lagts till
+            JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
+            return;
         }
 
-        // Kontrollera om ett giltigt kundnummer har valts
-        String kundID = (String) cbKundnummer.getSelectedItem();
-        if (kundID == null || kundID.equals("Välj KundID")) {
+        if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
             JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
-            return; // Avbryt om ingen kund har valts
+            return;
         }
 
         double totalpris = 0;
@@ -458,29 +453,24 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         }
 
         if (express) {
-            double expressAvgift = totalpris * 0.2;
-            totalpris += expressAvgift;
+            totalpris += totalpris * 0.2;
         }
-        // Hämta ordernummer från textfältet
+
         String ordernummer = txtfOrdernummer.getText();
         if (ordernummer.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
-            return; // Avbryt om inget ordernummer har angetts
+            return;
         }
 
-        // Skicka till OrderSammanfattning fönstret med nödvändig data
-        OrderSammanfattning os = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris, kundID, ordernummer, express, "Standardbeställning"
-        );
+        OrderSammanfattning os = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris,
+                inloggadKundID, ordernummer, express, "Standardbeställning");
         os.setVisible(true);
-        this.dispose(); // Stäng nuvarande fönster
-        */
     }//GEN-LAST:event_btnGaVidareActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGaVidare;
     private javax.swing.JButton btnLaggTill;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JCheckBox cbJa;
     private javax.swing.JComboBox<String> cbKundnummer;
     private javax.swing.JComboBox<String> cbNamn;

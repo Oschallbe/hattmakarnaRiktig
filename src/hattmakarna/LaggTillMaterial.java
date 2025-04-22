@@ -20,14 +20,12 @@ public class LaggTillMaterial extends javax.swing.JFrame {
 
         private InfDB idb;
         private String inloggadAnvandare;
-        private Object forraFonster;
         private Validering validera;
 
-    public LaggTillMaterial(InfDB idb, String ePost, Object forraFonster) {
+    public LaggTillMaterial(InfDB idb, String ePost) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = ePost;
-        this.forraFonster = forraFonster;
     }
 
     /**
@@ -48,7 +46,6 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtPris = new javax.swing.JTextField();
         btnSpara = new javax.swing.JButton();
-        btnTillbaka = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtEnhet = new javax.swing.JTextField();
@@ -93,13 +90,6 @@ public class LaggTillMaterial extends javax.swing.JFrame {
             }
         });
 
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
-
         jLabel6.setText("kr");
 
         jLabel7.setText("Enhet");
@@ -135,9 +125,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtFarg, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                        .addComponent(btnTillbaka)
-                        .addGap(41, 41, 41))
+                        .addGap(41, 212, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -161,8 +149,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTillbaka))
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -184,7 +171,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(btnSpara)
                 .addGap(30, 30, 30))
         );
@@ -203,23 +190,6 @@ public class LaggTillMaterial extends javax.swing.JFrame {
     private void txtPrisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrisActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrisActionPerformed
-
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn.
-
-        if (forraFonster instanceof SkapaSpecialOrder) {
-            ((SkapaSpecialOrder) forraFonster).setVisible(true);
-            SkapaSpecialOrder specialOrder = (SkapaSpecialOrder) forraFonster;
-            specialOrder.fyllMaterialComboBox();
-            this.dispose();
-        }
-
-        if (forraFonster instanceof LaggTillProdukt) {
-            ((LaggTillProdukt) forraFonster).setVisible(true);
-            this.dispose();
-        }
-
-    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
     // Hämta värden från textfälten
@@ -268,6 +238,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         txtPris.setText("");
         txtEnhet.setText("");
         txtBeskrivning.setText("");
+        this.dispose();
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Pris måste vara ett nummer.");
     } catch (InfException e) {
@@ -317,7 +288,6 @@ public class LaggTillMaterial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSpara;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

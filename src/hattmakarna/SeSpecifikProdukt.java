@@ -213,7 +213,7 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
                         .addComponent(btnTillbaka)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(185, Short.MAX_VALUE))
         );
 
         pack();
@@ -221,7 +221,7 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn. 
-        new SeAllaProdukter(idb, inloggadAnvandare).setVisible(true); 
+        new SeAllaLagerfordaProdukter(idb, inloggadAnvandare).setVisible(true); 
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 

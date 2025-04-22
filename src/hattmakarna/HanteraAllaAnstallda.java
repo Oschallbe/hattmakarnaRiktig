@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
 import oru.inf.InfDB;
@@ -81,7 +81,6 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
             System.out.println(ex);
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,7 +92,6 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
 
         btnLaggTill = new javax.swing.JButton();
         btnTaBort = new javax.swing.JButton();
-        btnTillbaka = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAllaAnstallda = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -109,13 +107,6 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
         btnTaBort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTaBortActionPerformed(evt);
-            }
-        });
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
             }
         });
 
@@ -150,11 +141,9 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnLaggTill)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnTaBort)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnTillbaka)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnTaBort)))))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,45 +155,44 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLaggTill)
-                    .addComponent(btnTaBort)
-                    .addComponent(btnTillbaka))
+                    .addComponent(btnTaBort))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
         //Lägg till ny anställd.
-
+        new LaggTillAnstalld(idb, inloggadAnvandare).setVisible(true);
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
         // Tar bort en anställd genom att välja en rad
-
+        
         try{
             //Hämta raden som har markerats
             int valdRad = tblAllaAnstallda.getSelectedRow();
-
+            
             //Om ingen rad är vald
             if(valdRad == -1){
                 javax.swing.JOptionPane.showMessageDialog(this, "Markera en anställd för att kunna ta bort");
-
+                
                 return;
             }
-
+            
             //Hämta anställningsid för den markerade raden.
             String id = tblAllaAnstallda.getValueAt(valdRad,0).toString();
-
+            
             //Ett meddelande visas som bekräftelse på om man verkligen vill ta bort.
             int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort den anställda?","Bekräfta", javax.swing.JOptionPane.YES_NO_OPTION);
-
+            
             //Om man svarar ja så tas den anställda bort från databasen.
             if(svar==javax.swing.JOptionPane.YES_OPTION){
                 String taBort = "delete from anstalld where AnstalldID = " + id + ";";
                 idb.delete(taBort);
-
+                
                 //efter den anställda tagits bort uppdateras tabellen.
                 fyllTabell();
-
+                
                 javax.swing.JOptionPane.showMessageDialog(this, "Borttagning lyckades!");
             }
         }
@@ -213,16 +201,10 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnTaBortActionPerformed
 
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        //Tillbaka till menyn.
-        
-    }//GEN-LAST:event_btnTillbakaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLaggTill;
     private javax.swing.JButton btnTaBort;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAllaAnstallda;
