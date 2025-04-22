@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -18,12 +19,10 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
      * Creates new form LaggTillAnstalld
      */
     public LaggTillAnstalld(InfDB idb, String ePost) {
-        initComponents();
         this.idb=idb;
         this.inloggadAnvandare = ePost;
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,9 +37,17 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        txtFornamn = new javax.swing.JTextField();
+        txtEfternamn = new javax.swing.JTextField();
+        txtEpost = new javax.swing.JTextField();
+        txtLosenord = new javax.swing.JTextField();
+        BtnLaggTill = new javax.swing.JButton();
+        btnTillbaka = new javax.swing.JButton();
+        btnSlumpaLosenord = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Lägg till anställd");
 
         jLabel2.setText("Förnamn");
@@ -51,6 +58,27 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
 
         jLabel5.setText("Lösenord");
 
+        BtnLaggTill.setText("Lägg till");
+        BtnLaggTill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLaggTillActionPerformed(evt);
+            }
+        });
+
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTillbakaActionPerformed(evt);
+            }
+        });
+
+        btnSlumpaLosenord.setText("Generera nytt lösenord");
+        btnSlumpaLosenord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSlumpaLosenordActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -58,31 +86,120 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addContainerGap(470, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(39, 39, 39)
+                        .addComponent(btnSlumpaLosenord))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(159, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(btnTillbaka, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
-                .addComponent(jLabel2)
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSlumpaLosenord))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTillbaka, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+    new AllaAnstallda(idb, inloggadAnvandare).setVisible(true);
+    this.setVisible(false);
+    }//GEN-LAST:event_btnTillbakaActionPerformed
+
+    private void BtnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLaggTillActionPerformed
+    String fornamn = txtFornamn.getText().trim();
+    String efternamn = txtEfternamn.getText().trim();
+    String epost = txtEpost.getText().trim();
+    String losenord = txtLosenord.getText().trim();
+
+    if (fornamn.isEmpty() || efternamn.isEmpty() || epost.isEmpty() || losenord.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String sql = String.format(
+        "INSERT INTO Anstalld (Fornamn, Efternamn, Epost, Losenord, Behorighet) " +
+        "VALUES ('%s', '%s', '%s', '%s', 1)",
+        fornamn.replace("'", "''"), 
+        efternamn.replace("'", "''"), 
+        epost.replace("'", "''"), 
+        losenord.replace("'", "''")
+    );
+
+    try {
+        idb.insert(sql);
+        JOptionPane.showMessageDialog(this, "Anställd tillagd!\nLösenord: " + losenord);
+
+        // Tömmer fälten
+        txtFornamn.setText("");
+        txtEfternamn.setText("");
+        txtEpost.setText("");
+        txtLosenord.setText("");
+    } catch (InfException ex) {
+        JOptionPane.showMessageDialog(this, "Fel vid insättning: " + ex.getMessage());
+    }
+    }//GEN-LAST:event_BtnLaggTillActionPerformed
+
+    private void btnSlumpaLosenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSlumpaLosenordActionPerformed
+    String tecken = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    StringBuilder sb = new StringBuilder();
+    java.util.Random rand = new java.util.Random();
+    int langd = 10; //
+
+    for (int i = 0; i < langd; i++) {
+        int index = rand.nextInt(tecken.length());
+        sb.append(tecken.charAt(index));
+    }
+
+    String slumpatLosenord = sb.toString();
+    txtLosenord.setText(slumpatLosenord); // sätt det direkt i fältet
+    }//GEN-LAST:event_btnSlumpaLosenordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,10 +237,17 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnLaggTill;
+    private javax.swing.JButton btnSlumpaLosenord;
+    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txtEfternamn;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JTextField txtFornamn;
+    private javax.swing.JTextField txtLosenord;
     // End of variables declaration//GEN-END:variables
 }
