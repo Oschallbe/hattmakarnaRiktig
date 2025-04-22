@@ -231,13 +231,16 @@ public class LaggTillMaterial extends javax.swing.JFrame {
     String beskrivning = txtBeskrivning.getText();
 
     // Kontrollera att fälten inte är tomma
-    if (!Validering.faltInteTomt(namn) || !Validering.faltInteTomt(farg) || !Validering.faltInteTomt(pris) || !Validering.faltInteTomt(enhet) || !Validering.faltInteTomt(beskrivning)) {
+    if (!Validering.faltInteTomt(namn) || !Validering.faltInteTomt(typ) || 
+        !Validering.faltInteTomt(farg) || !Validering.faltInteTomt(pris) || 
+        !Validering.faltInteTomt(enhet) || !Validering.faltInteTomt(beskrivning)) {
         JOptionPane.showMessageDialog(null, "Fyll i alla fält!");
         return;
     }
     
-    if (!Validering.arEndastBokstaver(namn) || !Validering.arEndastBokstaver(farg) || !Validering.arEndastBokstaver(typ) || !Validering.arEndastBokstaver(enhet) || !Validering.arEndastBokstaver(beskrivning)) {
-        JOptionPane.showMessageDialog(null, "Namn, färg, typ, enhet, beskrivning ska endast innehålla bokstäver!");
+    if (!Validering.arEndastBokstaver(namn) || !Validering.arEndastBokstaver(typ) || 
+        !Validering.arEndastBokstaver(farg) || !Validering.arEndastBokstaver(enhet)) {
+        JOptionPane.showMessageDialog(null, "Fält som namn, typ, färg, enhet måste bestå av bokstäver.");
         return;
     }
 
@@ -246,20 +249,30 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Vänligen välj typ");
         return;
     }
-
+    
+    
     try {
         // Konvertera pris till double
         double priset = Double.parseDouble(pris);
 
         // Skapa SQL-fråga
-        String fraga = "INSERT INTO Material (Namn, Typ, Farg, Pris) VALUES ('" + namn + "','" + typ + "','" + farg + "','" + pris + "')";
+                String fraga = "INSERT INTO Material (Namn, Typ, Farg, Pris, Enhet, Beskrivning) VALUES " +
+                     "('" + namn + "', '" + typ + "', '" + farg + "', " + priset + ", '" + enhet + "', '" + beskrivning + "')";
         idb.insert(fraga);
 
         JOptionPane.showMessageDialog(null, "Material sparat!");
+        // Rensa fälten efter sparning
+        txtNamn.setText("");
+        txtTyp.setText("");
+        txtFarg.setText("");
+        txtPris.setText("");
+        txtEnhet.setText("");
+        txtBeskrivning.setText("");
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Pris måste vara ett nummer.");
     } catch (InfException e) {
         JOptionPane.showMessageDialog(null, "Fel vid databasåtkomst.");
+        
     }    
     }//GEN-LAST:event_btnSparaActionPerformed
 
