@@ -542,7 +542,7 @@ public class OrderSammanfattning extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
          }
         
-        String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, Ort, LeveransAdress, FakturaAdress FROM Kund WHERE KundID = " + kundID + ";";
+        String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, LeveransOrt, LeveransAdress, FakturaAdress FROM Kund WHERE KundID = " + kundID + ";";
            
            HashMap<String, String> kundInfo = new HashMap<>();
 

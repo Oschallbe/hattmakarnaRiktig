@@ -24,99 +24,119 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
-        initListeners();
     }
 
-    private void initListeners() {
 
-        btnSpara.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sparaKund();
-            }
-        });
 
-// Kod för tillbaka-knappen som skickar användaren till huvudmenyn.
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                new HuvudMeny(idb, inloggadAnvandare).setVisible(true);
-                setVisible(false);
-            }
-
-        });
-    }
-
-//skyddar mot sql-injektion, genom att byta ut ' mot två'' (så att databasen inte tror att man avslutar koden tex)
+//skyddar mot sql-injektion, genom att byta ut ' mot två'' (så att databasen inte tror att man avslutar koden)
     private void sparaKund() {
-        String telefonNummer = (txtTelefonNr.getText());
-        String fakturaAdress = (txtFakturaAdress.getText());
-        String leveransAdress = (TxtLeveransAdress.getText());
-        String postNummer = (txtPostNr.getText());
-        String fakturaPostNr = (txtfPostNrFaktura.getText());
-        String ort = (txtOrt.getText());
-        String fakturaOrt = (txtfOrtFaktura.getText());
-        String förnamn = (txtFornamn.getText());
-        String efternamn = (TxtEfternamn.getText());
-        String matt = (txtHuvudmått.getText());
-        String epost = (TxtEpost.getText());
 
-//felmedelande som dyker upp ifall en ruta inte fylls i, går ej att spara då 
-        if (!Validering.faltInteTomt(förnamn) || !Validering.faltInteTomt(efternamn)
-                || !Validering.faltInteTomt(epost) || !Validering.faltInteTomt(matt) || !Validering.faltInteTomt(telefonNummer)
-                || !Validering.faltInteTomt(fakturaAdress) || !Validering.faltInteTomt(postNummer)
-                || !Validering.faltInteTomt(ort) || !Validering.faltInteTomt(fakturaPostNr) || !Validering.faltInteTomt(fakturaOrt) || !Validering.faltInteTomt(leveransAdress)) {
+    // Hämta inmatade värden
+    String fornamn = txtFornamn.getText();
+    String efternamn = TxtEfternamn.getText();
+    String epost = TxtEpost.getText();
+    String telefon = txtTelefonNr.getText();
+    String huvudmatt = txtHuvudmått.getText();
 
-            JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    String levAdress = TxtLeveransAdress.getText();
+    String levPostNr = txtLeveransPostnummer.getText();
+    String levOrt = txtLeveransOrt.getText();
+    String levLand = txtLeveransLand.getText(); 
 
-        if (!Validering.arEndastBokstaver(förnamn)) {
-            JOptionPane.showMessageDialog(this, "Förnamn får endast innehålla bokstäver", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    String fakAdress = txtFakturaAdress.getText();
+    String fakPostNr = txtFakturaPostnummer.getText();
+    String fakOrt = txtFakturaOrt.getText();
+    String fakLand = txtFakturaLand.getText();    
 
-        if (!Validering.arEndastBokstaver(efternamn)) {
-            JOptionPane.showMessageDialog(this, "Efternamn får endast innehålla bokstäver", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    // Validera att inga fält är tomma
+    if (!Validering.faltInteTomt(fornamn) || !Validering.faltInteTomt(efternamn) ||
+        !Validering.faltInteTomt(epost) || !Validering.faltInteTomt(telefon) ||
+        !Validering.faltInteTomt(huvudmatt) || !Validering.faltInteTomt(levAdress) ||
+        !Validering.faltInteTomt(levPostNr) || !Validering.faltInteTomt(levOrt) ||
+        !Validering.faltInteTomt(levLand) ||     // 👈 NYTT
+        !Validering.faltInteTomt(fakAdress) || !Validering.faltInteTomt(fakPostNr) ||
+        !Validering.faltInteTomt(fakOrt) || !Validering.faltInteTomt(fakLand)) {   // 👈 NYTT
 
-        if (!Validering.arEndastSiffror(matt)) {
-            JOptionPane.showMessageDialog(this, "Huvudmått får endast innehålla siffror", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (!Validering.valideringEmail(epost)) {
-            JOptionPane.showMessageDialog(this, "Ogiltig e-postadress", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (!Validering.valideringTelefon(telefonNummer)) {
-            JOptionPane.showMessageDialog(this, "Telefonnummer måste ha formatet XXX-XXX-XXXX och enbart siffror", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (!Validering.arEndastSiffror(postNummer)) {
-            JOptionPane.showMessageDialog(this, "Postnummer får endast innehålla siffror", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        if (!Validering.arEndastSiffror(fakturaPostNr)) {
-            JOptionPane.showMessageDialog(this, "Postnummer får endast innehålla siffror", "Fel", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        try {
-            String fraga = "INSERT INTO Kund (Fornamn, Efternamn, Matt, Epost, Telefonnummer, LeveransAdress, FakturaAdress, LeveransPostnummer, LeveransOrt, FakturaPostnummer, FakturaOrt) "
-                    + "VALUES ('" + förnamn + "', '" + efternamn + "', '" + matt + "', '" + epost + "', '" + telefonNummer + "', '" + leveransAdress + "', '" + fakturaAdress + "', '" + postNummer + "', '" + ort + "', '" + fakturaPostNr + "', '" + fakturaOrt + "')";
-
-//kör sql-frågan och ser till att spara datan i databasen
-            idb.insert(fraga);
-            JOptionPane.showMessageDialog(this, "Kunddata har sparats!");
-        } //om något går fel visas detta felmeddelande
-        catch (InfException ex) {
-            JOptionPane.showMessageDialog(this, "Fel vid sparning till databas: " + ex.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
-        }
+        JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
+        return;
     }
 
+    // Validera dataformat
+    if (!Validering.arEndastBokstaver(fornamn)) {
+        visaFel("Förnamn får endast innehålla bokstäver");
+        return;
+    }
+
+    if (!Validering.arEndastBokstaver(efternamn)) {
+        visaFel("Efternamn får endast innehålla bokstäver");
+        return;
+    }
+
+    if (!Validering.valideringEmail(epost)) {
+        visaFel("Ogiltig e-postadress");
+        return;
+    }
+
+    if (!Validering.valideringTelefon(telefon)) {
+        visaFel("Telefonnummer måste ha formatet XXX-XXX-XXXX");
+        return;
+    }
+
+    if (!Validering.arEndastSiffror(huvudmatt)) {
+        visaFel("Huvudmått får endast innehålla siffror");
+        return;
+    }
+
+    if (!Validering.arEndastSiffror(levPostNr) || !Validering.arEndastSiffror(fakPostNr)) {
+        visaFel("Postnummer får endast innehålla siffror");
+        return;
+    }
+
+    // 3. Spara till databas
+try {
+    String sql = "INSERT INTO Kund (Fornamn, Efternamn, Matt, Epost, Telefonnummer, LeveransAdress, FakturaAdress, " +
+                 "LeveransPostnummer, LeveransOrt, LeveransLand, FakturaPostnummer, FakturaOrt, FakturaLand) VALUES (" +
+                 "'" + fornamn.replace("'", "''") + "', " +
+                 "'" + efternamn.replace("'", "''") + "', " +
+                 "'" + huvudmatt + "', " +
+                 "'" + epost.replace("'", "''") + "', " +
+                 "'" + telefon + "', " +
+                 "'" + levAdress.replace("'", "''") + "', " +
+                 "'" + fakAdress.replace("'", "''") + "', " +
+                 "'" + levPostNr + "', " +
+                 "'" + levOrt.replace("'", "''") + "', " +
+                 "'" + levLand.replace("'", "''") + "', " +
+                 "'" + fakPostNr + "', " +
+                 "'" + fakOrt.replace("'", "''") + "', " +
+                 "'" + fakLand.replace("'", "''") + "')";
+
+        idb.insert(sql);
+        JOptionPane.showMessageDialog(this, "Kunddata har sparats!");
+        rensaFalt();
+    } catch (InfException e) {
+        visaFel("Fel vid sparning till databas: " + e.getMessage());
+    }
+    }
+
+    private void visaFel(String meddelande) {
+    JOptionPane.showMessageDialog(this, meddelande, "Fel", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void rensaFalt() {
+    txtFornamn.setText("");
+    TxtEfternamn.setText("");
+    TxtEpost.setText("");
+    txtTelefonNr.setText("");
+    txtHuvudmått.setText("");
+    TxtLeveransAdress.setText("");
+    txtLeveransPostnummer.setText("");
+    txtLeveransOrt.setText("");
+    txtLeveransLand.setText("");
+    txtFakturaAdress.setText("");
+    txtFakturaPostnummer.setText("");
+    txtFakturaOrt.setText("");
+    txtFakturaLand.setText("");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -142,8 +162,8 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         txtTelefonNr = new javax.swing.JTextField();
         TxtEpost = new javax.swing.JTextField();
         TxtLeveransAdress = new javax.swing.JTextField();
-        txtPostNr = new javax.swing.JTextField();
-        txtOrt = new javax.swing.JTextField();
+        txtLeveransPostnummer = new javax.swing.JTextField();
+        txtLeveransOrt = new javax.swing.JTextField();
         TxtEfternamn = new javax.swing.JTextField();
         btnTillbaka = new javax.swing.JButton();
         btnSpara = new javax.swing.JButton();
@@ -152,9 +172,13 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         lblHuvudmått = new javax.swing.JLabel();
         txtHuvudmått = new javax.swing.JTextField();
         lblPostNrFaktura = new javax.swing.JLabel();
-        txtfPostNrFaktura = new javax.swing.JTextField();
+        txtFakturaPostnummer = new javax.swing.JTextField();
         lblOrtFaktura = new javax.swing.JLabel();
-        txtfOrtFaktura = new javax.swing.JTextField();
+        txtFakturaOrt = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtLeveransLand = new javax.swing.JTextField();
+        txtFakturaLand = new javax.swing.JTextField();
 
         jLabel8.setText("jLabel8");
 
@@ -183,42 +207,6 @@ public class LäggTillNyKund extends javax.swing.JFrame {
 
         lblPostNr.setText("Postnummer");
 
-        txtFornamn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFornamnActionPerformed(evt);
-            }
-        });
-
-        txtTelefonNr.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTelefonNrActionPerformed(evt);
-            }
-        });
-
-        TxtLeveransAdress.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtLeveransAdressActionPerformed(evt);
-            }
-        });
-
-        txtPostNr.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPostNrActionPerformed(evt);
-            }
-        });
-
-        txtOrt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOrtActionPerformed(evt);
-            }
-        });
-
-        TxtEfternamn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtEfternamnActionPerformed(evt);
-            }
-        });
-
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -241,6 +229,10 @@ public class LäggTillNyKund extends javax.swing.JFrame {
 
         lblOrtFaktura.setText("Ort");
 
+        jLabel2.setText("Land");
+
+        jLabel3.setText("Land");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -250,7 +242,7 @@ public class LäggTillNyKund extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnTillbaka)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTelefonnr)
@@ -275,21 +267,33 @@ public class LäggTillNyKund extends javax.swing.JFrame {
                             .addComponent(lblPostNrFaktura))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPostNr, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                            .addComponent(txtfPostNrFaktura))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                            .addComponent(txtLeveransPostnummer, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(txtFakturaPostnummer))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSpara, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
+                                .addComponent(btnSpara)
+                                .addGap(16, 16, 16))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblOrt)
                                     .addComponent(lblOrtFaktura))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtfOrtFaktura, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                                    .addComponent(txtOrt))
-                                .addGap(10, 10, 10)))
-                        .addGap(16, 16, 16))
+                                    .addComponent(txtFakturaOrt)
+                                    .addComponent(txtLeveransOrt, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtLeveransLand, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtFakturaLand)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -323,18 +327,22 @@ public class LäggTillNyKund extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtLeveransAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPostNr)
-                    .addComponent(txtPostNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLeveransPostnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblOrt)
-                    .addComponent(txtOrt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblLeveransAdress))
+                    .addComponent(txtLeveransOrt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLeveransAdress)
+                    .addComponent(jLabel2)
+                    .addComponent(txtLeveransLand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFakturaAdress)
                     .addComponent(txtFakturaAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPostNrFaktura)
-                    .addComponent(txtfPostNrFaktura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFakturaPostnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblOrtFaktura)
-                    .addComponent(txtfOrtFaktura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFakturaOrt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtFakturaLand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTillbaka)
@@ -345,37 +353,14 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TxtEfternamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtEfternamnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TxtEfternamnActionPerformed
-
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        // TODO add your handling code here:
+    sparaKund();
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        // TODO add your handling code here:
+    new AllaKunder(idb, inloggadAnvandare).setVisible(true);
+    this.setVisible(false);
     }//GEN-LAST:event_btnTillbakaActionPerformed
-
-    private void txtTelefonNrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonNrActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelefonNrActionPerformed
-
-    private void txtFornamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFornamnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFornamnActionPerformed
-
-    private void TxtLeveransAdressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtLeveransAdressActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TxtLeveransAdressActionPerformed
-
-    private void txtPostNrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPostNrActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPostNrActionPerformed
-
-    private void txtOrtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtOrtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -419,6 +404,8 @@ public class LäggTillNyKund extends javax.swing.JFrame {
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
@@ -435,12 +422,14 @@ public class LäggTillNyKund extends javax.swing.JFrame {
     private javax.swing.JLabel lblPostNrFaktura;
     private javax.swing.JLabel lblTelefonnr;
     private javax.swing.JTextField txtFakturaAdress;
+    private javax.swing.JTextField txtFakturaLand;
+    private javax.swing.JTextField txtFakturaOrt;
+    private javax.swing.JTextField txtFakturaPostnummer;
     private javax.swing.JTextField txtFornamn;
     private javax.swing.JTextField txtHuvudmått;
-    private javax.swing.JTextField txtOrt;
-    private javax.swing.JTextField txtPostNr;
+    private javax.swing.JTextField txtLeveransLand;
+    private javax.swing.JTextField txtLeveransOrt;
+    private javax.swing.JTextField txtLeveransPostnummer;
     private javax.swing.JTextField txtTelefonNr;
-    private javax.swing.JTextField txtfOrtFaktura;
-    private javax.swing.JTextField txtfPostNrFaktura;
     // End of variables declaration//GEN-END:variables
 }

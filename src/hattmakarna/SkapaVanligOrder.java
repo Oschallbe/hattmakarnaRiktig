@@ -153,7 +153,7 @@ public class SkapaVanligOrder extends javax.swing.JFrame {
     }
 }
     
-    public class Orderrad {
+    public static class Orderrad {
         String artikelnummer;
         String namn;
         int antal;

@@ -84,26 +84,42 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtPostNr" pref="96" max="32767" attributes="0"/>
-                          <Component id="txtfPostNrFaktura" max="32767" attributes="0"/>
+                          <Component id="txtLeveransPostnummer" pref="88" max="32767" attributes="0"/>
+                          <Component id="txtFakturaPostnummer" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="41" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnSpara" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace pref="265" max="32767" attributes="0"/>
+                              <Component id="btnSpara" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="lblOrt" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblOrtFaktura" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtfOrtFaktura" pref="98" max="32767" attributes="0"/>
-                                  <Component id="txtOrt" max="32767" attributes="0"/>
+                                  <Component id="txtFakturaOrt" max="32767" attributes="0"/>
+                                  <Component id="txtLeveransOrt" min="-2" pref="98" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="txtLeveransLand" min="-2" pref="95" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="txtFakturaLand" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -147,19 +163,23 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="TxtLeveransAdress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPostNr" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPostNr" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransPostnummer" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblOrt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtOrt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransOrt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblLeveransAdress" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLeveransLand" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblFakturaAdress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFakturaAdress" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPostNrFaktura" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfPostNrFaktura" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFakturaPostnummer" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblOrtFaktura" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfOrtFaktura" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFakturaOrt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFakturaLand" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="26" pref="25" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -216,36 +236,18 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtFornamn">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFornamnActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTelefonNr">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTelefonNrActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TxtEpost">
     </Component>
     <Component class="javax.swing.JTextField" name="TxtLeveransAdress">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TxtLeveransAdressActionPerformed"/>
-      </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtPostNr">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPostNrActionPerformed"/>
-      </Events>
+    <Component class="javax.swing.JTextField" name="txtLeveransPostnummer">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtOrt">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOrtActionPerformed"/>
-      </Events>
+    <Component class="javax.swing.JTextField" name="txtLeveransOrt">
     </Component>
     <Component class="javax.swing.JTextField" name="TxtEfternamn">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TxtEfternamnActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnTillbaka">
       <Properties>
@@ -282,14 +284,28 @@
         <Property name="text" type="java.lang.String" value="Postnummer"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtfPostNrFaktura">
+    <Component class="javax.swing.JTextField" name="txtFakturaPostnummer">
     </Component>
     <Component class="javax.swing.JLabel" name="lblOrtFaktura">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ort"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtfOrtFaktura">
+    <Component class="javax.swing.JTextField" name="txtFakturaOrt">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Land"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Land"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtLeveransLand">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtFakturaLand">
     </Component>
   </SubComponents>
 </Form>
