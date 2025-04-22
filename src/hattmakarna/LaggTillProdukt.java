@@ -211,7 +211,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtTyp = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         artikelNummer.setText("Artikelnummer");
 
@@ -366,7 +366,6 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                             .addComponent(modell)
                             .addComponent(huvudmatt))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(laggTillNyttMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52))
             .addGroup(layout.createSequentialGroup()
@@ -524,7 +523,7 @@ public class LaggTillProdukt extends javax.swing.JFrame {
     private void laggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillNyttMaterialActionPerformed
         // TODO add your handling code here:
         new LaggTillMaterial(idb, inloggadAnvandare).setVisible(true);
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_laggTillNyttMaterialActionPerformed
 
     private void txtTypActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTypActionPerformed
