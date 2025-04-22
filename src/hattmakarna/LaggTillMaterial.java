@@ -43,7 +43,6 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtNamn = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        comboTyp = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         txtFarg = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -51,6 +50,11 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         btnSpara = new javax.swing.JButton();
         btnTillbaka = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtEnhet = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtBeskrivning = new javax.swing.JTextField();
+        txtTyp = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,8 +69,6 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         });
 
         jLabel3.setText("Typ:");
-
-        comboTyp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj typ", "Tyg", "Dekoration" }));
 
         jLabel4.setText("Färg:");
 
@@ -100,6 +102,16 @@ public class LaggTillMaterial extends javax.swing.JFrame {
 
         jLabel6.setText("kr");
 
+        jLabel7.setText("Enhet");
+
+        jLabel8.setText("Beskrivning");
+
+        txtBeskrivning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBeskrivningActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,24 +126,31 @@ public class LaggTillMaterial extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addGap(52, 52, 52)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtFarg, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboTyp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                         .addComponent(btnTillbaka)
                         .addGap(41, 41, 41))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEnhet, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSpara)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel6)))
+                                .addComponent(jLabel6))
+                            .addComponent(txtTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -147,7 +166,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(comboTyp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTyp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -157,9 +176,17 @@ public class LaggTillMaterial extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtEnhet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(btnSpara)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -197,18 +224,20 @@ public class LaggTillMaterial extends javax.swing.JFrame {
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
     // Hämta värden från textfälten
     String namn = txtNamn.getText(); // från textruta
-    String typ = comboTyp.getSelectedItem().toString(); // från combobox
+    String typ = txtTyp.getText();
     String farg = txtFarg.getText(); // från textruta
-    String prisText = txtPris.getText(); // från textruta (som text)
+    String pris = txtPris.getText(); // från textruta (som text)
+    String enhet = txtEnhet.getText();
+    String beskrivning = txtBeskrivning.getText();
 
     // Kontrollera att fälten inte är tomma
-    if (!Validering.faltInteTomt(namn) || !Validering.faltInteTomt(farg) || !Validering.faltInteTomt(prisText)) {
+    if (!Validering.faltInteTomt(namn) || !Validering.faltInteTomt(farg) || !Validering.faltInteTomt(pris) || !Validering.faltInteTomt(enhet) || !Validering.faltInteTomt(beskrivning)) {
         JOptionPane.showMessageDialog(null, "Fyll i alla fält!");
         return;
     }
     
-    if (!Validering.arEndastBokstaver(namn) || !Validering.arEndastBokstaver(farg) || !Validering.arEndastBokstaver(typ)) {
-        JOptionPane.showMessageDialog(null, "Namn, färg och typ ska endast innehålla bokstäver!");
+    if (!Validering.arEndastBokstaver(namn) || !Validering.arEndastBokstaver(farg) || !Validering.arEndastBokstaver(typ) || !Validering.arEndastBokstaver(enhet) || !Validering.arEndastBokstaver(beskrivning)) {
+        JOptionPane.showMessageDialog(null, "Namn, färg, typ, enhet, beskrivning ska endast innehålla bokstäver!");
         return;
     }
 
@@ -220,7 +249,7 @@ public class LaggTillMaterial extends javax.swing.JFrame {
 
     try {
         // Konvertera pris till double
-        double pris = Double.parseDouble(prisText);
+        double priset = Double.parseDouble(pris);
 
         // Skapa SQL-fråga
         String fraga = "INSERT INTO Material (Namn, Typ, Farg, Pris) VALUES ('" + namn + "','" + typ + "','" + farg + "','" + pris + "')";
@@ -233,6 +262,10 @@ public class LaggTillMaterial extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Fel vid databasåtkomst.");
     }    
     }//GEN-LAST:event_btnSparaActionPerformed
+
+    private void txtBeskrivningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBeskrivningActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBeskrivningActionPerformed
      
     /**
      * @param args the command line arguments
@@ -272,15 +305,19 @@ public class LaggTillMaterial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTillbaka;
-    private javax.swing.JComboBox<String> comboTyp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField txtBeskrivning;
+    private javax.swing.JTextField txtEnhet;
     private javax.swing.JTextField txtFarg;
     private javax.swing.JTextField txtNamn;
     private javax.swing.JTextField txtPris;
+    private javax.swing.JTextField txtTyp;
     // End of variables declaration//GEN-END:variables
 }

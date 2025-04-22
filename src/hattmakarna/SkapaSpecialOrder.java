@@ -44,32 +44,30 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
         });
 
     }
-    
+
     private void visaEnhetForValtMaterial() {
-    try {
-        String valtMaterial = (String) comboMaterial.getSelectedItem();
+        try {
+            String valtMaterial = (String) comboMaterial.getSelectedItem();
 
-        // Hoppa över dummy-posten
-        if (valtMaterial == null || valtMaterial.equals("Välj material")) {
-            lblEnhet.setText("");
-            return;
+            // Hoppa över dummy-posten
+            if (valtMaterial == null || valtMaterial.equals("Välj material")) {
+                lblEnhet.setText("");
+                return;
+            }
+
+            String sql = "SELECT Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
+            String enhet = idb.fetchSingle(sql);
+
+            if (enhet != null && !enhet.isEmpty()) {
+                lblEnhet.setText(enhet);
+            } else {
+                lblEnhet.setText("Okänd enhet");
+            }
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta enhet: " + e.getMessage());
         }
-
-        String sql = "SELECT Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
-        String enhet = idb.fetchSingle(sql);
-
-        if (enhet != null && !enhet.isEmpty()) {
-            lblEnhet.setText(enhet);
-        } else {
-            lblEnhet.setText("Okänd enhet");
-        }
-
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Kunde inte hämta enhet: " + e.getMessage());
     }
-}
-
-
 
     private void kundValdOchHamtaMatt() {
         try {
@@ -151,9 +149,21 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
     private void laggTillMaterialIRuta() {
         try {
             String valtMaterial = (String) comboMaterial.getSelectedItem();
+            String mangdText = txtMangd.getText().trim();
+            String valjFunktion = (String) comboFunktion.getSelectedItem();
+
+            if (!Validering.faltInteTomt(mangdText)) {
+                JOptionPane.showMessageDialog(null, "Vänligen fyll i mängd material");
+                return;
+            }
+
+            if (!Validering.arGiltigtDouble(mangdText)) {
+                JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
+                return;
+            }
 
             // Hämta info om materialet från databasen
-            String sql = "SELECT Namn, Typ, Farg, Pris FROM Material WHERE Namn = '" + valtMaterial + "'";
+            String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
             HashMap<String, String> rad = idb.fetchRow(sql);
 
             if (rad != null && !rad.isEmpty()) {
@@ -162,7 +172,11 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                     rad.get("Namn"),
                     rad.get("Typ"),
                     rad.get("Farg"),
-                    rad.get("Pris")
+                    rad.get("Pris"),
+                    mangdText,
+                    rad.get("Enhet"),
+                    valjFunktion
+
                 });
             }
 
@@ -222,6 +236,8 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         txtMangd = new javax.swing.JTextField();
         lblEnhet = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        comboFunktion = new javax.swing.JComboBox<>();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -310,7 +326,7 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Namn", "Typ", "Färg", "Pris", "Mängd", "Enhet"
+                "Namn", "Typ", "Färg", "Pris", "Mängd", "Enhet", "Funktion"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -367,14 +383,16 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
             }
         });
 
+        lblEnhet.setText("Enhet");
+
+        jLabel25.setText("Funktion");
+
+        comboFunktion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj funktion", "Basmaterial", "Innertyg", "Yttertyg", "Innerfoder", "Dekoration", "Stomme" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(185, 185, 185)
-                .addComponent(jLabel12)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -388,8 +406,10 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel11)
                                             .addComponent(jLabel14)
-                                            .addComponent(jLabel16)
-                                            .addComponent(jLabel24))))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel24)
+                                                .addComponent(jLabel16)
+                                                .addComponent(jLabel25)))))
                                 .addGap(67, 67, 67))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
@@ -403,12 +423,6 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                                     .addComponent(jLabel13))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblEnhet)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnLaggTillMaterialOrder))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -427,21 +441,26 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtHojd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(34, 34, 34)
-                                                .addComponent(jLabel9)
-                                                .addGap(78, 78, 78))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel15)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtBredd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel19)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(txtHojd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addGap(34, 34, 34)
+                                                        .addComponent(jLabel9)
+                                                        .addGap(78, 78, 78))
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jLabel15)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(txtBredd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jLabel19)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel12)
+                                                .addGap(72, 72, 72)))
                                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,10 +489,20 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                                     .addComponent(txtTillverkningsTid, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblEnhet))
+                                    .addComponent(comboFunktion, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnLaggTillMaterialOrder))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(136, 136, 136)
                         .addComponent(jLabel1)
@@ -536,37 +565,40 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtHuvudMatt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel22)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
                     .addComponent(jLabel18)
                     .addComponent(jLabel20))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(txtHojd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15)
-                            .addComponent(txtBredd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel19))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnLaggTillNyttMaterial)
-                            .addComponent(jLabel16)
-                            .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLaggTillMaterialOrder))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel24)
-                        .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblEnhet)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(txtHojd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15)
+                    .addComponent(txtBredd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel19))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLaggTillNyttMaterial)
+                    .addComponent(jLabel16)
+                    .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLaggTillMaterialOrder)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel25)
+                        .addComponent(comboFunktion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEnhet))
+                .addGap(33, 33, 33)
                 .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
 
@@ -583,7 +615,32 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDatumActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            String prisText = txtPris.getText().replace(",", ".").trim();
+
+            // Kontrollera att fältet inte är tomt eller ogiltigt
+            if (!Validering.faltInteTomt(prisText) || !Validering.arGiltigtDouble(prisText)) {
+                JOptionPane.showMessageDialog(null, "Fyll i ett giltigt pris innan du väljer express.");
+                jCheckBox1.setSelected(false);
+                return;
+            }
+
+            double ursprungligtPris = Double.parseDouble(prisText);
+
+            double nyttPris;
+            if (jCheckBox1.isSelected()) {
+                nyttPris = ursprungligtPris * 1.20;
+            } else {
+                // Tar bort 20% från nuvarande pris
+                nyttPris = ursprungligtPris / 1.20;
+            }
+
+            // Visa priset med två decimaler och kommatecken
+            txtPris.setText(String.format("%.2f", nyttPris).replace(".", ","));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Fel vid uppdatering av pris: " + e.getMessage());
+        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void btnLaggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillNyttMaterialActionPerformed
@@ -661,8 +718,8 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
             String hojd = txtHojd.getText().trim();
             String bredd = txtBredd.getText().trim();
             String djup = txtDjup.getText().trim();
-            // Validering
 
+            // Validering
             if (!Validering.arEndastSiffror(huvudmatt) || !Validering.arEndastSiffror(hojd)
                     || !Validering.arEndastSiffror(bredd) || !Validering.arEndastSiffror(djup)) {
                 JOptionPane.showMessageDialog(null, "Alla mått måste vara siffror.");
@@ -691,8 +748,14 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
             for (int i = 0; i < rowCount; i++) {
                 String materialNamn = (String) model.getValueAt(i, 0);
                 String materialID = idb.fetchSingle("SELECT MaterialID FROM Material WHERE Namn = '" + materialNamn + "'");
-                String insertMaterial = "INSERT INTO SpecialProdukt_Material (SpecialProduktID, MaterialID, Antal, Beskrivning) "
-                        + "VALUES (" + produktID + ", " + materialID + ", 1, '" + materialNamn + "')";
+
+                String mangdStr = model.getValueAt(i, 4).toString().replace(",", ".");
+                double mangd = Double.parseDouble(mangdStr);  // kolumn 5 i tabellen (index 4)
+                String funktion = model.getValueAt(i, 6).toString();
+
+                String insertMaterial = "INSERT INTO SpecialProdukt_Material (SpecialProduktID, MaterialID, Mängd, Funktion) "
+                        + "VALUES (" + produktID + ", " + materialID + ", " + mangd + ", '" + funktion + "')";
+
                 idb.insert(insertMaterial);
             }
 
@@ -779,6 +842,7 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
     private javax.swing.JButton btnLaggTillMaterialOrder;
     private javax.swing.JButton btnLaggTillNyttMaterial;
     private javax.swing.JButton btnSpara;
+    private javax.swing.JComboBox<String> comboFunktion;
     private javax.swing.JComboBox<String> comboMaterial;
     private javax.swing.JButton jBtnTillbaka;
     private javax.swing.JCheckBox jCheckBox1;
@@ -800,6 +864,7 @@ public class SkapaSpecialOrder extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
