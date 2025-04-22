@@ -20,124 +20,102 @@ import java.awt.event.MouseEvent;
 public class SeSpecifikProdukt extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
-    private String artikelnummer;
+    private String klickatArtikelNr;
+    
 
-    /**
-     * Creates new form SeSpecifikProdukt
-     */
     public SeSpecifikProdukt(InfDB idb, String ePost, String artikelnummer) {
         this.idb = idb;
         this.inloggadAnvandare = ePost;
-        this.artikelnummer = artikelnummer;
+        this.klickatArtikelNr = artikelnummer;
         
         initComponents();
         
         Tabell.setModel(new javax.swing.table.DefaultTableModel(
-        new Object [][] {},
-        new String [] {
-            "Artikelnummer", "Namn", "Pris", "Antal", "Matt", "Material"
-        }
-    ));
+            new Object [][] {},
+            new String [] {
+                "Artikelnummer", "Namn", "Pris", "Antal", "Matt", "Materiallista"
+            }
+        ));
+        
         visaSpecifikProdukt(); 
         
         Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-             if(evt.getSource() == Tabell) {
-            int rad = Tabell.rowAtPoint(evt.getPoint());
-            int kolumn = Tabell.columnAtPoint(evt.getPoint());
-            
-            // Kolumnindex 0 = "Artikelnummer"
-            if (kolumn == 0 && rad >= 0) {
-                String artikelnummer = Tabell.getValueAt(rad, 0).toString();
-                visaMaterialLista(artikelnummer);
-                
-                // Öppna samma fönster igen med den produkten
-                new SeSpecifikProdukt(idb, inloggadAnvandare, artikelnummer).setVisible(true);
-                SeSpecifikProdukt.this.dispose(); // Stäng nuvarande fönster
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int rad = Tabell.rowAtPoint(evt.getPoint());
+                int kolumn = Tabell.columnAtPoint(evt.getPoint());
+
+                // Om användaren klickar på kolumn 5 (index 5 = "Material")
+                if (kolumn == 5 && rad >= 0) {
+                    String artikelnummer = Tabell.getValueAt(rad, 0).toString();
+                    visaMaterialLista(artikelnummer);
+                }
             }
-        }
-        }
-    });
-}
+        });
+    }
 
     private void visaSpecifikProdukt() {
         try {
-            // SQL-fråga för att hämta data från databasen
             String query = "SELECT sp.Artikelnummer, sp.Namn, sp.Pris, sp.Matt, mb.Antal " +
-            "FROM StandardProdukt sp " +
-            "LEFT JOIN MaterialBestallning mb ON sp.Namn = mb.Namn " +
-            "WHERE sp.Artikelnummer = '" + artikelnummer + "'";
+                           "FROM StandardProdukt sp " +
+                           "LEFT JOIN MaterialBestallning mb ON sp.Namn = mb.Namn " +
+                           "WHERE sp.Artikelnummer = '" + klickatArtikelNr + "'";
+
             List<HashMap<String, String>> result = idb.fetchRows(query);
 
-            // Hämta JTable:s modell
             DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
-            model.setRowCount(0); // Rensa gamla data
+            model.setRowCount(0); // Rensa gammal data
 
-            if (result != null) {
+            if (result != null && !result.isEmpty()) {
                 for (HashMap<String, String> row : result) {
-                    // Lägg till en rad i JTable
-                    model.addRow(new Object[]{
+                    model.addRow(new Object[] {
                         row.get("Artikelnummer"),
                         row.get("Namn"),
                         row.get("Pris"),
-                        row.get("Antal")!= null ? row.get("Antal") : "0",
+                        row.get("Antal") != null ? row.get("Antal") : "0",
                         row.get("Matt"),
-                        "Se material",
+                        "Se material"
                     });
                 }
             } else {
-                System.out.println("Ingen data hittades i tabellen.");
+                JOptionPane.showMessageDialog(this, "Ingen produktinformation hittades för artikelnummer: " + klickatArtikelNr);
             }
         } catch (InfException e) {
-            System.out.println("Fel vid hämtning av data: " + e.getMessage());
-        }
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
+        } 
     }
     
-    private void visaMaterialLista(String Artikelnummer) {
+    private void visaMaterialLista(String artikelnummer) {
         try {
-        // SQL-fråga: hämta material kopplat till artikelnumret
-        /*String sql = "SELECT M.Namn, M.Typ, M.Farg " +
-             "FROM Material M " +
-             "JOIN StandardProdukt sp ON M.StandardProduktid = sp.StandardProduktID " +
-             "WHERE sp.Artikelnummer = '" + Artikelnummer + "'";
+            String query = "SELECT Material.Namn, Material.Typ, Material.Farg, " +
+                           "StandardProdukt_Material.Mängd, Material.Enhet " +
+                           "FROM Material " +
+                           "JOIN StandardProdukt_Material ON Material.MaterialID = StandardProdukt_Material.MaterialID " +
+                           "WHERE StandardProdukt_Material.StandardProduktID = " +
+                           "(SELECT StandardProduktID FROM StandardProdukt WHERE Artikelnummer = '" + artikelnummer + "')";
 
-        List<HashMap<String, String>> material = idb.fetchRows(sql);
-        */
-        String fragaMateriallista = 
-        "SELECT Material.Namn, Material.Typ, Material.Farg, StandardProdukt_Material.Mängd, Material.Enhet " +
-        "FROM Material " +
-        "JOIN StandardProdukt_Material " +
-        "ON Material.MaterialID = StandardProdukt_Material.MaterialID " +
-        "WHERE StandardProdukt_Material.StandardProduktID = " +
-        "(SELECT StandardProduktID FROM StandardProdukt WHERE StandardProdukt.Artikelnummer = '" + artikelnummer + "');";
-        List<HashMap<String, String>> material = idb.fetchRows(fragaMateriallista);
-        StringBuilder info = new StringBuilder();
+            List<HashMap<String, String>> material = idb.fetchRows(query);
+            StringBuilder info = new StringBuilder();
 
-        if (material != null && !material.isEmpty()) {
-            for (HashMap<String, String> rad : material) {
-                info.append(rad.get("Namn"))
-                    .append(" – ")
-                    .append(rad.get("Typ"))
-                    .append(" – ")
-                    .append(rad.get("Farg"))
-                    .append(" – ")
-                    .append("Mängd: ")
-                    .append(rad.get("Mängd"))
-                    .append(" ") 
-                    .append(rad.get("Enhet"))
-                    .append("\n");
+            if (material != null && !material.isEmpty()) {
+                for (HashMap<String, String> rad : material) {
+                    info.append(rad.get("Namn")).append(" – ")
+                        .append(rad.get("Typ")).append(" – ")
+                        .append(rad.get("Farg")).append(" – Mängd: ")
+                        .append(rad.get("Mängd")).append(" ")
+                        .append(rad.get("Enhet")).append("\n");
+                }
+            } else {
+                info.append("Inget material hittades.");
             }
-        } else {
-            info.append("Inget material hittades.");
+
+            JOptionPane.showMessageDialog(this, info.toString(), "Materiallista", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
-
-        JOptionPane.showMessageDialog(this, info.toString(), "Materiallista", JOptionPane.INFORMATION_MESSAGE);
-
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
     }
-}
+
     
     
     /**
