@@ -161,6 +161,15 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
                 return;
             }
+            if (valjFunktion.equals("Välj funktion")) {
+                JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
+                return;
+            }
+            if (valtMaterial.equals("Välj material")) {
+                JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
+                return;
+            }
+
 
             // Hämta info om materialet från databasen
             String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
@@ -289,6 +298,11 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
         jLabel12.setText("Tillagt material");
 
         comboFunktion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj funktion", "Basmaterial", "Innertyg", "Yttertyg", "Innerfoder", "Dekoration", "Stomme" }));
+        comboFunktion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboFunktionActionPerformed(evt);
+            }
+        });
 
         txtOrderID.setText("txtOrderID");
 
@@ -654,23 +668,23 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
 
             // Validering
             if (!Validering.arEndastSiffror(huvudmatt) || !Validering.arEndastSiffror(hojd)
-                || !Validering.arEndastSiffror(bredd) || !Validering.arEndastSiffror(djup)) {
+                    || !Validering.arEndastSiffror(bredd) || !Validering.arEndastSiffror(djup)) {
                 JOptionPane.showMessageDialog(null, "Alla mått måste vara siffror.");
                 return;
             }
             if (valdKund.equals("Välj kund")
-                || !Validering.faltInteTomt(datum)
-                || !Validering.faltInteTomt(beskrivning)
-                || !Validering.faltInteTomt(tid)) {
+                    || !Validering.faltInteTomt(datum)
+                    || !Validering.faltInteTomt(beskrivning)
+                    || !Validering.faltInteTomt(tid)) {
                 JOptionPane.showMessageDialog(null, "Fyll i alla fält(Utom text).");
                 return;
             }
 
             //Lägger till specialprodukt, statstik ID är 1 för nu, kanske behöver ändras senare
             String insertProdukt = "INSERT INTO SpecialProdukt "
-            + "(Text, Pris, Beskrivning, Tillverkningstid, StatistikID, Matt, Hojd, Bredd, Djup) "
-            + "VALUES ('" + text + "', " + totaltPris + ", '" + beskrivning + "', '" + tid + "', 1, "
-            + huvudmatt + ", " + hojd + ", " + bredd + ", " + djup + ")";
+                    + "(Text, Pris, Beskrivning, Tillverkningstid, StatistikID, Matt, Hojd, Bredd, Djup) "
+                    + "VALUES ('" + text + "', " + totaltPris + ", '" + beskrivning + "', '" + tid + "', 1, "
+                    + huvudmatt + ", " + hojd + ", " + bredd + ", " + djup + ")";
 
             idb.insert(insertProdukt);
 
@@ -686,15 +700,20 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
                 double mangd = Double.parseDouble(mangdStr);  // kolumn 5 i tabellen (index 4)
                 String funktion = model.getValueAt(i, 6).toString();
 
+                if (funktion.equals("Välj funktion")) {
+                    JOptionPane.showMessageDialog(null, "Vänligen välj en giltig funktion för materialet: " + materialNamn);
+                    return;
+                }
+
                 String insertMaterial = "INSERT INTO SpecialProdukt_Material (SpecialProduktID, MaterialID, Mängd, Funktion) "
-                + "VALUES (" + produktID + ", " + materialID + ", " + mangd + ", '" + funktion + "')";
+                        + "VALUES (" + produktID + ", " + materialID + ", " + mangd + ", '" + funktion + "')";
 
                 idb.insert(insertMaterial);
             }
 
             //Skapar beställning. Fast status till "Under behandling", kan komma att ändra den senare.
             String insertBestallning = "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, TotalPris, Typ) "
-            + "VALUES ('Under behandling', '" + datum + "', " + express + ", " + kundID + ", " + totaltPris + ", 'Specialbeställning')";
+                    + "VALUES ('Under behandling', '" + datum + "', " + express + ", " + kundID + ", " + totaltPris + ", 'Specialbeställning')";
             idb.insert(insertBestallning);
 
             //Hämta BestallningID
@@ -702,7 +721,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
 
             //Lägg till i OrderItem. ProdSchema och AntstalldID är fasta, kan komma att ändras senare
             String insertOrderItem = "INSERT INTO OrderItem (AntalProdukter, BestallningID, SpecialProduktID, ProduktionsSchemaID, AnstalldID) "
-            + "VALUES (1, " + bestallningID + ", " + produktID + ", 1, NULL)";
+                    + "VALUES (1, " + bestallningID + ", " + produktID + ", 1, NULL)";
             idb.insert(insertOrderItem);
 
             JOptionPane.showMessageDialog(null, "Specialbeställning sparad!");
@@ -767,6 +786,10 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
     private void btnLaggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillNyttMaterialActionPerformed
         new LaggTillMaterial(idb, inloggadAnvandare).setVisible(true);
     }//GEN-LAST:event_btnLaggTillNyttMaterialActionPerformed
+
+    private void comboFunktionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboFunktionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboFunktionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
