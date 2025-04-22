@@ -218,8 +218,8 @@ public class AllaAnstallda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-        //Lägg till ny anställd.
-        
+    new LaggTillAnstalld(idb, inloggadAnvandare).setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     /**
