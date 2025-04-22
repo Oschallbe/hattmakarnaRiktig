@@ -566,64 +566,6 @@ public class OrderSammanfattning extends javax.swing.JFrame {
     } catch (IOException e) {
         JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + e.getMessage());
     }
-
-    // ✅ SKAPA FRAKTSEDEL
-    try {
-        String adress = kundInfo.get("LeveransAdress");
-        String mottagare = kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn");
-        String avsandare = "Hattmakarna AB";
-        String innehall = pdforderlista.stream()
-            .map(r -> r.antal + "x " + r.produktNamn)
-            .collect(Collectors.joining(", "));
-        String exportkod = "SE-EU";
-        double moms = totalprisDouble * 0.25;
-        double prisInklMoms = totalprisDouble + moms;
-        double vikt = 0.5 * pdforderlista.size(); // t.ex. 0.5kg per produkt
-
-        String fraktSQL = String.format(
-            "INSERT INTO Fraktsedel (Adress, Avsandare, Mottagare, Innehåll, Exportkod, Pris, Datum, Vikt, Moms, PrisInklMoms) " +
-            "VALUES ('%s', '%s', '%s', '%s', '%s', %.2f, '%s', %.2f, %.2f, %.2f)",
-            adress, avsandare, mottagare, innehall, exportkod,
-            totalprisDouble, datum, vikt, moms, prisInklMoms
-        );
-
-        idb.insert(fraktSQL);
-        String fraktsedelID = idb.getAutoIncrement("Fraktsedel", "FraktsedelID");
-
-        // Koppla till beställning
-        String koppla = "UPDATE Bestallning SET FraktsedelID = " + fraktsedelID + " WHERE BestallningID = " + ordernummer;
-        idb.update(koppla);
-
-        // Skapa fraktsedel-PDF
-        Path fraktPath = Paths.get(admin.toString(), "Fraktsedel_" + String.format("%08d", Integer.parseInt(fraktsedelID)) + ".pdf");
-        PdfDocument pdf = new PdfDocument(new PdfWriter(fraktPath.toString()));
-        Document doc = new Document(pdf);
-        PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
-
-        doc.add(new Paragraph("FRAKTSEDEL").setFont(bold).setFontSize(16));
-        doc.add(new Paragraph("Datum: " + datum));
-        doc.add(new Paragraph("Fraktsedel-ID: " + fraktsedelID));
-        doc.add(new Paragraph(" "));
-        doc.add(new Paragraph("Avsändare: " + avsandare));
-        doc.add(new Paragraph("Mottagare: " + mottagare));
-        doc.add(new Paragraph("Adress: " + adress));
-        doc.add(new Paragraph("Exportkod: " + exportkod));
-        doc.add(new Paragraph(" "));
-        doc.add(new Paragraph("Innehåll: " + innehall));
-        doc.add(new Paragraph("Vikt: " + String.format("%.2f", vikt) + " kg"));
-        doc.add(new Paragraph("Pris exkl. moms: " + String.format("%.2f", totalprisDouble) + " kr"));
-        doc.add(new Paragraph("Moms (25%): " + String.format("%.2f", moms) + " kr"));
-        doc.add(new Paragraph("Totalt pris inkl. moms: " + String.format("%.2f", prisInklMoms) + " kr"));
-
-        doc.close();
-
-        if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().open(fraktPath.toFile());
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Fel vid skapande av fraktsedel: " + e.getMessage());
-    }
     }//GEN-LAST:event_btnBekraftaActionPerformed
 
     /**
