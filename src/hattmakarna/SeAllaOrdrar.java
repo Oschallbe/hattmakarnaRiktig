@@ -71,6 +71,26 @@ private String klickatOrderNr;
         }   
     }
     
+    private List<String> hamtaMarkeradeOrdernummer() {
+    List<String> markeradeOrdernummer = new ArrayList<>();
+    DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Boolean ibockad = (Boolean) model.getValueAt(i, 7); // Kolumn 7 = "Material för order"
+        if (ibockad != null && ibockad) {
+            String ordernummer = model.getValueAt(i, 1).toString(); // Kolumn 1 = BestallningID
+            markeradeOrdernummer.add(ordernummer);
+        }
+    }
+
+    return markeradeOrdernummer;
+}
+    
+
+
+    
+    
+    
    
     
     
@@ -84,8 +104,8 @@ private String klickatOrderNr;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnSokKund = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        btnSökKund = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         BestallningsLista = new javax.swing.JTable();
         btnSökDatum = new javax.swing.JButton();
@@ -95,31 +115,40 @@ private String klickatOrderNr;
         txtDatum = new javax.swing.JTextField();
         txtKund = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        btnVisaMarkerade = new javax.swing.JButton();
 
-        jLabel3.setText("Datum:");
-
-        btnSökKund.setText("Sök");
-        btnSökKund.addActionListener(new java.awt.event.ActionListener() {
+        btnSokKund.setText("Sök");
+        btnSokKund.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSökKundActionPerformed(evt);
+                btnSokKundActionPerformed(evt);
             }
         });
 
+        jLabel3.setText("Datum:");
+
         BestallningsLista.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Ordertyp", "Ordernummer", "Kundnummer", "Status", "Pris", "Datum", "Expressbestallning"
+                "Ordertyp", "Ordernummer", "Kundnummer", "Status", "Pris", "Datum", "Expressbestallning", "Material för order"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(BestallningsLista);
 
         btnSökDatum.setText("Sök");
@@ -154,6 +183,13 @@ private String klickatOrderNr;
 
         jLabel2.setText("KundID eller för- och efternamn: ");
 
+        btnVisaMarkerade.setText("Visa material");
+        btnVisaMarkerade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVisaMarkeradeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,7 +199,9 @@ private String klickatOrderNr;
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeOrder)
-                        .addGap(149, 149, 149))
+                        .addGap(76, 76, 76)
+                        .addComponent(btnVisaMarkerade)
+                        .addGap(69, 69, 69))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,7 +223,7 @@ private String klickatOrderNr;
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnSökKund, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSokKund, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(187, 187, 187)
                 .addComponent(btnSökDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66))
@@ -194,7 +232,9 @@ private String klickatOrderNr;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(btnSeOrder)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSeOrder)
+                    .addComponent(btnVisaMarkerade))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -207,13 +247,13 @@ private String klickatOrderNr;
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSökKund)
+                    .addComponent(btnSokKund)
                     .addComponent(btnSökDatum))
                 .addGap(48, 48, 48))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSökKundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökKundActionPerformed
+    private void btnSokKundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokKundActionPerformed
         //
         String kund = txtKund.getText().trim();
 
@@ -275,7 +315,7 @@ private String klickatOrderNr;
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
         }
-    }//GEN-LAST:event_btnSökKundActionPerformed
+    }//GEN-LAST:event_btnSokKundActionPerformed
 
     private void btnSökDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökDatumActionPerformed
         String datum = txtDatum.getText().trim();
@@ -393,12 +433,90 @@ private String klickatOrderNr;
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDatumActionPerformed
 
+    private void btnVisaMarkeradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaMarkeradeActionPerformed
+        // TODO add your handling code here:
+        List<String> standardOrder = new ArrayList<>();
+    List<String> specialOrder = new ArrayList<>();
+    DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+
+    // Dela upp markerade ordrar efter typ
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Boolean ibockad = (Boolean) model.getValueAt(i, 7);  // checkbox-kolumnen
+        if (ibockad != null && ibockad) {
+            String ordernr = model.getValueAt(i, 1).toString();
+            String typ = model.getValueAt(i, 0).toString();
+            if (typ.contains("Standard")) {
+                standardOrder.add(ordernr);
+            } else if (typ.contains("Special")) {
+                specialOrder.add(ordernr);
+            }
+        }
+    }
+
+    if (standardOrder.isEmpty() && specialOrder.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Inga ordrar är markerade.");
+        return;
+    }
+
+    try {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT m.MaterialID, m.Namn AS MaterialNamn, m.Typ, m.Farg, SUM(materialdata.Mängd) AS TotalMangd ")
+             .append("FROM (");
+
+        boolean needsUnion = false;
+
+        if (!standardOrder.isEmpty()) {
+            String inClause = String.join(",", standardOrder);
+            query.append(
+                "SELECT m.MaterialID, m.Namn, m.Typ, m.Farg, spm.Mängd " +
+                "FROM Bestallning b " +
+                "JOIN OrderItem oi ON b.BestallningID = oi.BestallningID " +
+                "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID " +
+                "JOIN StandardProdukt_Material spm ON sp.StandardProduktID = spm.StandardProduktID " +
+                "JOIN Material m ON spm.MaterialID = m.MaterialID " +
+                "WHERE b.BestallningID IN (" + inClause + ")"
+            );
+            needsUnion = true;
+        }
+
+        if (!specialOrder.isEmpty()) {
+            if (needsUnion) query.append(" UNION ALL ");
+            String inClause = String.join(",", specialOrder);
+            query.append(
+                "SELECT m.MaterialID, m.Namn, m.Typ, m.Farg, spm.Mängd " +
+                "FROM Bestallning b " +
+                "JOIN OrderItem oi ON b.BestallningID = oi.BestallningID " +
+                "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID " +
+                "JOIN SpecialProdukt_Material spm ON sp.SpecialProduktID = spm.SpecialProduktID " +
+                "JOIN Material m ON spm.MaterialID = m.MaterialID " +
+                "WHERE b.BestallningID IN (" + inClause + ")"
+            );
+        }
+
+        query.append(") AS materialdata ")
+             .append("JOIN Material m ON m.MaterialID = materialdata.MaterialID ")
+             .append("GROUP BY m.MaterialID, m.Namn, m.Typ, m.Farg");
+
+        List<HashMap<String, String>> resultat = idb.fetchRows(query.toString());
+
+        if (resultat != null && !resultat.isEmpty()) {
+            new SeMaterialLista(resultat).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga material hittades.");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av material: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnVisaMarkeradeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable BestallningsLista;
     private javax.swing.JButton btnSeOrder;
+    private javax.swing.JButton btnSokKund;
     private javax.swing.JButton btnSökDatum;
-    private javax.swing.JButton btnSökKund;
+    private javax.swing.JButton btnVisaMarkerade;
     private javax.swing.JComboBox<String> cbStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

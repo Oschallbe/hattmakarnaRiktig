@@ -21,7 +21,9 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="btnSeOrder" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="149" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+                      <Component id="btnVisaMarkerade" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -49,7 +51,7 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Component id="btnSökKund" min="-2" pref="60" max="-2" attributes="0"/>
+              <Component id="btnSokKund" min="-2" pref="60" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
               <Component id="btnSökDatum" min="-2" pref="60" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
@@ -60,7 +62,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-              <Component id="btnSeOrder" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnSeOrder" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnVisaMarkerade" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace pref="225" max="32767" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="332" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -74,7 +79,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnSökKund" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSokKund" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSökDatum" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
@@ -83,18 +88,18 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Datum:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnS&#xf6;kKund">
+    <Component class="javax.swing.JButton" name="btnSokKund">
       <Properties>
         <Property name="text" type="java.lang.String" value="S&#xf6;k"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnS&#xf6;kKundActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSokKundActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Datum:"/>
+      </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -106,7 +111,7 @@
         <Component class="javax.swing.JTable" name="BestallningsLista">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="7" rowCount="8">
+              <Table columnCount="8" rowCount="8">
                 <Column editable="true" title="Ordertyp" type="java.lang.Object"/>
                 <Column editable="true" title="Ordernummer" type="java.lang.Object"/>
                 <Column editable="true" title="Kundnummer" type="java.lang.Object"/>
@@ -114,7 +119,52 @@
                 <Column editable="true" title="Pris" type="java.lang.Object"/>
                 <Column editable="true" title="Datum" type="java.lang.Object"/>
                 <Column editable="true" title="Expressbestallning" type="java.lang.Object"/>
+                <Column editable="true" title="Material f&#xf6;r order" type="java.lang.Boolean"/>
               </Table>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
@@ -178,6 +228,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="KundID eller f&#xf6;r- och efternamn: "/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnVisaMarkerade">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Visa material"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVisaMarkeradeActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
