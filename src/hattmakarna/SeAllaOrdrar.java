@@ -42,10 +42,13 @@ private String klickatOrderNr;
                     String expressHamtning = row.get("Expressbestallning");
                     String expressOmvandling;
                     double totalPris = Double.parseDouble(row.get("TotalPris"));
+                    String typ = row.get("Typ");
                     
                     if(expressHamtning.equals("1")){
                         expressOmvandling = "Ja";
+                        if (typ != null && typ.contains("Standard")) {
                         totalPris = totalPris * 1.2;
+    }
                     }
                     else{
                         expressOmvandling = "Nej";
