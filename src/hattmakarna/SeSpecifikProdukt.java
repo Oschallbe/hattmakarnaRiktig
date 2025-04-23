@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -39,7 +40,7 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
             new String[] { "Artikelnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista" }
         ));
 
-        visaSpecifikProdukt();
+        visaSpecifikProdukt(produktID);
         
  Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -55,7 +56,54 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
         
 
     }
+    
+    
+    private void visaSpecifikProdukt(String artikelnummer) {
+    try {
+        String fraga = "SELECT * FROM StandardProdukt WHERE StandardProduktID = '" + artikelnummer + "'";
+        HashMap<String, String> resultat = idb.fetchRow(fraga);
 
+        if (resultat != null) {
+            // Visa data i tabell eller textfält
+            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
+            model.setRowCount(0);
+            model.addRow(new Object[]{
+                resultat.get("Namn"),
+                resultat.get("Pris"),
+                resultat.get("Text"),
+                resultat.get("Typ")
+            });
+       //bildUrl != null
+       // bildVag != null && !bildVag.isEmpty()
+            // 🖼️ Visa bilden
+String bildVag = resultat.get("BildVag");
+if (bildVag != null && !bildVag.isEmpty()) {
+    java.net.URL bildUrl = getClass().getClassLoader().getResource(bildVag);
+    if (bildUrl != null) {
+        ImageIcon ikon = new ImageIcon(bildUrl);
+        java.awt.Image scaledImage = ikon.getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
+        ikon = new ImageIcon(scaledImage);
+        jLabelBild.setIcon(ikon);
+    } else {
+        jLabelBild.setIcon(null);
+        System.err.println("🚫 Kunde inte hitta bild i resurser: " + bildVag);
+    }
+} else {
+    jLabelBild.setIcon(null);
+}
+
+   
+
+    }} catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning: " + e.getMessage());
+    }
+}
+    
+    
+    
+    
+    
+/*
  private void visaSpecifikProdukt() {
         try {
             String query;
@@ -85,7 +133,7 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+*/
     
    private void visaMaterialForProdukt() {
         try {
@@ -125,6 +173,8 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
     }
+   
+   
 
     
 
@@ -141,6 +191,8 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabell = new javax.swing.JTable();
         btnTillbaka = new javax.swing.JButton();
+        labelBild = new javax.swing.JLabel();
+        jLabelBild = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -169,6 +221,8 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
             }
         });
 
+        labelBild.setText("Bild på produkt:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -181,8 +235,15 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(197, 197, 197)
-                        .addComponent(btnTillbaka)))
+                        .addComponent(btnTillbaka))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelBild)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(173, 173, 173)
+                .addComponent(jLabelBild)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,7 +257,11 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
                         .addComponent(btnTillbaka)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(labelBild)
+                .addGap(75, 75, 75)
+                .addComponent(jLabelBild)
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         pack();
@@ -252,6 +317,8 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
     private javax.swing.JTable Tabell;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelBild;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelBild;
     // End of variables declaration//GEN-END:variables
 }

@@ -379,7 +379,7 @@ private String klickatOrderNr;
 
             //Om beställningen är en specialbeställning visas gränssnittet för denna typ av beställning.
             else{
-                new SeSpecialOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
+                //new SeSpecialOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
             }
 
         }
