@@ -11,6 +11,8 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -22,7 +24,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     private String inloggadAnvandare;
     private String klickatOrderNr;
     private String express;
-    private int kundID; 
+    //private int kundID; 
 
     /**
      * Creates new form SeSpecialOrder
@@ -32,7 +34,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         this.klickatOrderNr = klickatOrderNr;
-        this.kundID = kundID; 
+        //this.kundID = kundID; 
         fyllTabell();
         fyllLabels();
         //hamtaTotalPris();
@@ -529,7 +531,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
-        this.dispose();
+        this.setVisible(false);
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnSeSpecifikProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeSpecifikProduktActionPerformed
@@ -588,14 +590,39 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRedigeraStatusActionPerformed
 
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
-        //En metod som ska skicka användaren vidare till den specifika kundsidan. 
-    try {
-        SpecifikKund nyttFönster = new SpecifikKund(idb, inloggadAnvandare, kundID);
-        nyttFönster.setVisible(true);
-        this.dispose(); // Stänger nuvarande fönster
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
-    } 
+            try {
+        String kundNrText = lblKundNr.getText();
+        if (kundNrText != null && !kundNrText.isEmpty()) {
+            int kundID = Integer.parseInt(kundNrText);
+
+            // Skapa en panel för SpecifikKund istället för ett nytt fönster
+            JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
+
+            // Hämta MainFrame för att byta till den nya panelen
+            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+
+            // Lägg till panelen i CardLayout (om den inte redan är tillagd)
+            main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
+
+            // Byt till den nya panelen
+            main.showPanel("specifikKundPanel");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
+    }
+
+
+//En metod som ska skicka användaren vidare till den specifika kundsidan. 
+//    try {
+//        SpecifikKund nyttFönster = new SpecifikKund(idb, inloggadAnvandare, kundID);
+//        nyttFönster.setVisible(true);
+//        this.dispose(); // Stänger nuvarande fönster
+//    } catch (Exception e) {
+//        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
+//    } 
     }//GEN-LAST:event_btnSeKundinfoActionPerformed
 
     /**
