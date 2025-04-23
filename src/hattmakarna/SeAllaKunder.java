@@ -3,12 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import oru.inf.InfDB; //importeras i alla klasser som vi ska använda
 import oru.inf.InfException; //importeras i alla klasser som vi ska använda
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 /**
@@ -257,26 +260,41 @@ public class SeAllaKunder extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-        new LäggTillNyKund(idb, inloggadAnvandare).setVisible(true);
+    try {
+        // Skapa en instans av LäggTillNyKund som en JPanel
+        LäggTillNyKund laggTillNyKundPanel = new LäggTillNyKund(idb, inloggadAnvandare);
+
+        // Lägg till panelen i MainFrame
+        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+        mainFrame.addPanelToCardLayout(laggTillNyKundPanel, "laggTillNyKund");
+        mainFrame.showPanel("laggTillNyKund");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void TblAllaKunderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblAllaKunderMouseClicked
-        // ActionListener för att hantera klick för den klickade cellen
-        if(evt.getSource() == TblAllaKunder) {
-            // Få den rad och kolumn som användaren klickade på
-            int row = TblAllaKunder.rowAtPoint(evt.getPoint());
-            int column = TblAllaKunder.columnAtPoint(evt.getPoint());
+    if(evt.getSource() == TblAllaKunder) {
+        int row = TblAllaKunder.rowAtPoint(evt.getPoint());
+        int column = TblAllaKunder.columnAtPoint(evt.getPoint());
 
-            // Kolla om användaren klickade på KundID (0), Förnamn (1) eller Efternamn (2)
-            if (column == 0 || column == 1 || column == 2) {
-                // Hämta KundID från den klickade raden (kolumn 0)
-                int kundID = Integer.parseInt(TblAllaKunder.getValueAt(row, 0).toString());
+        if (column == 0 || column == 1 || column == 2) {
+            int kundID = Integer.parseInt(TblAllaKunder.getValueAt(row, 0).toString());
 
-                // Öppna nya gränssnittet och skicka med idb, användare och kundID
-                new SpecifikKund(idb, inloggadAnvandare, kundID).setVisible(true);
-                this.setVisible(false);
-            }
+            // Skicka med en flagga om varifrån vi kommer, t.ex. "SeAllaKunder"
+            String previousPanel = "SeAllaKunder"; // Kan vara "SeVanligOrder" eller andra paneler
+
+            // Skapa instansen av SpecifikKund och skicka med previousPanel
+            SpecifikKund specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, previousPanel);
+
+            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            JPanel wrapper = new JPanel(new GridBagLayout());
+            wrapper.add(specifikKundPanel);
+
+            mainFrame.addPanelToCardLayout(wrapper, "SpecifikKund" + kundID);
+            mainFrame.showPanel("SpecifikKund" + kundID);
         }
+    }
     }//GEN-LAST:event_TblAllaKunderMouseClicked
 
 

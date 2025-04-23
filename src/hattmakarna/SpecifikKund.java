@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package hattmakarna;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -17,18 +20,20 @@ public class SpecifikKund extends javax.swing.JPanel {
     private static InfDB idb;
     private String inloggadAnvandare;
     private int kundID;
+    private String previousPanel;
+
 
     /**
      * Creates new form SpecifikKund
      */
-    public SpecifikKund(InfDB idb, String inloggadAnvandare, int kundID) {
+    public SpecifikKund(InfDB idb, String inloggadAnvandare, int kundID, String previousPanel) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         this.kundID = kundID;
+        this.previousPanel = previousPanel;
         initComponents();
         fyllKundDetaljer();
         setEditable(false); // Gör fälten icke-redigerbara vid start
-
     }
 
 private void fyllKundDetaljer() {
@@ -76,6 +81,8 @@ private void fyllKundDetaljer() {
         txtFakturaLand.setEditable(editable);
         BtnSpara.setEnabled(editable); // Spara-knappen kan bara användas om fälten är redigerbara
     }
+   
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -417,8 +424,16 @@ private void fyllKundDetaljer() {
     }//GEN-LAST:event_BtnSparaActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
-    this.setVisible(false);
+    // Använd den tidigare skickade panelreferensen för att bestämma vart vi ska gå tillbaka
+    if ("SeVanligOrder".equals(previousPanel)) {
+        // Om användaren kom från SeVanligOrder, visa den panelen igen
+        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+        mainFrame.showPanel("SeVanligOrder");
+    } else if ("SeAllaKunder".equals(previousPanel)) {
+        // Om användaren kom från SeAllaKunder, visa den panelen igen
+        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+        mainFrame.showPanel("Alla kunder");
+    }
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 

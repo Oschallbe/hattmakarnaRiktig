@@ -692,7 +692,7 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
             int kundID = Integer.parseInt(kundNrText);
 
             // Skapa en panel för SpecifikKund istället för ett nytt fönster
-            JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
+            JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeAllaKunder");
 
             // Hämta MainFrame för att byta till den nya panelen
             MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);

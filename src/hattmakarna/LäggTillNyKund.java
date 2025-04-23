@@ -1,20 +1,21 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package hattmakarna;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import oru.inf.InfDB;
 import oru.inf.InfException;
-import javax.swing.JOptionPane;
-import java.awt.*;
 
 /**
  *
- * @author helinakravi
+ * @author iftinserar
  */
-public class LäggTillNyKund extends javax.swing.JFrame {
-
+public class LäggTillNyKund extends javax.swing.JPanel {
+    
+    
     private static InfDB idb;
     private String inloggadAnvandare;
     private Validering validera;
@@ -182,18 +183,6 @@ try {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField7 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        lblFörnamn = new javax.swing.JLabel();
-        lblEfternamn = new javax.swing.JLabel();
-        lblEpost = new javax.swing.JLabel();
-        lblTelefonnr = new javax.swing.JLabel();
-        lblOrt = new javax.swing.JLabel();
-        lblLeveransAdress = new javax.swing.JLabel();
-        lblPostNr = new javax.swing.JLabel();
         txtFornamn = new javax.swing.JTextField();
         txtTelefonNr = new javax.swing.JTextField();
         TxtEpost = new javax.swing.JTextField();
@@ -204,6 +193,15 @@ try {
         btnSpara = new javax.swing.JButton();
         lblFakturaAdress = new javax.swing.JLabel();
         txtFakturaAdress = new javax.swing.JTextField();
+        comboSamma = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        lblFörnamn = new javax.swing.JLabel();
+        lblEfternamn = new javax.swing.JLabel();
+        lblEpost = new javax.swing.JLabel();
+        lblTelefonnr = new javax.swing.JLabel();
+        lblOrt = new javax.swing.JLabel();
+        lblLeveransAdress = new javax.swing.JLabel();
+        lblPostNr = new javax.swing.JLabel();
         lblHuvudmått = new javax.swing.JLabel();
         txtHuvudmått = new javax.swing.JTextField();
         lblPostNrFaktura = new javax.swing.JLabel();
@@ -214,17 +212,18 @@ try {
         jLabel3 = new javax.swing.JLabel();
         txtLeveransLand = new javax.swing.JTextField();
         txtFakturaLand = new javax.swing.JTextField();
-        comboSamma = new javax.swing.JCheckBox();
+        btnTillbaka = new javax.swing.JButton();
 
-        jLabel8.setText("jLabel8");
+        btnSpara.setText("Spara");
+        btnSpara.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSparaActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        lblFakturaAdress.setText("Fakturaadress");
 
-        jTextField7.setText("jTextField1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        comboSamma.setText("Fakturaadress är samma som leveransadress");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setText("Lägg till ny kund ");
@@ -243,15 +242,6 @@ try {
 
         lblPostNr.setText("Postnummer");
 
-        btnSpara.setText("Spara");
-        btnSpara.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSparaActionPerformed(evt);
-            }
-        });
-
-        lblFakturaAdress.setText("Fakturaadress");
-
         lblHuvudmått.setText("Huvudmått");
 
         lblPostNrFaktura.setText("Postnummer");
@@ -262,18 +252,20 @@ try {
 
         jLabel3.setText("Land");
 
-        comboSamma.setText("Fakturaadress är samma som leveransadress");
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTillbakaActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -324,13 +316,20 @@ try {
                                         .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(txtFakturaLand)))))
-                        .addContainerGap(63, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnTillbaka)
+                        .addGap(225, 225, 225))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnTillbaka))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFörnamn)
@@ -375,65 +374,30 @@ try {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSpara)
                     .addComponent(comboSamma))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-    sparaKund();
-    this.dispose();
+        sparaKund();
     }//GEN-LAST:event_btnSparaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LäggTillNyKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LäggTillNyKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LäggTillNyKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LäggTillNyKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+    new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
+    this.setVisible(false);
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new LäggTillNyKund().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TxtEfternamn;
     private javax.swing.JTextField TxtEpost;
     private javax.swing.JTextField TxtLeveransAdress;
     private javax.swing.JButton btnSpara;
+    private javax.swing.JButton btnTillbaka;
     private javax.swing.JCheckBox comboSamma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel lblEfternamn;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblFakturaAdress;
