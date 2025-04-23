@@ -6,6 +6,7 @@ package hattmakarna;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import javax.swing.*;
 import oru.inf.InfDB;
 import oru.inf.InfException;
@@ -37,44 +38,53 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame(InfDB idb) {
-        initComponents();
-        // Se till att layouten på MainFrame är BorderLayout
-        this.setLayout(new BorderLayout());
+    initComponents();
+    // Se till att layouten på MainFrame är BorderLayout
+    this.setLayout(new BorderLayout());
 
-        // Lägg till jPanel1 i mitten
-        this.add(jPanel1, BorderLayout.CENTER);
+    // Lägg till jPanel1 i mitten
+    this.add(jPanel1, BorderLayout.CENTER);
 
-        //Lägg padding runt om
-        jPanel1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
-        this.idb = idb;
-        lblFelMeddelande.setVisible(false);
-        txtfEmail.setText("karin@hattmakarna.se");
-        pswfLosenord.setText("hatt123");
-        lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        //Vi vill inte att menyn ska visas förens vi loggat in
-        jMenuBar1.setVisible(false);
+    // Lägg padding runt om
+    jPanel1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
+    this.idb = idb;
+    lblFelMeddelande.setVisible(false);
+    txtfEmail.setText("karin@hattmakarna.se");
+    pswfLosenord.setText("hatt123");
+    lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    // Vi vill inte att menyn ska visas förens vi loggat in
+    jMenuBar1.setVisible(false);
 
-        for (int i = 0; i < jMenuBar1.getMenuCount(); i++) {
-    JMenu menu = jMenuBar1.getMenu(i);
-    menu.setOpaque(true);
-    menu.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createEmptyBorder(5, 10, 5, 10), // spacing
-        BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)
-    ));
-        }
-        
-        // Ladda bilden
-        ImageIcon icon = new ImageIcon(getClass().getResource("/hattmakarna/hattmakarna_logotyp.png"));
+    // Anpassa menyn (eventuella justeringar för menyer)
+    for (int i = 0; i < jMenuBar1.getMenuCount(); i++) {
+        JMenu menu = jMenuBar1.getMenu(i);
+        menu.setOpaque(true);
+        menu.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEmptyBorder(5, 10, 5, 10), // spacing
+            BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)
+        ));
+    }
+    
+    // Ladda bilden från src/hattmakarna/hattmakarna_logotyp.png
+    URL imageURL = getClass().getResource("/hattmakarna/hattmakarna_logotyp.png");
+
+    // Kontrollera om bilden finns
+    if (imageURL != null) {
+        // Skapa en ImageIcon med den laddade bilden
+        ImageIcon icon = new ImageIcon(imageURL);
 
         // Skala om bilden till t.ex. 200x200 pixlar
         Image scaledImage = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
 
-        // Lägg in i JLabel
+        // Lägg in den skalade bilden i JLabel
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         logotyp.setIcon(scaledIcon);
-        
+    } else {
+        // Om bilden inte hittades, skriv ut ett felmeddelande
+        System.out.println("Bilden kunde inte hittas. Kontrollera sökvägen.");
     }
+}
 
         private void loggaUt() {
         //När man trycker på logga ut får man upp ett fönster där mna behöver bekräfta utloggning
