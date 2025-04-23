@@ -356,9 +356,11 @@ private String klickatOrderNr;
 
     private void btnSeOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeOrderActionPerformed
 
+
     try {
         // Hämta den valda raden från tabellen
         int valdRad = BestallningsLista.getSelectedRow();
+
 
         // Om ingen rad är vald, visa felmeddelande
         if (valdRad == -1) {
