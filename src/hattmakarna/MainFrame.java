@@ -17,7 +17,7 @@ public class MainFrame extends javax.swing.JFrame {
     private static InfDB idb;
     
     //Skapar fält för varje panel som ska visas i menyn
-    //private KalenderSchema1 kalenderPanel;
+    private KalenderSchemaRatt kalenderPanel;
     private SeAllaOrdrar allaOrdrarPanel;
     private SeAllaKunder allaKunderPanel;
     private SeAllaLagerfordaProdukter allaLagerfordaProdukterPanel;
@@ -347,7 +347,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Kontrollera om "inlogg" redan finns
         // Skapa SeAllaOrdrar-panelen som vanligt
-/*        kalenderPanel = new KalenderSchema1(idb, txtfEmail.getText());
+        kalenderPanel = new KalenderSchemaRatt(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
         JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
@@ -358,7 +358,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Kalenderschema");
-        */
+        
     }//GEN-LAST:event_visaKalenderMenuSelected
 
     private void seAllaOrdrarMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaOrdrarMenuSelected
@@ -539,7 +539,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             jMenuBar1.setVisible(true);
             hanteraAnstallda();
-            /*kalenderPanel = new KalenderSchema1(idb, txtfEmail.getText());
+            kalenderPanel = new KalenderSchemaRatt(idb, txtfEmail.getText());
 
             // Skapa en wrapper-panel med centrerad layout
             JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
@@ -550,7 +550,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             // Visa
             showPanel("Kalenderschema");
-*/
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Något gick fel: " + ex.getMessage());
         }
