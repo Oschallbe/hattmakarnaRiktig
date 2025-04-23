@@ -84,11 +84,59 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         }
         
         for(int dag = 1; dag <= dagarIManad; dag++){
-            JButton dagKnapp = new JButton(String.valueOf(dag));
-            dagKnapp.setPreferredSize(new Dimension(800, 500));
-            dagKnapp.setFont(new Font("Arial", Font.PLAIN, 32));
-            dagKnapp.setMargin(new Insets(20, 40, 20, 40));
-            kalenderRuta.add(dagKnapp);
+            JPanel dagPanel = new JPanel(new BorderLayout());
+            dagPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            dagPanel.setPreferredSize(new Dimension(120, 100));
+            
+            JLabel dagLabel = new JLabel(String.valueOf(dag), SwingConstants.CENTER);
+            dagLabel.setFont(new Font("Arial", Font.BOLD, 18));
+            
+            DefaultListModel<String> modell = new DefaultListModel<>();
+            JList<String> produktLista = new JList<>(modell);
+            produktLista.setFont(new Font("Arial", Font.PLAIN, 12));
+            produktLista.setVisibleRowCount(3);
+            
+            JScrollPane scroll = new JScrollPane(produktLista);
+            
+            JTextField inputFalt = new JTextField();
+            inputFalt.addActionListener(e ->{
+                String text = inputFalt.getText().trim();
+                if(!text.isEmpty()){
+                    modell.addElement(text);
+                    inputFalt.setText("");
+                    
+                    /*try{
+                        LocalDate datum = visadManad.withDayOfMonth(dag);
+                        String sql = "insert into "
+                    }
+                    */
+                }
+            });
+            
+            dagPanel.add(dagLabel, BorderLayout.NORTH);
+            dagPanel.add(scroll, BorderLayout.CENTER);
+            dagPanel.add(inputFalt, BorderLayout.SOUTH);
+            kalenderRuta.add(dagPanel);
+            
+            
+            
+            
+            /*JLabel dagLabel = new JLabel(String.valueOf(dag), SwingConstants.CENTER);
+            dagLabel.setFont(new Font("Arial", Font.BOLD, 18));
+            
+            JTextField textFalt = new JTextField();
+            textFalt.setFont(new Font("Arial", Font.PLAIN, 16));
+            
+            dagPanel.add(dagLabel, BorderLayout.NORTH);
+            dagPanel.add(textFalt, BorderLayout.CENTER);
+            
+            dagPanel.setPreferredSize(new Dimension(120, 100));
+            dagPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            
+            kalenderRuta.add(dagPanel);
+            */
+            
+            
         }
          
         kalenderRuta.revalidate();
