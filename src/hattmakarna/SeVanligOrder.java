@@ -288,7 +288,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
             col.setPreferredWidth(154);
     }
     
-    public void sparaTilldelad(){
+    public void sparaTilldelad() {
         try {
             //Hämtar datan från tblAllaProdukter och lägger den i "tabell".
             DefaultTableModel tabell = (DefaultTableModel) tblAllaProdukter.getModel();
@@ -302,33 +302,50 @@ public class SeVanligOrder extends javax.swing.JFrame {
                     String anstID = tabell.getValueAt(i, 4).toString();
 
                     //Skapar lokalvariabeln uppdateraDatabas.
-                    String uppdateraDatabas;
+                    String uppdateraDatabas = null;
 
                     //Om anstID är null eller rutan är tom så ändras uppdateraDatabas till att AnstalldID ska vara null för den raden 
                     if (anstID == null || anstID.isEmpty()) {
                         uppdateraDatabas = "update orderitem set AnstalldID = null where OrderItemID = " + artNR + ";";
-                    } 
-                    
-                    //Annars sätts AnstalldID till det anställningsid som hämtas och läggs i uppdateraDatabas
+                        
+                    } //Annars sätts AnstalldID till det anställningsid som hämtas och läggs i uppdateraDatabas
                     else {
-                        uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
+
+                        String selectAid = "select AnstalldID from anstalld;";
+                        ArrayList<String> aid = idb.fetchColumn(selectAid);
+
+                        boolean found = false;
+
+                        for (String ettAid : aid) {
+                            if (anstID.equals(ettAid)) {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (found) {
+                            uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
+                            
+                        } 
+                        else {
+                            JOptionPane.showMessageDialog(null, "AnställningsID:t finns ej i systemet");
+                        }
+
+                    }
+                    if (uppdateraDatabas != null) {
+                        //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
+                        idb.update(uppdateraDatabas);
+                     
                     }
 
-                    //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
-                    idb.update(uppdateraDatabas);
-
-                } 
-                
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Fel på rad: " + i + ":" + ex.getMessage());
                 }
             }
-           
 
             fyllTabell();
-            
-        } 
-        catch (InfException ex) {
+
+        } catch (InfException ex) {
             System.out.println(ex);
         }
     }
@@ -339,6 +356,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
             String status = (String) comboStatus.getSelectedItem();
             String updateStatus = "update bestallning set status = '" + status + "' where BestallningID = '" + klickatOrderNr + "';";
             idb.update(updateStatus);
+         
            
         }
         
@@ -629,7 +647,7 @@ public class SeVanligOrder extends javax.swing.JFrame {
             sparaTilldelad();
             sparaStatus();   
             comboStatus.setEnabled(false);
-            JOptionPane.showMessageDialog(null, "Ändring sparad!");
+            
            
         } 
         catch(NumberFormatException ex) {

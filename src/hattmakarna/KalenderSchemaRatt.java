@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.*;
+import java.time.format.TextStyle;
 import java.util.Locale;
 
 /**
@@ -16,8 +17,8 @@ import java.util.Locale;
  * @author mejaa
  */
 public class KalenderSchemaRatt extends javax.swing.JPanel {
-    private InfDB idb; 
-    private String inloggadAnvandare; 
+    private static InfDB idb; 
+    private static String inloggadAnvandare; 
     private JPanel kalenderRuta;
     private JLabel manadLabel;
     private LocalDate visadManad;
@@ -84,19 +85,23 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         
         for(int dag = 1; dag <= dagarIManad; dag++){
             JButton dagKnapp = new JButton(String.valueOf(dag));
+            dagKnapp.setPreferredSize(new Dimension(800, 500));
+            dagKnapp.setFont(new Font("Arial", Font.PLAIN, 32));
+            dagKnapp.setMargin(new Insets(20, 40, 20, 40));
             kalenderRuta.add(dagKnapp);
         }
-        
+         
         kalenderRuta.revalidate();
         kalenderRuta.repaint();
     }
     
     public static void main(String[] args){
-        SwingUtilities.invokeLater(() -> {
+            
+            SwingUtilities.invokeLater(() -> {
             JFrame fonster = new JFrame("Min Kalender");
             fonster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            fonster.setSize(600, 400);
-            fonster.setContentPane(new KalenderSchemaRatt(idb, ePost));
+            fonster.setSize(1000, 800);
+            fonster.setContentPane(new KalenderSchemaRatt(idb,inloggadAnvandare));
             fonster.setVisible(true);
         });
     }
@@ -110,6 +115,10 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        jMenu1 = new javax.swing.JMenu();
+
+        jMenu1.setText("jMenu1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -125,5 +134,6 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
     // End of variables declaration//GEN-END:variables
 }
