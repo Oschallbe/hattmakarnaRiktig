@@ -54,6 +54,36 @@ public class MainFrame extends javax.swing.JFrame {
         lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         //Vi vill inte att menyn ska visas förens vi loggat in
         jMenuBar1.setVisible(false);
+        
+        
+        
+        /*
+        for (int i = 0; i < jMenuBar1.getMenuCount(); i++) {
+        JMenu menu = jMenuBar1.getMenu(i);
+        menu.setOpaque(true);                      // Viktigt för att bakgrund ska synas
+        menu.setBackground(new Color(230, 230, 250));  // Ljuslila t.ex.
+        menu.setForeground(Color.GRAY);
+        menu.setFont(new Font("Arial", Font.BOLD, 14));
+        menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));  // Ger knapp-känsla
+        }
+        
+        
+        
+           for (int i = 0; i < jMenuBar1.getMenuCount(); i++) {
+            JMenu menu = jMenuBar1.getMenu(i);
+            menu.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // top, left, bottom, right
+        }*/
+        
+        
+        for (int i = 0; i < jMenuBar1.getMenuCount(); i++) {
+    JMenu menu = jMenuBar1.getMenu(i);
+    menu.setOpaque(true);
+    menu.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createEmptyBorder(5, 10, 5, 10), // spacing
+        BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)
+    ));
+}
+        
     }
 
         private void loggaUt() {
@@ -116,25 +146,16 @@ public class MainFrame extends javax.swing.JFrame {
         lblEpost = new javax.swing.JLabel();
         lblLosenord = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        visaKalenderItem = new javax.swing.JMenuItem();
+        menuOrdrar = new javax.swing.JMenu();
         seOrdrarItem = new javax.swing.JMenuItem();
-        allaKunderItem = new javax.swing.JMenuItem();
-        seLagerfordaItem = new javax.swing.JMenuItem();
-        skapaOrder = new javax.swing.JMenuItem();
-        skapaSpecialItem = new javax.swing.JMenuItem();
-        forsaljningItem = new javax.swing.JMenuItem();
-        hanteraAnstalldItem = new javax.swing.JMenuItem();
-        skapaFraktsedelItem = new javax.swing.JMenuItem();
-        visaKalender = new javax.swing.JMenu();
-        seAllaOrdrar = new javax.swing.JMenu();
-        seAllaKunder = new javax.swing.JMenu();
+        skapaNyOrderItem = new javax.swing.JMenuItem();
+        skapaNySpecialOrderItem = new javax.swing.JMenuItem();
         seAllaLagerfordaProdukter = new javax.swing.JMenu();
-        skapaNyOrder = new javax.swing.JMenu();
-        skapaNySpecialorder = new javax.swing.JMenu();
         skapaNyFraktsedel = new javax.swing.JMenu();
         forsalningsstatistik = new javax.swing.JMenu();
+        visaKalender = new javax.swing.JMenu();
         hanteraAnstallda = new javax.swing.JMenu();
+        seAllaKunder = new javax.swing.JMenu();
         installningar = new javax.swing.JMenu();
         loggaUt = new javax.swing.JMenuItem();
 
@@ -177,15 +198,11 @@ public class MainFrame extends javax.swing.JFrame {
         lblLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLosenord.setText("Lösenord");
 
-        jMenu1.setText("Meny");
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenuBar1.setFont(new java.awt.Font("Helvetica Neue", 0, 16)); // NOI18N
 
-        visaKalenderItem.setText("Visa Kalenderschema");
-        visaKalenderItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                visaKalenderItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(visaKalenderItem);
+        menuOrdrar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        menuOrdrar.setText("Ordrar");
 
         seOrdrarItem.setText("Se alla ordrar");
         seOrdrarItem.addActionListener(new java.awt.event.ActionListener() {
@@ -193,102 +210,27 @@ public class MainFrame extends javax.swing.JFrame {
                 seOrdrarItemActionPerformed(evt);
             }
         });
-        jMenu1.add(seOrdrarItem);
+        menuOrdrar.add(seOrdrarItem);
 
-        allaKunderItem.setText("Se alla Kunder");
-        allaKunderItem.addActionListener(new java.awt.event.ActionListener() {
+        skapaNyOrderItem.setText("Skapa ny order");
+        skapaNyOrderItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                allaKunderItemActionPerformed(evt);
+                skapaNyOrderItemActionPerformed(evt);
             }
         });
-        jMenu1.add(allaKunderItem);
+        menuOrdrar.add(skapaNyOrderItem);
 
-        seLagerfordaItem.setText("Se alla lagerförda produkter");
-        seLagerfordaItem.addActionListener(new java.awt.event.ActionListener() {
+        skapaNySpecialOrderItem.setText("Skapa ny specialorder");
+        skapaNySpecialOrderItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seLagerfordaItemActionPerformed(evt);
+                skapaNySpecialOrderItemActionPerformed(evt);
             }
         });
-        jMenu1.add(seLagerfordaItem);
+        menuOrdrar.add(skapaNySpecialOrderItem);
 
-        skapaOrder.setText("Skapa ny order");
-        skapaOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                skapaOrderActionPerformed(evt);
-            }
-        });
-        jMenu1.add(skapaOrder);
+        jMenuBar1.add(menuOrdrar);
 
-        skapaSpecialItem.setText("Skapa ny specialorder");
-        skapaSpecialItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                skapaSpecialItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(skapaSpecialItem);
-
-        forsaljningItem.setText("Försäljningsstatistik");
-        forsaljningItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forsaljningItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(forsaljningItem);
-
-        hanteraAnstalldItem.setText("Hantera anställda");
-        hanteraAnstalldItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hanteraAnstalldItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(hanteraAnstalldItem);
-
-        skapaFraktsedelItem.setText("Skapa ny fraktsedel");
-        skapaFraktsedelItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                skapaFraktsedelItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(skapaFraktsedelItem);
-
-        jMenuBar1.add(jMenu1);
-
-        visaKalender.setText("Visa Kalenderschema");
-        visaKalender.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                visaKalenderMenuSelected(evt);
-            }
-        });
-        jMenuBar1.add(visaKalender);
-
-        seAllaOrdrar.setText("Se alla ordrar");
-        seAllaOrdrar.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                seAllaOrdrarMenuSelected(evt);
-            }
-        });
-        jMenuBar1.add(seAllaOrdrar);
-
-        seAllaKunder.setText("Se alla kunder");
-        seAllaKunder.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                seAllaKunderMenuSelected(evt);
-            }
-        });
-        jMenuBar1.add(seAllaKunder);
-
+        seAllaLagerfordaProdukter.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         seAllaLagerfordaProdukter.setText("Se alla lagerförda produkter");
         seAllaLagerfordaProdukter.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
@@ -301,30 +243,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(seAllaLagerfordaProdukter);
 
-        skapaNyOrder.setText("Skapa ny order");
-        skapaNyOrder.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                skapaNyOrderMenuSelected(evt);
-            }
-        });
-        jMenuBar1.add(skapaNyOrder);
-
-        skapaNySpecialorder.setText("Skapa ny specialorder");
-        skapaNySpecialorder.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                skapaNySpecialorderMenuSelected(evt);
-            }
-        });
-        jMenuBar1.add(skapaNySpecialorder);
-
+        skapaNyFraktsedel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         skapaNyFraktsedel.setText("Skapa ny fraktsedel");
         skapaNyFraktsedel.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
@@ -337,6 +256,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(skapaNyFraktsedel);
 
+        forsalningsstatistik.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         forsalningsstatistik.setText("Försäljningsstatistik");
         forsalningsstatistik.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
@@ -349,6 +269,20 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(forsalningsstatistik);
 
+        visaKalender.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        visaKalender.setText("Visa Kalenderschema");
+        visaKalender.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                visaKalenderMenuSelected(evt);
+            }
+        });
+        jMenuBar1.add(visaKalender);
+
+        hanteraAnstallda.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         hanteraAnstallda.setText("Hantera anställda");
         hanteraAnstallda.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
@@ -361,6 +295,20 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(hanteraAnstallda);
 
+        seAllaKunder.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        seAllaKunder.setText("Se alla kunder");
+        seAllaKunder.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                seAllaKunderMenuSelected(evt);
+            }
+        });
+        jMenuBar1.add(seAllaKunder);
+
+        installningar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         installningar.setText("Inställningar");
         installningar.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
@@ -420,7 +368,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(126, 126, 126)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(576, Short.MAX_VALUE))
+                .addContainerGap(573, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(83, 83, 83)
@@ -437,7 +385,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(btnLoggaIn)
                     .addGap(127, 127, 127)
                     .addComponent(lblFelMeddelande)
-                    .addContainerGap(93, Short.MAX_VALUE)))
+                    .addContainerGap(90, Short.MAX_VALUE)))
         );
 
         pack();
@@ -460,28 +408,6 @@ public class MainFrame extends javax.swing.JFrame {
         showPanel("Kalenderschema");
         */
     }//GEN-LAST:event_visaKalenderMenuSelected
-
-    private void seAllaOrdrarMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaOrdrarMenuSelected
-        // TODO add your handling code here:jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
-        /*
-        huvudMenyPanel = new HuvudMeny1(idb);
-        jPanel1.add(huvudMenyPanel, "Meny");
-
-        huvudMenyPanel = new HuvudMeny1(idb);
-        */
-        // Skapa SeAllaOrdrar-panelen som vanligt
-        allaOrdrarPanel = new SeAllaOrdrar(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(allaOrdrarPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Alla ordrar");
-
-        // Visa
-        showPanel("Alla ordrar");
-    }//GEN-LAST:event_seAllaOrdrarMenuSelected
 
     private void seAllaKunderMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaKunderMenuSelected
         // TODO add your handling code here:
@@ -512,36 +438,6 @@ public class MainFrame extends javax.swing.JFrame {
         // Visa
         showPanel("Alla lagerförda produkter");
     }//GEN-LAST:event_seAllaLagerfordaProdukterMenuSelected
-
-    private void skapaNyOrderMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_skapaNyOrderMenuSelected
-        // TODO add your handling code here:
-        nyOrderPanel = new SkapaNyOrder(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(nyOrderPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Skapa ny order");
-
-        // Visa
-        showPanel("Skapa ny order");
-    }//GEN-LAST:event_skapaNyOrderMenuSelected
-
-    private void skapaNySpecialorderMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_skapaNySpecialorderMenuSelected
-        // TODO add your handling code here:
-        skapaSpecialOrderPanel = new SkapaNySpecialOrder(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(skapaSpecialOrderPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Skapa ny specialorder");
-
-        // Visa
-        showPanel("Skapa ny specialorder");
-    }//GEN-LAST:event_skapaNySpecialorderMenuSelected
 
     private void forsalningsstatistikMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_forsalningsstatistikMenuSelected
         // TODO add your handling code here:
@@ -675,25 +571,6 @@ public class MainFrame extends javax.swing.JFrame {
         showPanel("Fraktsedel");
     }//GEN-LAST:event_skapaNyFraktsedelMenuSelected
 
-    private void visaKalenderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visaKalenderItemActionPerformed
-        // TODO add your handling code here:
-       
-        // Kontrollera om "inlogg" redan finns
-        // Skapa SeAllaOrdrar-panelen som vanligt
-      /* kalenderPanel = new KalenderSchemaRatt(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(kalenderPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Kalenderschema");
-
-        // Visa
-        showPanel("Kalenderschema");
-        */
-    }//GEN-LAST:event_visaKalenderItemActionPerformed
-
     private void seOrdrarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seOrdrarItemActionPerformed
         // TODO add your handling code here:
         allaOrdrarPanel = new SeAllaOrdrar(idb, txtfEmail.getText());
@@ -709,37 +586,7 @@ public class MainFrame extends javax.swing.JFrame {
         showPanel("Alla ordrar");
     }//GEN-LAST:event_seOrdrarItemActionPerformed
 
-    private void allaKunderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allaKunderItemActionPerformed
-        // TODO add your handling code here:
-        allaKunderPanel = new SeAllaKunder(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(allaKunderPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Alla kunder");
-
-        // Visa
-        showPanel("Alla kunder");
-    }//GEN-LAST:event_allaKunderItemActionPerformed
-
-    private void seLagerfordaItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seLagerfordaItemActionPerformed
-        // TODO add your handling code here:
-        allaLagerfordaProdukterPanel = new SeAllaLagerfordaProdukter(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(allaLagerfordaProdukterPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Alla lagerförda produkter");
-
-        // Visa
-        showPanel("Alla lagerförda produkter");
-    }//GEN-LAST:event_seLagerfordaItemActionPerformed
-
-    private void skapaOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skapaOrderActionPerformed
+    private void skapaNyOrderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skapaNyOrderItemActionPerformed
         // TODO add your handling code here:
         nyOrderPanel = new SkapaNyOrder(idb, txtfEmail.getText());
 
@@ -752,9 +599,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Skapa ny order");
-    }//GEN-LAST:event_skapaOrderActionPerformed
+    }//GEN-LAST:event_skapaNyOrderItemActionPerformed
 
-    private void skapaSpecialItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skapaSpecialItemActionPerformed
+    private void skapaNySpecialOrderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skapaNySpecialOrderItemActionPerformed
         // TODO add your handling code here:
         skapaSpecialOrderPanel = new SkapaNySpecialOrder(idb, txtfEmail.getText());
 
@@ -767,64 +614,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Skapa ny specialorder");
-    }//GEN-LAST:event_skapaSpecialItemActionPerformed
-
-    private void forsaljningItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forsaljningItemActionPerformed
-        // TODO add your handling code here:
-        seForsaljningsstatistikPanel = new SeForsaljningsstatistik(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(seForsaljningsstatistikPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Se försäljningsstatistik");
-
-        // Visa
-        showPanel("Se försäljningsstatistik");
-    }//GEN-LAST:event_forsaljningItemActionPerformed
-
-    private void hanteraAnstalldItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hanteraAnstalldItemActionPerformed
-        // TODO add your handling code here:
-        hanteraAllaAnstalldaPanel = new HanteraAllaAnstallda(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(hanteraAllaAnstalldaPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Hantera anställda");
-
-        // Visa
-        showPanel("Hantera anställda");
-    }//GEN-LAST:event_hanteraAnstalldItemActionPerformed
-
-    private void skapaFraktsedelItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skapaFraktsedelItemActionPerformed
-        // TODO add your handling code here:
-        fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(fraktsedelPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Fraktsedel");
-
-        // Visa
-        showPanel("Fraktsedel");
-    }//GEN-LAST:event_skapaFraktsedelItemActionPerformed
+    }//GEN-LAST:event_skapaNySpecialOrderItemActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem allaKunderItem;
     private javax.swing.JButton btnLoggaIn;
-    private javax.swing.JMenuItem forsaljningItem;
     private javax.swing.JMenu forsalningsstatistik;
-    private javax.swing.JMenuItem hanteraAnstalldItem;
     private javax.swing.JMenu hanteraAnstallda;
     private javax.swing.JMenu installningar;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblEpost;
@@ -832,20 +630,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblInloggning;
     private javax.swing.JLabel lblLosenord;
     private javax.swing.JMenuItem loggaUt;
+    private javax.swing.JMenu menuOrdrar;
     private javax.swing.JPasswordField pswfLosenord;
     private javax.swing.JMenu seAllaKunder;
     private javax.swing.JMenu seAllaLagerfordaProdukter;
-    private javax.swing.JMenu seAllaOrdrar;
-    private javax.swing.JMenuItem seLagerfordaItem;
     private javax.swing.JMenuItem seOrdrarItem;
-    private javax.swing.JMenuItem skapaFraktsedelItem;
     private javax.swing.JMenu skapaNyFraktsedel;
-    private javax.swing.JMenu skapaNyOrder;
-    private javax.swing.JMenu skapaNySpecialorder;
-    private javax.swing.JMenuItem skapaOrder;
-    private javax.swing.JMenuItem skapaSpecialItem;
+    private javax.swing.JMenuItem skapaNyOrderItem;
+    private javax.swing.JMenuItem skapaNySpecialOrderItem;
     private javax.swing.JTextField txtfEmail;
     private javax.swing.JMenu visaKalender;
-    private javax.swing.JMenuItem visaKalenderItem;
     // End of variables declaration//GEN-END:variables
 }
