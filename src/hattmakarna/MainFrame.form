@@ -4,6 +4,85 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Meny"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="visaKalenderItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Visa Kalenderschema"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="visaKalenderItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="seOrdrarItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se alla ordrar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seOrdrarItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="allaKunderItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se alla Kunder"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allaKunderItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="seLagerfordaItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seLagerfordaItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="skapaOrder">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Skapa ny order"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="skapaOrderActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="skapaSpecialItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Skapa ny specialorder"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="skapaSpecialItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="forsaljningItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="F&#xf6;rs&#xe4;ljningsstatistik"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="forsaljningItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="hanteraAnstalldItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Hantera anst&#xe4;llda"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hanteraAnstalldItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="skapaFraktsedelItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Skapa ny fraktsedel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="skapaFraktsedelItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="visaKalender">
           <Properties>
             <Property name="text" type="java.lang.String" value="Visa Kalenderschema"/>
@@ -52,6 +131,14 @@
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="skapaNySpecialorderMenuSelected"/>
           </Events>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="skapaNyFraktsedel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Skapa ny fraktsedel"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="skapaNyFraktsedelMenuSelected"/>
+          </Events>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="forsalningsstatistik">
           <Properties>
             <Property name="text" type="java.lang.String" value="F&#xf6;rs&#xe4;ljningsstatistik"/>
@@ -66,14 +153,6 @@
           </Properties>
           <Events>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="hanteraAnstalldaMenuSelected"/>
-          </Events>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="skapaNyFraktsedel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Skapa ny fraktsedel"/>
-          </Properties>
-          <Events>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="skapaNyFraktsedelMenuSelected"/>
           </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="installningar">
@@ -163,7 +242,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="126" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="575" max="32767" attributes="0"/>
+              <EmptySpace pref="576" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
@@ -183,7 +262,7 @@
                   <Component id="btnLoggaIn" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
                   <Component id="lblFelMeddelande" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="92" max="32767" attributes="0"/>
+                  <EmptySpace pref="93" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
