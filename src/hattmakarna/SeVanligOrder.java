@@ -478,6 +478,11 @@ public class SeVanligOrder extends javax.swing.JFrame {
 
         comboStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad" }));
+        comboStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboStatusActionPerformed(evt);
+            }
+        });
 
         btnRedigeraStatus.setText("Redigera status");
         btnRedigeraStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -641,6 +646,10 @@ public class SeVanligOrder extends javax.swing.JFrame {
        comboStatus.setEnabled(true);
        
     }//GEN-LAST:event_btnRedigeraStatusActionPerformed
+
+    private void comboStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboStatusActionPerformed
 
     /**
      * @param args the command line arguments
