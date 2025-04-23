@@ -654,6 +654,7 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
 
 
 
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
    try {
         int valdRad = tblAllaProdukter.getSelectedRow();
