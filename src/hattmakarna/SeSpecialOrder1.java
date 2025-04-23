@@ -24,7 +24,7 @@ public class SeSpecialOrder1 extends javax.swing.JPanel {
     private String inloggadAnvandare;
     private String klickatOrderNr;
     private String express;
-    //private int kundID; 
+    private int kundID; 
 
     /**
      * Creates new form SeSpecialOrder
@@ -246,8 +246,39 @@ public class SeSpecialOrder1 extends javax.swing.JPanel {
             System.out.println(ex);
         }
     }
+public void fyllLabels() {
+    try {
+        String selectOrderNr = "select SpecialProduktID from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+        String orderNr = idb.fetchSingle(selectOrderNr);
+        lblOrderNr.setText(orderNr);
 
-    // Metod som fyller i labels med information om en specifik specialprodukt. 
+        String selectTillverkningstid = "select Tillverkningstid from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+        String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
+        lblTillverkningstid2.setText(tillverkningstid);
+
+        String selectKund = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = '" + klickatOrderNr + "'";
+        HashMap<String, String> kund = idb.fetchRow(selectKund);
+
+        if (kund != null) {
+            kundID = Integer.parseInt(kund.get("KundID")); // Spara endast siffran här
+            String kundIDochNamn = kund.get("KundID") + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
+            lblKundNr.setText(kundIDochNamn);
+        } else {
+            lblKundNr.setText("Ingen kund hittades.");
+        }
+
+        String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
+        String status = idb.fetchSingle(selectStatus);
+        cbStatus.setSelectedItem(status); 
+        cbStatus.setEnabled(false); 
+
+    } catch (InfException ex) {
+        System.out.println(ex);
+    }
+}
+
+    // Metod som fyller i labels med information om en specifik specialprodukt.
+    /*
     public void fyllLabels() {
         //Dessa metoder hämtar info från databasen och fyler textfälten. 
         try {
@@ -280,7 +311,7 @@ public class SeSpecialOrder1 extends javax.swing.JPanel {
 
         }
     }
-
+*/
     /*public void hamtaTotalPris() {
         try {
             double totalPris = 0.0;
@@ -577,7 +608,24 @@ public class SeSpecialOrder1 extends javax.swing.JPanel {
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
+private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {                                              
+    try {
+        if (kundID > 0) {
+            JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
 
+            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
+            main.showPanel("specifikKundPanel");
+        } else {
+            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
+    }
+}
+
+    
+    /*
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
         try {
             String kundNrText = lblKundNr.getText();
@@ -612,7 +660,7 @@ public class SeSpecialOrder1 extends javax.swing.JPanel {
             //        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
             //    }
     }//GEN-LAST:event_btnSeKundinfoActionPerformed
-
+*/
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
         this.setVisible(false);
