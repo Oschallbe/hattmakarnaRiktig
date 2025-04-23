@@ -590,18 +590,12 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
         //En metod som ska skicka användaren vidare till den specifika kundsidan. 
     try {
-        String kundNrText = lblKundNr.getText();
-        if (kundNrText != null && !kundNrText.isEmpty()) {
-            int kundID = Integer.parseInt(kundNrText);
-            SpecifikKund nyttFönster = new SpecifikKund(idb, inloggadAnvandare, kundID);
-            nyttFönster.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
-    }   
+        SpecifikKund nyttFönster = new SpecifikKund(idb, inloggadAnvandare, kundID);
+        nyttFönster.setVisible(true);
+        this.dispose(); // Stänger nuvarande fönster
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
+    } 
     }//GEN-LAST:event_btnSeKundinfoActionPerformed
 
     /**
