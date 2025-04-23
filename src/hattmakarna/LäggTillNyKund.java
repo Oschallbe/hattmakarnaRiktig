@@ -24,7 +24,43 @@ public class LäggTillNyKund extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
+        
+        comboSamma.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        SammaAdressCheckbox();
     }
+});
+    }
+    
+    private void SammaAdressCheckbox() {
+    boolean samma = comboSamma.isSelected();
+
+    if (samma) {
+        // Kopiera från leveransadress
+        txtFakturaAdress.setText(TxtLeveransAdress.getText());
+        txtFakturaPostnummer.setText(txtLeveransPostnummer.getText());
+        txtFakturaOrt.setText(txtLeveransOrt.getText());
+        txtFakturaLand.setText(txtLeveransLand.getText());
+
+        // Lås fälten så att de inte kan ändras
+        txtFakturaAdress.setEditable(false);
+        txtFakturaPostnummer.setEditable(false);
+        txtFakturaOrt.setEditable(false);
+        txtFakturaLand.setEditable(false);
+    } else {
+        // Töm fälten om checkboxen avmarkeras
+        txtFakturaAdress.setText("");
+        txtFakturaPostnummer.setText("");
+        txtFakturaOrt.setText("");
+        txtFakturaLand.setText("");
+
+        // Gör fälten redigerbara igen
+        txtFakturaAdress.setEditable(true);
+        txtFakturaPostnummer.setEditable(true);
+        txtFakturaOrt.setEditable(true);
+        txtFakturaLand.setEditable(true);
+    }
+}
 
 
 
@@ -178,6 +214,7 @@ try {
         jLabel3 = new javax.swing.JLabel();
         txtLeveransLand = new javax.swing.JTextField();
         txtFakturaLand = new javax.swing.JTextField();
+        comboSamma = new javax.swing.JCheckBox();
 
         jLabel8.setText("jLabel8");
 
@@ -225,6 +262,8 @@ try {
 
         jLabel3.setText("Land");
 
+        comboSamma.setText("Fakturaadress är samma som leveransadress");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -236,8 +275,11 @@ try {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSpara)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(comboSamma, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSpara))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblTelefonnr)
@@ -330,7 +372,9 @@ try {
                     .addComponent(jLabel3)
                     .addComponent(txtFakturaLand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnSpara)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSpara)
+                    .addComponent(comboSamma))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -382,6 +426,7 @@ try {
     private javax.swing.JTextField TxtEpost;
     private javax.swing.JTextField TxtLeveransAdress;
     private javax.swing.JButton btnSpara;
+    private javax.swing.JCheckBox comboSamma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -20,126 +20,114 @@ import java.awt.event.MouseEvent;
 public class SeSpecifikProdukt extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
-    private String artikelnummer;
+    private String produktID; // Viktigt! Spara riktiga ID:t
+    private boolean arStandardprodukt;
+    private int antalProdukter;
+    
+    
 
-    /**
-     * Creates new form SeSpecifikProdukt
-     */
-    public SeSpecifikProdukt(InfDB idb, String ePost, String artikelnummer) {
+    public SeSpecifikProdukt(InfDB idb, String ePost, String produktID, boolean arStandardprodukt, int antalProdukter) {
         this.idb = idb;
         this.inloggadAnvandare = ePost;
-        this.artikelnummer = artikelnummer;
-        
+        this.produktID = produktID;
+        this.arStandardprodukt = arStandardprodukt;
+        this.antalProdukter = antalProdukter;
         initComponents();
         
-        Tabell.setModel(new javax.swing.table.DefaultTableModel(
-        new Object [][] {},
-        new String [] {
-            "Artikelnummer", "Namn", "Pris", "Antal", "Matt", "Material"
-        }
-    ));
-        visaSpecifikProdukt(); 
+   Tabell.setModel(new javax.swing.table.DefaultTableModel(
+            new Object[][] {},
+            new String[] { "Artikelnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista" }
+        ));
+
+        visaSpecifikProdukt();
         
-        Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-             if(evt.getSource() == Tabell) {
-            int rad = Tabell.rowAtPoint(evt.getPoint());
-            int kolumn = Tabell.columnAtPoint(evt.getPoint());
-            
-            // Kolumnindex 0 = "Artikelnummer"
-            if (kolumn == 0 && rad >= 0) {
-                String artikelnummer = Tabell.getValueAt(rad, 0).toString();
-                visaMaterialLista(artikelnummer);
-                
-                // Öppna samma fönster igen med den produkten
-                new SeSpecifikProdukt(idb, inloggadAnvandare, artikelnummer).setVisible(true);
-                SeSpecifikProdukt.this.dispose(); // Stäng nuvarande fönster
-            }
-        }
-        }
-    });
-}
+ Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int rad = Tabell.rowAtPoint(evt.getPoint());
+                int kolumn = Tabell.columnAtPoint(evt.getPoint());
 
-    private void visaSpecifikProdukt() {
-        try {
-            // SQL-fråga för att hämta data från databasen
-            String query = "SELECT sp.Artikelnummer, sp.Namn, sp.Pris, sp.Matt, mb.Antal " +
-            "FROM StandardProdukt sp " +
-            "LEFT JOIN MaterialBestallning mb ON sp.Namn = mb.Namn " +
-            "WHERE sp.Artikelnummer = '" + artikelnummer + "'";
-            List<HashMap<String, String>> result = idb.fetchRows(query);
-
-            // Hämta JTable:s modell
-            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
-            model.setRowCount(0); // Rensa gamla data
-
-            if (result != null) {
-                for (HashMap<String, String> row : result) {
-                    // Lägg till en rad i JTable
-                    model.addRow(new Object[]{
-                        row.get("Artikelnummer"),
-                        row.get("Namn"),
-                        row.get("Pris"),
-                        row.get("Antal")!= null ? row.get("Antal") : "0",
-                        row.get("Matt"),
-                        "Se material",
-                    });
+                if (kolumn == 5 && rad >= 0) {
+                    visaMaterialForProdukt(); // Använder nu sparat ID
                 }
+            }
+        });
+        
+
+    }
+
+ private void visaSpecifikProdukt() {
+        try {
+            String query;
+            if (arStandardprodukt) {
+                query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE StandardProduktID = " + produktID;
             } else {
-                System.out.println("Ingen data hittades i tabellen.");
+                query = "SELECT SpecialProduktID AS Artikelnummer, Beskrivning AS Namn, Pris, Matt FROM SpecialProdukt WHERE SpecialProduktID = " + produktID;
+            }
+
+            HashMap<String, String> produkt = idb.fetchRow(query);
+            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
+            model.setRowCount(0);
+
+            if (produkt != null) {
+                model.addRow(new Object[]{
+                    produkt.getOrDefault("Artikelnummer", "-"),
+                    produkt.getOrDefault("Namn", "-"),
+                    produkt.getOrDefault("Pris", "-"),
+                    antalProdukter,
+                    produkt.getOrDefault("Matt", "-"),
+                    "Se material"
+                });
+            } else {
+                JOptionPane.showMessageDialog(this, "Kunde inte hitta produktinformation.");
             }
         } catch (InfException e) {
-            System.out.println("Fel vid hämtning av data: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     
-    private void visaMaterialLista(String Artikelnummer) {
+   private void visaMaterialForProdukt() {
         try {
-        // SQL-fråga: hämta material kopplat till artikelnumret
-        /*String sql = "SELECT M.Namn, M.Typ, M.Farg " +
-             "FROM Material M " +
-             "JOIN StandardProdukt sp ON M.StandardProduktid = sp.StandardProduktID " +
-             "WHERE sp.Artikelnummer = '" + Artikelnummer + "'";
+            List<HashMap<String, String>> material;
+            String query;
 
-        List<HashMap<String, String>> material = idb.fetchRows(sql);
-        */
-        String fragaMateriallista = 
-        "SELECT Material.Namn, Material.Typ, Material.Farg, StandardProdukt_Material.Mängd, Material.Enhet " +
-        "FROM Material " +
-        "JOIN StandardProdukt_Material " +
-        "ON Material.MaterialID = StandardProdukt_Material.MaterialID " +
-        "WHERE StandardProdukt_Material.StandardProduktID = " +
-        "(SELECT StandardProduktID FROM StandardProdukt WHERE StandardProdukt.Artikelnummer = '" + artikelnummer + "');";
-        List<HashMap<String, String>> material = idb.fetchRows(fragaMateriallista);
-        StringBuilder info = new StringBuilder();
-
-        if (material != null && !material.isEmpty()) {
-            for (HashMap<String, String> rad : material) {
-                info.append(rad.get("Namn"))
-                    .append(" – ")
-                    .append(rad.get("Typ"))
-                    .append(" – ")
-                    .append(rad.get("Farg"))
-                    .append(" – ")
-                    .append("Mängd: ")
-                    .append(rad.get("Mängd"))
-                    .append(" ") 
-                    .append(rad.get("Enhet"))
-                    .append("\n");
+            if (arStandardprodukt) {
+                query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion " +
+                        "FROM Material m " +
+                        "JOIN StandardProdukt_Material spm ON m.MaterialID = spm.MaterialID " +
+                        "WHERE spm.StandardProduktID = " + produktID;
+            } else {
+                query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion " +
+                        "FROM Material m " +
+                        "JOIN SpecialProdukt_Material spm ON m.MaterialID = spm.MaterialID " +
+                        "WHERE spm.SpecialProduktID = " + produktID;
             }
-        } else {
-            info.append("Inget material hittades.");
+
+            material = idb.fetchRows(query);
+            StringBuilder info = new StringBuilder();
+
+            if (material != null && !material.isEmpty()) {
+                for (HashMap<String, String> rad : material) {
+                    info.append(rad.get("Namn")).append(" – ")
+                        .append(rad.get("Typ")).append(" – ")
+                        .append(rad.get("Farg")).append(" – Mängd: ")
+                        .append(rad.get("Mängd")).append(" ")
+                        .append(rad.get("Enhet")).append(" – Funktion: ")
+                        .append(rad.get("Funktion")).append("\n");
+                }
+            } else {
+                info.append("Inget material hittades.");
+            }
+
+            JOptionPane.showMessageDialog(this, info.toString(), "Material för produkt", JOptionPane.INFORMATION_MESSAGE);
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
-
-        JOptionPane.showMessageDialog(this, info.toString(), "Materiallista", JOptionPane.INFORMATION_MESSAGE);
-
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
     }
-}
+
     
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -171,11 +159,6 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
             }
         ));
         Tabell.setCellSelectionEnabled(true);
-        Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TabellMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(Tabell);
         Tabell.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -193,11 +176,11 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addGap(119, 119, 119)
+                        .addGap(197, 197, 197)
                         .addComponent(btnTillbaka)))
                 .addContainerGap())
         );
@@ -212,8 +195,8 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(btnTillbaka)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         pack();

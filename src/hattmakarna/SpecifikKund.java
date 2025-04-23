@@ -68,8 +68,14 @@ private void fyllKundDetaljer() {
         txtHuvudmatt.setEditable(editable);
         txtEpost.setEditable(editable);
         txtTelefonnummer.setEditable(editable);
+        txtLeveransAdress.setEditable(editable);
+        txtLeveransPostnummer.setEditable(editable);
         txtLeveransOrt.setEditable(editable);
- 	txtFakturaAdress.setEditable(editable);
+        txtLeveransLand.setEditable(editable);
+        txtFakturaPostnummer.setEditable(editable);
+        txtFakturaAdress.setEditable(editable);
+        txtFakturaOrt.setEditable(editable);
+        txtFakturaLand.setEditable(editable);
         BtnSpara.setEnabled(editable); // Spara-knappen kan bara användas om fälten är redigerbara
     }
 
