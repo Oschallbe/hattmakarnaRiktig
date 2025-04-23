@@ -23,7 +23,6 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     private String klickatOrderNr;
     private String express;
     private int kundID; 
-    private SpecifikKund specifikKund; 
 
     /**
      * Creates new form SeSpecialOrder
@@ -263,9 +262,9 @@ public class SeSpecialOrder extends javax.swing.JFrame {
 
             if (kund != null) {
                 String kundIDochNamn = kund.get("KundID") + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
-                lblKund2.setText(kundIDochNamn);
+                lblKundNr.setText(kundIDochNamn);
             } else {
-                lblKund2.setText("Ingen kund hittades.");
+                lblKundNr.setText("Ingen kund hittades.");
             }
 
             String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
@@ -321,7 +320,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         lblTillverkningstid = new javax.swing.JLabel();
         lblTillverkningstid2 = new javax.swing.JLabel();
         lblKund = new javax.swing.JLabel();
-        lblKund2 = new javax.swing.JLabel();
+        lblKundNr = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAllaProdukter = new javax.swing.JTable();
         btnTillbaka = new javax.swing.JButton();
@@ -352,8 +351,8 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         lblKund.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblKund.setText("Kund: ");
 
-        lblKund2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblKund2.setText("jLabel1");
+        lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblKundNr.setText("jLabel1");
 
         tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -469,7 +468,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                                                 .addComponent(btnTillbaka))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(115, 115, 115)
-                                                .addComponent(lblKund2)
+                                                .addComponent(lblKundNr)
                                                 .addGap(18, 18, 18)
                                                 .addComponent(btnSeKundinfo)))
                                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -500,7 +499,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblKund)
-                                    .addComponent(lblKund2)
+                                    .addComponent(lblKundNr)
                                     .addComponent(btnSeKundinfo))
                                 .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -590,14 +589,19 @@ public class SeSpecialOrder extends javax.swing.JFrame {
 
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
         //En metod som ska skicka användaren vidare till den specifika kundsidan. 
-       // SpecifikKund(idb, inloggadAnvandare, kundID); 
-       //nyttFönster.setVisible(true); 
-       //this.dispose(); 
-       if (specifikKund == null) {
-           specifikKund = new SpecifikKund(idb, inloggadAnvandare, kundID); 
-       }
-       specifikKund.setVisible(true); 
-       this.setVisible(false); 
+    try {
+        String kundNrText = lblKundNr.getText();
+        if (kundNrText != null && !kundNrText.isEmpty()) {
+            int kundID = Integer.parseInt(kundNrText);
+            SpecifikKund nyttFönster = new SpecifikKund(idb, inloggadAnvandare, kundID);
+            nyttFönster.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
+    }   
     }//GEN-LAST:event_btnSeKundinfoActionPerformed
 
     /**
@@ -646,7 +650,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblKund;
-    private javax.swing.JLabel lblKund2;
+    private javax.swing.JLabel lblKundNr;
     private javax.swing.JLabel lblOrderNr;
     private javax.swing.JLabel lblSpecialorder;
     private javax.swing.JLabel lblStatus;

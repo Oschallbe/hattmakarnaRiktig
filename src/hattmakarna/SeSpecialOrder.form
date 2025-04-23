@@ -66,7 +66,7 @@
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
                                               <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
-                                              <Component id="lblKund2" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblKundNr" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Component id="btnSeKundinfo" min="-2" max="-2" attributes="0"/>
                                           </Group>
@@ -111,7 +111,7 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblKund" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblKund2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblKundNr" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnSeKundinfo" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -190,7 +190,7 @@
         <Property name="text" type="java.lang.String" value="Kund: "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblKund2">
+    <Component class="javax.swing.JLabel" name="lblKundNr">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
