@@ -10,6 +10,11 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
+import java.util.Properties;
+
 
 /**
  *
@@ -19,11 +24,34 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
     private InfDB idb;
     private String inloggadAnvandare;
+    private JDatePickerImpl datePickerFran;
+    private JDatePickerImpl datePickerTill;
+
     /**
      * Creates new form SeForsaljningsstatistik
      */
     public SeForsaljningsstatistik(InfDB idb, String ePost) {
         initComponents();
+        Properties p = new Properties();
+        p.put("text.today", "Idag");
+        p.put("text.month", "Månad");
+        p.put("text.year", "År");
+
+        SqlDateModel modelFran = new SqlDateModel();
+        JDatePanelImpl datePanelFran = new JDatePanelImpl(modelFran, p);
+        datePickerFran = new JDatePickerImpl(datePanelFran, new org.jdatepicker.impl.DateComponentFormatter());
+
+        SqlDateModel modelTill = new SqlDateModel();
+        JDatePanelImpl datePanelTill = new JDatePanelImpl(modelTill, p);
+        datePickerTill = new JDatePickerImpl(datePanelTill, new org.jdatepicker.impl.DateComponentFormatter());
+
+        // Lägg till date pickers i respektive JPanel
+        panDatumFran.setLayout(new java.awt.BorderLayout());
+        panDatumFran.add(datePickerFran, java.awt.BorderLayout.CENTER);
+
+        panDatumTill.setLayout(new java.awt.BorderLayout());
+        panDatumTill.add(datePickerTill, java.awt.BorderLayout.CENTER);
+
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         //DefaultTableModel model = new DefaultTableModel(new Object[]{"Namn", "Pris", "Antal", "Datum"});
@@ -77,13 +105,13 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         txtHatt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtSokDatumFran = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtSokDatumTill = new javax.swing.JTextField();
         btnFiltrera = new javax.swing.JButton();
         btnSummera = new javax.swing.JButton();
+        panDatumFran = new javax.swing.JPanel();
+        panDatumTill = new javax.swing.JPanel();
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Försäljningsstatistik");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -113,12 +141,6 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
         jLabel5.setText("Till:");
 
-        txtSokDatumTill.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSokDatumTillActionPerformed(evt);
-            }
-        });
-
         btnFiltrera.setText("Filtrera");
         btnFiltrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,62 +155,97 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
             }
         });
 
+        javax.swing.GroupLayout panDatumFranLayout = new javax.swing.GroupLayout(panDatumFran);
+        panDatumFran.setLayout(panDatumFranLayout);
+        panDatumFranLayout.setHorizontalGroup(
+            panDatumFranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        panDatumFranLayout.setVerticalGroup(
+            panDatumFranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 26, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panDatumTillLayout = new javax.swing.GroupLayout(panDatumTill);
+        panDatumTill.setLayout(panDatumTillLayout);
+        panDatumTillLayout.setHorizontalGroup(
+            panDatumTillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        panDatumTillLayout.setVerticalGroup(
+            panDatumTillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 27, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addComponent(jLabel2)
-                .addGap(203, 203, 203)
-                .addComponent(jLabel3)
+                .addGap(333, 333, 333)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(txtHatt, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSokDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSokDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnFiltrera)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSummera))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1)
+                        .addGap(70, 70, 70)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel1)
-                                .addGap(334, 334, 334)))))
-                .addGap(16, 16, 16))
+                                .addComponent(txtHatt, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(panDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                                .addComponent(btnSummera))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(38, 38, 38)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel3)
+                                        .addGap(203, 203, 203)))
+                                .addComponent(btnFiltrera))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtHatt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtSokDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtSokDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFiltrera)
-                    .addComponent(btnSummera))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel1)
+                        .addGap(64, 64, 64)
+                        .addComponent(jLabel3)
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(panDatumFran, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(panDatumTill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(13, 13, 13)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtHatt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnFiltrera)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSummera)))))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -198,20 +255,11 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtHattActionPerformed
 
-    private void txtSokDatumTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSokDatumTillActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSokDatumTillActionPerformed
-
     private void btnSummeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSummeraActionPerformed
         String hatt = txtHatt.getText();
-        String fran = txtSokDatumFran.getText();
-        String till = txtSokDatumTill.getText();
-        
-        //Validera eventuella datum
-        if ((!fran.isEmpty() && !Validering.valideringDatum(fran)) || (!till.isEmpty() && !Validering.valideringDatum(till))) {
-            JOptionPane.showMessageDialog(this, "Datum måste anges i formatet ÅÅÅÅ-MM-DD.");
-            return;
-        }
+        java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
+        java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
+
         try {
             String fraga = "SELECT sp.Namn AS Namn, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
                     + "FROM OrderItem oi "
@@ -223,10 +271,12 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
             if (!hatt.isEmpty()) {
                 fraga += " AND sp.Namn = '" + hatt + "'";
             }
-            if (!fran.isEmpty() && !till.isEmpty()) {
-                fraga += " AND b.Datum >= '" + fran + "' AND b.Datum <= '" + till + "'";
+            if (fran != null && till != null) {
+                java.sql.Date sqlFran = new java.sql.Date(fran.getTime());
+                java.sql.Date sqlTill = new java.sql.Date(till.getTime());
+                fraga += " AND b.Datum >= '" + sqlFran + "' AND b.Datum <= '" + sqlTill + "'";
             } 
-            else if (!fran.isEmpty() || !till.isEmpty()) {
+            else if ((fran != null && till == null) || (fran == null && till != null)) {
                 // Ett av datumen är ifyllt men inte båda
                 JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
                 return;
@@ -256,13 +306,13 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
                 }
 
                 String datumText = "";
-                if (!fran.isEmpty() && !till.isEmpty()) {
+                if (fran != null && till != null) {
                     datumText = "Från: " + fran + " till " + till;
                 }
 
                 model.addRow(new Object[]{
-                    "Totalt för: " + hatt,
-                    String.format("%.2f kr", totalPris),
+                    hatt.isEmpty() ? "Alla hattar" : hatt,
+                    String.format("Totalt pris: %.2f kr", totalPris),
                     totalAntal,
                     datumText
                 });
@@ -278,14 +328,10 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
     private void btnFiltreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraActionPerformed
         String hatt = txtHatt.getText();
-        String fran = txtSokDatumFran.getText();
-        String till = txtSokDatumTill.getText();
 
-        //Validera eventuella datum
-        if ((!fran.isEmpty() && !Validering.valideringDatum(fran)) || (!till.isEmpty() && !Validering.valideringDatum(till))) {
-            JOptionPane.showMessageDialog(this, "Datum måste anges i formatet ÅÅÅÅ-MM-DD.");
-            return;
-        }
+        java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
+        java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
+
 
         try {
             //Bygg basfråga
@@ -299,10 +345,12 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
             if (!hatt.isEmpty()) {
                 fraga += " AND sp.Namn = '" + hatt + "'";
             }
-            if (!fran.isEmpty() && !till.isEmpty()) {
-                fraga += " AND b.Datum >= '" + fran + "' AND b.Datum <= '" + till + "'";
+            if (fran != null && till != null) {
+                java.sql.Date sqlFran = new java.sql.Date(fran.getTime());
+                java.sql.Date sqlTill = new java.sql.Date(till.getTime());
+                fraga += " AND b.Datum >= '" + sqlFran + "' AND b.Datum <= '" + sqlTill + "'";
             } 
-            else if (!fran.isEmpty() || !till.isEmpty()) {
+            else if (fran != null || till != null) {
                 // Ett av datumen är ifyllt men inte båda
                 JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
                 return;
@@ -404,8 +452,8 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JPanel panDatumFran;
+    private javax.swing.JPanel panDatumTill;
     private javax.swing.JTextField txtHatt;
-    private javax.swing.JTextField txtSokDatumFran;
-    private javax.swing.JTextField txtSokDatumTill;
     // End of variables declaration//GEN-END:variables
 }
