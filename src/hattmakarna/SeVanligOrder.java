@@ -647,9 +647,12 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
     }//GEN-LAST:event_btnRedigeraStatusActionPerformed
 
 
+
     private void comboStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboStatusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboStatusActionPerformed
+
+
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
    try {
