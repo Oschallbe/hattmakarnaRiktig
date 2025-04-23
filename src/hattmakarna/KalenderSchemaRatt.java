@@ -84,6 +84,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         }
         
         for(int dag = 1; dag <= dagarIManad; dag++){
+            final int aktuellDag = dag;
             JPanel dagPanel = new JPanel(new BorderLayout());
             dagPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
             dagPanel.setPreferredSize(new Dimension(120, 100));
@@ -99,44 +100,69 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
             JScrollPane scroll = new JScrollPane(produktLista);
             
             JTextField inputFalt = new JTextField();
-            inputFalt.addActionListener(e ->{
+            Font normalFont = inputFalt.getFont();
+            Font italicFont = normalFont.deriveFont(Font.ITALIC);
+            inputFalt.setText("Fyll i här");
+            inputFalt.setForeground(Color.GRAY);
+            inputFalt.setFont(italicFont);
+                              
+                                
+                          
+                    inputFalt.addFocusListener(new FocusAdapter(){
+                    @Override
+                    public void focusGained(FocusEvent e){
+                        if(inputFalt.getText().equals("Fyll i här")){
+                            inputFalt.setText("");
+                        }
+                    }            
+                    
+                    @Override
+                    public void focusLost(FocusEvent e){
+                        if(inputFalt.getText().trim().isEmpty()) {
+                            inputFalt.setText("Fyll i här");
+                        }
+                    }
+                });
+
+                inputFalt.addActionListener(e ->{
                 String text = inputFalt.getText().trim();
                 if(!text.isEmpty()){
                     modell.addElement(text);
                     inputFalt.setText("");
-                    
-                    /*try{
-                        LocalDate datum = visadManad.withDayOfMonth(dag);
-                        String sql = "insert into "
+                   try{
+                        LocalDate datum = visadManad.withDayOfMonth(aktuellDag);
+                        String insertProdukt = "insert into kalenderschema (AnstalldID, OrderItemID, Datum) values (" +
+                                "(select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "'), " +
+                                "'" + text + "', '" + datum + "')";
+                        idb.insert(insertProdukt);
                     }
-                    */
+                    catch(InfException ex){
+                        System.out.println(ex);
+                    }
+                    
                 }
             });
-            
+
+            try{
+                LocalDate datum = visadManad.withDayOfMonth(dag);
+                String selectText = "select OrderItemID from kalenderschema where Datum = '" + datum + "' and AnstalldID = (select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "')";
+                java.util.List<String> resultat = idb.fetchColumn(selectText);
+                if(resultat != null){
+                    for(String text:resultat){
+                        modell.addElement(text);
+                    }
+                }
+            }
+            catch(InfException ex){
+                System.out.println(ex);
+            }
+                 
+                           
             dagPanel.add(dagLabel, BorderLayout.NORTH);
             dagPanel.add(scroll, BorderLayout.CENTER);
             dagPanel.add(inputFalt, BorderLayout.SOUTH);
             kalenderRuta.add(dagPanel);
-            
-            
-            
-            
-            /*JLabel dagLabel = new JLabel(String.valueOf(dag), SwingConstants.CENTER);
-            dagLabel.setFont(new Font("Arial", Font.BOLD, 18));
-            
-            JTextField textFalt = new JTextField();
-            textFalt.setFont(new Font("Arial", Font.PLAIN, 16));
-            
-            dagPanel.add(dagLabel, BorderLayout.NORTH);
-            dagPanel.add(textFalt, BorderLayout.CENTER);
-            
-            dagPanel.setPreferredSize(new Dimension(120, 100));
-            dagPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            
-            kalenderRuta.add(dagPanel);
-            */
-            
-            
+       
         }
          
         kalenderRuta.revalidate();
