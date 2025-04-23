@@ -1,10 +1,8 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-
 package hattmakarna;
-
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
@@ -14,7 +12,7 @@ import oru.inf.InfException;
  *
  * @author iftinserar
  */
-public class SpecifikKund extends javax.swing.JFrame {
+public class SpecifikKund extends javax.swing.JPanel {
 
     private static InfDB idb;
     private String inloggadAnvandare;
@@ -79,7 +77,6 @@ private void fyllKundDetaljer() {
         BtnSpara.setEnabled(editable); // Spara-knappen kan bara användas om fälten är redigerbara
     }
 
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,19 +86,6 @@ private void fyllKundDetaljer() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        lblFornamn = new javax.swing.JLabel();
-        lblEfternamn = new javax.swing.JLabel();
-        lblEpost = new javax.swing.JLabel();
-        lblTelefonnummer = new javax.swing.JLabel();
-        lblLeveransadress = new javax.swing.JLabel();
-        BtnTaBort = new javax.swing.JButton();
-        BtnRedigera = new javax.swing.JButton();
-        BtnSpara = new javax.swing.JButton();
-        lblFakturaadress = new javax.swing.JLabel();
-        txtKundID = new javax.swing.JTextField();
-        txtFornamn = new javax.swing.JTextField();
-        txtEfternamn = new javax.swing.JTextField();
         txtEpost = new javax.swing.JTextField();
         txtTelefonnummer = new javax.swing.JTextField();
         txtLeveransAdress = new javax.swing.JTextField();
@@ -111,24 +95,46 @@ private void fyllKundDetaljer() {
         lblFakturaort = new javax.swing.JLabel();
         lblLeveransort = new javax.swing.JLabel();
         txtHuvudmatt = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         lblHuvudmått = new javax.swing.JLabel();
+        lblFornamn = new javax.swing.JLabel();
+        lblEfternamn = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        lblEpost = new javax.swing.JLabel();
         txtLeveransPostnummer = new javax.swing.JTextField();
+        lblTelefonnummer = new javax.swing.JLabel();
         txtFakturaPostnummer = new javax.swing.JTextField();
+        lblLeveransadress = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        BtnTaBort = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        BtnRedigera = new javax.swing.JButton();
         txtLeveransLand = new javax.swing.JTextField();
+        BtnSpara = new javax.swing.JButton();
         txtFakturaLand = new javax.swing.JTextField();
+        lblFakturaadress = new javax.swing.JLabel();
+        txtKundID = new javax.swing.JTextField();
+        txtFornamn = new javax.swing.JTextField();
+        txtEfternamn = new javax.swing.JTextField();
+        btnTillbaka = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        lblFakturaort.setText("Ort");
+
+        lblLeveransort.setText("Ort");
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Kund");
 
+        lblHuvudmått.setText("Huvudmått");
+
         lblFornamn.setText("Fornamn");
 
         lblEfternamn.setText("Efternamn");
+
+        jLabel2.setText("Postnummer");
+
+        jLabel3.setText("Postnummer");
 
         lblEpost.setText("E-post");
 
@@ -136,12 +142,16 @@ private void fyllKundDetaljer() {
 
         lblLeveransadress.setText("Leveransadress");
 
+        jLabel4.setText("Land");
+
         BtnTaBort.setText("Ta bort");
         BtnTaBort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnTaBortActionPerformed(evt);
             }
         });
+
+        jLabel5.setText("Land");
 
         BtnRedigera.setText("Redigera");
         BtnRedigera.addActionListener(new java.awt.event.ActionListener() {
@@ -161,39 +171,20 @@ private void fyllKundDetaljer() {
 
         txtKundID.setEnabled(false);
 
-        txtFakturaAdress.addActionListener(new java.awt.event.ActionListener() {
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFakturaAdressActionPerformed(evt);
+                btnTillbakaActionPerformed(evt);
             }
         });
 
-        lblFakturaort.setText("Ort");
-
-        lblLeveransort.setText("Ort");
-
-        txtHuvudmatt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtHuvudmattActionPerformed(evt);
-            }
-        });
-
-        lblHuvudmått.setText("Huvudmått");
-
-        jLabel2.setText("Postnummer");
-
-        jLabel3.setText("Postnummer");
-
-        jLabel4.setText("Land");
-
-        jLabel5.setText("Land");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblEfternamn)
@@ -208,10 +199,6 @@ private void fyllKundDetaljer() {
                             .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEfternamn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtFornamn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTelefonnummer)
@@ -258,7 +245,14 @@ private void fyllKundDetaljer() {
                                 .addGap(40, 40, 40)
                                 .addComponent(BtnRedigera)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(BtnSpara))))))
+                                .addComponent(BtnSpara))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnTillbaka)
+                        .addGap(95, 95, 95))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,7 +260,8 @@ private void fyllKundDetaljer() {
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTillbaka))
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFornamn)
@@ -315,49 +310,86 @@ private void fyllKundDetaljer() {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(txtFakturaPostnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnTaBort)
                     .addComponent(BtnRedigera)
                     .addComponent(BtnSpara))
                 .addGap(17, 17, 17))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BtnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTaBortActionPerformed
+        try {
+            // Bekräftelse om användaren verkligen vill ta bort kundens uppgifter
+            int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort kundens uppgifter (förutom KundID)?", "Bekräfta", JOptionPane.YES_NO_OPTION);
+
+            if (svar == JOptionPane.YES_OPTION) {
+                // SQL-fråga med rätt kolumnnamn
+                String rensaKundUppgifter = "UPDATE Kund SET "
+                + "Fornamn = NULL, "
+                + "Efternamn = NULL, "
+                + "Matt = NULL, "
+                + "Epost = NULL, "
+                + "Telefonnummer = NULL, "
+                + "LeveransOrt = NULL, "
+                + "FakturaOrt = NULL"
+                + "LeveransAdress = NULL, "
+                + "FakturaAdress = NULL, "
+                + "WHERE KundID = " + kundID + ";";
+
+                // Utför uppdateringen
+                idb.update(rensaKundUppgifter);
+
+                // Feedback till användaren
+                JOptionPane.showMessageDialog(this, "Kundens uppgifter har rensats. KundID finns kvar.");
+                // Öppna AllaKunder och stäng nuvarande fönster
+                new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
+                
+            }
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(this, "Ett fel inträffade vid rensning av kundens uppgifter: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_BtnTaBortActionPerformed
+
+    private void BtnRedigeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRedigeraActionPerformed
+        setEditable(true); // Gör textfälten redigerbara
+        BtnSpara.setEnabled(true); // Aktivera Spara-knappen
+        BtnRedigera.setEnabled(false); // Deaktivera Redigera-knappen
+    }//GEN-LAST:event_BtnRedigeraActionPerformed
+
     private void BtnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSparaActionPerformed
-    // Hämta och validera fält som tidigare + nya
-    String fornamn = txtFornamn.getText();
-    String efternamn = txtEfternamn.getText();
-    String epost = txtEpost.getText();
-    String telefonnummer = txtTelefonnummer.getText();
-    String leveransAdress = txtLeveransAdress.getText();
-    String leveransPostNr = txtLeveransPostnummer.getText();
-    String leveransOrt = txtLeveransOrt.getText();
-    String leveransLand = txtLeveransLand.getText();
-    String fakturaAdress = txtFakturaAdress.getText();
-    String fakturaPostNr = txtFakturaPostnummer.getText();
-    String fakturaOrt = txtFakturaOrt.getText();
-    String fakturaLand = txtFakturaLand.getText(); 
-    String matt = txtHuvudmatt.getText(); // Nytt fält för huvudmått
+        // Hämta och validera fält som tidigare + nya
+        String fornamn = txtFornamn.getText();
+        String efternamn = txtEfternamn.getText();
+        String epost = txtEpost.getText();
+        String telefonnummer = txtTelefonnummer.getText();
+        String leveransAdress = txtLeveransAdress.getText();
+        String leveransPostNr = txtLeveransPostnummer.getText();
+        String leveransOrt = txtLeveransOrt.getText();
+        String leveransLand = txtLeveransLand.getText();
+        String fakturaAdress = txtFakturaAdress.getText();
+        String fakturaPostNr = txtFakturaPostnummer.getText();
+        String fakturaOrt = txtFakturaOrt.getText();
+        String fakturaLand = txtFakturaLand.getText();
+        String matt = txtHuvudmatt.getText(); // Nytt fält för huvudmått
 
-    // Validering
-    if (!Validering.valideringEmail(epost)) {
-        JOptionPane.showMessageDialog(this, "Ogiltig e-postadress.");
-        return;
-    }
-    if (!Validering.valideringTelefon(telefonnummer)) {
-        JOptionPane.showMessageDialog(this, "Ogiltigt telefonnummer.");
-        return;
-    }
-    if (fornamn.isEmpty() || efternamn.isEmpty() || leveransAdress.isEmpty() || leveransOrt.isEmpty() || fakturaAdress.isEmpty() || fakturaOrt.isEmpty() || matt.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i.");
-        return;
-    }
+        // Validering
+        if (!Validering.valideringEmail(epost)) {
+            JOptionPane.showMessageDialog(this, "Ogiltig e-postadress.");
+            return;
+        }
+        if (!Validering.valideringTelefon(telefonnummer)) {
+            JOptionPane.showMessageDialog(this, "Ogiltigt telefonnummer.");
+            return;
+        }
+        if (fornamn.isEmpty() || efternamn.isEmpty() || leveransAdress.isEmpty() || leveransOrt.isEmpty() || fakturaAdress.isEmpty() || fakturaOrt.isEmpty() || matt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i.");
+            return;
+        }
 
-    try {
-        String updateQuery = "UPDATE Kund SET " +
+        try {
+            String updateQuery = "UPDATE Kund SET " +
             "Fornamn = '" + fornamn + "', " +
             "Efternamn = '" + efternamn + "', " +
             "Epost = '" + epost + "', " +
@@ -373,104 +405,28 @@ private void fyllKundDetaljer() {
             "Huvudmatt = '" + matt + "' " +  // Lägg till huvudmått här
             "WHERE KundID = " + kundID; // Uppdatera med relevant kundID
 
-        idb.update(updateQuery); // Utför SQL-uppdateringen
-        JOptionPane.showMessageDialog(this, "Kundinformation har uppdaterats.");
-        
-        setEditable(false); // Stänger av redigering
-        BtnRedigera.setEnabled(true); // Gör redigera-knappen aktiv igen
-        BtnSpara.setEnabled(false); // Stänger av spara-knappen
-        this.dispose();
-    } catch (InfException ex) {
-        JOptionPane.showMessageDialog(this, "Ett fel inträffade vid uppdatering: " + ex.getMessage());
-    }
+            idb.update(updateQuery); // Utför SQL-uppdateringen
+            JOptionPane.showMessageDialog(this, "Kundinformation har uppdaterats.");
+
+            setEditable(false); // Stänger av redigering
+            BtnRedigera.setEnabled(true); // Gör redigera-knappen aktiv igen
+            BtnSpara.setEnabled(false); // Stänger av spara-knappen
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(this, "Ett fel inträffade vid uppdatering: " + ex.getMessage());
+        }
     }//GEN-LAST:event_BtnSparaActionPerformed
 
-    private void BtnRedigeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRedigeraActionPerformed
-        setEditable(true); // Gör textfälten redigerbara
-        BtnSpara.setEnabled(true); // Aktivera Spara-knappen
-        BtnRedigera.setEnabled(false); // Deaktivera Redigera-knappen
-    }//GEN-LAST:event_BtnRedigeraActionPerformed
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+    new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
+    this.setVisible(false);
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
-    private void BtnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTaBortActionPerformed
-        try {
-            // Bekräftelse om användaren verkligen vill ta bort kundens uppgifter
-            int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort kundens uppgifter (förutom KundID)?", "Bekräfta", JOptionPane.YES_NO_OPTION);
-
-            if (svar == JOptionPane.YES_OPTION) {
-                // SQL-fråga med rätt kolumnnamn
-                String rensaKundUppgifter = "UPDATE Kund SET "
-                        + "Fornamn = NULL, "
-                        + "Efternamn = NULL, "
-                        + "Matt = NULL, "
-                        + "Epost = NULL, "
-                        + "Telefonnummer = NULL, "
-                        + "LeveransOrt = NULL, "
-                        + "FakturaOrt = NULL"
-                        + "LeveransAdress = NULL, "
-                        + "FakturaAdress = NULL, "
-                        + "WHERE KundID = " + kundID + ";";
-
-                // Utför uppdateringen
-                idb.update(rensaKundUppgifter);
-
-                // Feedback till användaren
-                JOptionPane.showMessageDialog(this, "Kundens uppgifter har rensats. KundID finns kvar.");
-                 // Öppna AllaKunder och stäng nuvarande fönster
-                new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
-                this.dispose();
-            }
-        } catch (InfException ex) {
-            JOptionPane.showMessageDialog(this, "Ett fel inträffade vid rensning av kundens uppgifter: " + ex.getMessage());
-        }
-    }//GEN-LAST:event_BtnTaBortActionPerformed
-
-    private void txtHuvudmattActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHuvudmattActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtHuvudmattActionPerformed
-
-    private void txtFakturaAdressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFakturaAdressActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFakturaAdressActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SpecifikKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SpecifikKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SpecifikKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SpecifikKund.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new SpecifikKund().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnRedigera;
     private javax.swing.JButton BtnSpara;
     private javax.swing.JButton BtnTaBort;
+    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

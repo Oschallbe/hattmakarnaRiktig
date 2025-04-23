@@ -1,21 +1,23 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package hattmakarna;
-import oru.inf.InfDB; 
-import oru.inf.InfException; 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.JOptionPane;
+import oru.inf.InfDB;
+import oru.inf.InfException;
 
 /**
  *
- * @author lisas
+ * @author iftinserar
  */
-public class SeVanligOrder extends javax.swing.JFrame {
+public class SeVanligOrder extends javax.swing.JPanel {
     private InfDB idb; 
     private String inloggadAnvandare; 
     private String klickatOrderNr;
@@ -353,7 +355,7 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
             System.out.println(ex);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -363,92 +365,33 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        lblOrderNr = new javax.swing.JLabel();
-        lblKundNr = new javax.swing.JLabel();
-        lblDatum = new javax.swing.JLabel();
-        lblPris = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblAllaProdukter = new javax.swing.JTable();
-        btnTillbaka = new javax.swing.JButton();
-        btnAtaProdukt = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        lblExpress = new javax.swing.JLabel();
         btnSpara = new javax.swing.JButton();
+        lblOrderNr = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAllaAnstallda = new javax.swing.JTable();
+        lblKundNr = new javax.swing.JLabel();
+        lblDatum = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        lblPris = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblAllaProdukter = new javax.swing.JTable();
         comboStatus = new javax.swing.JComboBox<>();
         btnRedigeraStatus = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnTillbaka = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Order:");
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Kund:");
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Datum:");
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Status:");
+        jLabel2 = new javax.swing.JLabel();
+        btnAtaProdukt = new javax.swing.JButton();
+        btnSeKund = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblExpress = new javax.swing.JLabel();
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("Totalpris:");
-
-        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblOrderNr.setText("jLabel6");
-
-        lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblKundNr.setText("jLabel7");
-
-        lblDatum.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDatum.setText("jLabel8");
-
-        lblPris.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblPris.setText("jLabel10");
-
-        tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
-            }
-        ));
-        tblAllaProdukter.setEnabled(false);
-        jScrollPane1.setViewportView(tblAllaProdukter);
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
-
-        btnAtaProdukt.setText("Åta produkt");
-        btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAtaProduktActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setText("Expressleverans:");
-
-        lblExpress.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblExpress.setText("jLabel7");
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -456,6 +399,9 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
                 btnSparaActionPerformed(evt);
             }
         });
+
+        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblOrderNr.setText("jLabel6");
 
         tblAllaAnstallda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -470,11 +416,34 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
         ));
         jScrollPane2.setViewportView(tblAllaAnstallda);
 
+        lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblKundNr.setText("jLabel7");
+
+        lblDatum.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblDatum.setText("jLabel8");
+
         jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel7.setText("Produktlista");
 
+        lblPris.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblPris.setText("jLabel10");
+
         jLabel8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel8.setText("Hitta rätt anställningsnummer här!");
+
+        tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+            }
+        ));
+        tblAllaProdukter.setEnabled(false);
+        jScrollPane1.setViewportView(tblAllaProdukter);
 
         comboStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad" }));
@@ -491,6 +460,16 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setText("Order:");
+
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTillbakaActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("Se information om produkt");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -498,8 +477,37 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("Kund:");
+
+        btnAtaProdukt.setText("Åta produkt");
+        btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtaProduktActionPerformed(evt);
+            }
+        });
+
+        btnSeKund.setText("Se kundinformation");
+        btnSeKund.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeKundActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Datum:");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setText("Expressleverans:");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Status:");
+
+        lblExpress.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblExpress.setText("jLabel7");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -534,7 +542,7 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 33, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -553,7 +561,9 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblKundNr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(84, 667, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSeKund)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -565,7 +575,8 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(lblKundNr))
+                    .addComponent(lblKundNr)
+                    .addComponent(btnSeKund))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -582,7 +593,7 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblPris))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8))
@@ -600,129 +611,111 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnTillbaka)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnTillbakaActionPerformed
-
-    private void btnAtaProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtaProduktActionPerformed
-        
-        //Visar en popup-ruta när man klickar på "Åta produkt" som förklarar hur man åtar en produkt.
-        javax.swing.JOptionPane.showMessageDialog(this, "Du kan nu tilldela en person en produkt genom att dubbelklicka i rutan för Tilldelad för den specifika produkten. "
-                + "OBS efter du har skrivit in ett nytt ID måste du klicka ENTER innan du klickar på spara knappen!");
-        
-        //Tabellen som visas uppdateras till den tabell där det går att redigera anställningsID i.
-        DefaultTableModel redigerbarModell = genereraRedigerbarModell();
-        tblAllaProdukter.setModel(redigerbarModell);
-         
-        //Ordnar storleken på varje kolumn.
-        sattStorlekTabell();
-            
-        //Gör tilldelad-kolumnen redigerbar.    
-        tblAllaProdukter.setEnabled(true);
-    }//GEN-LAST:event_btnAtaProduktActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         try {
             sparaTilldelad();
-            sparaStatus();   
+            sparaStatus();
             comboStatus.setEnabled(false);
             JOptionPane.showMessageDialog(null, "Ändring sparad!");
-           
-        } 
+
+        }
         catch(NumberFormatException ex) {
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
-    private void btnRedigeraStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraStatusActionPerformed
-       comboStatus.setEnabled(true);
-       
-    }//GEN-LAST:event_btnRedigeraStatusActionPerformed
-
-
-
-
     private void comboStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboStatusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboStatusActionPerformed
 
+    private void btnRedigeraStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraStatusActionPerformed
+        comboStatus.setEnabled(true);
 
+    }//GEN-LAST:event_btnRedigeraStatusActionPerformed
 
-
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+    new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
+    this.setVisible(false);
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-   try {
-        int valdRad = tblAllaProdukter.getSelectedRow();
-        int antal = Integer.parseInt(tblAllaProdukter.getValueAt(valdRad, 3).toString()); // Anta
+        try {
+            int valdRad = tblAllaProdukter.getSelectedRow();
+            int antal = Integer.parseInt(tblAllaProdukter.getValueAt(valdRad, 3).toString()); // Anta
 
-        if (valdRad == -1) {
-            JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
-            return;
+            if (valdRad == -1) {
+                JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
+                return;
+            }
+
+            // Hämta StandardProduktID från kolumn 5 (dold)
+            String produktID = tblAllaProdukter.getValueAt(valdRad, 5).toString();
+
+            if (produktID == null || produktID.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingen produktinformation hittades för vald rad.");
+                return;
+            }
+
+            // Skicka vidare StandardProduktID direkt
+            new SeSpecifikProdukt(idb, inloggadAnvandare, produktID, true, antal).setVisible(true);
+
+        } catch (Exception ex) {
+            System.out.println("Fel i jButton1ActionPerformed: " + ex.getMessage());
         }
-
-        // Hämta StandardProduktID från kolumn 5 (dold)
-        String produktID = tblAllaProdukter.getValueAt(valdRad, 5).toString();
-
-        if (produktID == null || produktID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingen produktinformation hittades för vald rad.");
-            return;
-        }
-
-        // Skicka vidare StandardProduktID direkt
-        new SeSpecifikProdukt(idb, inloggadAnvandare, produktID, true, antal).setVisible(true);
-
-
-
-    } catch (Exception ex) {
-        System.out.println("Fel i jButton1ActionPerformed: " + ex.getMessage());
-    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SeVanligOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SeVanligOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SeVanligOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SeVanligOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnAtaProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtaProduktActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-               // new SeVanligOrder().setVisible(true);
-            }
-        });
+        //Visar en popup-ruta när man klickar på "Åta produkt" som förklarar hur man åtar en produkt.
+        javax.swing.JOptionPane.showMessageDialog(this, "Du kan nu tilldela en person en produkt genom att dubbelklicka i rutan för Tilldelad för den specifika produkten. "
+            + "OBS efter du har skrivit in ett nytt ID måste du klicka ENTER innan du klickar på spara knappen!");
+
+        //Tabellen som visas uppdateras till den tabell där det går att redigera anställningsID i.
+        DefaultTableModel redigerbarModell = genereraRedigerbarModell();
+        tblAllaProdukter.setModel(redigerbarModell);
+
+        //Ordnar storleken på varje kolumn.
+        sattStorlekTabell();
+
+        //Gör tilldelad-kolumnen redigerbar.
+        tblAllaProdukter.setEnabled(true);
+    }//GEN-LAST:event_btnAtaProduktActionPerformed
+
+    private void btnSeKundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundActionPerformed
+    try {
+        String kundNrText = lblKundNr.getText();
+        if (kundNrText != null && !kundNrText.isEmpty()) {
+            int kundID = Integer.parseInt(kundNrText);
+
+            // Skapa en panel för SpecifikKund istället för ett nytt fönster
+            JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
+
+            // Hämta MainFrame för att byta till den nya panelen
+            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+
+            // Lägg till panelen i CardLayout (om den inte redan är tillagd)
+            main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
+
+            // Byt till den nya panelen
+            main.showPanel("specifikKundPanel");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
     }
+    }//GEN-LAST:event_btnSeKundActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtaProdukt;
     private javax.swing.JButton btnRedigeraStatus;
+    private javax.swing.JButton btnSeKund;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JComboBox<String> comboStatus;

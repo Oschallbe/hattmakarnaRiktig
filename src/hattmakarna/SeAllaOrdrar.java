@@ -3,11 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
-import hattmakarna.SeVanligOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
@@ -355,37 +356,44 @@ private String klickatOrderNr;
 
     private void btnSeOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeOrderActionPerformed
 
-        try{
-            //Hämta raden som har markerats.
-            int valdRad = BestallningsLista.getSelectedRow();
+    try {
+        // Hämta den valda raden från tabellen
+        int valdRad = BestallningsLista.getSelectedRow();
 
-            //Om en rad inte är vald, visa felmeddelande.
-            if(valdRad == -1){
-                javax.swing.JOptionPane.showMessageDialog(this, "Markera en beställningsrad för att se ordern.");
-                return;
-            }
-            //Hämtar och lagrar orderns typ från den valda raden i Jtable.
-            String ordernsTyp = BestallningsLista.getValueAt(valdRad,0).toString();
-            String typ = ordernsTyp;
-
-            //Hämta Ordernr för den markerade raden och lagrar i klickatOrderNr så det kan skickas vidare till nästa klass.
-            String Oid = BestallningsLista.getValueAt(valdRad,1).toString();
-            klickatOrderNr = Oid;
-
-            //Om det är en standardbeställning skickas man vidare till en gränssnitt som visar en "vanlig order" och detta gränssnitt stängs ner.
-            if(typ.contains("Standard")){
-                new SeVanligOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
-            }
-
-            //Om beställningen är en specialbeställning visas gränssnittet för denna typ av beställning.
-            else{
-                new SeSpecialOrder(idb, inloggadAnvandare, klickatOrderNr).setVisible(true);
-            }
-
+        // Om ingen rad är vald, visa felmeddelande
+        if (valdRad == -1) {
+            JOptionPane.showMessageDialog(this, "Markera en beställningsrad för att se ordern.");
+            return;
         }
-        catch(NumberFormatException ex){
-            System.out.println(ex);
+
+        // Hämta typ och ordernummer för den valda raden
+        String typ = BestallningsLista.getValueAt(valdRad, 0).toString();
+        String klickatOrderNr = BestallningsLista.getValueAt(valdRad, 1).toString();
+
+        // Skapa en panel baserat på vilken typ av order som är vald
+        JPanel orderPanel = null; // Initiera till null
+
+        if (typ.contains("Standard")) {
+            orderPanel = new SeVanligOrder(idb, inloggadAnvandare, klickatOrderNr);
+        } else {
+            //orderPanel = new SeSpecialOrder(idb, inloggadAnvandare, klickatOrderNr);
         }
+
+        // Kontrollera att panelen har skapats
+        if (orderPanel != null) {
+            // Hämta MainFrame som är förälder för den aktuella panelen
+            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+
+            // Lägg till den nya panelen i CardLayout (byt ut befintlig panel)
+            main.addPanelToCardLayout(orderPanel, "orderVy");
+
+            // Visa den nya panelen
+            main.showPanel("orderVy");
+        }
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
     }//GEN-LAST:event_btnSeOrderActionPerformed
 
     private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
