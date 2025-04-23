@@ -648,9 +648,11 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
 
 
 
+
     private void comboStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboStatusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboStatusActionPerformed
+
 
 
 
@@ -682,7 +684,6 @@ tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
         System.out.println("Fel i jButton1ActionPerformed: " + ex.getMessage());
     }
     }//GEN-LAST:event_jButton1ActionPerformed
-
 
     /**
      * @param args the command line arguments
