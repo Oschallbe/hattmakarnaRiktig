@@ -22,6 +22,8 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     private String inloggadAnvandare;
     private String klickatOrderNr;
     private String express;
+    private int kundID; 
+    private SpecifikKund specifikKund; 
 
     /**
      * Creates new form SeSpecialOrder
@@ -31,6 +33,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         this.klickatOrderNr = klickatOrderNr;
+        this.kundID = kundID; 
         fyllTabell();
         fyllLabels();
         //hamtaTotalPris();
@@ -267,7 +270,8 @@ public class SeSpecialOrder extends javax.swing.JFrame {
 
             String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
             String status = idb.fetchSingle(selectStatus);
-            lblStatus.setText(status);
+            cbStatus.setSelectedItem(status); 
+            cbStatus.setEnabled(false); 
 
         } // Om något går fel vid databasanrop skrivs felet ut i konsolen.
         catch (InfException ex) {
@@ -329,6 +333,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         tblAllaAnstallda = new javax.swing.JTable();
         btnAtaProdukt = new javax.swing.JButton();
         btnSpara = new javax.swing.JButton();
+        btnSeKundinfo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -416,6 +421,13 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             }
         });
 
+        btnSeKundinfo.setText("Se kundinformation");
+        btnSeKundinfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeKundinfoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -438,9 +450,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(129, 129, 129)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(lblTillverkningstid2)
-                                                    .addComponent(lblKund2)))
+                                                .addComponent(lblTillverkningstid2))
                                             .addComponent(lblKund))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnSeSpecifikProdukt))
@@ -449,14 +459,23 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                                             .addComponent(lblTillverkningstid)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(lblStatus)
-                                                .addGap(73, 73, 73)
+                                                .addGap(40, 40, 40)
                                                 .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblSpecialorder)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(lblOrderNr)
-                                                .addGap(114, 114, 114)
-                                                .addComponent(btnTillbaka)))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(lblSpecialorder)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addComponent(lblKund2)
+                                                        .addGap(14, 14, 14)))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(lblOrderNr)
+                                                        .addGap(114, 114, 114)
+                                                        .addComponent(btnTillbaka))
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(31, 31, 31)
+                                                        .addComponent(btnSeKundinfo)))))
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
@@ -485,7 +504,8 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblKund)
-                                    .addComponent(lblKund2))
+                                    .addComponent(lblKund2)
+                                    .addComponent(btnSeKundinfo))
                                 .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTillverkningstid)
@@ -532,7 +552,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             System.out.println("DEBUG: skickar artikelnummer = " + artikelNr);
 
             // Skickar endast artikelnummer till nästa vy
-            new SeSpecifikProdukt(idb, inloggadAnvandare, artikelNr).setVisible(true);
+            new SeSpecifikProdukt(idb, inloggadAnvandare, artikelNr, false, valdRad).setVisible(true);
 
         } catch (Exception ex) {
             System.out.println("Fel i btnSeSpecifikProduktActionPerformed: " + ex.getMessage());
@@ -572,6 +592,18 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         cbStatus.setEnabled(true); 
     }//GEN-LAST:event_btnRedigeraStatusActionPerformed
 
+    private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
+        //En metod som ska skicka användaren vidare till den specifika kundsidan. 
+       // SpecifikKund(idb, inloggadAnvandare, kundID); 
+       //nyttFönster.setVisible(true); 
+       //this.dispose(); 
+       if (specifikKund == null) {
+           specifikKund = new SpecifikKund(idb, inloggadAnvandare, kundID); 
+       }
+       specifikKund.setVisible(true); 
+       this.setVisible(false); 
+    }//GEN-LAST:event_btnSeKundinfoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -610,6 +642,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtaProdukt;
     private javax.swing.JButton btnRedigeraStatus;
+    private javax.swing.JButton btnSeKundinfo;
     private javax.swing.JButton btnSeSpecifikProdukt;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTillbaka;
