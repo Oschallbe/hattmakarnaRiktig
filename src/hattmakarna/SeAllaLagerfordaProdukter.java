@@ -45,6 +45,8 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
     }
     
     
+    
+    
 
     private void seLagerfordaProdukter() {
         try {
