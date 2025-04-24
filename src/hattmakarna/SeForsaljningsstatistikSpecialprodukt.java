@@ -20,7 +20,7 @@ import java.util.Properties;
  *
  * @author Adam
  */
-public class SeForsaljningsstatistik extends javax.swing.JPanel {
+public class SeForsaljningsstatistikSpecialprodukt extends javax.swing.JPanel {
 
     private InfDB idb;
     private String inloggadAnvandare;
@@ -30,7 +30,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
     /**
      * Creates new form SeForsaljningsstatistik
      */
-    public SeForsaljningsstatistik(InfDB idb, String ePost) {
+    public SeForsaljningsstatistikSpecialprodukt(InfDB idb, String ePost) {
         initComponents();
         Properties p = new Properties();
         p.put("text.today", "Idag");
@@ -62,10 +62,10 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
         private void visaLevereradeStandardhattar() {
         try {
-            String fraga = "SELECT sp.Namn AS Namn, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
+            String fraga = "SELECT sp.SpecialProduktID AS ID, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
                     + "FROM OrderItem oi "
                     + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
-                    + "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID "
+                    + "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID "
                     + "WHERE b.Status = 'Levererad'";
 
             List<HashMap<String, String>> resultat = idb.fetchRows(fraga);
@@ -76,14 +76,14 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
             if (resultat != null) {
                 for (HashMap<String, String> rad : resultat) {
                     model.addRow(new Object[]{
-                        rad.get("Namn"),
+                        rad.get("ID"),
                         rad.get("Pris"),
                         rad.get("AntalProdukter"),
                         rad.get("Datum")
                     });
                 }
             } else {
-                System.out.println("Inga levererade standardhattar hittades.");
+                System.out.println("Inga levererade specialhattar hittades.");
             }
         } catch (InfException e) {
             JOptionPane.showMessageDialog(null, "Kunde inte hämta statistik:" + e.getMessage());
@@ -113,13 +113,13 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         btnRensa = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Försäljningsstatistik Standardprodukter");
+        jLabel1.setText("Försäljningsstatistik Specialprodukter");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
             },
             new String [] {
-                "Namn", "Pris", "Antal", "Datum"
+                "ID", "Pris", "Antal", "Datum"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -132,7 +132,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setText("Filtrera efter namn");
+        jLabel2.setText("Filtrera efter ID");
 
         txtHatt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,20 +269,20 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
     }//GEN-LAST:event_txtHattActionPerformed
 
     private void btnSummeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSummeraActionPerformed
-        String hatt = txtHatt.getText();
+        String ID = txtHatt.getText();
         java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
         java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
 
         try {
-            String fraga = "SELECT sp.Namn AS Namn, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
+            String fraga = "SELECT sp.SpecialProduktID AS ID, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
                     + "FROM OrderItem oi "
                     + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
-                    + "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID "
+                    + "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID "
                     + "WHERE b.Status = 'Levererad'";
             
             // Lägg till filtrering om fält är ifyllda
-            if (!hatt.isEmpty()) {
-                fraga += " AND sp.Namn = '" + hatt + "'";
+            if (!ID.isEmpty()) {
+                fraga += " AND sp.ID = '" + ID + "'";
             }
             if (fran != null && till != null) {
                 java.sql.Date sqlFran = new java.sql.Date(fran.getTime());
@@ -324,7 +324,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
                 }
 
                 model.addRow(new Object[]{
-                    hatt.isEmpty() ? "Alla hattar" : hatt,
+                    ID.isEmpty() ? "Alla hattar" : ID,
                     String.format("Totalt pris: %.2f kr", totalPris),
                     totalAntal,
                     datumText
@@ -340,7 +340,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSummeraActionPerformed
 
     private void btnFiltreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraActionPerformed
-        String hatt = txtHatt.getText();
+        String ID = txtHatt.getText();
 
         java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
         java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
@@ -348,15 +348,15 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
         try {
             //Bygg basfråga
-            String fraga = "SELECT sp.Namn AS Namn, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
+            String fraga = "SELECT sp.SpecialProduktID AS ID, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
                     + "FROM OrderItem oi "
                     + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
-                    + "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID "
+                    + "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID "
                     + "WHERE b.Status = 'Levererad'";
 
             // Lägg till filtrering om fält är ifyllda
-            if (!hatt.isEmpty()) {
-                fraga += " AND sp.Namn = '" + hatt + "'";
+            if (!ID.isEmpty()) {
+                fraga += " AND sp.ID = '" + ID + "'";
             }
             if (fran != null && till != null) {
                 java.sql.Date sqlFran = new java.sql.Date(fran.getTime());
@@ -377,7 +377,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
             if (resultat != null && !resultat.isEmpty()) {
                 for (HashMap<String, String> rad : resultat) {
                     model.addRow(new Object[]{
-                        rad.get("Namn"),
+                        rad.get("ID"),
                         rad.get("Pris"),
                         rad.get("AntalProdukter"),
                         rad.get("Datum")
