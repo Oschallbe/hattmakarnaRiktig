@@ -318,7 +318,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
                     else {
                         uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
                     }
-
+                    System.out.println(uppdateraDatabas);
                     //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
                     idb.update(uppdateraDatabas);
 
