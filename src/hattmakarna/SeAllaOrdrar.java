@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,13 +35,16 @@ private String fraga;
 private String filtreraPaDatum;
 private JDatePickerImpl datePickerFran;
 private JDatePickerImpl datePickerTill;
+private String aktivStatusFilter = null;
+private String aktivKundFilter = null;
+private LocalDate aktivDatumFilter = null; // eller String, beroende på din implementation
 
 
     /**
      * Creates new form SeBestallning
      */
     public SeAllaOrdrar(InfDB idb, String ePost) {
-        initComponents();
+        initComponents();  
         Properties p = new Properties();
         p.put("text.today", "Idag");
         p.put("text.month", "Månad");
@@ -76,15 +81,27 @@ private JDatePickerImpl datePickerTill;
                 for (HashMap<String, String> row : result) {
                     String expressHamtning = row.get("Expressbestallning");
                     String expressOmvandling;
-                    double totalPris = Double.parseDouble(row.get("TotalPris"));
                     String typ = row.get("Typ");
+                    String selectPris = "SELECT\n" +
+                                        "    SUM(\n" +
+                                        "        CASE\n" +
+                                        "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            ELSE 0\n" +
+                                        "        END\n" +
+                                        "    ) AS TotalPris\n" +
+                                        "FROM OrderItem oi\n" +
+                                        "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n" +
+                                        "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n" +
+                                        "WHERE oi.BestallningID = " + row.get("BestallningID") + ";";
+                    String totalPrisText = idb.fetchSingle(selectPris);
+                    Double totalPris = Double.parseDouble(totalPrisText);
                     
                     if(expressHamtning.equals("1")){
                         expressOmvandling = "Ja";
-                        if (typ != null && typ.contains("Standard")) {
-                        totalPris = totalPris * 1.2;
-    }
+                        totalPris *= 1.2;
                     }
+                    
                     else{
                         expressOmvandling = "Nej";
                     }
@@ -108,6 +125,7 @@ private JDatePickerImpl datePickerTill;
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av data: " + e.getMessage());
         }   
     }
+   
     
     private List<String> hamtaMarkeradeOrdernummer() {
     List<String> markeradeOrdernummer = new ArrayList<>();
@@ -122,16 +140,7 @@ private JDatePickerImpl datePickerTill;
     }
 
     return markeradeOrdernummer;
-}
-    
-
-
-    
-    
-    
-   
-    
-    
+}           
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,6 +168,7 @@ private JDatePickerImpl datePickerTill;
         jLabel6 = new javax.swing.JLabel();
         panDatumFran = new javax.swing.JPanel();
         panDatumTill = new javax.swing.JPanel();
+        btnFraktsedel = new javax.swing.JButton();
 
         btnSokKund.setText("Sök");
         btnSokKund.addActionListener(new java.awt.event.ActionListener() {
@@ -181,7 +191,7 @@ private JDatePickerImpl datePickerTill;
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Ordertyp", "Ordernummer", "Kundnummer", "Status", "Pris", "Datum", "Expressbestallning", "Material för order"
+                "Ordertyp", "Ordernummer", "Kundnummer", "Status", "Pris", "Datum", "Expressbeställning", "Material för order"
             }
         ) {
             Class[] types = new Class [] {
@@ -217,6 +227,12 @@ private JDatePickerImpl datePickerTill;
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Filtrera efter: ");
+
+        txtKund.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKundActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("KundID eller för- och efternamn: ");
 
@@ -262,6 +278,13 @@ private JDatePickerImpl datePickerTill;
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        btnFraktsedel.setText("Skapa fraksedel");
+        btnFraktsedel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFraktsedelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -269,6 +292,8 @@ private JDatePickerImpl datePickerTill;
             .addComponent(jScrollPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFraktsedel)
+                .addGap(57, 57, 57)
                 .addComponent(btnRensaFiltrering)
                 .addGap(53, 53, 53)
                 .addComponent(btnSeOrder)
@@ -334,7 +359,8 @@ private JDatePickerImpl datePickerTill;
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnVisaMarkerade)
                             .addComponent(btnSeOrder)
-                            .addComponent(btnRensaFiltrering)))
+                            .addComponent(btnRensaFiltrering)
+                            .addComponent(btnFraktsedel)))
                     .addComponent(jLabel6))
                 .addGap(52, 52, 52))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,7 +372,6 @@ private JDatePickerImpl datePickerTill;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSokKundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokKundActionPerformed
-        //
         String kund = txtKund.getText().trim();
 
         if (kund.isEmpty()) {
@@ -395,9 +420,21 @@ private JDatePickerImpl datePickerTill;
             for (HashMap<String, String> kundData : kunder) {
                 String expressHamtning = kundData.get("Expressbestallning");
                     String expressOmvandling;
-                    double totalPris = Double.parseDouble(kundData.get("TotalPris"));
                     String typ = kundData.get("Typ");
-                    
+                    String selectPris = "SELECT\n" +
+                                        "    SUM(\n" +
+                                        "        CASE\n" +
+                                        "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            ELSE 0\n" +
+                                        "        END\n" +
+                                        "    ) AS TotalPris\n" +
+                                        "FROM OrderItem oi\n" +
+                                        "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n" +
+                                        "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n" +
+                                        "WHERE oi.BestallningID = " + kundData.get("BestallningID") + ";";
+                    String totalPrisText = idb.fetchSingle(selectPris);
+                    Double totalPris = Double.parseDouble(totalPrisText);
                     if(expressHamtning.equals("1")){
                         expressOmvandling = "Ja";
                         if (typ != null && typ.contains("Standard")) {
@@ -409,12 +446,12 @@ private JDatePickerImpl datePickerTill;
                     }
                 model.addRow(new Object[]{
                     kundData.get("Typ"),
-                    kundData.get("BestallningID"),
-                    kundData.get("KundID"),
-                    kundData.get("Status"),
-                    kundData.get("TotalPris"),
-                    kundData.get("Datum"),
-                    kundData.get("Expressbestallning")
+                        kundData.get("BestallningID"),
+                        kundData.get("KundID"),
+                        kundData.get("Status"),
+                        totalPris,
+                        kundData.get("Datum"),
+                        expressOmvandling
                 });
             }
 
@@ -446,8 +483,21 @@ private JDatePickerImpl datePickerTill;
                 for (HashMap<String, String> rad : resultat) {
                     String expressHamtning = rad.get("Expressbestallning");
                     String expressOmvandling;
-                    double totalPris = Double.parseDouble(rad.get("TotalPris"));
                     String typ = rad.get("Typ");
+                    String selectPris = "SELECT\n" +
+                                        "    SUM(\n" +
+                                        "        CASE\n" +
+                                        "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            ELSE 0\n" +
+                                        "        END\n" +
+                                        "    ) AS TotalPris\n" +
+                                        "FROM OrderItem oi\n" +
+                                        "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n" +
+                                        "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n" +
+                                        "WHERE oi.BestallningID = " + rad.get("BestallningID") + ";";
+                    String totalPrisText = idb.fetchSingle(selectPris);
+                    Double totalPris = Double.parseDouble(totalPrisText);
                     
                     if(expressHamtning.equals("1")){
                         expressOmvandling = "Ja";
@@ -520,7 +570,6 @@ private JDatePickerImpl datePickerTill;
 
     private void btnSeOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeOrderActionPerformed
 
-
     try {
         // Hämta den valda raden från tabellen
         int valdRad = BestallningsLista.getSelectedRow();
@@ -534,7 +583,7 @@ private JDatePickerImpl datePickerTill;
 
         // Hämta typ och ordernummer för den valda raden
         String typ = BestallningsLista.getValueAt(valdRad, 0).toString();
-        String klickatOrderNr = BestallningsLista.getValueAt(valdRad, 1).toString();
+        klickatOrderNr = BestallningsLista.getValueAt(valdRad, 1).toString();
 
         // Skapa en panel baserat på vilken typ av order som är vald
         JPanel orderPanel = null; // Initiera till null
@@ -573,7 +622,7 @@ private JDatePickerImpl datePickerTill;
             if (!valdStatus.equalsIgnoreCase("Status:")) {
                 query += " WHERE b.Status = '" + valdStatus.replace("'", "''") + "'";
             }
-
+            
             List<HashMap<String, String>> bestallningar = idb.fetchRows(query);
 
             DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
@@ -581,11 +630,22 @@ private JDatePickerImpl datePickerTill;
 
             for (HashMap<String, String> rad : bestallningar) {
                 String expressHamtning = rad.get("Expressbestallning");
-                System.out.println(expressHamtning);
-                String expressOmvandling;
-                double totalPris = Double.parseDouble(rad.get("TotalPris"));
-                String typ = rad.get("Typ");
-
+                    String expressOmvandling;
+                    String typ = rad.get("Typ");
+                    String selectPris = "SELECT\n" +
+                                        "    SUM(\n" +
+                                        "        CASE\n" +
+                                        "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            ELSE 0\n" +
+                                        "        END\n" +
+                                        "    ) AS TotalPris\n" +
+                                        "FROM OrderItem oi\n" +
+                                        "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n" +
+                                        "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n" +
+                                        "WHERE oi.BestallningID = " + rad.get("BestallningID") + ";";
+                    String totalPrisText = idb.fetchSingle(selectPris);
+                    Double totalPris = Double.parseDouble(totalPrisText);
                 if (expressHamtning.equals("1")) {
                     expressOmvandling = "Ja";
                     if (typ != null && typ.contains("Standard")) {
@@ -596,12 +656,12 @@ private JDatePickerImpl datePickerTill;
                 }
                 model.addRow(new Object[]{
                     rad.get("Typ"),
-                    rad.get("BestallningID"),
-                    rad.get("KundID"),
-                    rad.get("Status"),
-                    rad.get("TotalPris"),
-                    rad.get("Datum"),
-                    rad.get("Expressbestallning")
+                        rad.get("BestallningID"),
+                        rad.get("KundID"),
+                        rad.get("Status"),
+                        totalPris,
+                        rad.get("Datum"),
+                        expressOmvandling
                 });
             }
 
@@ -691,12 +751,12 @@ private JDatePickerImpl datePickerTill;
         } else {
             JOptionPane.showMessageDialog(this, "Inga material hittades.");
         }
-        /* Lägg till detta om det inte fungerar med att checkboxens rensas när man visat material!!
+        
         int checkboxKolumnIndex = 7; // eller det index du använder
 
         for (int i = 0; i < model.getRowCount(); i++) {
             model.setValueAt(false, i, checkboxKolumnIndex);
-        }*/
+        }
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Fel vid hämtning av material: " + e.getMessage());
@@ -714,9 +774,22 @@ private JDatePickerImpl datePickerTill;
                 for (HashMap<String, String> row : result) {
                     String expressHamtning = row.get("Expressbestallning");
                     String expressOmvandling;
-                    double totalPris = Double.parseDouble(row.get("TotalPris"));
                     String typ = row.get("Typ");
-                    
+                    String selectPris = "SELECT\n" +
+                                        "    SUM(\n" +
+                                        "        CASE\n" +
+                                        "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
+                                        "            ELSE 0\n" +
+                                        "        END\n" +
+                                        "    ) AS TotalPris\n" +
+                                        "FROM OrderItem oi\n" +
+                                        "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n" +
+                                        "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n" +
+                                        "WHERE oi.BestallningID = " + row.get("BestallningID") + ";";
+                    String totalPrisText = idb.fetchSingle(selectPris);
+                    Double totalPris = Double.parseDouble(totalPrisText);
+                   
                     if(expressHamtning.equals("1")){
                         expressOmvandling = "Ja";
                         if (typ != null && typ.contains("Standard")) {
@@ -746,6 +819,41 @@ private JDatePickerImpl datePickerTill;
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av data: " + e.getMessage());
         } 
     }//GEN-LAST:event_btnRensaFiltreringActionPerformed
+
+    private void txtKundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKundActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKundActionPerformed
+
+    private void btnFraktsedelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFraktsedelActionPerformed
+        // TODO add your handling code here:
+        // Hämta den valda raden från tabellen
+        
+        int valdRad = BestallningsLista.getSelectedRow();
+
+
+        // Om ingen rad är vald, visa felmeddelande
+        if (valdRad == -1) {
+            JOptionPane.showMessageDialog(this, "Markera en beställningsrad för att se ordern.");
+            return;
+        }
+
+        // Hämta typ och ordernummer för den valda raden
+        klickatOrderNr = BestallningsLista.getValueAt(valdRad, 1).toString();
+        JPanel orderPanel = null; // Initiera till null
+        
+        orderPanel = new SkapaNyFraktsedel(idb, inloggadAnvandare, klickatOrderNr);
+        
+        if (orderPanel != null) {
+            // Hämta MainFrame som är förälder för den aktuella panelen
+            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+
+            // Lägg till den nya panelen i CardLayout (byt ut befintlig panel)
+            main.addPanelToCardLayout(orderPanel, "orderVy");
+
+            // Visa den nya panelen
+            main.showPanel("orderVy");
+        }
+    }//GEN-LAST:event_btnFraktsedelActionPerformed
 
 
     /**
@@ -785,6 +893,7 @@ private JDatePickerImpl datePickerTill;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable BestallningsLista;
+    private javax.swing.JButton btnFraktsedel;
     private javax.swing.JButton btnRensaFiltrering;
     private javax.swing.JButton btnSeOrder;
     private javax.swing.JButton btnSokKund;

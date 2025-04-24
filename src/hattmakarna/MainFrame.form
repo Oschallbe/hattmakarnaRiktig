@@ -115,11 +115,29 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="hanteraAnstallda">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Hantera anst&#xe4;llda"/>
+            <Property name="text" type="java.lang.String" value="Anst&#xe4;llda"/>
           </Properties>
           <Events>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="hanteraAnstalldaMenuSelected"/>
           </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemHanteraAnstallda">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Hantera alla anst&#xe4;llda"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemHanteraAnstalldaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemLaggTillAnstalld">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny anst&#xe4;lld"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemLaggTillAnstalldActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="seAllaKunder">
           <Properties>

@@ -62,16 +62,19 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
  * @author iftinserar
  */
 public class SkapaNyFraktsedel extends javax.swing.JPanel {
-    private InfDB idb; 
-    private String inloggadAnvandare; 
+    private static InfDB idb; 
+    private static String inloggadAnvandare;
+    private static String klickatOrderNr;
 
     /**
      * Creates new form SkapaNyFraktsedel
      */
-    public SkapaNyFraktsedel(InfDB idb, String inloggadAnvandare) {
+    public SkapaNyFraktsedel(InfDB idb, String inloggadAnvandare, String klickatOrderNr) {
       this.inloggadAnvandare = inloggadAnvandare;
       this.idb = idb;
+      this.klickatOrderNr = klickatOrderNr;
       initComponents();
+      txtBestallningID.setText(klickatOrderNr);
     }
     
 private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderLista, double totalpris, String bestallningID) {
@@ -288,6 +291,8 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
         jLabel1.setText("Skapa ny fraktsedel");
 
         jLabel2.setText("Ordernummer");
+
+        txtBestallningID.setEditable(false);
 
         btnSkapaFraktsedel.setText("Skapa");
         btnSkapaFraktsedel.addActionListener(new java.awt.event.ActionListener() {
