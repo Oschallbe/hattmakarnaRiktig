@@ -42,6 +42,7 @@ public class MainFrame extends javax.swing.JFrame {
     initComponents();
      // centrerar fönstret på skärmen (snyggt)
     // Se till att layouten på MainFrame är BorderLayout
+    lblValkommen.setVisible(false);
     this.setLayout(new BorderLayout());
     
     // Hämta skärmstorlek
@@ -110,6 +111,8 @@ public class MainFrame extends javax.swing.JFrame {
             nyMainFrame.setVisible(true);
         }
     }
+        
+        
 
 
     public void hanteraAnstallda(){
@@ -135,7 +138,29 @@ public class MainFrame extends javax.swing.JFrame {
     public void showPanel(String name) {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, name);
+        
+        // Uppdatera layouten för att undvika att logotypen blir beskuren
+        revalidate();
+        repaint();
     }
+    
+    public String getForNamn() {
+    String anvandarnamn = txtfEmail.getText();
+    String[] delar = anvandarnamn.split("@"); // Dela på "@" för att få användarnamnet
+    String baraNamn = delar[0]; // Få användarnamnet före "@"
+    String namn = "";
+
+    // Kolla om namnet innehåller en punkt, vilket indikerar för- och efternamn
+    if (baraNamn.contains(".")) {
+        // Dela på punkten och ta första delen (förnamnet)
+        baraNamn = baraNamn.split("\\.")[0];
+    }
+
+    // Sätt förnamnet så att första bokstaven blir versal och resten gemener
+    namn = baraNamn.substring(0, 1).toUpperCase() + baraNamn.substring(1).toLowerCase();
+
+    return namn; // Returnera det formaterade förnamnet
+}
    
    
 
@@ -158,6 +183,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblEpost = new javax.swing.JLabel();
         lblLosenord = new javax.swing.JLabel();
         logotyp = new javax.swing.JLabel();
+        lblValkommen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuOrdrar = new javax.swing.JMenu();
         seOrdrarItem = new javax.swing.JMenuItem();
@@ -212,7 +238,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblInloggning.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblInloggning.setText("Inloggning");
         getContentPane().add(lblInloggning);
-        lblInloggning.setBounds(482, 326, 251, 72);
+        lblInloggning.setBounds(480, 330, 251, 72);
 
         txtfEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         getContentPane().add(txtfEmail);
@@ -230,7 +256,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         logotyp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hattmakarna/hattmakarna_logotyp.png"))); // NOI18N
         getContentPane().add(logotyp);
-        logotyp.setBounds(504, 120, 200, 200);
+        logotyp.setBounds(500, 120, 200, 200);
+
+        lblValkommen.setFont(new java.awt.Font("Helvetica Neue", 1, 60)); // NOI18N
+        lblValkommen.setText("efrgtyh");
+        getContentPane().add(lblValkommen);
+        lblValkommen.setBounds(530, 380, 660, 50);
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenuBar1.setFont(new java.awt.Font("Helvetica Neue", 0, 16)); // NOI18N
@@ -378,6 +409,8 @@ public class MainFrame extends javax.swing.JFrame {
         // Visa
         showPanel("Kalenderschema");
         
+        
+        
     }//GEN-LAST:event_visaKalenderMenuSelected
 
     private void seAllaKunderMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaKunderMenuSelected
@@ -507,6 +540,8 @@ public class MainFrame extends javax.swing.JFrame {
         // Visa menyrad
         jMenuBar1.setVisible(true);
         logotyp.setVisible(false);
+        // Visa inloggade användare välkommen
+        
         // Ladda bilden från src/hattmakarna/hattmakarna_logotyp.png
         URL imageURL = getClass().getResource("/hattmakarna/hattmakarna_logotyp.png");
 
@@ -532,8 +567,10 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println("Bilden kunde inte hittas. Kontrollera sökvägen.");
         }
 
-        // Visa valfri startpanel
-        hanteraAnstallda();
+        lblValkommen.setText("Välkommen" + " " + getForNamn());
+        lblValkommen.setVisible(true);
+        
+       // hanteraAnstallda();
 
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(null, "Något gick fel: " + ex.getMessage());
@@ -617,6 +654,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblFelMeddelande;
     private javax.swing.JLabel lblInloggning;
     private javax.swing.JLabel lblLosenord;
+    private javax.swing.JLabel lblValkommen;
     private javax.swing.JMenuItem loggaUt;
     private javax.swing.JLabel logotyp;
     private javax.swing.JMenu menuOrdrar;
