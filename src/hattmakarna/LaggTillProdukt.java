@@ -522,9 +522,9 @@ public class LaggTillProdukt extends javax.swing.JFrame {
                     int nyID = Integer.parseInt(nyHamtaID) + 1;
 
                 String fragaLaggTill = "INSERT INTO StandardProdukt "
-                        + "(StandardProduktID, Namn, Modell, Typ, Farg, Text, Matt, Pris, Artikelnummer) "
+                        + "(StandardProduktID, Namn, Modell, Typ, Farg, Text, Matt, Pris, StatistikID, Artikelnummer) "
                         + "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + typ + "', '" + farg + "', '" + text
-                        + "', " + huvudmatt + ", " + pris + ", '" + artikelNummer + "');";
+                        + "', " + huvudmatt + ", " + pris + ",1 , '" + artikelNummer + "');";
 
                     idb.insert(fragaLaggTill);
 
