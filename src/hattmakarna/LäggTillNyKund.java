@@ -20,11 +20,11 @@ public class LäggTillNyKund extends javax.swing.JPanel {
     private String inloggadAnvandare;
     private Validering validera;
 
-    public LäggTillNyKund(InfDB idb, String inloggadAnvandare) {
+    public LäggTillNyKund(InfDB idb) {
 
         initComponents();
         this.idb = idb;
-        this.inloggadAnvandare = inloggadAnvandare;
+        //this.inloggadAnvandare = inloggadAnvandare;
         
         comboSamma.addActionListener(new java.awt.event.ActionListener() {
     public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -212,7 +212,6 @@ try {
         jLabel3 = new javax.swing.JLabel();
         txtLeveransLand = new javax.swing.JTextField();
         txtFakturaLand = new javax.swing.JTextField();
-        btnTillbaka = new javax.swing.JButton();
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -251,13 +250,6 @@ try {
         jLabel2.setText("Land");
 
         jLabel3.setText("Land");
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -319,17 +311,13 @@ try {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnTillbaka)
-                        .addGap(225, 225, 225))))
+                        .addGap(225, 651, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(btnTillbaka))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFörnamn)
@@ -382,10 +370,6 @@ try {
         sparaKund();
     }//GEN-LAST:event_btnSparaActionPerformed
 
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
-    this.setVisible(false);
-    }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -393,7 +377,6 @@ try {
     private javax.swing.JTextField TxtEpost;
     private javax.swing.JTextField TxtLeveransAdress;
     private javax.swing.JButton btnSpara;
-    private javax.swing.JButton btnTillbaka;
     private javax.swing.JCheckBox comboSamma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
