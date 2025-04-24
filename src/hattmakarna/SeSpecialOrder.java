@@ -588,25 +588,34 @@ public void fyllLabels() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeSpecifikProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeSpecifikProduktActionPerformed
-        try {
-            int valdRad = tblAllaProdukter.getSelectedRow();
+       try {
+        int valdRad = tblAllaProdukter.getSelectedRow();
 
-            if (valdRad == -1) {
-                JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
-                return;
-            }
-
-            // Hämtar korrekt artikelnummer från kolumn 0
-            String artikelNr = tblAllaProdukter.getValueAt(valdRad, 0).toString();
-
-            System.out.println("DEBUG: skickar artikelnummer = " + artikelNr);
-
-            // Skickar endast artikelnummer till nästa vy
-            //new SeInfoStandardprodukt(idb, inloggadAnvandare, artikelNr, false, valdRad).setVisible(true);
-
-        } catch (Exception ex) {
-            System.out.println("Fel i btnSeSpecifikProduktActionPerformed: " + ex.getMessage());
+        if (valdRad == -1) {
+            JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
+            return;
         }
+
+        // Hämta OrderItemID från tabellen
+        String orderItemID = tblAllaProdukter.getValueAt(valdRad, 0).toString();
+
+        // Hämta antal från tabellen
+        String antal = tblAllaProdukter.getValueAt(valdRad, 3).toString();
+
+        // 🧠 Hämta det faktiska SpecialProduktID:t från OrderItem-tabellen
+        String specialProduktID = idb.fetchSingle("SELECT SpecialProduktID FROM OrderItem WHERE OrderItemID = " + orderItemID + ";");
+
+        if (specialProduktID != null && !specialProduktID.equals("null")) {
+            SeInfoSpecialprodukt nyVy = new SeInfoSpecialprodukt(idb, inloggadAnvandare, specialProduktID, Integer.parseInt(antal));
+            nyVy.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingen specialprodukt kopplad till denna orderrad.");
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Kunde inte öppna produkten: " + ex.getMessage());
+        ex.printStackTrace();
+    }
     }//GEN-LAST:event_btnSeSpecifikProduktActionPerformed
 
     private void btnRedigeraStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraStatusActionPerformed
@@ -658,38 +667,8 @@ private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {
     
     /*
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
-        try {
-            String kundNrText = lblKundNr.getText();
-            if (kundNrText != null && !kundNrText.isEmpty()) {
-                int kundID = Integer.parseInt(kundNrText);
-
-                // Skapa en panel för SpecifikKund istället för ett nytt fönster
-                JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
-
-                // Hämta MainFrame för att byta till den nya panelen
-                MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
-
-                // Lägg till panelen i CardLayout (om den inte redan är tillagd)
-                main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
-
-                // Byt till den nya panelen
-                main.showPanel("specifikKundPanel");
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
-        }
-
-        //En metod som ska skicka användaren vidare till den specifika kundsidan.
-        //    try {
-            //        SpecifikKund nyttFönster = new SpecifikKund(idb, inloggadAnvandare, kundID);
-            //        nyttFönster.setVisible(true);
-            //        this.dispose(); // Stänger nuvarande fönster
-            //    } catch (Exception e) {
-            //        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
-            //    }
+  
+ 
     }//GEN-LAST:event_btnSeKundinfoActionPerformed
 */
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed

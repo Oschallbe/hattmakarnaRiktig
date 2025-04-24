@@ -137,7 +137,7 @@ public class SeInfoStandardprodukt extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel1.setText("Specifik produkt");
+        jLabel1.setText("Lagerförd produkt");
 
         Tabell.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
