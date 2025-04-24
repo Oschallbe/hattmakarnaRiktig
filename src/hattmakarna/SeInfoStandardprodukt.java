@@ -16,115 +16,99 @@ import javax.swing.ImageIcon;
  *
  * @author teami
  */
-public class SeSpecifikProdukt extends javax.swing.JFrame {
+public class SeInfoStandardprodukt extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
     private String produktID;
-    private boolean arStandardprodukt;
     private int antalProdukter;
     
-    
 
-    public SeSpecifikProdukt(InfDB idb, String ePost, String produktID, boolean arStandardprodukt, int antalProdukter) {
+    public SeInfoStandardprodukt(InfDB idb, String ePost, String produktID, int antalProdukter) {
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         this.produktID = produktID;
-        this.arStandardprodukt = arStandardprodukt;
         this.antalProdukter = antalProdukter;
         initComponents();
+
         
 
         Tabell.setModel(new javax.swing.table.DefaultTableModel(
             new Object[][] {},
-            new String[] { "Produktnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista" }
+            new String[] { "Artikelnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista" }
         ));
 
-
         visaSpecifikProdukt(produktID);
-        
- Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
+
+        Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int rad = Tabell.rowAtPoint(evt.getPoint());
                 int kolumn = Tabell.columnAtPoint(evt.getPoint());
 
                 if (kolumn == 5 && rad >= 0) {
-                    visaMaterialForProdukt(); // Använder nu sparat ID
+                    visaMaterialForProdukt();
                 }
             }
         });
-        
-
     }
     
-    
-private void visaSpecifikProdukt(String produktID) {
-    try {
-        String query;
-        if (arStandardprodukt) {
-            query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE StandardProduktID = " + produktID;
-        } else {
-            query = "SELECT SpecialProduktID AS Artikelnummer, Beskrivning AS Namn, Pris, Matt FROM SpecialProdukt WHERE SpecialProduktID = " + produktID;
-        }
+    private void visaSpecifikProdukt(String produktID) {
+        try {
+            String query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE StandardProduktID = " + produktID;
+            HashMap<String, String> produkt = idb.fetchRow(query);
+            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
+            model.setRowCount(0);
 
-        HashMap<String, String> produkt = idb.fetchRow(query);
-        DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
-        model.setRowCount(0);
-
-        if (produkt != null) {
-            model.addRow(new Object[]{
-                arStandardprodukt ? produkt.getOrDefault("Artikelnummer", "-") : "-", // Visa artikelnummer endast för standard
-                produkt.getOrDefault("Namn", "-"),
-                produkt.getOrDefault("Pris", "-"),
-                antalProdukter,
-                produkt.getOrDefault("Matt", "-"),
-                "Se material"
-            });
-        } else {
-            JOptionPane.showMessageDialog(this, "Kunde inte hitta produktinformation.");
+            if (produkt != null) {
+                model.addRow(new Object[]{
+                    produkt.get("Artikelnummer"),
+                    produkt.get("Namn"),
+                    produkt.get("Pris"),
+                    antalProdukter,
+                    produkt.get("Matt"),
+                    "Se material"
+                });
+            } else {
+                JOptionPane.showMessageDialog(this, "Kunde inte hitta produktinformation.");
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
     }
-}
-    
-    
 
-    
-   private void visaMaterialForProdukt() {
+    private void visaMaterialForProdukt() {
         try {
             List<HashMap<String, String>> material;
-            String query;
-
-            if (arStandardprodukt) {
-                query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion " +
-                        "FROM Material m " +
-                        "JOIN StandardProdukt_Material spm ON m.MaterialID = spm.MaterialID " +
-                        "WHERE spm.StandardProduktID = " + produktID;
-            } else {
-                query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion " +
-                        "FROM Material m " +
-                        "JOIN SpecialProdukt_Material spm ON m.MaterialID = spm.MaterialID " +
-                        "WHERE spm.SpecialProduktID = " + produktID;
-            }
+            String query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion " +
+                           "FROM Material m " +
+                           "JOIN StandardProdukt_Material spm ON m.MaterialID = spm.MaterialID " +
+                           "WHERE spm.StandardProduktID = " + produktID;
 
             material = idb.fetchRows(query);
             StringBuilder info = new StringBuilder();
 
             if (material != null && !material.isEmpty()) {
                 for (HashMap<String, String> rad : material) {
-                    info.append(rad.get("Namn")).append(" – ")
-                        .append(rad.get("Typ")).append(" – ")
-                        .append(rad.get("Farg")).append(" – Mängd: ")
-                        .append(rad.get("Mängd")).append(" ")
-                        .append(rad.get("Enhet")).append(" – Funktion: ")
-                        .append(rad.get("Funktion")).append("\n");
+                    String namn = rad.get("Namn");
+                    String typ = rad.get("Typ");
+                    String farg = rad.get("Farg");
+                    String mangd = rad.get("Mängd") != null ? rad.get("Mängd") : "-";
+                    String enhet = rad.get("Enhet") != null ? rad.get("Enhet") : "";
+                    String funktion = rad.get("Funktion") != null ? rad.get("Funktion") : "";
+
+                    info.append(namn).append(" – ")
+                        .append(typ).append(" – ")
+                        .append(farg).append(" – Mängd: ")
+                        .append(mangd).append(" ").append(enhet)
+                        .append(" – Funktion: ").append(funktion)
+                        .append("\n");
                 }
             } else {
                 info.append("Inget material hittades.");
             }
 
             JOptionPane.showMessageDialog(this, info.toString(), "Material för produkt", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
@@ -251,20 +235,21 @@ private void visaSpecifikProdukt(String produktID) {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SeSpecifikProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeInfoStandardprodukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SeSpecifikProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeInfoStandardprodukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SeSpecifikProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeInfoStandardprodukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SeSpecifikProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeInfoStandardprodukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                // new SeSpecifikProdukt().setVisible(true);
+                // new SeInfoStandardprodukt().setVisible(true);
             }
         });
     }
