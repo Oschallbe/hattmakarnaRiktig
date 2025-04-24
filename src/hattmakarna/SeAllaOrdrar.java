@@ -162,7 +162,6 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
         txtKund = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnVisaMarkerade = new javax.swing.JButton();
-        btnRensaFiltrering = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -243,13 +242,6 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
             }
         });
 
-        btnRensaFiltrering.setText("Rensa filtrering");
-        btnRensaFiltrering.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRensaFiltreringActionPerformed(evt);
-            }
-        });
-
         jLabel4.setText("Från:");
 
         jLabel5.setText("Från:");
@@ -293,9 +285,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFraktsedel)
-                .addGap(57, 57, 57)
-                .addComponent(btnRensaFiltrering)
-                .addGap(53, 53, 53)
+                .addGap(48, 48, 48)
                 .addComponent(btnSeOrder)
                 .addGap(49, 49, 49)
                 .addComponent(btnVisaMarkerade)
@@ -314,21 +304,17 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(panDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                        .addComponent(btnSok, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(204, 204, 204))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRensa)
-                        .addGap(151, 151, 151))))
+                .addGap(18, 18, 18)
+                .addComponent(panDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addComponent(btnSok, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnRensa)
+                .addGap(72, 72, 72))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(579, 579, 579)
@@ -338,17 +324,11 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(28, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnRensa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -359,14 +339,15 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
                                 .addComponent(jLabel1)
                                 .addComponent(jLabel5))
                             .addComponent(panDatumFran, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSok, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnSok)
+                                .addComponent(btnRensa)))
                         .addGap(35, 35, 35)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnVisaMarkerade)
                             .addComponent(btnSeOrder)
-                            .addComponent(btnRensaFiltrering)
                             .addComponent(btnFraktsedel)))
                     .addComponent(jLabel6))
                 .addGap(52, 52, 52))
@@ -873,63 +854,6 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
     }
     }//GEN-LAST:event_btnVisaMarkeradeActionPerformed
 
-    private void btnRensaFiltreringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRensaFiltreringActionPerformed
-        // TODO add your handling code here:
-        try {
-            List<HashMap<String, String>> result = idb.fetchRows(fraga);
-
-            DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
-            model.setRowCount(0); // Rensa gamla data
-            if (result != null) {
-                for (HashMap<String, String> row : result) {
-                    String expressHamtning = row.get("Expressbestallning");
-                    String expressOmvandling;
-                    String typ = row.get("Typ");
-                    String selectPris = "SELECT\n" +
-                                        "    SUM(\n" +
-                                        "        CASE\n" +
-                                        "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
-                                        "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
-                                        "            ELSE 0\n" +
-                                        "        END\n" +
-                                        "    ) AS TotalPris\n" +
-                                        "FROM OrderItem oi\n" +
-                                        "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n" +
-                                        "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n" +
-                                        "WHERE oi.BestallningID = " + row.get("BestallningID") + ";";
-                    String totalPrisText = idb.fetchSingle(selectPris);
-                    Double totalPris = Double.parseDouble(totalPrisText);
-                   
-                    if(expressHamtning.equals("1")){
-                        expressOmvandling = "Ja";
-                        if (typ != null && typ.contains("Standard")) {
-                        totalPris = totalPris * 1.2;
-    }
-                    }
-                    else{
-                        expressOmvandling = "Nej";
-                    }
-                    // Lägg till en rad i JTable
-                    model.addRow(new Object[]{
-                        row.get("Typ"),
-                        row.get("BestallningID"),
-                        row.get("KundID"),
-                        row.get("Status"),
-                        totalPris,
-                        row.get("Datum"),
-                        expressOmvandling
-                    });
-                }
-            } 
-            else {
-                System.out.println("Ingen data hittades i tabellen.");
-            }
-
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av data: " + e.getMessage());
-        } 
-    }//GEN-LAST:event_btnRensaFiltreringActionPerformed
-
     private void txtKundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKundActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtKundActionPerformed
@@ -1005,7 +929,6 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
     private javax.swing.JTable BestallningsLista;
     private javax.swing.JButton btnFraktsedel;
     private javax.swing.JButton btnRensa;
-    private javax.swing.JButton btnRensaFiltrering;
     private javax.swing.JButton btnSeOrder;
     private javax.swing.JButton btnSok;
     private javax.swing.JButton btnVisaMarkerade;
