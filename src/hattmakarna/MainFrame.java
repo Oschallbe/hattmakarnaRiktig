@@ -18,7 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
     private static InfDB idb;
     
     //Skapar fält för varje panel som ska visas i menyn
-    //private KalenderSchemaRatt kalenderPanel;
+    private KalenderSchemaRatt kalenderPanel;
     private SeAllaOrdrar allaOrdrarPanel;
     private SeAllaKunder allaKunderPanel;
     private SeAllaLagerfordaProdukter allaLagerfordaProdukterPanel;
@@ -345,16 +345,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22))))
+                            .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(121, 121, 121)
                         .addComponent(lblFelMeddelande))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(130, 130, 130)
                         .addComponent(btnLoggaIn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(515, 515, 515))
+                .addGap(536, 536, 536))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -385,7 +383,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblLosenord))
-                        .addGap(74, 74, 74)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLoggaIn)
                         .addGap(127, 127, 127)
                         .addComponent(lblFelMeddelande)))
@@ -399,7 +397,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Kontrollera om "inlogg" redan finns
         // Skapa SeAllaOrdrar-panelen som vanligt
-/*        kalenderPanel = new KalenderSchema1(idb, txtfEmail.getText());
+        kalenderPanel = new KalenderSchemaRatt(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
         JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
@@ -410,7 +408,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Kalenderschema");
-        */
+        
     }//GEN-LAST:event_visaKalenderMenuSelected
 
     private void seAllaKunderMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaKunderMenuSelected
