@@ -110,6 +110,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         btnSummera = new javax.swing.JButton();
         panDatumFran = new javax.swing.JPanel();
         panDatumTill = new javax.swing.JPanel();
+        btnRensa = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Försäljningsstatistik");
@@ -127,7 +128,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setText("Filtrera efter produkt");
+        jLabel2.setText("Filtrera efter namn");
 
         txtHatt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,6 +178,13 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
             .addGap(0, 27, Short.MAX_VALUE)
         );
 
+        btnRensa.setText("Rensa filtrering");
+        btnRensa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRensaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -203,16 +211,15 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                                 .addComponent(btnSummera))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(38, 38, 38)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jLabel3)
-                                        .addGap(203, 203, 203)))
-                                .addComponent(btnFiltrera))))
+                                .addGap(38, 38, 38)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnFiltrera))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addGap(200, 200, 200)
+                                .addComponent(btnRensa))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jScrollPane1)))
@@ -234,6 +241,8 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
                             .addComponent(panDatumTill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRensa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -379,6 +388,18 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnFiltreraActionPerformed
 
+    private void btnRensaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRensaActionPerformed
+        // Återställ tabellen
+        visaLevereradeStandardhattar();
+
+        // Töm datumväljare
+        datePickerFran.getModel().setValue(null);
+        datePickerTill.getModel().setValue(null);
+
+        // Töm textfält
+        txtHatt.setText("");
+    }//GEN-LAST:event_btnRensaActionPerformed
+
     private void gamlaSorteraDatum(){
 //             String fran = txtSokDatumFran.getText();
 //     String till = txtSokDatumTill.getText();
@@ -444,6 +465,7 @@ public class SeForsaljningsstatistik extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrera;
+    private javax.swing.JButton btnRensa;
     private javax.swing.JButton btnSummera;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
