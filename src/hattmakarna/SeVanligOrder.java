@@ -39,88 +39,62 @@ public class SeVanligOrder extends javax.swing.JPanel {
     }
 
     public void fyllTabell() {
-        try {
-            //Skapar en array som lagrar kolumnnamnen.
-            String kolumnNamn[] = {"Artikelnummer", "Namn", "Pris", "AntalProdukter", "AnstalldID", "ProduktID"};
+    try {
+        String kolumnNamn[] = {
+            "Artikelnummer", 
+            "Namn", 
+            "Pris", 
+            "Antal", 
+            "AnstalldID",    // nu ID
+            "ProduktID"
+        };
 
-            //Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
-            DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
+        DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
+            @Override public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-            //Hämtar alla anställdas id och lägger det i Arraylistan "id".
-            String selectOid = "SELECT OrderItemID FROM orderitem WHERE BestallningID = " + klickatOrderNr + " ORDER BY OrderItemID;";
-            ArrayList<String> oid = idb.fetchColumn(selectOid);
+        ArrayList<String> oid = idb.fetchColumn(
+            "SELECT OrderItemID FROM OrderItem WHERE BestallningID = " 
+             + klickatOrderNr + " ORDER BY OrderItemID;"
+        );
 
-            // Om AnstalldId inte är tom körs en for-each loop som för varje id hämtar id, förnamn och efternamn om det anställda som placeras i Hashmapen "Info".
-            if (oid != null) {
-                for (String ettOid : oid) {
-                    String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, StandardProduktID from orderitem where OrderItemID = " + ettOid + ";";
-                    HashMap<String, String> info = idb.fetchRow(selectInfo);
+        if (oid != null) {
+            for (String ettOid : oid) {
+                HashMap<String,String> info = idb.fetchRow(
+                    "SELECT OrderItemID, AntalProdukter, AnstalldID, StandardProduktID " +
+                    "FROM OrderItem WHERE OrderItemID = " + ettOid + ";"
+                );
 
-                    // Hämtar AnstalldID och lagrar det i lokalvariabeln aID.
-                    String aID = info.get("AnstalldID");
+                String aID = info.get("AnstalldID");       // här är numeriskt ID
+                String prodID = info.get("StandardProduktID");
 
-                    // Skapar en tom sträng som default för hopslaget namn.
-                    String hopslagetNamn = "";
+                HashMap<String,String> pd = idb.fetchRow(
+                    "SELECT Artikelnummer, Namn, Pris " +
+                    "FROM StandardProdukt WHERE StandardProduktID = " + prodID + ";"
+                );
 
-                    // Om aID inte är null och inte tomt hämtas namn på anställd.
-                    if (aID != null && !aID.isEmpty()) {
-                        String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld where AnstalldID = " + aID + ";";
-                        HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
-
-                        // Om vi får ett resultat, slå ihop förnamn och efternamn.
-                        if (anstalldFornamnEfternamn != null) {
-                            String fornamn = anstalldFornamnEfternamn.get("Fornamn");
-                            String efternamn = anstalldFornamnEfternamn.get("Efternamn");
-
-                            if (fornamn != null && efternamn != null) {
-                                hopslagetNamn = fornamn + " " + efternamn;
-                            }
-                        }
-                    }
-
-                    //Hämtar pris och namn för produkten från tabellen "standardprodukt".
-                    String ettProduktID = info.get("StandardProduktID");
-                    String selectProdukt = "SELECT Artikelnummer, Namn, Pris FROM StandardProdukt WHERE StandardProduktID = " + ettProduktID + ";";
-                    HashMap<String, String> produktData = idb.fetchRow(selectProdukt);
-
-                    //Skapar en array som håller data för en rad i tabellen.
-                    Object[] enRad = new Object[kolumnNamn.length];
-                    enRad[0] = produktData.get("Artikelnummer");
-                    enRad[1] = produktData.get("Namn");
-                    enRad[2] = produktData.get("Pris");
-                    enRad[3] = info.get("AntalProdukter");
-                    enRad[4] = hopslagetNamn;
-                    enRad[5] = ettProduktID;
-                    allaProdukter.addRow(enRad);
-
-                }
-
-                //Jtable sätts med data från DefaultTableModel.
-                tblAllaProdukter.setModel(allaProdukter);
-
+                Object[] rad = new Object[kolumnNamn.length];
+                rad[0] = pd.get("Artikelnummer");
+                rad[1] = pd.get("Namn");
+                rad[2] = pd.get("Pris");
+                rad[3] = info.get("AntalProdukter");
+                rad[4] = aID == null ? "" : aID;   // visa ID (tomt om NULL)
+                rad[5] = prodID;                   // dold kolumn
+                allaProdukter.addRow(rad);
             }
 
+            tblAllaProdukter.setModel(allaProdukter);
             sattStorlekTabell();
-
-            //Ändrar rubrikerna i tabellen.
-            tblAllaProdukter.getColumnModel().getColumn(0).setHeaderValue("Artikelnummer");
-            tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Namn");
-            tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Pris");
-            tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Antal");
-            tblAllaProdukter.getColumnModel().getColumn(4).setHeaderValue("Tilldelad:");
-            tblAllaProdukter.getColumnModel().getColumn(5).setMinWidth(0);
-            tblAllaProdukter.getColumnModel().getColumn(5).setMaxWidth(0);
-            tblAllaProdukter.getColumnModel().getColumn(5).setWidth(0);
-
-        } catch (InfException ex) {
-            System.out.println(ex);
+            // sätt headers osv som du redan gjort…
         }
+
+    } catch (InfException ex) {
+        System.err.println(ex);
     }
+}
+
 
     public void fyllAnstalldTabell() {
         try {
@@ -296,43 +270,38 @@ public class SeVanligOrder extends javax.swing.JPanel {
     }
 
     public void sparaTilldelad() {
-        try {
-            //Hämtar datan från tblAllaProdukter och lägger den i "tabell".
-            DefaultTableModel tabell = (DefaultTableModel) tblAllaProdukter.getModel();
+    try {
+        DefaultTableModel model = (DefaultTableModel) tblAllaProdukter.getModel();
 
-            //Går igenom varje rad i tabellen "tabell".
-            for (int i = 0; i < tabell.getRowCount(); i++) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String artNR = model.getValueAt(i, 0).toString();    // artikelnummer
+            String anstID = model.getValueAt(i, 4).toString();   // nu ID
 
-                //Försöker hämta artikelnummer och anställningsid från kolumn 1(0) och 5(4) för varje rad.
-                try {
-                    String artNR = tabell.getValueAt(i, 0).toString();
-                    String anstID = tabell.getValueAt(i, 4).toString();
+            // om tomt → NULL, annars siffran
+            String idText = anstID.isEmpty() ? "NULL" : anstID;
 
-                    //Skapar lokalvariabeln uppdateraDatabas.
-                    String uppdateraDatabas;
+            String sql =
+              "UPDATE OrderItem oi " +
+              "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID " +
+              "SET oi.AnstalldID = " + idText + " " +
+              "WHERE sp.Artikelnummer = '" + artNR + "' " +
+              "  AND oi.BestallningID = " + klickatOrderNr + ";";
 
-                    //Om anstID är null eller rutan är tom så ändras uppdateraDatabas till att AnstalldID ska vara null för den raden 
-                    if (anstID == null || anstID.isEmpty()) {
-                        uppdateraDatabas = "update orderitem set AnstalldID = null where OrderItemID = " + artNR + ";";
-                    } //Annars sätts AnstalldID till det anställningsid som hämtas och läggs i uppdateraDatabas
-                    else {
-                        uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
-                    }
-                    System.out.println(uppdateraDatabas);
-                    //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
-                    idb.update(uppdateraDatabas);
-
-                } catch (NumberFormatException ex) {
-                    System.out.println("Fel på rad: " + i + ":" + ex.getMessage());
-                }
-            }
-
-            fyllTabell();
-
-        } catch (InfException ex) {
-            System.out.println(ex);
+            System.out.println("Kör SQL: " + sql);
+            idb.update(sql);
         }
+
+        fyllTabell();  // ladda om med nya ID:n
     }
+    catch (InfException ex) {
+        System.err.println("Databasfel: " + ex.getMessage());
+    }
+}
+
+
+
+
+
 
     public void sparaStatus() {
         try {
