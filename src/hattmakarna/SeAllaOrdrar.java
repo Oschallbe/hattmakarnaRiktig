@@ -4,14 +4,22 @@
  */
 package hattmakarna;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+import java.util.HashMap;
+import java.util.List;
+
 
 /**
  *
@@ -21,14 +29,40 @@ public class SeAllaOrdrar extends javax.swing.JPanel {
 private String inloggadAnvandare;
 private InfDB idb;
 private String klickatOrderNr;
+private String fraga;
+private String filtreraPaDatum;
+private JDatePickerImpl datePickerFran;
+private JDatePickerImpl datePickerTill;
+
+
     /**
      * Creates new form SeBestallning
      */
     public SeAllaOrdrar(InfDB idb, String ePost) {
         initComponents();
+        Properties p = new Properties();
+        p.put("text.today", "Idag");
+        p.put("text.month", "Månad");
+        p.put("text.year", "År");
+
+        SqlDateModel modelFran = new SqlDateModel();
+        JDatePanelImpl datePanelFran = new JDatePanelImpl(modelFran, p);
+        datePickerFran = new JDatePickerImpl(datePanelFran, new org.jdatepicker.impl.DateComponentFormatter());
+
+        SqlDateModel modelTill = new SqlDateModel();
+        JDatePanelImpl datePanelTill = new JDatePanelImpl(modelTill, p);
+        datePickerTill = new JDatePickerImpl(datePanelTill, new org.jdatepicker.impl.DateComponentFormatter());
+
+        // Lägg till date pickers i respektive JPanel
+        panDatumFran.setLayout(new java.awt.BorderLayout());
+        panDatumFran.add(datePickerFran, java.awt.BorderLayout.CENTER);
+
+        panDatumTill.setLayout(new java.awt.BorderLayout());
+        panDatumTill.add(datePickerTill, java.awt.BorderLayout.CENTER);
+ 
         this.idb = idb;
         this.inloggadAnvandare = ePost;
-        String fraga = "select BestallningID, Status, Datum, Expressbestallning, TotalPris, Typ, KundID from Bestallning;";
+        fraga = "select BestallningID, Status, Datum, Expressbestallning, TotalPris, Typ, KundID from Bestallning;";
         fyllTable(fraga);
     }
     
@@ -116,10 +150,15 @@ private String klickatOrderNr;
         btnSeOrder = new javax.swing.JButton();
         cbStatus = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        txtDatum = new javax.swing.JTextField();
         txtKund = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnVisaMarkerade = new javax.swing.JButton();
+        btnRensaFiltrering = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        panDatumFran = new javax.swing.JPanel();
+        panDatumTill = new javax.swing.JPanel();
 
         btnSokKund.setText("Sök");
         btnSokKund.addActionListener(new java.awt.event.ActionListener() {
@@ -179,12 +218,6 @@ private String klickatOrderNr;
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Filtrera efter: ");
 
-        txtDatum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDatumActionPerformed(evt);
-            }
-        });
-
         jLabel2.setText("KundID eller för- och efternamn: ");
 
         btnVisaMarkerade.setText("Visa material");
@@ -194,56 +227,121 @@ private String klickatOrderNr;
             }
         });
 
+        btnRensaFiltrering.setText("Rensa filtrering");
+        btnRensaFiltrering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRensaFiltreringActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Från:");
+
+        jLabel5.setText("Från:");
+
+        jLabel6.setText("Till:");
+
+        javax.swing.GroupLayout panDatumFranLayout = new javax.swing.GroupLayout(panDatumFran);
+        panDatumFran.setLayout(panDatumFranLayout);
+        panDatumFranLayout.setHorizontalGroup(
+            panDatumFranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 140, Short.MAX_VALUE)
+        );
+        panDatumFranLayout.setVerticalGroup(
+            panDatumFranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panDatumTillLayout = new javax.swing.GroupLayout(panDatumTill);
+        panDatumTill.setLayout(panDatumTillLayout);
+        panDatumTillLayout.setHorizontalGroup(
+            panDatumTillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 140, Short.MAX_VALUE)
+        );
+        panDatumTillLayout.setVerticalGroup(
+            panDatumTillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(76, 76, 76)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(txtKund, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSokKund, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSökDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(81, 81, 81))
             .addComponent(jScrollPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRensaFiltrering)
+                .addGap(53, 53, 53)
                 .addComponent(btnSeOrder)
                 .addGap(49, 49, 49)
                 .addComponent(btnVisaMarkerade)
                 .addGap(22, 22, 22))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtKund, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(btnSokKund, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(panDatumFran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panDatumTill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSökDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(208, 208, 208))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(579, 579, 579)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(580, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(47, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSokKund)
-                    .addComponent(btnSökDatum)
                     .addComponent(jLabel2)
-                    .addComponent(txtKund, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnVisaMarkerade)
-                    .addComponent(btnSeOrder))
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(panDatumTill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnSokKund)
+                                    .addComponent(txtKund, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel5))
+                                .addComponent(panDatumFran, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnSökDatum))
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnVisaMarkerade)
+                            .addComponent(btnSeOrder)
+                            .addComponent(btnRensaFiltrering)))
+                    .addComponent(jLabel6))
                 .addGap(52, 52, 52))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(261, 261, 261)
+                    .addComponent(jLabel4)
+                    .addContainerGap(264, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -295,6 +393,20 @@ private String klickatOrderNr;
             model.setRowCount(0); // Rensa gammal data
 
             for (HashMap<String, String> kundData : kunder) {
+                String expressHamtning = kundData.get("Expressbestallning");
+                    String expressOmvandling;
+                    double totalPris = Double.parseDouble(kundData.get("TotalPris"));
+                    String typ = kundData.get("Typ");
+                    
+                    if(expressHamtning.equals("1")){
+                        expressOmvandling = "Ja";
+                        if (typ != null && typ.contains("Standard")) {
+                        totalPris = totalPris * 1.2;
+    }
+                    }
+                    else{
+                        expressOmvandling = "Nej";
+                    }
                 model.addRow(new Object[]{
                     kundData.get("Typ"),
                     kundData.get("BestallningID"),
@@ -312,7 +424,59 @@ private String klickatOrderNr;
     }//GEN-LAST:event_btnSokKundActionPerformed
 
     private void btnSökDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSökDatumActionPerformed
-        String datum = txtDatum.getText().trim();
+    java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
+    java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
+    try {
+                if (fran != null && till != null) {
+            java.sql.Date sqlFran = new java.sql.Date(fran.getTime());
+            java.sql.Date sqlTill = new java.sql.Date(till.getTime());
+            filtreraPaDatum = "select BestallningID, Status, Datum, Expressbestallning, TotalPris, Typ, KundID from Bestallning where Datum >= '" + sqlFran + "' AND Datum <= '" + sqlTill + "';";
+        }
+                      else if (fran != null || till != null) {
+                // Ett av datumen är ifyllt men inte båda
+                JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
+                return;
+            }
+            List<HashMap<String, String>> resultat = idb.fetchRows(filtreraPaDatum);
+            System.out.println(resultat);
+
+            DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+            model.setRowCount(0); // Töm tabellen
+            if (resultat != null && !resultat.isEmpty()) {
+                for (HashMap<String, String> rad : resultat) {
+                    String expressHamtning = rad.get("Expressbestallning");
+                    String expressOmvandling;
+                    double totalPris = Double.parseDouble(rad.get("TotalPris"));
+                    String typ = rad.get("Typ");
+                    
+                    if(expressHamtning.equals("1")){
+                        expressOmvandling = "Ja";
+                        if (typ != null && typ.contains("Standard")) {
+                        totalPris = totalPris * 1.2;
+    }
+                    }
+                    else{
+                        expressOmvandling = "Nej";
+                    }
+                    model.addRow(new Object[]{
+                        rad.get("Typ"),
+                        rad.get("BestallningID"),
+                        rad.get("KundID"),
+                        rad.get("Status"),
+                        totalPris,
+                        rad.get("Datum"),
+                        expressOmvandling
+                    });
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Inga resultat hittades.");
+            }
+            
+    } catch 
+            (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+        }
+        /*
 
         // Validera att användaren har skrivit ett korrekt datum
         if (!Validering.valideringDatum(datum)) {
@@ -351,7 +515,7 @@ private String klickatOrderNr;
 
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "Fel vid filtrering: " + e.getMessage());
-        }
+        }*/
     }//GEN-LAST:event_btnSökDatumActionPerformed
 
     private void btnSeOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeOrderActionPerformed
@@ -402,9 +566,9 @@ private String klickatOrderNr;
         String valdStatus = cbStatus.getSelectedItem().toString();
 
         try {
-            String query = "SELECT b.Typ, b.BestallningID, b.KundID, b.Datum, b.Status, b.TotalPris, b.Expressbestallning " +
-            "FROM Bestallning b " +
-            "JOIN Kund k ON k.KundID = b.KundID";
+            String query = "SELECT b.Typ, b.BestallningID, b.KundID, b.Datum, b.Status, b.TotalPris, b.Expressbestallning "
+                    + "FROM Bestallning b "
+                    + "JOIN Kund k ON k.KundID = b.KundID";
 
             if (!valdStatus.equalsIgnoreCase("Status:")) {
                 query += " WHERE b.Status = '" + valdStatus.replace("'", "''") + "'";
@@ -416,6 +580,20 @@ private String klickatOrderNr;
             model.setRowCount(0); // Rensa tidigare data
 
             for (HashMap<String, String> rad : bestallningar) {
+                String expressHamtning = rad.get("Expressbestallning");
+                System.out.println(expressHamtning);
+                String expressOmvandling;
+                double totalPris = Double.parseDouble(rad.get("TotalPris"));
+                String typ = rad.get("Typ");
+
+                if (expressHamtning.equals("1")) {
+                    expressOmvandling = "Ja";
+                    if (typ != null && typ.contains("Standard")) {
+                        totalPris = totalPris * 1.2;
+                    }
+                } else {
+                    expressOmvandling = "Nej";
+                }
                 model.addRow(new Object[]{
                     rad.get("Typ"),
                     rad.get("BestallningID"),
@@ -432,13 +610,9 @@ private String klickatOrderNr;
         }
     }//GEN-LAST:event_cbStatusActionPerformed
 
-    private void txtDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDatumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDatumActionPerformed
-
     private void btnVisaMarkeradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaMarkeradeActionPerformed
         // TODO add your handling code here:
-        List<String> standardOrder = new ArrayList<>();
+    List<String> standardOrder = new ArrayList<>();
     List<String> specialOrder = new ArrayList<>();
     DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
 
@@ -503,15 +677,75 @@ private String klickatOrderNr;
         List<HashMap<String, String>> resultat = idb.fetchRows(query.toString());
 
         if (resultat != null && !resultat.isEmpty()) {
-            new SeMaterialLista(resultat).setVisible(true);
+            try {
+            // Skapa en instans av LäggTillNyKund som en JPanel
+            SeMaterialListaPanel materialPanel = new SeMaterialListaPanel(resultat, idb, inloggadAnvandare);
+
+            // Lägg till panelen i MainFrame
+            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            mainFrame.addPanelToCardLayout(materialPanel, "Se materiallista");
+            mainFrame.showPanel("Se materiallista");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Inga material hittades.");
         }
+        /* Lägg till detta om det inte fungerar med att checkboxens rensas när man visat material!!
+        int checkboxKolumnIndex = 7; // eller det index du använder
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.setValueAt(false, i, checkboxKolumnIndex);
+        }*/
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Fel vid hämtning av material: " + e.getMessage());
     }
     }//GEN-LAST:event_btnVisaMarkeradeActionPerformed
+
+    private void btnRensaFiltreringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRensaFiltreringActionPerformed
+        // TODO add your handling code here:
+        try {
+            List<HashMap<String, String>> result = idb.fetchRows(fraga);
+
+            DefaultTableModel model = (DefaultTableModel) BestallningsLista.getModel();
+            model.setRowCount(0); // Rensa gamla data
+            if (result != null) {
+                for (HashMap<String, String> row : result) {
+                    String expressHamtning = row.get("Expressbestallning");
+                    String expressOmvandling;
+                    double totalPris = Double.parseDouble(row.get("TotalPris"));
+                    String typ = row.get("Typ");
+                    
+                    if(expressHamtning.equals("1")){
+                        expressOmvandling = "Ja";
+                        if (typ != null && typ.contains("Standard")) {
+                        totalPris = totalPris * 1.2;
+    }
+                    }
+                    else{
+                        expressOmvandling = "Nej";
+                    }
+                    // Lägg till en rad i JTable
+                    model.addRow(new Object[]{
+                        row.get("Typ"),
+                        row.get("BestallningID"),
+                        row.get("KundID"),
+                        row.get("Status"),
+                        totalPris,
+                        row.get("Datum"),
+                        expressOmvandling
+                    });
+                }
+            } 
+            else {
+                System.out.println("Ingen data hittades i tabellen.");
+            }
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av data: " + e.getMessage());
+        } 
+    }//GEN-LAST:event_btnRensaFiltreringActionPerformed
 
 
     /**
@@ -551,6 +785,7 @@ private String klickatOrderNr;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable BestallningsLista;
+    private javax.swing.JButton btnRensaFiltrering;
     private javax.swing.JButton btnSeOrder;
     private javax.swing.JButton btnSokKund;
     private javax.swing.JButton btnSökDatum;
@@ -559,8 +794,12 @@ private String klickatOrderNr;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField txtDatum;
+    private javax.swing.JPanel panDatumFran;
+    private javax.swing.JPanel panDatumTill;
     private javax.swing.JTextField txtKund;
     // End of variables declaration//GEN-END:variables
 }
