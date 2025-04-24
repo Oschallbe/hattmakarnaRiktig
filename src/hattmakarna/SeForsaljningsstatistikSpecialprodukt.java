@@ -76,7 +76,7 @@ public class SeForsaljningsstatistikSpecialprodukt extends javax.swing.JPanel {
             if (resultat != null) {
                 for (HashMap<String, String> rad : resultat) {
                     model.addRow(new Object[]{
-                        rad.get("ID"),
+                        rad.get("SpecialProduktID"),
                         rad.get("Pris"),
                         rad.get("AntalProdukter"),
                         rad.get("Datum")
@@ -269,127 +269,133 @@ public class SeForsaljningsstatistikSpecialprodukt extends javax.swing.JPanel {
     }//GEN-LAST:event_txtHattActionPerformed
 
     private void btnSummeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSummeraActionPerformed
-        String ID = txtHatt.getText();
-        java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
-        java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
-
+    String input = txtHatt.getText().trim();
+    Integer ID = null;
+    
+    // Försök tolka ID om användaren har skrivit något
+    if (!input.isEmpty()) {
         try {
-            String fraga = "SELECT sp.SpecialProduktID AS ID, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
-                    + "FROM OrderItem oi "
-                    + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
-                    + "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID "
-                    + "WHERE b.Status = 'Levererad'";
-            
-            // Lägg till filtrering om fält är ifyllda
-            if (!ID.isEmpty()) {
-                fraga += " AND sp.ID = '" + ID + "'";
-            }
-            if (fran != null && till != null) {
-                java.sql.Date sqlFran = new java.sql.Date(fran.getTime());
-                java.sql.Date sqlTill = new java.sql.Date(till.getTime());
-                fraga += " AND b.Datum >= '" + sqlFran + "' AND b.Datum <= '" + sqlTill + "'";
-            } 
-            else if ((fran != null && till == null) || (fran == null && till != null)) {
-                // Ett av datumen är ifyllt men inte båda
-                JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
-                return;
-            }
-
-            List<HashMap<String, String>> resultat = idb.fetchRows(fraga);
-
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Rensa tabellen innan summering
-
-            if (resultat != null && !resultat.isEmpty()) {
-                int totalAntal = 0;
-                double totalPris = 0;
-
-                for (HashMap<String, String> rad : resultat) {
-                    String antalStr = rad.get("AntalProdukter");
-                    String prisStr = rad.get("Pris");
-
-                    if (antalStr != null && prisStr != null) {
-                        int antal = Integer.parseInt(antalStr);
-                        double pris = Double.parseDouble(prisStr);
-                        totalAntal += antal;
-                        totalPris += pris * antal;
-                    } else {
-                        System.out.println("Null-värde hittat! Antal: " + antalStr + ", Pris: " + prisStr);
-                    }
-                }
-
-                String datumText = "";
-                if (fran != null && till != null) {
-                    datumText = "Från: " + fran + " till " + till;
-                }
-
-                model.addRow(new Object[]{
-                    ID.isEmpty() ? "Alla hattar" : ID,
-                    String.format("Totalt pris: %.2f kr", totalPris),
-                    totalAntal,
-                    datumText
-                });
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Inga levererade ordrar hittades för produkten.");
-            }
-
-        } catch (InfException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid summering: " + e.getMessage());
+            ID = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID måste vara ett heltal.");
+            return;
         }
+    }
+
+    java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
+    java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
+
+    try {
+        String fraga = "SELECT sp.SpecialProduktID AS ID, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
+                + "FROM OrderItem oi "
+                + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
+                + "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID "
+                + "WHERE b.Status = 'Levererad'";
+
+        if (ID != null) {
+            fraga += " AND sp.SpecialProduktID = " + ID;
+        }
+
+        if (fran != null && till != null) {
+            fraga += " AND b.Datum >= '" + fran + "' AND b.Datum <= '" + till + "'";
+        } else if ((fran != null && till == null) || (fran == null && till != null)) {
+            JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
+            return;
+        }
+
+        List<HashMap<String, String>> resultat = idb.fetchRows(fraga);
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Rensa tabellen
+
+        if (resultat != null && !resultat.isEmpty()) {
+            int totalAntal = 0;
+            double totalPris = 0;
+
+            for (HashMap<String, String> rad : resultat) {
+                int antal = Integer.parseInt(rad.get("AntalProdukter"));
+                double pris = Double.parseDouble(rad.get("Pris"));
+
+                totalAntal += antal;
+                totalPris += pris * antal;
+            }
+
+            String datumText = (fran != null && till != null)
+                    ? "Från: " + fran + " till " + till
+                    : "";
+
+            model.addRow(new Object[]{
+                (ID == null) ? "Alla specialprodukter" : ID,
+                String.format("Totalt pris: %.2f kr", totalPris),
+                totalAntal,
+                datumText
+            });
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga levererade ordrar hittades för produkten.");
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid summering: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnSummeraActionPerformed
 
     private void btnFiltreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraActionPerformed
-        String ID = txtHatt.getText();
+    String input = txtHatt.getText().trim();
+    Integer ID = null;
 
-        java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
-        java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
-
-
+    // Försök tolka ID om något har skrivits in
+    if (!input.isEmpty()) {
         try {
-            //Bygg basfråga
-            String fraga = "SELECT sp.SpecialProduktID AS ID, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
-                    + "FROM OrderItem oi "
-                    + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
-                    + "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID "
-                    + "WHERE b.Status = 'Levererad'";
-
-            // Lägg till filtrering om fält är ifyllda
-            if (!ID.isEmpty()) {
-                fraga += " AND sp.ID = '" + ID + "'";
-            }
-            if (fran != null && till != null) {
-                java.sql.Date sqlFran = new java.sql.Date(fran.getTime());
-                java.sql.Date sqlTill = new java.sql.Date(till.getTime());
-                fraga += " AND b.Datum >= '" + sqlFran + "' AND b.Datum <= '" + sqlTill + "'";
-            } 
-            else if (fran != null || till != null) {
-                // Ett av datumen är ifyllt men inte båda
-                JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill söka på datum.");
-                return;
-            }
-
-            List<HashMap<String, String>> resultat = idb.fetchRows(fraga.toString());
-
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Töm tabellen
-
-            if (resultat != null && !resultat.isEmpty()) {
-                for (HashMap<String, String> rad : resultat) {
-                    model.addRow(new Object[]{
-                        rad.get("ID"),
-                        rad.get("Pris"),
-                        rad.get("AntalProdukter"),
-                        rad.get("Datum")
-                    });
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Inga resultat hittades.");
-            }
-
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+            ID = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID måste vara ett heltal.");
+            return;
         }
+    }
+
+    java.sql.Date fran = (java.sql.Date) datePickerFran.getModel().getValue();
+    java.sql.Date till = (java.sql.Date) datePickerTill.getModel().getValue();
+
+    try {
+        String fraga = "SELECT sp.SpecialProduktID AS ID, sp.Pris AS Pris, oi.AntalProdukter AS Antal, b.Datum AS Datum "
+                + "FROM OrderItem oi "
+                + "JOIN Bestallning b ON oi.BestallningID = b.BestallningID "
+                + "JOIN SpecialProdukt sp ON oi.SpecialProduktID = sp.SpecialProduktID "
+                + "WHERE b.Status = 'Levererad'";
+
+        if (ID != null) {
+            fraga += " AND sp.SpecialProduktID = " + ID;
+        }
+
+        if (fran != null && till != null) {
+            fraga += " AND b.Datum >= '" + fran + "' AND b.Datum <= '" + till + "'";
+        } else if ((fran != null && till == null) || (fran == null && till != null)) {
+            JOptionPane.showMessageDialog(this, "Fyll i både Från- och Till-datum om du vill filtrera på datum.");
+            return;
+        }
+
+        List<HashMap<String, String>> resultat = idb.fetchRows(fraga);
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Rensa tabellen
+
+        if (resultat != null && !resultat.isEmpty()) {
+            for (HashMap<String, String> rad : resultat) {
+                model.addRow(new Object[]{
+                    rad.get("SpecialProduktID"),
+                    rad.get("Pris"),
+                    rad.get("AntalProdukter"),
+                    rad.get("Datum")
+                });
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Inga resultat hittades.");
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnFiltreraActionPerformed
 
     private void btnRensaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRensaActionPerformed
