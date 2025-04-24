@@ -34,7 +34,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         fyllKundIDComboBox();
         fyllProduktComboBox();
         cbNamn.addActionListener(e -> fyllProduktInfo());
-        txtfDatum.setText(java.time.LocalDate.now().toString()); // <--- Dagens datum
+        txtDatum.setText(java.time.LocalDate.now().toString()); // <--- Dagens datum
         uppdateraOrdernummer();
     }
     
@@ -120,7 +120,16 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     cbJa.setSelected(false);  // Checkboxen avmarkeras i GUI:t
     JOptionPane.showMessageDialog(null, "Din varukorg har rensats.");
     }
-
+    
+    public void resetForm() {
+    orderrader.clear();
+    express = false;
+    cbJa.setSelected(false);
+    cbKundnummer.removeAllItems();
+    fyllKundIDComboBox();  
+    uppdateraOrdernummer(); 
+    }
+    
     private void fyllProduktComboBox() {
     try {
         cbNamn.removeAllItems();
@@ -165,6 +174,13 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             this.antal = antal;
             this.pris = pris;
         }
+        
+        public Orderrad(Orderrad annan) {
+            this.artikelnummer = annan.artikelnummer;
+            this.namn = annan.namn;
+            this.antal = annan.antal;
+            this.pris = annan.pris;
+        }
 
         public double totalPris() {
             return antal * pris;
@@ -190,6 +206,8 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             this.antal = nyttAntal;
         }
     }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -219,7 +237,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         tfArtikelNummer = new javax.swing.JTextField();
         txtfOrdernummer = new javax.swing.JTextField();
         tfPris = new javax.swing.JTextField();
-        txtfDatum = new javax.swing.JTextField();
+        txtDatum = new javax.swing.JTextField();
 
         cbKundnummer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbKundnummer.addActionListener(new java.awt.event.ActionListener() {
@@ -249,7 +267,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         lblProduktlista.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         lblProduktlista.setText("Produktlista");
 
-        btnGaVidare.setText("Gå vidare");
+        btnGaVidare.setText("Ordersammanfattning");
         btnGaVidare.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGaVidareActionPerformed(evt);
@@ -279,46 +297,16 @@ public class SkapaNyOrder extends javax.swing.JPanel {
 
         tfPris.setEnabled(false);
 
-        txtfDatum.setEnabled(false);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(171, 171, 171)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tfPris, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPris2))
-                                .addGap(62, 62, 62)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAntal)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(tfAntal)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(btnLaggTill)
-                                        .addGap(25, 25, 25))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(lblExpressleverans)
-                                        .addGap(6, 6, 6)))))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGaVidare)
-                            .addComponent(cbJa)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblArtikelnummer)
-                            .addComponent(tfArtikelNummer, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(lblArtikelnummer)
+                    .addComponent(tfArtikelNummer, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -335,13 +323,38 @@ public class SkapaNyOrder extends javax.swing.JPanel {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(cbKundnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtfDatum, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtDatum, javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtfOrdernummer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addComponent(cbNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(170, 170, 170)
                         .addComponent(jLabel1)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(171, 171, 171)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfPris, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPris2))
+                        .addGap(62, 62, 62)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAntal)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tfAntal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblExpressleverans)
+                        .addGap(6, 6, 6)))
+                .addComponent(cbJa)
+                .addGap(56, 56, 56))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLaggTill)
+                .addGap(18, 18, 18)
+                .addComponent(btnGaVidare)
+                .addGap(36, 36, 36))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,7 +375,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDatum)
-                    .addComponent(txtfDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblExpressleverans)
@@ -398,10 +411,10 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     private void cbJaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJaActionPerformed
         if (cbJa.isSelected()) {
             express = true;
-            JOptionPane.showMessageDialog(null, "Expressbeställning aktiverad! 20% tillägg kommer att appliceras.");
+            JOptionPane.showMessageDialog(null, "Expressbeställning tillagd! 20% tillägg kommer att appliceras.");
         } else {
             express = false;
-            JOptionPane.showMessageDialog(null, "Expressbeställning är avaktiverad.");
+            JOptionPane.showMessageDialog(null, "Expressavgiften är borttagen.");
         }
     }//GEN-LAST:event_cbJaActionPerformed
 
@@ -416,6 +429,11 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             double pris = Double.parseDouble(tfPris.getText());
             String artikelnummer = tfArtikelNummer.getText();
             Object selectedItem = cbNamn.getSelectedItem();
+            String datum = txtDatum.getText();
+            if (!Validering.valideringDatum(datum)) {
+                JOptionPane.showMessageDialog(null, "Ogiltigt datumformat (rätt format: yyyy-MM-dd).\n");
+                return;
+            }
 
             if (selectedItem == null || selectedItem.equals("Välj vara")) {
                 JOptionPane.showMessageDialog(null, "Välj en produkt först.");
@@ -437,34 +455,45 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnGaVidareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaVidareActionPerformed
-        if (orderrader.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
-            return;
-        }
+    if (orderrader.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
+        return;
+    }
 
-        if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
-            JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
-            return;
-        }
+    if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
+        JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
+        return;
+    }
 
-        double totalpris = 0;
-        for (Orderrad rad : orderrader) {
-            totalpris += rad.totalPris();
-        }
+    double totalpris = 0;
+    for (Orderrad rad : orderrader) {
+        totalpris += rad.totalPris();
+    }
 
-        if (express) {
-            totalpris += totalpris * 0.2;
-        }
+    if (express) {
+        totalpris += totalpris * 0.2;
+    }
 
-        String ordernummer = txtfOrdernummer.getText();
-        if (ordernummer.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
-            return;
-        }
+    String ordernummer = txtfOrdernummer.getText();
+    if (ordernummer.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
+        return;
+    }
+    
+    ArrayList<Orderrad> orderraderKopia = new ArrayList<>();
+    for (Orderrad rad : orderrader) {
+        orderraderKopia.add(new Orderrad(rad));  // Använder copy constructor
+    }
 
-        OrderSammanfattning os = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris,
-                inloggadKundID, ordernummer, express, "Standardbeställning");
-        os.setVisible(true);
+    OrderSammanfattning osPanel = new OrderSammanfattning(idb, inloggadAnvandare, orderraderKopia, totalpris,
+            inloggadKundID, ordernummer, express, "Standardbeställning");
+
+   
+    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+    mainFrame.addPanelToCardLayout(osPanel, "OrderSammanfattning");
+    mainFrame.showPanel("OrderSammanfattning");
+    resetForm();
+    uppdateraOrdernummer();
     }//GEN-LAST:event_btnGaVidareActionPerformed
 
 
@@ -487,7 +516,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     private javax.swing.JTextField tfAntal;
     private javax.swing.JTextField tfArtikelNummer;
     private javax.swing.JTextField tfPris;
-    private javax.swing.JTextField txtfDatum;
+    private javax.swing.JTextField txtDatum;
     private javax.swing.JTextField txtfOrdernummer;
     // End of variables declaration//GEN-END:variables
 }

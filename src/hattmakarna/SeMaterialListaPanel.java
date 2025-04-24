@@ -8,11 +8,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.HashMap;
+import oru.inf.InfDB;
 
 public class SeMaterialListaPanel extends JPanel {
+private String inloggadAnvandare;
+private InfDB idb;
 
-    public SeMaterialListaPanel(List<HashMap<String, String>> data) {
-        initComponents();
+    public SeMaterialListaPanel(List<HashMap<String, String>> data, InfDB idb, String inloggadAnvandare) {
+        initComponents(); 
+        this.idb = idb;
+        this.inloggadAnvandare = inloggadAnvandare;
         fyllTabell(data);
     }
 
@@ -45,6 +50,7 @@ public class SeMaterialListaPanel extends JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         materialLista = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        btnTillbaka = new javax.swing.JButton();
 
         materialLista.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -62,31 +68,49 @@ public class SeMaterialListaPanel extends JPanel {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel1.setText("Sammanställd materiallista");
 
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTillbakaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(420, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(404, 404, 404))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(340, 340, 340)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnTillbaka)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(484, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(184, 184, 184)
+                .addGap(160, 160, 160)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTillbaka)
+                .addContainerGap(175, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+        // TODO add your handling code here:
+        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);  
+        this.setVisible(false);
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable materialLista;
