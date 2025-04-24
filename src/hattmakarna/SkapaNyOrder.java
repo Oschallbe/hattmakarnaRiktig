@@ -120,7 +120,16 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     cbJa.setSelected(false);  // Checkboxen avmarkeras i GUI:t
     JOptionPane.showMessageDialog(null, "Din varukorg har rensats.");
     }
-
+    
+    public void resetForm() {
+    orderrader.clear();
+    express = false;
+    cbJa.setSelected(false);
+    cbKundnummer.removeAllItems();
+    fyllKundIDComboBox();  
+    uppdateraOrdernummer(); 
+    }
+    
     private void fyllProduktComboBox() {
     try {
         cbNamn.removeAllItems();
@@ -165,6 +174,13 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             this.antal = antal;
             this.pris = pris;
         }
+        
+        public Orderrad(Orderrad annan) {
+            this.artikelnummer = annan.artikelnummer;
+            this.namn = annan.namn;
+            this.antal = annan.antal;
+            this.pris = annan.pris;
+        }
 
         public double totalPris() {
             return antal * pris;
@@ -190,6 +206,8 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             this.antal = nyttAntal;
         }
     }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -461,23 +479,20 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
         return;
     }
+    
+    ArrayList<Orderrad> orderraderKopia = new ArrayList<>();
+    for (Orderrad rad : orderrader) {
+        orderraderKopia.add(new Orderrad(rad));  // Använder copy constructor
+    }
 
-    // Skapa panelen
-    OrderSammanfattning osPanel = new OrderSammanfattning(idb, inloggadAnvandare, orderrader, totalpris,
+    OrderSammanfattning osPanel = new OrderSammanfattning(idb, inloggadAnvandare, orderraderKopia, totalpris,
             inloggadKundID, ordernummer, express, "Standardbeställning");
 
-    // Hämta MainFrame
+   
     MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-
-    // Lägg till i MainFrame's CardLayout
     mainFrame.addPanelToCardLayout(osPanel, "OrderSammanfattning");
-
-    // Visa panelen
     mainFrame.showPanel("OrderSammanfattning");
-    orderrader.clear();
-    express = false;
-    cbJa.setSelected(false);  // Checkboxen avmarkeras i GUI:t
-    cbKundnummer.removeAllItems();
+    resetForm();
     uppdateraOrdernummer();
     }//GEN-LAST:event_btnGaVidareActionPerformed
 
