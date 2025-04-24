@@ -349,7 +349,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
 
             // Skicka vidare StandardProduktID direkt
             int antal = 1;
-            new SeSpecifikProdukt(idb, inloggadAnvandare, produktID, true, antal).setVisible(true);
+new SeInfoStandardprodukt(idb, inloggadAnvandare, produktID, antal).setVisible(true);
 
         } catch (Exception ex) {
             System.out.println("Fel i jButton1ActionPerformed: " + ex.getMessage());

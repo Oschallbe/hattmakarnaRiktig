@@ -378,7 +378,7 @@ private String klickatOrderNr;
         if (typ.contains("Standard")) {
             orderPanel = new SeVanligOrder(idb, inloggadAnvandare, klickatOrderNr);
         } else {
-            orderPanel = new SeSpecialOrder1(idb, inloggadAnvandare, klickatOrderNr);
+            orderPanel = new SeSpecialOrder(idb, inloggadAnvandare, klickatOrderNr);
         }
 
         // Kontrollera att panelen har skapats
