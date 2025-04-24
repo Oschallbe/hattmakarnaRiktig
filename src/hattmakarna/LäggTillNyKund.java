@@ -383,8 +383,8 @@ try {
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
-    this.setVisible(false);
+    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+    mainFrame.showPanel("Alla kunder");
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
