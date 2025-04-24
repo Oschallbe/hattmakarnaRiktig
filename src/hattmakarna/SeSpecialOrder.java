@@ -18,13 +18,13 @@ import javax.swing.SwingUtilities;
  *
  * @author Elin
  */
-public class SeSpecialOrder extends javax.swing.JFrame {
+public class SeSpecialOrder extends javax.swing.JPanel {
 
     private InfDB idb;
     private String inloggadAnvandare;
     private String klickatOrderNr;
     private String express;
-    //private int kundID; 
+    private int kundID; 
 
     /**
      * Creates new form SeSpecialOrder
@@ -246,8 +246,71 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
+public void fyllLabels() {
+    
+    try {
+        String selectOrderNr = "SELECT BestallningID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+        String orderNr = idb.fetchSingle(selectOrderNr);
+        lblOrderNr.setText(orderNr);
 
-    // Metod som fyller i labels med information om en specifik specialprodukt. 
+        String selectTillverkningstid = "SELECT Tillverkningstid FROM specialprodukt WHERE SpecialProduktID = '" + klickatOrderNr + "'";
+        String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
+        lblTillverkningstid2.setText(tillverkningstid);
+
+        String selectKundID = "SELECT KundID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+        String kundIDStr = idb.fetchSingle(selectKundID);
+        kundID = Integer.parseInt(kundIDStr);
+
+        String selectKund = "SELECT Fornamn, Efternamn FROM kund WHERE KundID = '" + kundID + "'";
+        HashMap<String, String> kund = idb.fetchRow(selectKund);
+
+        if (kund != null) {
+            String kundIDochNamn = kundID + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
+            lblKundNr.setText(kundIDochNamn);
+        } else {
+            lblKundNr.setText("Ingen kund hittades.");
+        }
+
+
+        String selectStatus = "SELECT Status FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+        String status = idb.fetchSingle(selectStatus);
+        cbStatus.setSelectedItem(status);
+        cbStatus.setEnabled(false);
+    } catch (InfException ex) {
+        System.out.println("Fel i fyllLabels: " + ex.getMessage());
+    }
+//    try {
+//        String selectOrderNr = "select SpecialProduktID from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+//        String orderNr = idb.fetchSingle(selectOrderNr);
+//        lblOrderNr.setText(orderNr);
+//
+//        String selectTillverkningstid = "select Tillverkningstid from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+//        String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
+//        lblTillverkningstid2.setText(tillverkningstid);
+//
+//        String selectKund = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = '" + klickatOrderNr + "'";
+//        HashMap<String, String> kund = idb.fetchRow(selectKund);
+//
+//        if (kund != null) {
+//            kundID = Integer.parseInt(kund.get("KundID")); // Spara endast siffran här
+//            String kundIDochNamn = kund.get("KundID") + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
+//            lblKundNr.setText(kundIDochNamn);
+//        } else {
+//            lblKundNr.setText("Ingen kund hittades.");
+//        }
+//
+//        String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
+//        String status = idb.fetchSingle(selectStatus);
+//        cbStatus.setSelectedItem(status); 
+//        cbStatus.setEnabled(false); 
+//
+//    } catch (InfException ex) {
+//        System.out.println(ex);
+//    }
+}
+
+    // Metod som fyller i labels med information om en specifik specialprodukt.
+    /*
     public void fyllLabels() {
         //Dessa metoder hämtar info från databasen och fyler textfälten. 
         try {
@@ -280,7 +343,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
 
         }
     }
-
+*/
     /*public void hamtaTotalPris() {
         try {
             double totalPris = 0.0;
@@ -306,7 +369,6 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
-    /*
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -317,67 +379,24 @@ public class SeSpecialOrder extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblSpecialorder = new javax.swing.JLabel();
-        lblOrderNr = new javax.swing.JLabel();
-        lblTillverkningstid = new javax.swing.JLabel();
-        lblTillverkningstid2 = new javax.swing.JLabel();
-        lblKund = new javax.swing.JLabel();
-        lblKundNr = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblAllaProdukter = new javax.swing.JTable();
-        btnTillbaka = new javax.swing.JButton();
-        lblStatus = new javax.swing.JLabel();
         btnSeSpecifikProdukt = new javax.swing.JButton();
+        lblSpecialorder = new javax.swing.JLabel();
         cbStatus = new javax.swing.JComboBox<>();
+        lblOrderNr = new javax.swing.JLabel();
         btnRedigeraStatus = new javax.swing.JButton();
+        lblTillverkningstid = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAllaAnstallda = new javax.swing.JTable();
+        lblTillverkningstid2 = new javax.swing.JLabel();
+        lblKund = new javax.swing.JLabel();
         btnAtaProdukt = new javax.swing.JButton();
+        lblKundNr = new javax.swing.JLabel();
         btnSpara = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblAllaProdukter = new javax.swing.JTable();
         btnSeKundinfo = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        lblSpecialorder.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblSpecialorder.setText("Specialorder:");
-
-        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblOrderNr.setText("jLabel1");
-
-        lblTillverkningstid.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblTillverkningstid.setText("Tillverkningstid:");
-
-        lblTillverkningstid2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblTillverkningstid2.setText("jLabel1");
-
-        lblKund.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblKund.setText("Kund: ");
-
-        lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblKundNr.setText("jLabel1");
-
-        tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
-            }
-        ));
-        jScrollPane1.setViewportView(tblAllaProdukter);
-
-        btnTillbaka.setText("Tillbaka");
-        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTillbakaActionPerformed(evt);
-            }
-        });
-
-        lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblStatus.setText("Status: ");
+        btnTillbaka = new javax.swing.JButton();
+        lblStatus = new javax.swing.JLabel();
 
         btnSeSpecifikProdukt.setText("Se produkt");
         btnSeSpecifikProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -386,7 +405,13 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             }
         });
 
+        lblSpecialorder.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblSpecialorder.setText("Specialorder:");
+
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad" }));
+
+        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblOrderNr.setText("jLabel1");
 
         btnRedigeraStatus.setText("Redigera status");
         btnRedigeraStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -394,6 +419,9 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                 btnRedigeraStatusActionPerformed(evt);
             }
         });
+
+        lblTillverkningstid.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTillverkningstid.setText("Tillverkningstid:");
 
         tblAllaAnstallda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -408,12 +436,21 @@ public class SeSpecialOrder extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tblAllaAnstallda);
 
+        lblTillverkningstid2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTillverkningstid2.setText("jLabel1");
+
+        lblKund.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblKund.setText("Kund: ");
+
         btnAtaProdukt.setText("Åta produkt");
         btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtaProduktActionPerformed(evt);
             }
         });
+
+        lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblKundNr.setText("jLabel1");
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -422,6 +459,19 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             }
         });
 
+        tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+            }
+        ));
+        jScrollPane1.setViewportView(tblAllaProdukter);
+
         btnSeKundinfo.setText("Se kundinformation");
         btnSeKundinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -429,8 +479,18 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTillbakaActionPerformed(evt);
+            }
+        });
+
+        lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblStatus.setText("Status: ");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -479,14 +539,14 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(42, 42, 42)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 237, Short.MAX_VALUE)
+                        .addGap(0, 227, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -496,7 +556,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                                     .addComponent(lblSpecialorder)
                                     .addComponent(lblOrderNr)
                                     .addComponent(btnTillbaka))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -523,45 +583,50 @@ public class SeSpecialOrder extends javax.swing.JFrame {
                     .addComponent(btnRedigeraStatus)
                     .addComponent(btnAtaProdukt)
                     .addComponent(btnSpara))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_btnTillbakaActionPerformed
-
     private void btnSeSpecifikProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeSpecifikProduktActionPerformed
-        try {
-            int valdRad = tblAllaProdukter.getSelectedRow();
+       try {
+        int valdRad = tblAllaProdukter.getSelectedRow();
 
-            if (valdRad == -1) {
-                JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
-                return;
-            }
-
-            // Hämtar korrekt artikelnummer från kolumn 0
-            String artikelNr = tblAllaProdukter.getValueAt(valdRad, 0).toString();
-
-            System.out.println("DEBUG: skickar artikelnummer = " + artikelNr);
-
-            // Skickar endast artikelnummer till nästa vy
-            new SeSpecifikProdukt(idb, inloggadAnvandare, artikelNr, false, valdRad).setVisible(true);
-
-        } catch (Exception ex) {
-            System.out.println("Fel i btnSeSpecifikProduktActionPerformed: " + ex.getMessage());
+        if (valdRad == -1) {
+            JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
+            return;
         }
 
+        // Hämta OrderItemID från tabellen
+        String orderItemID = tblAllaProdukter.getValueAt(valdRad, 0).toString();
+
+        // Hämta antal från tabellen
+        String antal = tblAllaProdukter.getValueAt(valdRad, 3).toString();
+
+        // 🧠 Hämta det faktiska SpecialProduktID:t från OrderItem-tabellen
+        String specialProduktID = idb.fetchSingle("SELECT SpecialProduktID FROM OrderItem WHERE OrderItemID = " + orderItemID + ";");
+
+        if (specialProduktID != null && !specialProduktID.equals("null")) {
+            SeInfoSpecialprodukt nyVy = new SeInfoSpecialprodukt(idb, inloggadAnvandare, specialProduktID, Integer.parseInt(antal));
+            nyVy.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingen specialprodukt kopplad till denna orderrad.");
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Kunde inte öppna produkten: " + ex.getMessage());
+        ex.printStackTrace();
+    }
     }//GEN-LAST:event_btnSeSpecifikProduktActionPerformed
+
+    private void btnRedigeraStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraStatusActionPerformed
+        cbStatus.setEnabled(true);
+    }//GEN-LAST:event_btnRedigeraStatusActionPerformed
 
     private void btnAtaProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtaProduktActionPerformed
 
         //Visar en popup-ruta när man klickar på "Åta produkt" som förklarar hur man åtar en produkt.
         javax.swing.JOptionPane.showMessageDialog(this, "Du kan nu tilldela en person en produkt genom att dubbelklicka i rutan för Tilldelad för den specifika produkten. "
-                + "OBS efter du har skrivit in ett nytt ID måste du klicka ENTER innan du klickar på spara knappen!");
+            + "OBS efter du har skrivit in ett nytt ID måste du klicka ENTER innan du klickar på spara knappen!");
 
         //Tabellen som visas uppdateras till den tabell där det går att redigera anställningsID i.
         DefaultTableModel redigerbarModell = genereraRedigerbarModell();
@@ -569,7 +634,7 @@ public class SeSpecialOrder extends javax.swing.JFrame {
 
         //Ordnar storleken på varje kolumn.
         //sattStorlekTabell();
-        //Gör tilldelad-kolumnen redigerbar.    
+        //Gör tilldelad-kolumnen redigerbar.
         tblAllaProdukter.setEnabled(true);
     }//GEN-LAST:event_btnAtaProduktActionPerformed
 
@@ -584,81 +649,33 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
-
-    private void btnRedigeraStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraStatusActionPerformed
-        cbStatus.setEnabled(true); 
-    }//GEN-LAST:event_btnRedigeraStatusActionPerformed
-
-    private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
-            try {
-        String kundNrText = lblKundNr.getText();
-        if (kundNrText != null && !kundNrText.isEmpty()) {
-            int kundID = Integer.parseInt(kundNrText);
-
-            // Skapa en panel för SpecifikKund istället för ett nytt fönster
-            //JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
-
-            // Hämta MainFrame för att byta till den nya panelen
-            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
-
-            // Lägg till panelen i CardLayout (om den inte redan är tillagd)
-            //main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
-
-            // Byt till den nya panelen
-            main.showPanel("specifikKundPanel");
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
-    }
-
-
-//En metod som ska skicka användaren vidare till den specifika kundsidan. 
-//    try {
-//        SpecifikKund nyttFönster = new SpecifikKund(idb, inloggadAnvandare, kundID);
-//        nyttFönster.setVisible(true);
-//        this.dispose(); // Stänger nuvarande fönster
-//    } catch (Exception e) {
-//        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
-//    } 
-    }//GEN-LAST:event_btnSeKundinfoActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {                                              
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            if (kundID > 0) {
+                JPanel kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeAllaOrdrar");
+                MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+                main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
+                main.showPanel("specifikKundPanel");
+            } else {
+                JOptionPane.showMessageDialog(this, "Kundnummer saknas eller kunde inte laddas.");
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SeSpecialOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SeSpecialOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SeSpecialOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SeSpecialOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //     new SeSpecialOrder().setVisible(true);
-            }
-        });
     }
+
+    
+    /*
+    private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
+  
+ 
+    }//GEN-LAST:event_btnSeKundinfoActionPerformed
+*/
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnTillbakaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtaProdukt;

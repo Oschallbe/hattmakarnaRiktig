@@ -631,7 +631,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
 
             // Skicka vidare StandardProduktID direkt
-            new SeSpecifikProdukt(idb, inloggadAnvandare, produktID, true, antal).setVisible(true);
+new SeInfoStandardprodukt(idb, inloggadAnvandare, produktID, antal).setVisible(true);
 
         } catch (Exception ex) {
             System.out.println("Fel i jButton1ActionPerformed: " + ex.getMessage());
