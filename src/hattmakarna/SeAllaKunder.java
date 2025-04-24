@@ -191,6 +191,7 @@ public class SeAllaKunder extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         TblAllaKunder = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        btnAterstallTabell = new javax.swing.JButton();
 
         BtnSok.setText("Sök");
 
@@ -219,6 +220,13 @@ public class SeAllaKunder extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Alla kunder");
 
+        btnAterstallTabell.setText("Återställ tabell");
+        btnAterstallTabell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAterstallTabellActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -228,7 +236,10 @@ public class SeAllaKunder extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnSok)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAterstallTabell)
+                                .addGap(60, 60, 60)
+                                .addComponent(BtnSok))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(244, 244, 244)
@@ -242,7 +253,9 @@ public class SeAllaKunder extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
-                .addComponent(BtnSok)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnSok)
+                    .addComponent(btnAterstallTabell))
                 .addGap(49, 49, 49))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -270,6 +283,11 @@ public class SeAllaKunder extends javax.swing.JPanel {
         }
     }
     }//GEN-LAST:event_TblAllaKunderMouseClicked
+
+    private void btnAterstallTabellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAterstallTabellActionPerformed
+        // TODO add your handling code here:
+        fyllKundTabell();
+    }//GEN-LAST:event_btnAterstallTabellActionPerformed
 
     /**
      * @param args the command line arguments
@@ -309,6 +327,7 @@ public class SeAllaKunder extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnSok;
     private javax.swing.JTable TblAllaKunder;
+    private javax.swing.JButton btnAterstallTabell;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

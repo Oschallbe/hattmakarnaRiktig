@@ -21,7 +21,11 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="BtnSok" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="btnAterstallTabell" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <Component id="BtnSok" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="jScrollPane1" min="-2" pref="503" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -41,7 +45,10 @@
               <EmptySpace pref="82" max="32767" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="249" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-              <Component id="BtnSok" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="BtnSok" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAterstallTabell" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -111,6 +118,14 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Alla kunder"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAterstallTabell">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xc5;terst&#xe4;ll tabell"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAterstallTabellActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
