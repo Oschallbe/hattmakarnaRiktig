@@ -187,18 +187,10 @@ public class SeAllaKunder extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnLaggTill = new javax.swing.JButton();
         BtnSok = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TblAllaKunder = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-
-        btnLaggTill.setText("Lägg till ny kund");
-        btnLaggTill.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLaggTillActionPerformed(evt);
-            }
-        });
 
         BtnSok.setText("Sök");
 
@@ -234,12 +226,9 @@ public class SeAllaKunder extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
+                        .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnLaggTill)
-                                .addGap(314, 314, 314)
-                                .addComponent(BtnSok))
+                            .addComponent(BtnSok)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(244, 244, 244)
@@ -253,26 +242,10 @@ public class SeAllaKunder extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLaggTill)
-                    .addComponent(BtnSok))
+                .addComponent(BtnSok)
                 .addGap(49, 49, 49))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-    try {
-        // Skapa en instans av LäggTillNyKund som en JPanel
-        LäggTillNyKund laggTillNyKundPanel = new LäggTillNyKund(idb, inloggadAnvandare);
-
-        // Lägg till panelen i MainFrame
-        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        mainFrame.addPanelToCardLayout(laggTillNyKundPanel, "laggTillNyKund");
-        mainFrame.showPanel("laggTillNyKund");
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void TblAllaKunderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblAllaKunderMouseClicked
     if(evt.getSource() == TblAllaKunder) {
@@ -336,7 +309,6 @@ public class SeAllaKunder extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnSok;
     private javax.swing.JTable TblAllaKunder;
-    private javax.swing.JButton btnLaggTill;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

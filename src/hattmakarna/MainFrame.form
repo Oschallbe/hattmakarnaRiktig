@@ -52,16 +52,14 @@
           <Events>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="skapaNyFraktsedelMenuSelected"/>
           </Events>
-          <SubComponents>
-            <Menu class="javax.swing.JMenu" name="seAllaLagerfordaProdukter">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
-              </Properties>
-              <Events>
-                <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaLagerfordaProdukterMenuSelected"/>
-              </Events>
-            </Menu>
-          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="seAllaLagerfordaProdukter">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaLagerfordaProdukterMenuSelected"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="forsalningsstatistik">
           <Properties>
@@ -89,11 +87,29 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="seAllaKunder">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Se alla kunder"/>
+            <Property name="text" type="java.lang.String" value="Kunder"/>
           </Properties>
           <Events>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaKunderMenuSelected"/>
           </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemLaggTillKund">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny kund"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemLaggTillKundActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemSeAllaKunder">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se alla kunder"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemSeAllaKunderActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="installningar">
           <Properties>
