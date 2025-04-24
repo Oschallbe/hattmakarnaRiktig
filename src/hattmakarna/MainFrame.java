@@ -31,6 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
     private LäggTillNyKund laggTillKundPanel;
     private LaggTillLagerfordHatt laggTillLagerfordHattPanel;
     private SeForsaljningsstatistikSpecialprodukt statistikSpecialPanel;
+    private LaggTillAnstalld1 laggTillAnstalldPanel;
     //Fält för att anropa validerings klassen
     private Validering validera;
     //private MainFrame parentFrame;  // referens till MainFrame
@@ -205,6 +206,8 @@ public class MainFrame extends javax.swing.JFrame {
         menuItemSpecial = new javax.swing.JMenuItem();
         visaKalender = new javax.swing.JMenu();
         hanteraAnstallda = new javax.swing.JMenu();
+        menuItemHanteraAnstallda = new javax.swing.JMenuItem();
+        menuItemLaggTillAnstalld = new javax.swing.JMenuItem();
         seAllaKunder = new javax.swing.JMenu();
         menuItemLaggTillKund = new javax.swing.JMenuItem();
         menuItemSeAllaKunder = new javax.swing.JMenuItem();
@@ -389,7 +392,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(visaKalender);
 
-        hanteraAnstallda.setText("Hantera anställda");
+        hanteraAnstallda.setText("Anställda");
         hanteraAnstallda.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
@@ -399,6 +402,23 @@ public class MainFrame extends javax.swing.JFrame {
                 hanteraAnstalldaMenuSelected(evt);
             }
         });
+
+        menuItemHanteraAnstallda.setText("Hantera alla anställda");
+        menuItemHanteraAnstallda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemHanteraAnstalldaActionPerformed(evt);
+            }
+        });
+        hanteraAnstallda.add(menuItemHanteraAnstallda);
+
+        menuItemLaggTillAnstalld.setText("Lägg till ny anställd");
+        menuItemLaggTillAnstalld.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemLaggTillAnstalldActionPerformed(evt);
+            }
+        });
+        hanteraAnstallda.add(menuItemLaggTillAnstalld);
+
         jMenuBar1.add(hanteraAnstallda);
 
         seAllaKunder.setText("Kunder");
@@ -491,19 +511,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void hanteraAnstalldaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_hanteraAnstalldaMenuSelected
         // TODO add your handling code here:
-        taBortValkommen();
-        
-        hanteraAllaAnstalldaPanel = new HanteraAllaAnstallda(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(hanteraAllaAnstalldaPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Hantera anställda");
-
-        // Visa
-        showPanel("Hantera anställda");
     }//GEN-LAST:event_hanteraAnstalldaMenuSelected
 
     private void installningarMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_installningarMenuSelected
@@ -621,8 +628,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void skapaNyFraktsedelMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_skapaNyFraktsedelMenuSelected
      // TODO add your handling code here:
-     taBortValkommen();
-        fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText());
+    /* taBortValkommen();
+        fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText(), );
 
         // Skapa en wrapper-panel med centrerad layout
         JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
@@ -632,7 +639,7 @@ public class MainFrame extends javax.swing.JFrame {
         addPanelToCardLayout(wrapper, "Fraktsedel");
 
         // Visa
-        showPanel("Fraktsedel");
+        showPanel("Fraktsedel");*/
     }//GEN-LAST:event_skapaNyFraktsedelMenuSelected
 
     private void seOrdrarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seOrdrarItemActionPerformed
@@ -779,6 +786,40 @@ public class MainFrame extends javax.swing.JFrame {
         showPanel("Se försäljningsstatistik för specialhattar");
     }//GEN-LAST:event_menuItemSpecialActionPerformed
 
+    private void menuItemHanteraAnstalldaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemHanteraAnstalldaActionPerformed
+        // TODO add your handling code here:
+        taBortValkommen();
+        
+        hanteraAllaAnstalldaPanel = new HanteraAllaAnstallda(idb, txtfEmail.getText());
+
+        // Skapa en wrapper-panel med centrerad layout
+        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
+        wrapper.add(hanteraAllaAnstalldaPanel); // lägg SeAllaOrdrar i mitten
+
+        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
+        addPanelToCardLayout(wrapper, "Hantera anställda");
+
+        // Visa
+        showPanel("Hantera anställda");
+    }//GEN-LAST:event_menuItemHanteraAnstalldaActionPerformed
+
+    private void menuItemLaggTillAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLaggTillAnstalldActionPerformed
+        // TODO add your handling code here:
+        taBortValkommen();
+        
+        laggTillAnstalldPanel = new LaggTillAnstalld1(idb, txtfEmail.getText());
+
+        // Skapa en wrapper-panel med centrerad layout
+        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
+        wrapper.add(laggTillAnstalldPanel); // lägg SeAllaOrdrar i mitten
+
+        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
+        addPanelToCardLayout(wrapper, "Hantera anställda");
+
+        // Visa
+        showPanel("Hantera anställda");
+    }//GEN-LAST:event_menuItemLaggTillAnstalldActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -796,6 +837,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem loggaUt;
     private javax.swing.JLabel logotyp;
     private javax.swing.JMenuItem menuItemAllaLagerfordaProdukter;
+    private javax.swing.JMenuItem menuItemHanteraAnstallda;
+    private javax.swing.JMenuItem menuItemLaggTillAnstalld;
     private javax.swing.JMenuItem menuItemLaggTillKund;
     private javax.swing.JMenuItem menuItemLaggTillLagerfordHatt;
     private javax.swing.JMenuItem menuItemSeAllaKunder;

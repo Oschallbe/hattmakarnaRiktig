@@ -601,18 +601,44 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSparaActionPerformed
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {
-        try {
-            if (kundID > 0) {
-                JPanel kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeAllaOrdrar");
-                MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
-                main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
-                main.showPanel("specifikKundPanel");
-            } else {
-                JOptionPane.showMessageDialog(this, "Kundnummer saknas eller kunde inte laddas.");
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
+    try {
+        String kundNrText = lblKundNr.getText();
+        if (kundNrText != null && !kundNrText.isEmpty()) {
+            int kundID = Integer.parseInt(kundNrText);
+
+            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+
+            // ✅ Lägg till denna panel i CardLayout med ett namn
+            main.addPanelToCardLayout(this, "SeSpecialOrder");
+
+            // ✅ Skapa en panel för kund och skicka namnet på denna panel
+            SpecifikKund kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeSpecialOrder");
+
+            // ✅ Lägg till kundpanelen
+            main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
+
+            // ✅ Visa kundpanelen
+            main.showPanel("specifikKundPanel");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
         }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
+    }
+
+//        try {
+//            if (kundID > 0) {
+//                JPanel kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeAllaOrdrar");
+//                MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+//                main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
+//                main.showPanel("specifikKundPanel");
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Kundnummer saknas eller kunde inte laddas.");
+//            }
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
+//        }
     }
 
     /*

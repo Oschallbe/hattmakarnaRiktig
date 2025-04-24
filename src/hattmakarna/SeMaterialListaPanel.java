@@ -15,7 +15,7 @@ private String inloggadAnvandare;
 private InfDB idb;
 
     public SeMaterialListaPanel(List<HashMap<String, String>> data, InfDB idb, String inloggadAnvandare) {
-        initComponents();
+        initComponents(); 
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         fyllTabell(data);
@@ -103,7 +103,7 @@ private InfDB idb;
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
-        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
+        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);  
         this.setVisible(false);
     }//GEN-LAST:event_btnTillbakaActionPerformed
 

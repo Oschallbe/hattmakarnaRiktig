@@ -80,6 +80,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtBestallningID">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnSkapaFraktsedel">
       <Properties>

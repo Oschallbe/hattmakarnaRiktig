@@ -40,6 +40,8 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
             comboMaterial.addItem("Välj material"); // Dummy-post först
             String sqlFraga = "SELECT Namn FROM Material";
             ArrayList<String> materialLista = idb.fetchColumn(sqlFraga);
+            
+            java.util.Collections.sort(materialLista, String.CASE_INSENSITIVE_ORDER);
 
             for (String namn : materialLista) {
                 comboMaterial.addItem(namn);
@@ -274,6 +276,11 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
         });
 
         comboMaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboMaterialActionPerformed(evt);
+            }
+        });
 
         laggTillNyttMaterial.setText("Lägg till nytt material");
         laggTillNyttMaterial.addActionListener(new java.awt.event.ActionListener() {
@@ -535,6 +542,10 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
         new LaggTillMaterial(idb, inloggadAnvandare).setVisible(true);
         //this.dispose();
     }//GEN-LAST:event_laggTillNyttMaterialActionPerformed
+
+    private void comboMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMaterialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboMaterialActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

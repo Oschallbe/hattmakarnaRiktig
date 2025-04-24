@@ -453,8 +453,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + e.getMessage());
         }
       MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-      mainFrame.showPanel("Skapa ny order");  
-    
+      mainFrame.showPanel("Skapa ny order"); 
     }//GEN-LAST:event_btnBekraftaActionPerformed
 
     private void btnRedigeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraActionPerformed
