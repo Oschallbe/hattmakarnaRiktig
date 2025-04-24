@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package hattmakarna;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -22,7 +23,6 @@ public class SpecifikKund extends javax.swing.JPanel {
     private int kundID;
     private String previousPanel;
 
-
     /**
      * Creates new form SpecifikKund
      */
@@ -36,34 +36,34 @@ public class SpecifikKund extends javax.swing.JPanel {
         setEditable(false); // Gör fälten icke-redigerbara vid start
     }
 
-private void fyllKundDetaljer() {
-    try {
-        String query = "SELECT * FROM Kund WHERE KundID = " + kundID + ";";
-        HashMap<String, String> kundData = idb.fetchRow(query);
+    private void fyllKundDetaljer() {
+        try {
+            String query = "SELECT * FROM Kund WHERE KundID = " + kundID + ";";
+            HashMap<String, String> kundData = idb.fetchRow(query);
 
-        if (kundData != null) {
-        
-            txtKundID.setText(String.valueOf(kundID));
-            txtFornamn.setText(kundData.get("Fornamn"));
-            txtEfternamn.setText(kundData.get("Efternamn"));
-            txtEpost.setText(kundData.get("Epost"));
-            txtTelefonnummer.setText(kundData.get("Telefonnummer"));
-            txtLeveransAdress.setText(kundData.get("LeveransAdress"));
-            txtLeveransPostnummer.setText(kundData.get("LeveransPostnummer"));
-            txtHuvudmatt.setText(kundData.get("Matt"));
-            txtLeveransOrt.setText(kundData.get("LeveransOrt"));
-            txtLeveransLand.setText(kundData.get("LeveransLand"));
-            txtFakturaAdress.setText(kundData.get("FakturaAdress"));
-            txtFakturaPostnummer.setText(kundData.get("FakturaPostnummer"));
-            txtFakturaOrt.setText(kundData.get("FakturaOrt"));
-            txtFakturaLand.setText(kundData.get("FakturaLand"));
-        } else {
-            JOptionPane.showMessageDialog(this, "Kunden kunde inte hittas.");
+            if (kundData != null) {
+
+                txtKundID.setText(String.valueOf(kundID));
+                txtFornamn.setText(kundData.get("Fornamn"));
+                txtEfternamn.setText(kundData.get("Efternamn"));
+                txtEpost.setText(kundData.get("Epost"));
+                txtTelefonnummer.setText(kundData.get("Telefonnummer"));
+                txtLeveransAdress.setText(kundData.get("LeveransAdress"));
+                txtLeveransPostnummer.setText(kundData.get("LeveransPostnummer"));
+                txtHuvudmatt.setText(kundData.get("Matt"));
+                txtLeveransOrt.setText(kundData.get("LeveransOrt"));
+                txtLeveransLand.setText(kundData.get("LeveransLand"));
+                txtFakturaAdress.setText(kundData.get("FakturaAdress"));
+                txtFakturaPostnummer.setText(kundData.get("FakturaPostnummer"));
+                txtFakturaOrt.setText(kundData.get("FakturaOrt"));
+                txtFakturaLand.setText(kundData.get("FakturaLand"));
+            } else {
+                JOptionPane.showMessageDialog(this, "Kunden kunde inte hittas.");
+            }
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(this, "Ett fel inträffade vid hämtning av kundinfo: " + ex.getMessage());
+        }
     }
-    } catch (InfException ex) {
-        JOptionPane.showMessageDialog(this, "Ett fel inträffade vid hämtning av kundinfo: " + ex.getMessage());
-    }
-}
 
     private void setEditable(boolean editable) {
         txtFornamn.setEditable(editable);
@@ -81,8 +81,6 @@ private void fyllKundDetaljer() {
         txtFakturaLand.setEditable(editable);
         BtnSpara.setEnabled(editable); // Spara-knappen kan bara användas om fälten är redigerbara
     }
-   
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -334,22 +332,39 @@ private void fyllKundDetaljer() {
             if (svar == JOptionPane.YES_OPTION) {
                 // SQL-fråga med rätt kolumnnamn
                 String rensaKundUppgifter = "UPDATE Kund SET "
-                + "Fornamn = NULL, "
-                + "Efternamn = NULL, "
-                + "Matt = NULL, "
-                + "Epost = NULL, "
-                + "Telefonnummer = NULL, "
-                + "LeveransOrt = NULL, "
-                + "FakturaOrt = NULL, "
-                + "LeveransAdress = NULL, "
-                + "FakturaAdress = NULL "
-                + "WHERE KundID = " + kundID + ";";
+                        + "Fornamn = NULL, "
+                        + "Efternamn = NULL, "
+                        + "Matt = NULL, "
+                        + "Epost = NULL, "
+                        + "Telefonnummer = NULL, "
+                        + "LeveransOrt = NULL, "
+                        + "FakturaOrt = NULL, "
+                        + "LeveransAdress = NULL, "
+                        + "FakturaAdress = NULL "
+                        + "WHERE KundID = " + kundID + ";";
 
                 // Utför uppdateringen
                 idb.update(rensaKundUppgifter);
 
                 // Feedback till användaren
                 JOptionPane.showMessageDialog(this, "Kundens uppgifter har rensats. KundID finns kvar.");
+
+                // Nollställ fälten
+                txtFornamn.setText("");
+                txtEfternamn.setText("");
+                txtHuvudmatt.setText("");
+                txtEpost.setText("");
+                txtTelefonnummer.setText("");
+                txtLeveransOrt.setText("");
+                txtFakturaOrt.setText("");
+                txtLeveransAdress.setText("");
+                txtFakturaAdress.setText("");
+                txtLeveransPostnummer.setText("");
+                txtFakturaPostnummer.setText("");
+                txtLeveransLand.setText("");
+                txtFakturaLand.setText("");
+                
+
                 // Öppna AllaKunder och stäng nuvarande fönster
                 new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
                 
@@ -396,21 +411,22 @@ private void fyllKundDetaljer() {
         }
 
         try {
-            String updateQuery = "UPDATE Kund SET " +
-            "Fornamn = '" + fornamn + "', " +
-            "Efternamn = '" + efternamn + "', " +
-            "Epost = '" + epost + "', " +
-            "Telefonnummer = '" + telefonnummer + "', " +
-            "LeveransAdress = '" + leveransAdress + "', " +
-            "LeveransPostnummer = '" + leveransPostNr + "', " +
-            "LeveransOrt = '" + leveransOrt + "', " +
-            "LeveransLand = '" + leveransLand + "', " +
-            "FakturaAdress = '" + fakturaAdress + "', " +
-            "FakturaPostnummer = '" + fakturaPostNr + "', " +
-            "FakturaOrt = '" + fakturaOrt + "', " +
-            "FakturaLand = '" + fakturaLand + "', " +
-            "Matt = '" + matt + "' " +  // Lägg till huvudmått här
-            "WHERE KundID = " + kundID; // Uppdatera med relevant kundID
+            String updateQuery = "UPDATE Kund SET "
+                    + "Fornamn = '" + fornamn + "', "
+                    + "Efternamn = '" + efternamn + "', "
+                    + "Epost = '" + epost + "', "
+                    + "Telefonnummer = '" + telefonnummer + "', "
+                    + "LeveransAdress = '" + leveransAdress + "', "
+                    + "LeveransPostnummer = '" + leveransPostNr + "', "
+                    + "LeveransOrt = '" + leveransOrt + "', "
+                    + "LeveransLand = '" + leveransLand + "', "
+                    + "FakturaAdress = '" + fakturaAdress + "', "
+                    + "FakturaPostnummer = '" + fakturaPostNr + "', "
+                    + "FakturaOrt = '" + fakturaOrt + "', "
+                    + "FakturaLand = '" + fakturaLand + "', "
+                    + "Matt = '" + matt + "' "
+                    + // Lägg till huvudmått här
+                    "WHERE KundID = " + kundID; // Uppdatera med relevant kundID
 
             idb.update(updateQuery); // Utför SQL-uppdateringen
             JOptionPane.showMessageDialog(this, "Kundinformation har uppdaterats.");
@@ -424,16 +440,16 @@ private void fyllKundDetaljer() {
     }//GEN-LAST:event_BtnSparaActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    // Använd den tidigare skickade panelreferensen för att bestämma vart vi ska gå tillbaka
-    if ("SeVanligOrder".equals(previousPanel)) {
-        // Om användaren kom från SeVanligOrder, visa den panelen igen
-        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        mainFrame.showPanel("SeVanligOrder");
-    } else if ("SeAllaKunder".equals(previousPanel)) {
-        // Om användaren kom från SeAllaKunder, visa den panelen igen
-        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        mainFrame.showPanel("Alla kunder");
-    }
+        // Använd den tidigare skickade panelreferensen för att bestämma vart vi ska gå tillbaka
+        if ("SeVanligOrder".equals(previousPanel)) {
+            // Om användaren kom från SeVanligOrder, visa den panelen igen
+            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            mainFrame.showPanel("SeVanligOrder");
+        } else if ("SeAllaKunder".equals(previousPanel)) {
+            // Om användaren kom från SeAllaKunder, visa den panelen igen
+            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            mainFrame.showPanel("Alla kunder");
+        }
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
