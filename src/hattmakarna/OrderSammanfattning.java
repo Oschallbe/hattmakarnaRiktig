@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
 
@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+
 
 //package com.itextpdf.highlevel.chapter01;
 
@@ -28,11 +30,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.FileAlreadyExistsException;
 
+
+
 /**
  *
  * @author iftinserar
  */
-public class OrderSammanfattning extends javax.swing.JPanel {
+
+
+public class OrderSammanfattning extends javax.swing.JFrame {
     private InfDB idb; 
     private String inloggadAnvandare; 
     private ArrayList<SkapaNyOrder.Orderrad> orderrader;
@@ -156,14 +162,6 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         // Visa slutpriset med punkt som decimaltecken i UI
         tfTotalpris.setText(String.format("%.2f kr", slutpris));
     }
-    
-            private class BestallningsRad
-        {
-            public String produktNamn   = "";
-            public int    antal         = -1;
-            public String styckPris     = "";
-            public String totaltRadPris = "";
-        };
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -174,12 +172,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-        tfKundID = new javax.swing.JTextField();
-        lblTotalpris = new javax.swing.JLabel();
-        tfTotalpris = new javax.swing.JTextField();
-        tfExpress = new javax.swing.JTextField();
-        lblExpressavgift = new javax.swing.JLabel();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblOrdersammanfattning = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -189,20 +182,17 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         btnTaBort = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         tfOrdernummer = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        tfKundID = new javax.swing.JTextField();
+        lblTotalpris = new javax.swing.JLabel();
+        tfTotalpris = new javax.swing.JTextField();
+        tfExpress = new javax.swing.JTextField();
+        lblExpressavgift = new javax.swing.JLabel();
 
-        jLabel3.setText("KundID:");
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
-        tfKundID.setEnabled(false);
-
-        lblTotalpris.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        lblTotalpris.setText("Totalpris:");
-
-        tfTotalpris.setEnabled(false);
-
-        tfExpress.setEnabled(false);
-
-        lblExpressavgift.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        lblExpressavgift.setText("Expressavgift:");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tblOrdersammanfattning.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -220,7 +210,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Orderspecifikation");
 
-        btnBekrafta.setText("Slutför order");
+        btnBekrafta.setText("Bekräfta");
         btnBekrafta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBekraftaActionPerformed(evt);
@@ -252,8 +242,22 @@ public class OrderSammanfattning extends javax.swing.JPanel {
 
         tfOrdernummer.setEnabled(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        jLabel3.setText("KundID:");
+
+        tfKundID.setEnabled(false);
+
+        lblTotalpris.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        lblTotalpris.setText("Totalpris:");
+
+        tfTotalpris.setEnabled(false);
+
+        tfExpress.setEnabled(false);
+
+        lblExpressavgift.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        lblExpressavgift.setText("Expressavgift:");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -262,6 +266,23 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(tfExpress, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(186, 186, 186)
+                .addComponent(btnRedigera)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSpara)
+                    .addComponent(lblTotalpris))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tfTotalpris, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTaBort)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addComponent(btnBekrafta)))
+                .addGap(26, 26, 26))
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -281,22 +302,6 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(tfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(145, 145, 145)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRedigera)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSpara)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnTaBort)
-                        .addGap(41, 41, 41)
-                        .addComponent(btnBekrafta))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTotalpris)
-                        .addGap(25, 25, 25)
-                        .addComponent(tfTotalpris, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,7 +318,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfTotalpris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTotalpris)
@@ -327,210 +332,84 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                     .addComponent(btnTaBort))
                 .addGap(17, 17, 17))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed
-        if (tblOrdersammanfattning.isEditing()) {
-            tblOrdersammanfattning.getCellEditor().stopCellEditing();
-        }
-
-        DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
-        boolean valid = true;
-        ArrayList<BestallningsRad> pdforderlista = new ArrayList<>();
-
-        for (int i = 0; i < modell.getRowCount(); i++) {
-            BestallningsRad rad = new BestallningsRad();
-            Object cellValue = modell.getValueAt(i, 1);
-            try {
-                int antal = Integer.parseInt(cellValue.toString());
-                if (antal <= 0) {
-                    JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " måste vara ett positivt heltal.");
-                    valid = false;
-                    break;
-                } else {
-                    rad.produktNamn = modell.getValueAt(i, 0).toString();
-                    rad.styckPris = modell.getValueAt(i, 2).toString();
-                    orderrader.get(i).setAntal(antal);
-                    rad.antal = antal;
-                    rad.totaltRadPris = String.format("%.2f kr", antal * orderrader.get(i).getPris());
-                    modell.setValueAt(rad.totaltRadPris, i, 3);
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " är inte ett giltigt heltal.");
-                valid = false;
-                break;
-            }
-            pdforderlista.add(rad);
-        }
-
-        if (!valid) return;
-
-        uppdateraTotalpris();
-        String status = "Under behandling";
-        String datum = java.time.LocalDate.now().toString();
-        String expressBool = express ? "1" : "0";
-
-        String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
-        double totalprisDouble = Double.parseDouble(totalprisStr);
-        String formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
-
-        String sql = String.format(
-            "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, Totalpris, Typ) " +
-            "VALUES ('%s', '%s', %s, %s, NULL, %s, '%s')",
-            status, datum, expressBool, kundID, formattedTotalpris, typ
-        );
-
-        String ordernummer = "";
-        try {
-            idb.insert(sql);
-            ordernummer = idb.getAutoIncrement("Bestallning", "BestallningID");
-            JOptionPane.showMessageDialog(this, "Ordern har skickats iväg!");
-        } catch (InfException ex) {
-            JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
-        }
-
-        String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, " +
-        "LeveransOrt, LeveransAdress, LeveransPostnummer, LeveransLand, " +
-        "FakturaAdress, FakturaPostnummer, FakturaOrt, FakturaLand " +
-        "FROM Kund WHERE KundID = " + kundID + ";";
-
-        HashMap<String, String> kundInfo = new HashMap<>();
-        try {
-            HashMap<String, String> result = idb.fetchRow(kundQuery);
-            if (result != null) kundInfo.putAll(result);
-            else JOptionPane.showMessageDialog(this, "Kundinformation kunde inte hämtas.");
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid hämtning av kunddata: " + e.getMessage());
-        }
-
-        Path admin = null;
-        try {
-            admin = Paths.get(System.getProperty("user.home"), "hattadmin");
-            Files.createDirectory(admin);
-        } catch (FileAlreadyExistsException ex) {
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Fel vid skapande av admin-mapp: " + ex.getMessage());
-        }
-
-        // Skapa Orderbekräftelse PDF
-        try {
-            Path path = Paths.get(admin.toString(), "Orderbekr_" + String.format("%08d", Integer.parseInt(ordernummer)) + ".pdf");
-            PdfDocument pdf = new PdfDocument(new PdfWriter(path.toString()));
-            Document document = new Document(pdf);
-            PdfFont bold = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
-
-            document.add(new Paragraph("Orderbekräftelse " + datum).setFont(bold));
-            document.add(new Paragraph(" "));
-            document.add(new Paragraph("Hej! " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
-            document.add(new Paragraph("Tack för din beställning hos oss på Hattmakarna"));
-            document.add(new Paragraph("Vi har nu mottagit din order och kommer påbörja tillverkningen"));
-            document.add(new Paragraph(" "));
-            document.add(new Paragraph("Kundinformation:").setFont(bold));
-            document.add(new Paragraph("Namn: " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
-            document.add(new Paragraph("E-post: " + kundInfo.get("Epost")));
-            document.add(new Paragraph("Telefonnummer: " + kundInfo.get("Telefonnummer")));
-            document.add(new Paragraph("Leveransadress: " + kundInfo.get("LeveransAdress")));
-            document.add(new Paragraph("Postnummer: " + kundInfo.get("LeveransPostnummer")));
-            document.add(new Paragraph("Ort: " + kundInfo.get("LeveransOrt")));
-            document.add(new Paragraph("Land: " + kundInfo.get("LeveransLand")));
-            document.add(new Paragraph("Fakturaadress: " + kundInfo.get("FakturaAdress")));
-            document.add(new Paragraph("Postnummer: " + kundInfo.get("FakturaPostnummer")));
-            document.add(new Paragraph("Ort: " + kundInfo.get("FakturaOrt")));
-            document.add(new Paragraph("Land: " + kundInfo.get("FakturaLand")));
-            document.add(new Paragraph(" "));
-            document.add(new Paragraph("Beställning:").setFont(bold));
-            for (BestallningsRad rad : pdforderlista) {
-                document.add(new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ", totalt: " + rad.totaltRadPris));
-            }
-            document.add(new Paragraph(" "));
-            document.add(new Paragraph("Vid frågor, kontakta oss via mail och ange ordernummer " + ordernummer));
-            document.close();
-
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().open(path.toFile());
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + e.getMessage());
-        }
-      MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-      mainFrame.showPanel("Skapa ny order");  
-    
-    }//GEN-LAST:event_btnBekraftaActionPerformed
-
     private void btnRedigeraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraActionPerformed
-        redigeringsLage = true;
-        btnSpara.setEnabled(true);
-        btnTaBort.setEnabled(true);
-        btnRedigera.setEnabled(false);
-        btnBekrafta.setEnabled(true);
+    redigeringsLage = true;
+    btnSpara.setEnabled(true);
+    btnTaBort.setEnabled(true);
+    btnRedigera.setEnabled(false);
+    btnBekrafta.setEnabled(true);
 
-        tblOrdersammanfattning.repaint(); // Säkerställ att tabellen uppdateras visuellt
+    tblOrdersammanfattning.repaint(); // Säkerställ att tabellen uppdateras visuellt
     }//GEN-LAST:event_btnRedigeraActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        // Säkerställ att pågående cellredigering avslutas
-        if (tblOrdersammanfattning.isEditing()) {
-            tblOrdersammanfattning.getCellEditor().stopCellEditing();
-        }
+    // Säkerställ att pågående cellredigering avslutas
+    if (tblOrdersammanfattning.isEditing()) {
+        tblOrdersammanfattning.getCellEditor().stopCellEditing();
+    }
 
-        DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
-        boolean valid = true;
+    DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+    boolean valid = true;
 
-        // Gå igenom alla rader och validera antal
-        for (int i = 0; i < modell.getRowCount(); i++) {
-            Object cellValue = modell.getValueAt(i, 1); // kolumn "Antal"
-            try {
-                String cellStr = cellValue.toString().trim();
+    // Gå igenom alla rader och validera antal
+    for (int i = 0; i < modell.getRowCount(); i++) {
+        Object cellValue = modell.getValueAt(i, 1); // kolumn "Antal"
+        try {
+            String cellStr = cellValue.toString().trim();
 
-                // Kontrollera om cellen är tom
-                if (cellStr.isEmpty()) {
-                    throw new NumberFormatException("Tomt antal");
-                }
-
-                // Försök konvertera till ett heltal
-                int antal = Integer.parseInt(cellStr);
-
-                // Kontrollera om antalet är positivt
-                if (antal <= 0) {
-                    JOptionPane.showMessageDialog(this, "Antalet måste vara ett positivt heltal.");
-                    valid = false;  // Valideringen misslyckades
-                    break;  // Avbryt loopen om valideringen misslyckas
-                }
-
-                // Om antalet är giltigt, uppdatera orderraden och totalpris
-                orderrader.get(i).setAntal(antal);
-                modell.setValueAt(String.format("%.2f kr", antal * orderrader.get(i).getPris()), i, 3); // Uppdatera totalsumma
-
-            } catch (NumberFormatException e) {
-                // Visa felmeddelande för ogiltigt antal
-                JOptionPane.showMessageDialog(this, "Antalet är inte ett giltigt heltal.");
-                valid = false;  // Valideringen misslyckades
-                break;  // Avbryt loopen om det finns ogiltigt värde
+            // Kontrollera om cellen är tom
+            if (cellStr.isEmpty()) {
+                throw new NumberFormatException("Tomt antal");
             }
-        }
 
-        // Om alla värden är giltiga, uppdatera totalpris och visa meddelande om sparade ändringar
-        if (valid) {
-            uppdateraTotalpris();  // Uppdatera totalpris efter validering
-            JOptionPane.showMessageDialog(this, "Ändringar har sparats i varukorgen! Klicka på 'Bekräfta' för att skicka beställningen.");
-            redigeringsLage = false;
-            btnSpara.setEnabled(false);
-            btnTaBort.setEnabled(false);
-            btnRedigera.setEnabled(true);
+            // Försök konvertera till ett heltal
+            int antal = Integer.parseInt(cellStr);
+
+            // Kontrollera om antalet är positivt
+            if (antal <= 0) {
+                JOptionPane.showMessageDialog(this, "Antalet måste vara ett positivt heltal.");
+                valid = false;  // Valideringen misslyckades
+                break;  // Avbryt loopen om valideringen misslyckas
+            }
+
+            // Om antalet är giltigt, uppdatera orderraden och totalpris
+            orderrader.get(i).setAntal(antal); 
+            modell.setValueAt(String.format("%.2f kr", antal * orderrader.get(i).getPris()), i, 3); // Uppdatera totalsumma
+
+        } catch (NumberFormatException e) {
+            // Visa felmeddelande för ogiltigt antal
+            JOptionPane.showMessageDialog(this, "Antalet är inte ett giltigt heltal.");
+            valid = false;  // Valideringen misslyckades
+            break;  // Avbryt loopen om det finns ogiltigt värde
         }
+    }
+
+    // Om alla värden är giltiga, uppdatera totalpris och visa meddelande om sparade ändringar
+    if (valid) {
+        uppdateraTotalpris();  // Uppdatera totalpris efter validering
+        JOptionPane.showMessageDialog(this, "Ändringar har sparats i varukorgen! Klicka på 'Bekräfta' för att skicka beställningen.");
+        redigeringsLage = false;
+        btnSpara.setEnabled(false);
+        btnTaBort.setEnabled(false);
+        btnRedigera.setEnabled(true);
+    }
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-        int valdRad = tblOrdersammanfattning.getSelectedRow();
+       int valdRad = tblOrdersammanfattning.getSelectedRow();
 
         if (valdRad == -1) {
             JOptionPane.showMessageDialog(this, "Välj en produkt att ta bort.");
             return;
         }
 
-        int bekrafta = JOptionPane.showConfirmDialog(this,
-            "Vill du verkligen ta bort den här produkten?",
-            "Bekräfta borttagning",
+        int bekrafta = JOptionPane.showConfirmDialog(this, 
+            "Vill du verkligen ta bort den här produkten?", 
+            "Bekräfta borttagning", 
             JOptionPane.YES_NO_OPTION
         );
 
@@ -552,13 +431,169 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Produkten togs bort.");
         }
     }//GEN-LAST:event_btnTaBortActionPerformed
+    
 
+        private class BestallningsRad
+        {
+            public String produktNamn   = "";
+            public int    antal         = -1;
+            public String styckPris     = "";
+            public String totaltRadPris = "";
+        };
+
+    
+    private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed
+    if (tblOrdersammanfattning.isEditing()) {
+        tblOrdersammanfattning.getCellEditor().stopCellEditing();
+    }
+
+    DefaultTableModel modell = (DefaultTableModel) tblOrdersammanfattning.getModel();
+    boolean valid = true;
+    ArrayList<BestallningsRad> pdforderlista = new ArrayList<>();
+
+    for (int i = 0; i < modell.getRowCount(); i++) {
+        BestallningsRad rad = new BestallningsRad();
+        Object cellValue = modell.getValueAt(i, 1);
+        try {
+            int antal = Integer.parseInt(cellValue.toString());
+            if (antal <= 0) {
+                JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " måste vara ett positivt heltal.");
+                valid = false;
+                break;
+            } else {
+                rad.produktNamn = modell.getValueAt(i, 0).toString();
+                rad.styckPris = modell.getValueAt(i, 2).toString();
+                orderrader.get(i).setAntal(antal);
+                rad.antal = antal;
+                rad.totaltRadPris = String.format("%.2f kr", antal * orderrader.get(i).getPris());
+                modell.setValueAt(rad.totaltRadPris, i, 3);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Antalet på rad " + (i + 1) + " är inte ett giltigt heltal.");
+            valid = false;
+            break;
+        }
+        pdforderlista.add(rad);
+    }
+
+    if (!valid) return;
+
+    uppdateraTotalpris();
+    String status = "Under behandling";
+    String datum = java.time.LocalDate.now().toString();
+    String expressBool = express ? "1" : "0";
+
+    String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
+    double totalprisDouble = Double.parseDouble(totalprisStr);
+    String formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
+
+    String sql = String.format(
+        "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, Totalpris, Typ) " +
+        "VALUES ('%s', '%s', %s, %s, NULL, %s, '%s')",
+        status, datum, expressBool, kundID, formattedTotalpris, typ
+    );
+
+    String ordernummer = "";
+    try {
+        idb.insert(sql);
+        ordernummer = idb.getAutoIncrement("Bestallning", "BestallningID");
+        JOptionPane.showMessageDialog(this, "Ordern har skickats iväg!");
+        this.dispose();
+    } catch (InfException ex) {
+        JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
+    }
+
+    String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, " +
+        "LeveransOrt, LeveransAdress, LeveransPostnummer, LeveransLand, " +
+        "FakturaAdress, FakturaPostnummer, FakturaOrt, FakturaLand " +
+        "FROM Kund WHERE KundID = " + kundID + ";";
+
+    HashMap<String, String> kundInfo = new HashMap<>();
+    try {
+        HashMap<String, String> result = idb.fetchRow(kundQuery);
+        if (result != null) kundInfo.putAll(result);
+        else JOptionPane.showMessageDialog(this, "Kundinformation kunde inte hämtas.");
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av kunddata: " + e.getMessage());
+    }
+
+    Path admin = null;
+    try {
+        admin = Paths.get(System.getProperty("user.home"), "hattadmin");
+        Files.createDirectory(admin);
+    } catch (FileAlreadyExistsException ex) {
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Fel vid skapande av admin-mapp: " + ex.getMessage());
+    }
+
+    // Skapa Orderbekräftelse PDF
+    try {
+        Path path = Paths.get(admin.toString(), "Orderbekr_" + String.format("%08d", Integer.parseInt(ordernummer)) + ".pdf");
+        PdfDocument pdf = new PdfDocument(new PdfWriter(path.toString()));
+        Document document = new Document(pdf);
+        PdfFont bold = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
+
+        document.add(new Paragraph("Orderbekräftelse " + datum).setFont(bold));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Hej! " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
+        document.add(new Paragraph("Tack för din beställning hos oss på Hattmakarna"));
+        document.add(new Paragraph("Vi har nu mottagit din order och kommer påbörja tillverkningen"));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Kundinformation:").setFont(bold));
+        document.add(new Paragraph("Namn: " + kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")));
+        document.add(new Paragraph("E-post: " + kundInfo.get("Epost")));
+        document.add(new Paragraph("Telefonnummer: " + kundInfo.get("Telefonnummer")));
+        document.add(new Paragraph("Leveransadress: " + kundInfo.get("LeveransAdress")));
+        document.add(new Paragraph("Postnummer: " + kundInfo.get("LeveransPostnummer")));
+        document.add(new Paragraph("Ort: " + kundInfo.get("LeveransOrt")));
+        document.add(new Paragraph("Land: " + kundInfo.get("LeveransLand")));
+        document.add(new Paragraph("Fakturaadress: " + kundInfo.get("FakturaAdress")));
+        document.add(new Paragraph("Postnummer: " + kundInfo.get("FakturaPostnummer")));
+        document.add(new Paragraph("Ort: " + kundInfo.get("FakturaOrt")));
+        document.add(new Paragraph("Land: " + kundInfo.get("FakturaLand")));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Beställning:").setFont(bold));
+        for (BestallningsRad rad : pdforderlista) {
+            document.add(new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ", totalt: " + rad.totaltRadPris));
+        }
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Vid frågor, kontakta oss via mail och ange ordernummer " + ordernummer));
+        document.close();
+
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().open(path.toFile());
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnBekraftaActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                //new OrderSammanfattning().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBekrafta;
     private javax.swing.JButton btnRedigera;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTaBort;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
