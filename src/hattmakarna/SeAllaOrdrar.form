@@ -19,6 +19,8 @@
           <Component id="jScrollPane1" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnFraktsedel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
               <Component id="btnRensaFiltrering" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
               <Component id="btnSeOrder" min="-2" max="-2" attributes="0"/>
@@ -98,6 +100,7 @@
                           <Component id="btnVisaMarkerade" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnSeOrder" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnRensaFiltrering" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnFraktsedel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -145,7 +148,7 @@
                 <Column editable="true" title="Status" type="java.lang.Object"/>
                 <Column editable="true" title="Pris" type="java.lang.Object"/>
                 <Column editable="true" title="Datum" type="java.lang.Object"/>
-                <Column editable="true" title="Expressbestallning" type="java.lang.Object"/>
+                <Column editable="true" title="Expressbest&#xe4;llning" type="java.lang.Object"/>
                 <Column editable="true" title="Material f&#xf6;r order" type="java.lang.Boolean"/>
               </Table>
             </Property>
@@ -245,6 +248,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtKund">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtKundActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -312,5 +318,13 @@
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JButton" name="btnFraktsedel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Skapa fraksedel"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFraktsedelActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

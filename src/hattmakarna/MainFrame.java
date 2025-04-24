@@ -621,8 +621,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void skapaNyFraktsedelMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_skapaNyFraktsedelMenuSelected
      // TODO add your handling code here:
-     taBortValkommen();
-        fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText());
+    /* taBortValkommen();
+        fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText(), );
 
         // Skapa en wrapper-panel med centrerad layout
         JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
@@ -632,7 +632,7 @@ public class MainFrame extends javax.swing.JFrame {
         addPanelToCardLayout(wrapper, "Fraktsedel");
 
         // Visa
-        showPanel("Fraktsedel");
+        showPanel("Fraktsedel");*/
     }//GEN-LAST:event_skapaNyFraktsedelMenuSelected
 
     private void seOrdrarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seOrdrarItemActionPerformed
