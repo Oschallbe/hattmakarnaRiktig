@@ -377,7 +377,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
 
         jLabel12.setText("Tillagt material");
 
-        comboFunktion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj funktion", "Basmaterial", "Innertyg", "Yttertyg", "Innerfoder", "Dekoration", "Stomme" }));
+        comboFunktion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj funktion", "Basmaterial", "Dekoration", "Innerfoder", "Innertyg", "Yttertyg", "Stomme" }));
         comboFunktion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboFunktionActionPerformed(evt);
