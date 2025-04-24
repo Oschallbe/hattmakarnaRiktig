@@ -450,6 +450,11 @@ public class SpecifikKund extends javax.swing.JPanel {
             MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
             mainFrame.showPanel("Alla kunder");
         }
+        else if ("SeSpecialOrder".equals(previousPanel)) {
+            // Om användaren kom från SeAllaKunder, visa den panelen igen
+            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            mainFrame.showPanel("SeSpecialOrder");
+        }
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
