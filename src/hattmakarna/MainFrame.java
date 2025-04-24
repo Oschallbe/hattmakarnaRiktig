@@ -537,6 +537,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa menyrad
         jMenuBar1.setVisible(true);
+        logotyp.setVisible(false);
 
         // Visa "Hantera anställda"-menyn enbart för behörighet 2
         if (!"2".equals(behorighet)) {
