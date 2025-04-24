@@ -47,7 +47,16 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         
         kalenderRuta = new JPanel();
         kalenderRuta.setLayout(new GridLayout(0, 7));
-        this.add(kalenderRuta, BorderLayout.CENTER);
+        kalenderRuta.setPreferredSize(new Dimension(850, 600)); //NY
+        
+        //NYTT
+        JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        wrapper.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 10));
+        wrapper.add(kalenderRuta);
+        
+        this.add(wrapper, BorderLayout.CENTER);
+        
+        // ORIGINAL this.add(kalenderRuta, BorderLayout.CENTER);
         
         forraKnapp.addActionListener(e -> {
             visadManad = visadManad.minusMonths(1);
@@ -83,6 +92,21 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
             kalenderRuta.add(new JLabel(""));
         }
         
+        String anstalldID = null;
+            try{
+                anstalldID = idb.fetchSingle("select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "'");
+            }
+            catch(InfException ex){
+                System.out.println("Kunde inte hämta anställningsid" + ex.getMessage());
+            }
+            
+        if(anstalldID == null){
+            JOptionPane.showMessageDialog(this, "hittades ej");
+            return;
+        }
+        
+        final String aktuellAnstalldID = anstalldID;
+            
         for(int dag = 1; dag <= dagarIManad; dag++){
             final int aktuellDag = dag;
             JPanel dagPanel = new JPanel(new BorderLayout());
@@ -132,12 +156,11 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                    try{
                         LocalDate datum = visadManad.withDayOfMonth(aktuellDag);
                         String insertProdukt = "insert into kalenderschema (AnstalldID, OrderItemID, Datum) values (" +
-                                "(select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "'), " +
-                                "'" + text + "', '" + datum + "')";
+                                aktuellAnstalldID + ", " + text + ", '" + datum + "')"; 
                         idb.insert(insertProdukt);
                     }
                     catch(InfException ex){
-                        System.out.println(ex);
+                        System.out.println("Fel vid insert:" + ex.getMessage());
                     }
                     
                 }
@@ -145,7 +168,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
             try{
                 LocalDate datum = visadManad.withDayOfMonth(dag);
-                String selectText = "select OrderItemID from kalenderschema where Datum = '" + datum + "' and AnstalldID = (select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "')";
+                String selectText = "select OrderItemID from kalenderschema where Datum = '" + datum + "' and AnstalldID = " + aktuellAnstalldID;
                 java.util.List<String> resultat = idb.fetchColumn(selectText);
                 if(resultat != null){
                     for(String text:resultat){
@@ -154,7 +177,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                 }
             }
             catch(InfException ex){
-                System.out.println(ex);
+                System.out.println(ex.getMessage());
             }
                  
                            
