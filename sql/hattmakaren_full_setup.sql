@@ -964,3 +964,21 @@ INSERT INTO Anstalld (Fornamn, Efternamn, Losenord, Epost, Behorighet, Produktio
 VALUES
 ('Eva', 'Söm', 'evasom123', 'eva@hattmakarna.se', 1, 1),
 ('Tom', 'Syfast', 'tompass', 'tom@hattmakarna.se', 1, 2);
+
+-- 1. Ta bort foreign key från SpecialProdukt
+ALTER TABLE SpecialProdukt DROP FOREIGN KEY specialprodukt_ibfk_2;
+
+-- 2. Ta bort kolumnen StommeID från SpecialProdukt
+ALTER TABLE SpecialProdukt DROP COLUMN StommeID;
+
+-- 3. Ta bort foreign key från StandardProdukt
+ALTER TABLE StandardProdukt DROP FOREIGN KEY standardprodukt_ibfk_2;
+
+-- 4. Ta bort kolumnen StommeID från StandardProdukt
+ALTER TABLE StandardProdukt DROP COLUMN StommeID;
+
+-- 5. Ta bort kopplingstabellen mellan Stomme och Material (om den finns)
+DROP TABLE IF EXISTS Stomme_Material;
+
+-- 6. Ta bort tabellen Stomme
+DROP TABLE IF EXISTS Stomme;
