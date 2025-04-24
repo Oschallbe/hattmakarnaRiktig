@@ -27,6 +27,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
     private JPanel kalenderRuta;
     private JLabel manadLabel;
     private LocalDate visadManad;
+    private JTable produktTabell;
 
     /**
      * Creates new form KalenderSchemaRatt
@@ -98,7 +99,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
             data = new Object[0][kolumner.length];
         }
 
-        JTable produktTabell = new JTable(new DefaultTableModel(data, kolumner));
+        produktTabell = new JTable(new DefaultTableModel(data, kolumner));
         JScrollPane tabellScroll = new JScrollPane(produktTabell);
         tabellScroll.setPreferredSize(new Dimension(450, 600));
 
@@ -214,7 +215,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                 }
             });
 
-            inputFalt.addActionListener(e -> {
+            /*inputFalt.addActionListener(e -> {
                 String text = inputFalt.getText().trim();
                 if (!text.isEmpty()) {
                     modell.addElement(text);
@@ -246,46 +247,57 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                     }
                 }
             }); 
+    */
     
-    
-     /*       inputFalt.addActionListener(e -> {
+            inputFalt.addActionListener(e -> {
     String text = inputFalt.getText().trim();
 
     if (!text.isEmpty()) {
         try {
-            int tilldelningsID = Integer.parseInt(text); // 🔢 Du skriver in ett ID
+            int tilldelningsID = Integer.parseInt(text);
 
-            // 🔍 Kontrollera att TilldelningsID faktiskt finns i databasen
-            String kontrollFraga = "select BestallningID from kalenderschema where TilldelningsID = " + tilldelningsID;
-            HashMap<String, String> tilldelningInfo = idb.fetchRow(kontrollFraga);
-
-            if (tilldelningInfo == null) {
-                JOptionPane.showMessageDialog(null, "Det finns ingen tilldelning med ID " + tilldelningsID);
+            // 🟢 Kontrollera om ID finns i JTable
+            if (!idFinnsITabellen(tilldelningsID, produktTabell)) {
+                JOptionPane.showMessageDialog(null, "TilldelningsID " + tilldelningsID + " finns inte i tabellen.");
                 return;
             }
 
-            // ✅ Lägg till i kalender-vyn
-            modell.addElement("Tilldelning: " + text);
-            inputFalt.setText("");
-
-            // 📅 Hämta datum för rutan i kalendern
+            // 📅 Hämta datum
             String datum = visadManad.withDayOfMonth(aktuellDag).toString();
 
-            // 💾 Spara den nya kopplingen med samma TilldelningsID som du skrev in
-            String bestallningID = tilldelningInfo.get("BestallningID");
+            // 🔎 Hämta info från JTable (kolumn 1 = BeställningID)
+            String bestallningID = null;
+            for (int i = 0; i < produktTabell.getRowCount(); i++) {
+                int id = Integer.parseInt(produktTabell.getValueAt(i, 0).toString());
+                if (id == tilldelningsID) {
+                    bestallningID = produktTabell.getValueAt(i, 1).toString();
+                    break;
+                }
+            }
 
+            if (bestallningID == null) {
+                JOptionPane.showMessageDialog(null, "Kunde inte hämta BeställningID från tabellen.");
+                return;
+            }
+
+            // 💾 Spara i databasen
             String insert = "insert into kalenderschema (TilldelningsID, AnstalldID, BestallningID, Datum) values (" +
                     tilldelningsID + ", " + aktuellAnstalldID + ", " + bestallningID + ", '" + datum + "')";
 
-            idb.insert(insert); // ❤️ Spara det du skrev in!
+            idb.insert(insert);
+
+            // 🎉 Visa i kalendern
+            modell.addElement("Tilldelning: " + tilldelningsID);
+            inputFalt.setText("");
 
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, "Endast siffror tillåtna i TilldelningsID.");
         } catch (InfException ex) {
-            System.out.println("Fel vid kontroll/sparning av TilldelningsID: " + ex.getMessage());
+            System.out.println("Fel vid sparning: " + ex.getMessage());
         }
     }
-});*/
+});
+
 
             try {
 
@@ -327,6 +339,15 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         kalenderRuta.revalidate();
         kalenderRuta.repaint();
     }
+    private boolean idFinnsITabellen(int id, JTable tabell) {
+    for (int i = 0; i < tabell.getRowCount(); i++) {
+        Object cellValue = tabell.getValueAt(i, 0); // kolumn 0 = TilldelningsID
+        if (cellValue != null && Integer.parseInt(cellValue.toString()) == id) {
+            return true;
+        }
+    }
+    return false;
+}
 
     public static void main(String[] args) {
 
