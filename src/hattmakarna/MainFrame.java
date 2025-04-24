@@ -16,6 +16,7 @@ import oru.inf.InfException;
  */
 public class MainFrame extends javax.swing.JFrame {
     private static InfDB idb;
+    ImageIcon icon;
     
     //Skapar fält för varje panel som ska visas i menyn
     private KalenderSchemaRatt kalenderPanel;
@@ -39,8 +40,22 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame(InfDB idb) {
     initComponents();
+     // centrerar fönstret på skärmen (snyggt)
     // Se till att layouten på MainFrame är BorderLayout
+    lblValkommen.setVisible(false);
     this.setLayout(new BorderLayout());
+    
+    // Hämta skärmstorlek
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+    // Sätt fönstrets storlek till hela skärmen
+    setSize(screenSize);
+    setLocation(0, 0);
+
+    // Alternativ: gör det till riktig helskärm (utan fönsterkant)
+    // setUndecorated(true); // OBS: detta måste göras före setVisible(true)
+
+    setVisible(true);
 
     // Lägg till jPanel1 i mitten
     this.add(jPanel1, BorderLayout.CENTER);
@@ -96,6 +111,8 @@ public class MainFrame extends javax.swing.JFrame {
             nyMainFrame.setVisible(true);
         }
     }
+        
+        
 
 
     public void hanteraAnstallda(){
@@ -121,10 +138,30 @@ public class MainFrame extends javax.swing.JFrame {
     public void showPanel(String name) {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, name);
+        
+        // Uppdatera layouten för att undvika att logotypen blir beskuren
+        revalidate();
+        repaint();
     }
-   
     
+    public String getForNamn() {
+    String anvandarnamn = txtfEmail.getText();
+    String[] delar = anvandarnamn.split("@"); // Dela på "@" för att få användarnamnet
+    String baraNamn = delar[0]; // Få användarnamnet före "@"
+    String namn = "";
 
+    // Kolla om namnet innehåller en punkt, vilket indikerar för- och efternamn
+    if (baraNamn.contains(".")) {
+        // Dela på punkten och ta första delen (förnamnet)
+        baraNamn = baraNamn.split("\\.")[0];
+    }
+
+    // Sätt förnamnet så att första bokstaven blir versal och resten gemener
+    namn = baraNamn.substring(0, 1).toUpperCase() + baraNamn.substring(1).toLowerCase();
+
+    return namn; // Returnera det formaterade förnamnet
+}
+   
    
 
 
@@ -146,6 +183,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblEpost = new javax.swing.JLabel();
         lblLosenord = new javax.swing.JLabel();
         logotyp = new javax.swing.JLabel();
+        lblValkommen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuOrdrar = new javax.swing.JMenu();
         seOrdrarItem = new javax.swing.JMenuItem();
@@ -161,8 +199,11 @@ public class MainFrame extends javax.swing.JFrame {
         loggaUt = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
 
         jPanel1.setLayout(new java.awt.CardLayout());
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(109, 1541, 0, 0);
 
         pswfLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         pswfLosenord.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +211,8 @@ public class MainFrame extends javax.swing.JFrame {
                 pswfLosenordActionPerformed(evt);
             }
         });
+        getContentPane().add(pswfLosenord);
+        pswfLosenord.setBounds(483, 548, 228, 41);
 
         btnLoggaIn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnLoggaIn.setText("Logga in");
@@ -178,6 +221,8 @@ public class MainFrame extends javax.swing.JFrame {
                 btnLoggaInActionPerformed(evt);
             }
         });
+        getContentPane().add(btnLoggaIn);
+        btnLoggaIn.setBounds(515, 595, 137, 28);
 
         lblFelMeddelande.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblFelMeddelande.setText("Felaktig inloggning! ");
@@ -187,19 +232,36 @@ public class MainFrame extends javax.swing.JFrame {
                 lblFelMeddelandeComponentHidden(evt);
             }
         });
+        getContentPane().add(lblFelMeddelande);
+        lblFelMeddelande.setBounds(506, 750, 153, 21);
 
         lblInloggning.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblInloggning.setText("Inloggning");
+        getContentPane().add(lblInloggning);
+        lblInloggning.setBounds(480, 330, 251, 72);
 
         txtfEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        getContentPane().add(txtfEmail);
+        txtfEmail.setBounds(483, 459, 228, 41);
 
         lblEpost.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblEpost.setText("E-post");
+        getContentPane().add(lblEpost);
+        lblEpost.setBounds(385, 464, 80, 31);
 
         lblLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLosenord.setText("Lösenord");
+        getContentPane().add(lblLosenord);
+        lblLosenord.setBounds(385, 557, 80, 22);
 
         logotyp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hattmakarna/hattmakarna_logotyp.png"))); // NOI18N
+        getContentPane().add(logotyp);
+        logotyp.setBounds(500, 120, 200, 200);
+
+        lblValkommen.setFont(new java.awt.Font("Helvetica Neue", 1, 60)); // NOI18N
+        lblValkommen.setText("efrgtyh");
+        getContentPane().add(lblValkommen);
+        lblValkommen.setBounds(530, 380, 660, 50);
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenuBar1.setFont(new java.awt.Font("Helvetica Neue", 0, 16)); // NOI18N
@@ -328,68 +390,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(385, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(lblInloggning))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addComponent(lblFelMeddelande))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(btnLoggaIn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(536, 536, 536))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(504, 504, 504)
-                        .addComponent(logotyp, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1541, 1541, 1541)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(logotyp, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblInloggning, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(61, 61, 61)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(48, 48, 48)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(pswfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblLosenord))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLoggaIn)
-                        .addGap(127, 127, 127)
-                        .addComponent(lblFelMeddelande)))
-                .addContainerGap(304, Short.MAX_VALUE))
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -408,6 +408,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Kalenderschema");
+        
+        
         
     }//GEN-LAST:event_visaKalenderMenuSelected
 
@@ -537,16 +539,38 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa menyrad
         jMenuBar1.setVisible(true);
+        logotyp.setVisible(false);
+        // Visa inloggade användare välkommen
+        
+        // Ladda bilden från src/hattmakarna/hattmakarna_logotyp.png
+        URL imageURL = getClass().getResource("/hattmakarna/hattmakarna_logotyp.png");
 
-        // Visa "Hantera anställda"-menyn enbart för behörighet 2
-        if (!"2".equals(behorighet)) {
-            hanteraAnstallda.setVisible(false); // jMenu9 = Hantera anställda
+        // Kontrollera om bilden finns
+        // Kontrollera om bilden finns
+           if (imageURL != null) {
+            // Skapa en ImageIcon med den laddade bilden
+            ImageIcon icon = new ImageIcon(imageURL);
+
+            // Skala om bilden till t.ex. 100x100 pixlar
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+            // Lägg in den skalade bilden i JLabel
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            logotyp.setIcon(scaledIcon);
+
+            // 🟢 Sätt bounds EFTER setIcon men INNAN du visar logotypen
+            logotyp.setBounds(10, 10, 100, 100);
+
+            // 🟢 Visa logotypen (om den var dold tidigare)
+            logotyp.setVisible(true);
         } else {
-            hanteraAnstallda.setVisible(true);
+            System.out.println("Bilden kunde inte hittas. Kontrollera sökvägen.");
         }
 
-        // Visa valfri startpanel
-        hanteraAnstallda();
+        lblValkommen.setText("Välkommen" + " " + getForNamn());
+        lblValkommen.setVisible(true);
+        
+       // hanteraAnstallda();
 
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(null, "Något gick fel: " + ex.getMessage());
@@ -630,6 +654,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblFelMeddelande;
     private javax.swing.JLabel lblInloggning;
     private javax.swing.JLabel lblLosenord;
+    private javax.swing.JLabel lblValkommen;
     private javax.swing.JMenuItem loggaUt;
     private javax.swing.JLabel logotyp;
     private javax.swing.JMenu menuOrdrar;
