@@ -424,16 +424,33 @@ private void fyllKundDetaljer() {
     }//GEN-LAST:event_BtnSparaActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    // Använd den tidigare skickade panelreferensen för att bestämma vart vi ska gå tillbaka
-    if ("SeVanligOrder".equals(previousPanel)) {
-        // Om användaren kom från SeVanligOrder, visa den panelen igen
         MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        mainFrame.showPanel("SeVanligOrder");
-    } else if ("SeAllaKunder".equals(previousPanel)) {
-        // Om användaren kom från SeAllaKunder, visa den panelen igen
-        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        mainFrame.showPanel("Alla kunder");
-    }
+
+        switch (previousPanel) {
+            case "SeVanligOrder":
+                mainFrame.showPanel("SeVanligOrder"); // Detta måste matcha det namn panelen faktiskt lades till med i MainFrame
+                break;
+            case "SeSpecialOrder":
+                mainFrame.showPanel("SeSpecialOrder");
+                break;
+            case "SeAllaKunder":
+            default:
+                mainFrame.showPanel("Alla kunder");
+                break;
+        }
+
+    
+
+//    // Använd den tidigare skickade panelreferensen för att bestämma vart vi ska gå tillbaka
+//    if ("SeVanligOrder".equals(previousPanel)) {
+//        // Om användaren kom från SeVanligOrder, visa den panelen igen
+//        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+//        mainFrame.showPanel("SeVanligOrder");
+//    } else if ("SeAllaKunder".equals(previousPanel)) {
+//        // Om användaren kom från SeAllaKunder, visa den panelen igen
+//        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+//        mainFrame.showPanel("Alla kunder");
+//    }
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 

@@ -82,22 +82,22 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
                     String expressHamtning = row.get("Expressbestallning");
                     String expressOmvandling;
                     String typ = row.get("Typ");
-                    String selectPris = "SELECT\n" +
-                                        "    SUM(\n" +
-                                        "        CASE\n" +
-                                        "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
-                                        "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n" +
-                                        "            ELSE 0\n" +
-                                        "        END\n" +
-                                        "    ) AS TotalPris\n" +
-                                        "FROM OrderItem oi\n" +
-                                        "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n" +
-                                        "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n" +
-                                        "WHERE oi.BestallningID = " + row.get("BestallningID") + ";";
+                    String selectPris = "SELECT\n"
+                            + "    SUM(\n"
+                            + "        CASE\n"
+                            + "            WHEN oi.StandardProduktID IS NOT NULL THEN IFNULL(sp1.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n"
+                            + "            WHEN oi.SpecialProduktID IS NOT NULL THEN IFNULL(sp2.Pris, 0) * IFNULL(oi.AntalProdukter, 0)\n"
+                            + "            ELSE 0\n"
+                            + "        END\n"
+                            + "    ) AS TotalPris\n"
+                            + "FROM OrderItem oi\n"
+                            + "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n"
+                            + "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n"
+                            + "WHERE oi.BestallningID = " + row.get("BestallningID") + ";";
                     String totalPrisText = idb.fetchSingle(selectPris);
                     Double totalPris = Double.parseDouble(totalPrisText);
-                    
-                    if(expressHamtning.equals("1")){
+
+                    if (expressHamtning.equals("1")) {
                         expressOmvandling = "Ja";
                         totalPris *= 1.2;
                     }
@@ -111,7 +111,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
                         row.get("BestallningID"),
                         row.get("KundID"),
                         row.get("Status"),
-                        totalPris,
+                        String.format("%.1f", totalPris),
                         row.get("Datum"),
                         expressOmvandling
                     });
