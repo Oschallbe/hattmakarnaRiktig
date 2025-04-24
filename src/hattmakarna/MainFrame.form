@@ -55,11 +55,29 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="seAllaLagerfordaProdukter">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
+            <Property name="text" type="java.lang.String" value="Lagerf&#xf6;rda produkter"/>
           </Properties>
           <Events>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaLagerfordaProdukterMenuSelected"/>
           </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemAllaLagerfordaProdukter">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemAllaLagerfordaProdukterActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemLaggTillLagerfordHatt">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny lagerf&#xf6;rd hatt"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemLaggTillLagerfordHattActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="forsalningsstatistik">
           <Properties>

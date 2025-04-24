@@ -29,6 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
     private HanteraAllaAnstallda hanteraAllaAnstalldaPanel;
     private SkapaNyFraktsedel fraktsedelPanel;
     private LäggTillNyKund laggTillKundPanel;
+    private LaggTillLagerfordHatt laggTillLagerfordHattPanel;
     //Fält för att anropa validerings klassen
     private Validering validera;
     //private MainFrame parentFrame;  // referens till MainFrame
@@ -196,6 +197,8 @@ public class MainFrame extends javax.swing.JFrame {
         skapaNySpecialOrderItem = new javax.swing.JMenuItem();
         skapaNyFraktsedel = new javax.swing.JMenu();
         seAllaLagerfordaProdukter = new javax.swing.JMenu();
+        menuItemAllaLagerfordaProdukter = new javax.swing.JMenuItem();
+        menuItemLaggTillLagerfordHatt = new javax.swing.JMenuItem();
         forsalningsstatistik = new javax.swing.JMenu();
         visaKalender = new javax.swing.JMenu();
         hanteraAnstallda = new javax.swing.JMenu();
@@ -313,7 +316,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(skapaNyFraktsedel);
 
-        seAllaLagerfordaProdukter.setText("Se alla lagerförda produkter");
+        seAllaLagerfordaProdukter.setText("Lagerförda produkter");
         seAllaLagerfordaProdukter.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
@@ -323,6 +326,23 @@ public class MainFrame extends javax.swing.JFrame {
                 seAllaLagerfordaProdukterMenuSelected(evt);
             }
         });
+
+        menuItemAllaLagerfordaProdukter.setText("Se alla lagerförda produkter");
+        menuItemAllaLagerfordaProdukter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemAllaLagerfordaProdukterActionPerformed(evt);
+            }
+        });
+        seAllaLagerfordaProdukter.add(menuItemAllaLagerfordaProdukter);
+
+        menuItemLaggTillLagerfordHatt.setText("Lägg till ny lagerförd hatt");
+        menuItemLaggTillLagerfordHatt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemLaggTillLagerfordHattActionPerformed(evt);
+            }
+        });
+        seAllaLagerfordaProdukter.add(menuItemLaggTillLagerfordHatt);
+
         jMenuBar1.add(seAllaLagerfordaProdukter);
 
         forsalningsstatistik.setText("Försäljningsstatistik");
@@ -443,19 +463,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void seAllaLagerfordaProdukterMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaLagerfordaProdukterMenuSelected
         // TODO add your handling code here: 
-        taBortValkommen();
-        allaLagerfordaProdukterPanel = new SeAllaLagerfordaProdukter(idb, txtfEmail.getText());
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(allaLagerfordaProdukterPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Alla lagerförda produkter");
-
-        // Visa
-        showPanel("Alla lagerförda produkter");
-       
     }//GEN-LAST:event_seAllaLagerfordaProdukterMenuSelected
 
     private void forsalningsstatistikMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_forsalningsstatistikMenuSelected
@@ -701,6 +708,38 @@ public class MainFrame extends javax.swing.JFrame {
         showPanel("Alla kunder");
     }//GEN-LAST:event_menuItemSeAllaKunderActionPerformed
 
+    private void menuItemAllaLagerfordaProdukterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAllaLagerfordaProdukterActionPerformed
+        // TODO add your handling code here:
+        taBortValkommen();
+        allaLagerfordaProdukterPanel = new SeAllaLagerfordaProdukter(idb, txtfEmail.getText());
+
+        // Skapa en wrapper-panel med centrerad layout
+        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
+        wrapper.add(allaLagerfordaProdukterPanel); // lägg SeAllaOrdrar i mitten
+
+        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
+        addPanelToCardLayout(wrapper, "Alla lagerförda produkter");
+
+        // Visa
+        showPanel("Alla lagerförda produkter");
+    }//GEN-LAST:event_menuItemAllaLagerfordaProdukterActionPerformed
+
+    private void menuItemLaggTillLagerfordHattActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLaggTillLagerfordHattActionPerformed
+        // TODO add your handling code here:
+        taBortValkommen();
+        laggTillLagerfordHattPanel = new LaggTillLagerfordHatt(idb, txtfEmail.getText());
+
+        // Skapa en wrapper-panel med centrerad layout
+        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
+        wrapper.add(laggTillLagerfordHattPanel); // lägg SeAllaOrdrar i mitten
+
+        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
+        addPanelToCardLayout(wrapper, "Lägg till lagerförda hattar");
+
+        // Visa
+        showPanel("Lägg till lagerförda hattar");
+    }//GEN-LAST:event_menuItemLaggTillLagerfordHattActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -717,7 +756,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblValkommen;
     private javax.swing.JMenuItem loggaUt;
     private javax.swing.JLabel logotyp;
+    private javax.swing.JMenuItem menuItemAllaLagerfordaProdukter;
     private javax.swing.JMenuItem menuItemLaggTillKund;
+    private javax.swing.JMenuItem menuItemLaggTillLagerfordHatt;
     private javax.swing.JMenuItem menuItemSeAllaKunder;
     private javax.swing.JMenu menuOrdrar;
     private javax.swing.JPasswordField pswfLosenord;
