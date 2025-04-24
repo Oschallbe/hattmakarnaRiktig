@@ -214,7 +214,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                 }
             });
 
-    /*        inputFalt.addActionListener(e -> {
+            inputFalt.addActionListener(e -> {
                 String text = inputFalt.getText().trim();
                 if (!text.isEmpty()) {
                     modell.addElement(text);
@@ -245,10 +245,10 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
                     }
                 }
-            }); */
+            }); 
     
     
-            inputFalt.addActionListener(e -> {
+     /*       inputFalt.addActionListener(e -> {
     String text = inputFalt.getText().trim();
 
     if (!text.isEmpty()) {
@@ -285,7 +285,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
             System.out.println("Fel vid kontroll/sparning av TilldelningsID: " + ex.getMessage());
         }
     }
-});
+});*/
 
             try {
 
