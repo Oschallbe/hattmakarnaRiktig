@@ -24,7 +24,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
     private String inloggadAnvandare;
     private String klickatOrderNr;
     private String express;
-    private int kundID; 
+    private int kundID;
 
     /**
      * Creates new form SeSpecialOrder
@@ -44,74 +44,89 @@ public class SeSpecialOrder extends javax.swing.JPanel {
     //Metod för att fylla tabellerna med info från databasen. 
     public void fyllTabell() {
         try {
-            //Skapar en array som lagrar kolumnnamnen.
-            String kolumnNamn[] = {"OrderItemID", "Matt", "Pris", "AntalProdukter", "AnstalldID"};
+            // Skapar en array som lagrar kolumnnamnen utan "OrderItemID" (Artikelnummer).
+            String kolumnNamn[] = {"Huvudmått", "Pris", "AntalProdukter", "AnstalldID"};
 
-            //Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
-            DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0);
+            // Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
+            DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
+                // Gör att tabellen inte går att redigera, men det går fortfarande att markera en rad i tabellen.
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
 
-            //Hämtar alla anställdas id och lägger det i Arraylistan "id".
-            String selectOid = "select OrderItemID from orderitem where BestallningID =" + klickatOrderNr + " order by(OrderItemID);";
+            // Hämtar alla anställdas id och lägger det i Arraylistan "id".
+            String selectOid = "select OrderItemID from orderitem where BestallningID = " + klickatOrderNr + " order by(OrderItemID);";
             ArrayList<String> oid = idb.fetchColumn(selectOid);
 
-            //Om AnstalldId inte är tom körs en for-each loop som för varje id hämtar id, förnamn och efternamn om det anställda som placeras i Hashmapen "Info".
+            // Om AnstalldId inte är tom körs en for-each loop som för varje id hämtar id, förnamn och efternamn om det anställda som placeras i Hashmapen "Info".
             if (oid != null) {
                 for (String ettOid : oid) {
                     String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, SpecialProduktID from orderitem where OrderItemID = " + ettOid + ";";
                     HashMap<String, String> info = idb.fetchRow(selectInfo);
 
-                    //Hämtar pris och namn för produkten från tabellen "standardprodukt".
+                    // Hämtar AnstalldID och lagrar det i lokalvariabeln aID.
+                    String aID = info.get("AnstalldID");
+
+                    // Skapar en tom sträng som default för hopslaget namn.
+                    String hopslagetNamn = "";
+
+                    // Om aID inte är null och inte tomt hämtas namn på anställd.
+                    if (aID != null && !aID.isEmpty()) {
+                        String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld where AnstalldID = " + aID + ";";
+                        HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
+
+                        // Om vi får ett resultat, slå ihop förnamn och efternamn.
+                        if (anstalldFornamnEfternamn != null) {
+                            String fornamn = anstalldFornamnEfternamn.get("Fornamn");
+                            String efternamn = anstalldFornamnEfternamn.get("Efternamn");
+
+                            if (fornamn != null && efternamn != null) {
+                                hopslagetNamn = fornamn + " " + efternamn;
+                            }
+                        }
+                    }
+
+                    // Hämtar pris och namn för produkten från tabellen "specialprodukt".
                     String ettProduktID = info.get("SpecialProduktID");
                     String selectProdukt = "select Matt, Pris from specialprodukt where SpecialProduktID = " + ettProduktID + ";";
                     HashMap<String, String> infoNamnPris = idb.fetchRow(selectProdukt);
 
-                    //AnstalldID byts ut mot för- och efternamn på den anställde. 
-                    String aid = info.get("AnstalldID");
-                    String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld where AnstalldID = " + aid + ";";
-                    HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
-                    String hopslagetNamn = anstalldFornamnEfternamn.get("Fornamn") + " " + anstalldFornamnEfternamn.get("Efternamn");
-
-                    //Skapar en array som håller data för en rad i tabellen.
+                    // Skapar en array som håller data för en rad i tabellen, utan "OrderItemID" (Artikelnummer).
                     Object[] enRad = new Object[kolumnNamn.length];
-                    enRad[0] = info.get("OrderItemID");
-                    enRad[1] = infoNamnPris.get("Matt");
-                    enRad[2] = infoNamnPris.get("Pris");
-                    enRad[3] = info.get("AntalProdukter");
-                    enRad[4] = hopslagetNamn;
+                    enRad[0] = infoNamnPris.get("Matt"); // visas som "Huvudmått" i kolumn
+                    enRad[1] = infoNamnPris.get("Pris");
+                    enRad[2] = info.get("AntalProdukter");
+                    enRad[3] = hopslagetNamn;  // Anställdens namn
 
                     allaProdukter.addRow(enRad);
-
                 }
 
-                //Jtable sätts med data från DefaultTableModel.
+                // Jtable sätts med data från DefaultTableModel.
                 tblAllaProdukter.setModel(allaProdukter);
-
             }
 
             tblAllaProdukter.setAutoResizeMode(tblAllaProdukter.AUTO_RESIZE_OFF);
 
-            //Sätter storleken på tabellen.
-            TableColumn col = tblAllaProdukter.getColumnModel().getColumn(0); //id
-            col.setPreferredWidth(100);
-
-            col = tblAllaProdukter.getColumnModel().getColumn(1); //namn.
+            // Sätter storleken på tabellen.
+            TableColumn col = tblAllaProdukter.getColumnModel().getColumn(0); // huvudmått
             col.setPreferredWidth(75);
 
-            col = tblAllaProdukter.getColumnModel().getColumn(2); //pris.
+            col = tblAllaProdukter.getColumnModel().getColumn(1); // pris
             col.setPreferredWidth(75);
 
-            col = tblAllaProdukter.getColumnModel().getColumn(3); //antal.
+            col = tblAllaProdukter.getColumnModel().getColumn(2); // antal
             col.setPreferredWidth(75);
 
-            col = tblAllaProdukter.getColumnModel().getColumn(4); //anstalldID.
+            col = tblAllaProdukter.getColumnModel().getColumn(3); // tilldelad
             col.setPreferredWidth(154);
 
-            //Ändrar rubrikerna i tabellen.
-            tblAllaProdukter.getColumnModel().getColumn(0).setHeaderValue("Artikelnummer");
-            tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Matt");
-            tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Pris");
-            tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Antal");
-            tblAllaProdukter.getColumnModel().getColumn(4).setHeaderValue("Tilldelad:");
+            // Ändrar rubrikerna i tabellen.
+            tblAllaProdukter.getColumnModel().getColumn(0).setHeaderValue("Huvudmått (cm)");
+            tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Pris");
+            tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Antal");
+            tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Tilldelad:");
 
         } catch (InfException ex) {
             System.out.println(ex);
@@ -246,39 +261,38 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             System.out.println(ex);
         }
     }
-public void fyllLabels() {
-    
-    try {
-        String selectOrderNr = "SELECT BestallningID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
-        String orderNr = idb.fetchSingle(selectOrderNr);
-        lblOrderNr.setText(orderNr);
 
-        String selectTillverkningstid = "SELECT Tillverkningstid FROM specialprodukt WHERE SpecialProduktID = '" + klickatOrderNr + "'";
-        String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
-        lblTillverkningstid2.setText(tillverkningstid);
+    public void fyllLabels() {
+        try {
+            // Hämta BestallningID baserat på det klickade ordernumret (klickatOrderNr)
+            String selectOrderNr = "SELECT BestallningID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+            String orderNr = idb.fetchSingle(selectOrderNr);  // Hämtar BestallningID från databasen
+            lblOrderNr.setText(orderNr);  // Sätter BestallningID i labeln lblOrderNr
 
-        String selectKundID = "SELECT KundID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
-        String kundIDStr = idb.fetchSingle(selectKundID);
-        kundID = Integer.parseInt(kundIDStr);
+            // Hämta Tillverkningstid för specialprodukten baserat på SpecialProduktID
+            String selectTillverkningstid = "SELECT Tillverkningstid FROM specialprodukt WHERE SpecialProduktID = '" + klickatOrderNr + "'";
+            String tillverkningstid = idb.fetchSingle(selectTillverkningstid);  // Hämtar tillverkningstiden
+            lblTillverkningstid2.setText(tillverkningstid);  // Sätter tillverkningstiden i labeln lblTillverkningstid2
 
-        String selectKund = "SELECT Fornamn, Efternamn FROM kund WHERE KundID = '" + kundID + "'";
-        HashMap<String, String> kund = idb.fetchRow(selectKund);
+            // Hämta kundID baserat på BestallningID
+            String selectKundID = "SELECT KundID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+            String kundIDStr = idb.fetchSingle(selectKundID);  // Hämtar KundID från databasen
+            kundID = Integer.parseInt(kundIDStr);  // Omvandlar kundID till ett heltal (Integer)
 
-        if (kund != null) {
-            String kundIDochNamn = kundID + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
-            lblKundNr.setText(kundIDochNamn);
-        } else {
-            lblKundNr.setText("Ingen kund hittades.");
+            // Sätt endast kundID i labeln lblKundNr utan "KundID:" texten
+            lblKundNr.setText(String.valueOf(kundID));  // Uppdaterar labeln med endast KundID (utan text)
+
+            // Hämta Status baserat på BestallningID
+            String selectStatus = "SELECT Status FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+            String status = idb.fetchSingle(selectStatus);  // Hämtar status för beställningen
+            cbStatus.setSelectedItem(status);  // Sätter status i dropdown-menyn cbStatus
+            cbStatus.setEnabled(false);  // Inaktiverar dropdownen så användaren inte kan ändra statusen
+
+        } catch (InfException ex) {
+            // Hantera eventuella fel som kan uppstå under databasfrågor eller uppdatering av labels
+            System.out.println("Fel i fyllLabels: " + ex.getMessage());
         }
 
-
-        String selectStatus = "SELECT Status FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
-        String status = idb.fetchSingle(selectStatus);
-        cbStatus.setSelectedItem(status);
-        cbStatus.setEnabled(false);
-    } catch (InfException ex) {
-        System.out.println("Fel i fyllLabels: " + ex.getMessage());
-    }
 //    try {
 //        String selectOrderNr = "select SpecialProduktID from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
 //        String orderNr = idb.fetchSingle(selectOrderNr);
@@ -307,7 +321,7 @@ public void fyllLabels() {
 //    } catch (InfException ex) {
 //        System.out.println(ex);
 //    }
-}
+    }
 
     // Metod som fyller i labels med information om en specifik specialprodukt.
     /*
@@ -343,8 +357,8 @@ public void fyllLabels() {
 
         }
     }
-*/
-    /*public void hamtaTotalPris() {
+     */
+ /*public void hamtaTotalPris() {
         try {
             double totalPris = 0.0;
             DefaultTableModel prisTabell = (DefaultTableModel) tblTabell.getModel();
@@ -408,7 +422,7 @@ public void fyllLabels() {
         lblSpecialorder.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSpecialorder.setText("Specialorder:");
 
-        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad" }));
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad", "Returnerad" }));
 
         lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblOrderNr.setText("jLabel1");
@@ -470,6 +484,7 @@ public void fyllLabels() {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
+        tblAllaProdukter.setDragEnabled(true);
         jScrollPane1.setViewportView(tblAllaProdukter);
 
         btnSeKundinfo.setText("Se kundinformation");
@@ -503,50 +518,47 @@ public void fyllLabels() {
                         .addGap(18, 18, 18)
                         .addComponent(btnSpara))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
+                        .addGap(48, 48, 48)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(129, 129, 129)
+                                .addComponent(lblTillverkningstid2))
+                            .addComponent(lblKund)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblTillverkningstid)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(129, 129, 129)
-                                                .addComponent(lblTillverkningstid2))
-                                            .addComponent(lblKund))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnSeSpecifikProdukt))
+                                        .addComponent(lblStatus)
+                                        .addGap(40, 40, 40)
+                                        .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblTillverkningstid)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblStatus)
-                                                .addGap(40, 40, 40)
-                                                .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblSpecialorder)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(lblOrderNr)
-                                                .addGap(114, 114, 114)
-                                                .addComponent(btnTillbaka))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(115, 115, 115)
-                                                .addComponent(lblKundNr)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnSeKundinfo)))
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(42, 42, 42)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                                        .addComponent(lblSpecialorder)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblOrderNr)
+                                        .addGap(114, 114, 114)
+                                        .addComponent(btnTillbaka))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(115, 115, 115)
+                                        .addComponent(lblKundNr)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnSeKundinfo)))
+                                .addGap(8, 8, 8)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnSeSpecifikProdukt)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 227, Short.MAX_VALUE)
+                        .addGap(0, 226, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -556,7 +568,7 @@ public void fyllLabels() {
                                     .addComponent(lblSpecialorder)
                                     .addComponent(lblOrderNr)
                                     .addComponent(btnTillbaka))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -567,16 +579,13 @@ public void fyllLabels() {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTillverkningstid)
                             .addComponent(lblTillverkningstid2))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(btnSeSpecifikProdukt))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblStatus)
-                                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblStatus)
+                            .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addComponent(btnSeSpecifikProdukt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -588,34 +597,34 @@ public void fyllLabels() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeSpecifikProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeSpecifikProduktActionPerformed
-       try {
-        int valdRad = tblAllaProdukter.getSelectedRow();
+        try {
+            int valdRad = tblAllaProdukter.getSelectedRow();
 
-        if (valdRad == -1) {
-            JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
-            return;
+            if (valdRad == -1) {
+                JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
+                return;
+            }
+
+            // Hämta OrderItemID från tabellen
+            String orderItemID = tblAllaProdukter.getValueAt(valdRad, 0).toString();
+
+            // Hämta antal från tabellen
+            String antal = tblAllaProdukter.getValueAt(valdRad, 3).toString();
+
+            // 🧠 Hämta det faktiska SpecialProduktID:t från OrderItem-tabellen
+            String specialProduktID = idb.fetchSingle("SELECT SpecialProduktID FROM OrderItem WHERE OrderItemID = " + orderItemID + ";");
+
+            if (specialProduktID != null && !specialProduktID.equals("null")) {
+                SeInfoSpecialprodukt nyVy = new SeInfoSpecialprodukt(idb, inloggadAnvandare, specialProduktID, Integer.parseInt(antal));
+                nyVy.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Ingen specialprodukt kopplad till denna orderrad.");
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Kunde inte öppna produkten: " + ex.getMessage());
+            ex.printStackTrace();
         }
-
-        // Hämta OrderItemID från tabellen
-        String orderItemID = tblAllaProdukter.getValueAt(valdRad, 0).toString();
-
-        // Hämta antal från tabellen
-        String antal = tblAllaProdukter.getValueAt(valdRad, 3).toString();
-
-        // 🧠 Hämta det faktiska SpecialProduktID:t från OrderItem-tabellen
-        String specialProduktID = idb.fetchSingle("SELECT SpecialProduktID FROM OrderItem WHERE OrderItemID = " + orderItemID + ";");
-
-        if (specialProduktID != null && !specialProduktID.equals("null")) {
-            SeInfoSpecialprodukt nyVy = new SeInfoSpecialprodukt(idb, inloggadAnvandare, specialProduktID, Integer.parseInt(antal));
-            nyVy.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Ingen specialprodukt kopplad till denna orderrad.");
-        }
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Kunde inte öppna produkten: " + ex.getMessage());
-        ex.printStackTrace();
-    }
     }//GEN-LAST:event_btnSeSpecifikProduktActionPerformed
 
     private void btnRedigeraStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraStatusActionPerformed
@@ -626,7 +635,7 @@ public void fyllLabels() {
 
         //Visar en popup-ruta när man klickar på "Åta produkt" som förklarar hur man åtar en produkt.
         javax.swing.JOptionPane.showMessageDialog(this, "Du kan nu tilldela en person en produkt genom att dubbelklicka i rutan för Tilldelad för den specifika produkten. "
-            + "OBS efter du har skrivit in ett nytt ID måste du klicka ENTER innan du klickar på spara knappen!");
+                + "OBS efter du har skrivit in ett nytt ID måste du klicka ENTER innan du klickar på spara knappen!");
 
         //Tabellen som visas uppdateras till den tabell där det går att redigera anställningsID i.
         DefaultTableModel redigerbarModell = genereraRedigerbarModell();
@@ -649,7 +658,7 @@ public void fyllLabels() {
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
-private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {                                              
+    private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             if (kundID > 0) {
                 JPanel kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeAllaOrdrar");
@@ -664,7 +673,6 @@ private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {
         }
     }
 
-    
     /*
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKundinfoActionPerformed
   
