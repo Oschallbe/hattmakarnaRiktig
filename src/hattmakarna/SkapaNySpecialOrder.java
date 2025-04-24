@@ -99,11 +99,14 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
 
     public void fyllMaterialComboBox() {
         try {
-
             comboMaterial.removeAllItems(); // Töm först
             comboMaterial.addItem("Välj material"); // Dummy-post först
+
             String sqlFraga = "SELECT Namn FROM Material";
             ArrayList<String> materialLista = idb.fetchColumn(sqlFraga);
+
+            //Sortera listan i bokstavsordning
+            java.util.Collections.sort(materialLista, String.CASE_INSENSITIVE_ORDER);
 
             for (String namn : materialLista) {
                 comboMaterial.addItem(namn);
@@ -147,52 +150,125 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
         }
     }
 
+    private void sorteraTabellEfterNamn() {
+    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    int rowCount = model.getRowCount();
+
+    // Spara raderna i en lista
+    ArrayList<Object[]> rader = new ArrayList<>();
+    for (int i = 0; i < rowCount; i++) {
+        Object[] radData = new Object[model.getColumnCount()];
+        for (int j = 0; j < model.getColumnCount(); j++) {
+            radData[j] = model.getValueAt(i, j);
+        }
+        rader.add(radData);
+    }
+
+    // Sortera listan efter kolumn 0 (namn)
+    rader.sort((r1, r2) -> r1[0].toString().compareToIgnoreCase(r2[0].toString()));
+
+    // Töm modellen och lägg tillbaka raderna i sorterad ordning
+    model.setRowCount(0);
+    for (Object[] rad : rader) {
+        model.addRow(rad);
+    }
+}
+
     private void laggTillMaterialIRuta() {
         try {
-            String valtMaterial = (String) comboMaterial.getSelectedItem();
-            String mangdText = txtMangd.getText().trim();
-            String valjFunktion = (String) comboFunktion.getSelectedItem();
+        String valtMaterial = (String) comboMaterial.getSelectedItem();
+        String mangdText = txtMangd.getText().trim();
+        String valjFunktion = (String) comboFunktion.getSelectedItem();
 
-            if (!Validering.faltInteTomt(mangdText)) {
-                JOptionPane.showMessageDialog(null, "Vänligen fyll i mängd material");
-                return;
-            }
-
-            if (!Validering.arGiltigtDouble(mangdText)) {
-                JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
-                return;
-            }
-            if (valjFunktion.equals("Välj funktion")) {
-                JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
-                return;
-            }
-            if (valtMaterial.equals("Välj material")) {
-                JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
-                return;
-            }
-
-
-            // Hämta info om materialet från databasen
-            String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
-            HashMap<String, String> rad = idb.fetchRow(sql);
-
-            if (rad != null && !rad.isEmpty()) {
-                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-                model.addRow(new Object[]{
-                    rad.get("Namn"),
-                    rad.get("Typ"),
-                    rad.get("Farg"),
-                    rad.get("Pris"),
-                    mangdText,
-                    rad.get("Enhet"),
-                    valjFunktion
-
-                });
-            }
-
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
+        if (!Validering.faltInteTomt(mangdText)) {
+            JOptionPane.showMessageDialog(null, "Vänligen fyll i mängd material");
+            return;
         }
+
+        if (!Validering.arGiltigtDouble(mangdText)) {
+            JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
+            return;
+        }
+        if (valjFunktion.equals("Välj funktion")) {
+            JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
+            return;
+        }
+        if (valtMaterial.equals("Välj material")) {
+            JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
+            return;
+        }
+
+        // Hämta info om materialet från databasen
+        String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
+        HashMap<String, String> rad = idb.fetchRow(sql);
+
+        if (rad != null && !rad.isEmpty()) {
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+
+            // Lägg till den nya raden
+            model.addRow(new Object[]{
+                rad.get("Namn"),
+                rad.get("Typ"),
+                rad.get("Farg"),
+                rad.get("Pris"),
+                mangdText,
+                rad.get("Enhet"),
+                valjFunktion
+            });
+
+            // Sortera om raderna efter namn (kolumn 0)
+            sorteraTabellEfterNamn();
+        }
+
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
+    }
+       
+//        try {
+//            String valtMaterial = (String) comboMaterial.getSelectedItem();
+//            String mangdText = txtMangd.getText().trim();
+//            String valjFunktion = (String) comboFunktion.getSelectedItem();
+//
+//            if (!Validering.faltInteTomt(mangdText)) {
+//                JOptionPane.showMessageDialog(null, "Vänligen fyll i mängd material");
+//                return;
+//            }
+//
+//            if (!Validering.arGiltigtDouble(mangdText)) {
+//                JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
+//                return;
+//            }
+//            if (valjFunktion.equals("Välj funktion")) {
+//                JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
+//                return;
+//            }
+//            if (valtMaterial.equals("Välj material")) {
+//                JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
+//                return;
+//            }
+//
+//
+//            // Hämta info om materialet från databasen
+//            String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
+//            HashMap<String, String> rad = idb.fetchRow(sql);
+//
+//            if (rad != null && !rad.isEmpty()) {
+//                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+//                model.addRow(new Object[]{
+//                    rad.get("Namn"),
+//                    rad.get("Typ"),
+//                    rad.get("Farg"),
+//                    rad.get("Pris"),
+//                    mangdText,
+//                    rad.get("Enhet"),
+//                    valjFunktion
+//
+//                });
+//            }
+//
+//        } catch (InfException e) {
+//            JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
+//        }
     }
 
     /**
@@ -249,6 +325,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
         btnLaggTillNyttMaterial = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnTaBortMaterialOrder = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(958, 600));
 
@@ -394,6 +471,13 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(jTable1);
 
+        btnTaBortMaterialOrder.setText("Ta bort material från order");
+        btnTaBortMaterialOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTaBortMaterialOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -401,51 +485,55 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtTillverkningsTid, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTillverkningsTid, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtHuvudMatt, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(txtHojd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(9, 9, 9)
                                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(txtHojd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(6, 6, 6)
                                 .addComponent(txtBredd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13)
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
@@ -466,13 +554,21 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
                         .addGap(210, 210, 210)
                         .addComponent(btnSpara))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jComboKund, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(comboFunktion, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(140, 140, 140)
+                        .addComponent(btnLaggTillNyttMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboKund, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -484,22 +580,15 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
                                 .addGap(10, 10, 10)
                                 .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(20, 20, 20)
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(lblEnhet, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboFunktion, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblEnhet, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btnLaggTillNyttMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnLaggTillMaterialOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnLaggTillMaterialOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTaBortMaterialOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
@@ -515,6 +604,9 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
                         .addGap(40, 40, 40)
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(txtOrderID))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,90 +616,103 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
                             .addComponent(comboMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(btnSpara))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(txtOrderID)))
+                        .addComponent(btnSpara)))
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel3)
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel4)
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel5))
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboKund, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel23))))
+                        .addGap(8, 8, 8)
+                        .addComponent(jComboKund, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel6)
-                        .addGap(14, 14, 14)
-                        .addComponent(jCheckBox1))
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel25))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel25)
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel24)
-                            .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEnhet)))
-                    .addComponent(comboFunktion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btnLaggTillNyttMaterial)
-                        .addGap(23, 23, 23)
-                        .addComponent(btnLaggTillMaterialOrder)))
+                        .addGap(8, 8, 8)
+                        .addComponent(comboFunktion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnLaggTillNyttMaterial))
                 .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel4)
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel5))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel23))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(14, 14, 14)
+                                .addComponent(jCheckBox1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel24))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(txtMangd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(lblEnhet)))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(jLabel7))
+                            .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12)))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(jLabel7))
-                    .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                        .addComponent(btnLaggTillMaterialOrder)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnTaBortMaterialOrder)))
                 .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jLabel8)
                         .addGap(22, 22, 22)
-                        .addComponent(jLabel13)
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel11))
+                        .addComponent(jLabel13))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTillverkningsTid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel9)))
+                            .addComponent(jLabel9))
                         .addGap(4, 4, 4)
                         .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtHuvudMatt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel22))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel11))
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel17)
+                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel20)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel19)
-                            .addComponent(txtBredd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel15)
                             .addComponent(txtHojd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel14)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jLabel18)
+                        .addGap(1, 1, 1)
+                        .addComponent(txtBredd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(jLabel19))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jLabel20)
+                        .addGap(1, 1, 1)
+                        .addComponent(txtDjup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(140, 140, 140)
                         .addComponent(jLabel21))
@@ -801,18 +906,51 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLaggTillMaterialOrderActionPerformed
 
     private void btnLaggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillNyttMaterialActionPerformed
-        new LaggTillMaterial(idb, inloggadAnvandare).setVisible(true);
+        LaggTillMaterial nyttMaterialFönster = new LaggTillMaterial(idb, inloggadAnvandare);
+
+        nyttMaterialFönster.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                fyllMaterialComboBox(); // Uppdatera material-listan efter stängning
+            }
+        });
+
+        nyttMaterialFönster.setVisible(true);
     }//GEN-LAST:event_btnLaggTillNyttMaterialActionPerformed
 
     private void comboFunktionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboFunktionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboFunktionActionPerformed
 
+    private void btnTaBortMaterialOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortMaterialOrderActionPerformed
+     try {
+        int valdRad = jTable1.getSelectedRow();
+
+        if (valdRad == -1) {
+            JOptionPane.showMessageDialog(this, "Markera ett material att ta bort.");
+            return;
+        }
+
+        int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort det valda materialet?", "Bekräfta borttagning", JOptionPane.YES_NO_OPTION);
+
+        if (svar == JOptionPane.YES_OPTION) {
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+            model.removeRow(valdRad);
+
+            JOptionPane.showMessageDialog(this, "Materialet har tagits bort.");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Något gick fel vid borttagning: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnTaBortMaterialOrderActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLaggTillMaterialOrder;
     private javax.swing.JButton btnLaggTillNyttMaterial;
     private javax.swing.JButton btnSpara;
+    private javax.swing.JButton btnTaBortMaterialOrder;
     private javax.swing.JComboBox<String> comboFunktion;
     private javax.swing.JComboBox<String> comboMaterial;
     private javax.swing.JCheckBox jCheckBox1;
