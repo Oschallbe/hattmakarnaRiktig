@@ -870,6 +870,7 @@ VALUES
 ('Levererad', '2025-04-15', FALSE, 1, 1, 898, 'Standardbeställning'),
 ('Levererad', '2025-04-16', FALSE, 2, 2, 1347, 'Standardbeställning');
 
+-- test
 -- Två beställningar av samma hatt (samma namn, olika artikelnummer/produktID)
 INSERT INTO OrderItem (AntalProdukter, BestallningID, StandardProduktID, ProduktionsSchemaID, AnstalldID)
 VALUES
