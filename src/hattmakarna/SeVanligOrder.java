@@ -44,24 +44,43 @@ public class SeVanligOrder extends javax.swing.JPanel {
             String kolumnNamn[] = {"Artikelnummer", "Namn", "Pris", "AntalProdukter", "AnstalldID", "ProduktID"};
 
             //Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
-            DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0);
+            DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
 
             //Hämtar alla anställdas id och lägger det i Arraylistan "id".
             String selectOid = "SELECT OrderItemID FROM orderitem WHERE BestallningID = " + klickatOrderNr + " ORDER BY OrderItemID;";
             ArrayList<String> oid = idb.fetchColumn(selectOid);
 
-            //Om AnstalldId inte är tom körs en for-each loop som för varje id hämtar id, förnamn och efternamn om det anställda som placeras i Hashmapen "Info".
+            // Om AnstalldId inte är tom körs en for-each loop som för varje id hämtar id, förnamn och efternamn om det anställda som placeras i Hashmapen "Info".
             if (oid != null) {
                 for (String ettOid : oid) {
-                    String selectInfo = "SELECT OrderItemID, AntalProdukter, AnstalldID, StandardProduktID FROM orderitem WHERE OrderItemID = " + ettOid + ";";
+                    String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, StandardProduktID from orderitem where OrderItemID = " + ettOid + ";";
                     HashMap<String, String> info = idb.fetchRow(selectInfo);
 
-                    //Hämtar AnstalldID och lagrar det i lokalvariabeln aid.
-                    String aid = info.get("AnstalldID");
+                    // Hämtar AnstalldID och lagrar det i lokalvariabeln aID.
+                    String aID = info.get("AnstalldID");
 
-                    //Om aid är null så sätts det som en tom sträng som sedan visas som en tom ruta i jtable.
-                    if (aid == null) {
-                        aid = "";
+                    // Skapar en tom sträng som default för hopslaget namn.
+                    String hopslagetNamn = "";
+
+                    // Om aID inte är null och inte tomt hämtas namn på anställd.
+                    if (aID != null && !aID.isEmpty()) {
+                        String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld where AnstalldID = " + aID + ";";
+                        HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
+
+                        // Om vi får ett resultat, slå ihop förnamn och efternamn.
+                        if (anstalldFornamnEfternamn != null) {
+                            String fornamn = anstalldFornamnEfternamn.get("Fornamn");
+                            String efternamn = anstalldFornamnEfternamn.get("Efternamn");
+
+                            if (fornamn != null && efternamn != null) {
+                                hopslagetNamn = fornamn + " " + efternamn;
+                            }
+                        }
                     }
 
                     //Hämtar pris och namn för produkten från tabellen "standardprodukt".
@@ -75,7 +94,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
                     enRad[1] = produktData.get("Namn");
                     enRad[2] = produktData.get("Pris");
                     enRad[3] = info.get("AntalProdukter");
-                    enRad[4] = aid;
+                    enRad[4] = hopslagetNamn;
                     enRad[5] = ettProduktID;
                     allaProdukter.addRow(enRad);
 
@@ -352,7 +371,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
         btnRedigeraStatus = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnTillbaka = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnSeProduktOmProdukt = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         btnAtaProdukt = new javax.swing.JButton();
         btnSeKund = new javax.swing.JButton();
@@ -360,6 +379,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         lblExpress = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("Totalpris:");
@@ -417,7 +437,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblAllaProdukter);
 
         comboStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad" }));
+        comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad", "Returnerad" }));
         comboStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboStatusActionPerformed(evt);
@@ -441,10 +461,10 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("Se information om produkt");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSeProduktOmProdukt.setText("Se information om produkt");
+        btnSeProduktOmProdukt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSeProduktOmProduktActionPerformed(evt);
             }
         });
 
@@ -477,6 +497,9 @@ public class SeVanligOrder extends javax.swing.JPanel {
         lblExpress.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblExpress.setText("jLabel7");
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel9.setText("Skriv anställningsnummer i rutan \"Tilldelad\"!");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -493,56 +516,66 @@ public class SeVanligOrder extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblExpress))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnTillbaka)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnRedigeraStatus)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(btnAtaProdukt)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnSpara)))
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(lblExpress)))
+                        .addGap(0, 715, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblDatum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblOrderNr, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel2))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblKundNr)
+                                                .addGap(46, 46, 46)
+                                                .addComponent(btnSeKund)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnTillbaka))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblOrderNr, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblKundNr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSeKund)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(btnSeProduktOmProdukt, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnRedigeraStatus)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnAtaProdukt)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnSpara))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(52, 52, 52)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lblOrderNr))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblOrderNr)
+                            .addComponent(jLabel1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(btnTillbaka)))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -564,25 +597,22 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblPris))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
+                    .addComponent(jLabel9)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAtaProdukt)
-                            .addComponent(btnSpara)
-                            .addComponent(btnRedigeraStatus)
-                            .addComponent(jButton1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnTillbaka)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSeProduktOmProdukt)
+                    .addComponent(btnRedigeraStatus)
+                    .addComponent(btnAtaProdukt)
+                    .addComponent(btnSpara))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -612,15 +642,18 @@ public class SeVanligOrder extends javax.swing.JPanel {
         this.setVisible(false);
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSeProduktOmProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeProduktOmProduktActionPerformed
         try {
             int valdRad = tblAllaProdukter.getSelectedRow();
-            int antal = Integer.parseInt(tblAllaProdukter.getValueAt(valdRad, 3).toString()); // Anta
 
+            // Kontrollera först om en rad är vald
             if (valdRad == -1) {
-                JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
+                JOptionPane.showMessageDialog(this, "Markera raden för att se information om produkten.");
                 return;
             }
+
+            // Hämta antal från kolumn 3
+            int antal = Integer.parseInt(tblAllaProdukter.getValueAt(valdRad, 3).toString());
 
             // Hämta StandardProduktID från kolumn 5 (dold)
             String produktID = tblAllaProdukter.getValueAt(valdRad, 5).toString();
@@ -630,19 +663,18 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 return;
             }
 
-            // Skicka vidare StandardProduktID direkt
-new SeInfoStandardprodukt(idb, inloggadAnvandare, produktID, antal).setVisible(true);
+            // Öppna ny vy med produktinfo
+            new SeInfoStandardprodukt(idb, inloggadAnvandare, produktID, antal).setVisible(true);
 
         } catch (Exception ex) {
-            System.out.println("Fel i jButton1ActionPerformed: " + ex.getMessage());
+            System.out.println("Fel i btnSeProduktOmProduktActionPerformed: " + ex.getMessage());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSeProduktOmProduktActionPerformed
 
     private void btnAtaProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtaProduktActionPerformed
-
         //Visar en popup-ruta när man klickar på "Åta produkt" som förklarar hur man åtar en produkt.
-        javax.swing.JOptionPane.showMessageDialog(this, "Du kan nu tilldela en person en produkt genom att dubbelklicka i rutan för Tilldelad för den specifika produkten. "
-                + "OBS efter du har skrivit in ett nytt ID måste du klicka ENTER innan du klickar på spara knappen!");
+        javax.swing.JOptionPane.showMessageDialog(this, "Tilldela en produkt genom att fylla i rutan Tilldelad med anställningdID. "
+                + "OBS klicka ENTER innan du klickar på spara knappen!");
 
         //Tabellen som visas uppdateras till den tabell där det går att redigera anställningsID i.
         DefaultTableModel redigerbarModell = genereraRedigerbarModell();
@@ -650,7 +682,6 @@ new SeInfoStandardprodukt(idb, inloggadAnvandare, produktID, antal).setVisible(t
 
         //Ordnar storleken på varje kolumn.
         sattStorlekTabell();
-
         //Gör tilldelad-kolumnen redigerbar.
         tblAllaProdukter.setEnabled(true);
     }//GEN-LAST:event_btnAtaProduktActionPerformed
@@ -686,10 +717,10 @@ new SeInfoStandardprodukt(idb, inloggadAnvandare, produktID, antal).setVisible(t
     private javax.swing.JButton btnAtaProdukt;
     private javax.swing.JButton btnRedigeraStatus;
     private javax.swing.JButton btnSeKund;
+    private javax.swing.JButton btnSeProduktOmProdukt;
     private javax.swing.JButton btnSpara;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JComboBox<String> comboStatus;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -698,6 +729,7 @@ new SeInfoStandardprodukt(idb, inloggadAnvandare, produktID, antal).setVisible(t
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDatum;
