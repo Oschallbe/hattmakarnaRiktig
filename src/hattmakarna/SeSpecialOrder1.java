@@ -247,34 +247,66 @@ public class SeSpecialOrder1 extends javax.swing.JPanel {
         }
     }
 public void fyllLabels() {
+    
     try {
-        String selectOrderNr = "select SpecialProduktID from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+        String selectOrderNr = "SELECT BestallningID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
         String orderNr = idb.fetchSingle(selectOrderNr);
         lblOrderNr.setText(orderNr);
 
-        String selectTillverkningstid = "select Tillverkningstid from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+        String selectTillverkningstid = "SELECT Tillverkningstid FROM specialprodukt WHERE SpecialProduktID = '" + klickatOrderNr + "'";
         String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
         lblTillverkningstid2.setText(tillverkningstid);
 
-        String selectKund = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = '" + klickatOrderNr + "'";
+        String selectKundID = "SELECT KundID FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+        String kundIDStr = idb.fetchSingle(selectKundID);
+        kundID = Integer.parseInt(kundIDStr);
+
+        String selectKund = "SELECT Fornamn, Efternamn FROM kund WHERE KundID = '" + kundID + "'";
         HashMap<String, String> kund = idb.fetchRow(selectKund);
 
         if (kund != null) {
-            kundID = Integer.parseInt(kund.get("KundID")); // Spara endast siffran här
-            String kundIDochNamn = kund.get("KundID") + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
+            String kundIDochNamn = kundID + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
             lblKundNr.setText(kundIDochNamn);
         } else {
             lblKundNr.setText("Ingen kund hittades.");
         }
 
-        String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
-        String status = idb.fetchSingle(selectStatus);
-        cbStatus.setSelectedItem(status); 
-        cbStatus.setEnabled(false); 
 
+        String selectStatus = "SELECT Status FROM bestallning WHERE BestallningID = '" + klickatOrderNr + "'";
+        String status = idb.fetchSingle(selectStatus);
+        cbStatus.setSelectedItem(status);
+        cbStatus.setEnabled(false);
     } catch (InfException ex) {
-        System.out.println(ex);
+        System.out.println("Fel i fyllLabels: " + ex.getMessage());
     }
+//    try {
+//        String selectOrderNr = "select SpecialProduktID from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+//        String orderNr = idb.fetchSingle(selectOrderNr);
+//        lblOrderNr.setText(orderNr);
+//
+//        String selectTillverkningstid = "select Tillverkningstid from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
+//        String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
+//        lblTillverkningstid2.setText(tillverkningstid);
+//
+//        String selectKund = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = '" + klickatOrderNr + "'";
+//        HashMap<String, String> kund = idb.fetchRow(selectKund);
+//
+//        if (kund != null) {
+//            kundID = Integer.parseInt(kund.get("KundID")); // Spara endast siffran här
+//            String kundIDochNamn = kund.get("KundID") + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
+//            lblKundNr.setText(kundIDochNamn);
+//        } else {
+//            lblKundNr.setText("Ingen kund hittades.");
+//        }
+//
+//        String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
+//        String status = idb.fetchSingle(selectStatus);
+//        cbStatus.setSelectedItem(status); 
+//        cbStatus.setEnabled(false); 
+//
+//    } catch (InfException ex) {
+//        System.out.println(ex);
+//    }
 }
 
     // Metod som fyller i labels med information om en specifik specialprodukt.
@@ -609,20 +641,19 @@ public void fyllLabels() {
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {                                              
-    try {
-        if (kundID > 0) {
-            //JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
-
-            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
-            //main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
-            main.showPanel("specifikKundPanel");
-        } else {
-            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
+        try {
+            if (kundID > 0) {
+                JPanel kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeAllaOrdrar");
+                MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+                main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
+                main.showPanel("specifikKundPanel");
+            } else {
+                JOptionPane.showMessageDialog(this, "Kundnummer saknas eller kunde inte laddas.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
     }
-}
 
     
     /*
