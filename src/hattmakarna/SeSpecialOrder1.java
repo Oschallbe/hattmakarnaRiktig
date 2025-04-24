@@ -611,10 +611,10 @@ public void fyllLabels() {
 private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {                                              
     try {
         if (kundID > 0) {
-            JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
+            //JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
 
             MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
-            main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
+            //main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
             main.showPanel("specifikKundPanel");
         } else {
             JOptionPane.showMessageDialog(this, "Kundnummer saknas.");

@@ -596,13 +596,13 @@ public class SeSpecialOrder extends javax.swing.JFrame {
             int kundID = Integer.parseInt(kundNrText);
 
             // Skapa en panel för SpecifikKund istället för ett nytt fönster
-            JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
+            //JPanel specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID);
 
             // Hämta MainFrame för att byta till den nya panelen
             MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
 
             // Lägg till panelen i CardLayout (om den inte redan är tillagd)
-            main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
+            //main.addPanelToCardLayout(specifikKundPanel, "specifikKundPanel");
 
             // Byt till den nya panelen
             main.showPanel("specifikKundPanel");
