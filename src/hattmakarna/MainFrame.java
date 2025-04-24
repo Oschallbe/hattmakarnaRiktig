@@ -161,6 +161,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     return namn; // Returnera det formaterade förnamnet
 }
+    
+    public void taBortValkommen(){
+        lblValkommen.setVisible(false);
+    }
    
    
 
@@ -397,6 +401,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Kontrollera om "inlogg" redan finns
         // Skapa SeAllaOrdrar-panelen som vanligt
+        taBortValkommen();
         kalenderPanel = new KalenderSchemaRatt(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -415,6 +420,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void seAllaKunderMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaKunderMenuSelected
         // TODO add your handling code here:
+        taBortValkommen();
         allaKunderPanel = new SeAllaKunder(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -426,10 +432,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Alla kunder");
+      
     }//GEN-LAST:event_seAllaKunderMenuSelected
 
     private void seAllaLagerfordaProdukterMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaLagerfordaProdukterMenuSelected
-        // TODO add your handling code here:       
+        // TODO add your handling code here: 
+        taBortValkommen();
         allaLagerfordaProdukterPanel = new SeAllaLagerfordaProdukter(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -441,10 +449,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Alla lagerförda produkter");
+       
     }//GEN-LAST:event_seAllaLagerfordaProdukterMenuSelected
 
     private void forsalningsstatistikMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_forsalningsstatistikMenuSelected
         // TODO add your handling code here:
+        taBortValkommen();
         seForsaljningsstatistikPanel = new SeForsaljningsstatistik(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -456,11 +466,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Se försäljningsstatistik");
+        
     }//GEN-LAST:event_forsalningsstatistikMenuSelected
 
     private void hanteraAnstalldaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_hanteraAnstalldaMenuSelected
         // TODO add your handling code here:
-        
+        taBortValkommen();
         
         hanteraAllaAnstalldaPanel = new HanteraAllaAnstallda(idb, txtfEmail.getText());
 
@@ -478,12 +489,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void installningarMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_installningarMenuSelected
         // TODO add your handling code here:
-        
+        taBortValkommen();
     }//GEN-LAST:event_installningarMenuSelected
 
     private void loggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loggaUtActionPerformed
         // TODO add your handling code here:
+        taBortValkommen();
         loggaUt();
+        
     }//GEN-LAST:event_loggaUtActionPerformed
 
     private void pswfLosenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswfLosenordActionPerformed
@@ -583,6 +596,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void skapaNyFraktsedelMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_skapaNyFraktsedelMenuSelected
      // TODO add your handling code here:
+     taBortValkommen();
         fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -598,6 +612,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void seOrdrarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seOrdrarItemActionPerformed
         // TODO add your handling code here:
+        taBortValkommen();
         allaOrdrarPanel = new SeAllaOrdrar(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -613,6 +628,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void skapaNyOrderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skapaNyOrderItemActionPerformed
         // TODO add your handling code here:
+        taBortValkommen();
         nyOrderPanel = new SkapaNyOrder(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -628,6 +644,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void skapaNySpecialOrderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skapaNySpecialOrderItemActionPerformed
         // TODO add your handling code here:
+        taBortValkommen();
         skapaSpecialOrderPanel = new SkapaNySpecialOrder(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
