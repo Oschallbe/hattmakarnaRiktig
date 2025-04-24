@@ -135,7 +135,7 @@ private void fyllKundDetaljer() {
 
         lblHuvudmått.setText("Huvudmått");
 
-        lblFornamn.setText("Fornamn");
+        lblFornamn.setText("Förnamn");
 
         lblEfternamn.setText("Efternamn");
 
@@ -191,7 +191,11 @@ private void fyllKundDetaljer() {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblEfternamn)
@@ -252,14 +256,10 @@ private void fyllKundDetaljer() {
                                 .addGap(40, 40, 40)
                                 .addComponent(BtnRedigera)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(BtnSpara))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnTillbaka)
-                        .addGap(95, 95, 95))))
+                                .addComponent(BtnSpara))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnTillbaka))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,7 +317,7 @@ private void fyllKundDetaljer() {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(txtFakturaPostnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnTaBort)
                     .addComponent(BtnRedigera)
@@ -340,9 +340,9 @@ private void fyllKundDetaljer() {
                 + "Epost = NULL, "
                 + "Telefonnummer = NULL, "
                 + "LeveransOrt = NULL, "
-                + "FakturaOrt = NULL"
+                + "FakturaOrt = NULL, "
                 + "LeveransAdress = NULL, "
-                + "FakturaAdress = NULL, "
+                + "FakturaAdress = NULL "
                 + "WHERE KundID = " + kundID + ";";
 
                 // Utför uppdateringen
@@ -409,7 +409,7 @@ private void fyllKundDetaljer() {
             "FakturaPostnummer = '" + fakturaPostNr + "', " +
             "FakturaOrt = '" + fakturaOrt + "', " +
             "FakturaLand = '" + fakturaLand + "', " +
-            "Huvudmatt = '" + matt + "' " +  // Lägg till huvudmått här
+            "Matt = '" + matt + "' " +  // Lägg till huvudmått här
             "WHERE KundID = " + kundID; // Uppdatera med relevant kundID
 
             idb.update(updateQuery); // Utför SQL-uppdateringen
