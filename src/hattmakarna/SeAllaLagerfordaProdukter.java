@@ -13,15 +13,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 /**
  *
  * @author oscar
  */
 public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
-    
+
     private InfDB idb;
-    private String inloggadAnvandare; 
+    private String inloggadAnvandare;
 
     public SeAllaLagerfordaProdukter(InfDB idb, String ePost) {
         this.idb = idb;
@@ -29,25 +28,35 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         initComponents();
         seLagerfordaProdukter();
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int rad = jTable1.rowAtPoint(evt.getPoint());
-            int kolumn = jTable1.columnAtPoint(evt.getPoint());
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int rad = jTable1.rowAtPoint(evt.getPoint());
+                int kolumn = jTable1.columnAtPoint(evt.getPoint());
 
-            // Kolumn 4 = "Materiallista"
-            if (kolumn == 4 && rad >= 0) {
-                String artikelnummer = jTable1.getValueAt(rad, 0).toString();
-                visaMaterialLista(artikelnummer);}}});
+                // Kolumn 4 = "Materiallista"
+                if (kolumn == 4 && rad >= 0) {
+                    String artikelnummer = jTable1.getValueAt(rad, 0).toString();
+                    visaMaterialLista(artikelnummer);
+                }
+            }
+        });
+        
+        
+        
     }
     
+    
+
     private void seLagerfordaProdukter() {
         try {
             // SQL-fråga för att hämta data från databasen
-            String query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE Aktiv = TRUE";
+            String query = "SELECT Artikelnummer, Namn, Pris, Matt, StandardProduktID FROM StandardProdukt WHERE Aktiv = TRUE";
+
             List<HashMap<String, String>> result = idb.fetchRows(query);
 
             // Hämta JTable:s modell
-             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Rensa gamla data
+        String[] kolumner = {"Art. no", "Namn", "Pris", "Mått", "Materiallista", "ProduktID"};
+        DefaultTableModel model = new DefaultTableModel(kolumner, 0);
+        jTable1.setModel(model); 
 
             if (result != null) {
                 for (HashMap<String, String> row : result) {
@@ -58,7 +67,12 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                         row.get("Pris"),
                         row.get("Matt"),
                         "Se material",
+                        row.get("StandardProduktID") // extra kolumn för btnSeProdukt
                     });
+
+                    jTable1.getColumnModel().getColumn(5).setMinWidth(0);
+                    jTable1.getColumnModel().getColumn(5).setMaxWidth(0);
+                    jTable1.getColumnModel().getColumn(5).setWidth(0);
                 }
             } else {
                 System.out.println("Ingen data hittades i tabellen.");
@@ -67,52 +81,44 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
             System.out.println("Fel vid hämtning av data: " + e.getMessage());
         }
     }
+
     private void visaMaterialLista(String Artikelnummer) {
-    try {
-        // SQL-fråga: hämta material kopplat till artikelnumret
-        /*String sql = "SELECT M.Namn, M.Typ, M.Farg " +
-             "FROM Material M " +
-             "JOIN StandardProdukt sp ON M.StandardProduktid = sp.StandardProduktID " +
-             "WHERE sp.Artikelnummer = '" + Artikelnummer + "'";
+        try {
 
-        List<HashMap<String, String>> material = idb.fetchRows(sql);
-        */
-        String fragaMateriallista = 
-        "SELECT Material.Namn, Material.Typ, Material.Farg, StandardProdukt_Material.Mängd, Material.Enhet " +
-        "FROM Material " +
-        "JOIN StandardProdukt_Material " +
-        "ON Material.MaterialID = StandardProdukt_Material.MaterialID " +
-        "WHERE StandardProdukt_Material.StandardProduktID = " +
-        "(SELECT StandardProduktID FROM StandardProdukt WHERE StandardProdukt.Artikelnummer = '" + Artikelnummer + "');";
-        List<HashMap<String, String>> material = idb.fetchRows(fragaMateriallista);
-        StringBuilder info = new StringBuilder();
+            String fragaMateriallista
+                    = "SELECT Material.Namn, Material.Typ, Material.Farg, StandardProdukt_Material.Mängd, Material.Enhet "
+                    + "FROM Material "
+                    + "JOIN StandardProdukt_Material "
+                    + "ON Material.MaterialID = StandardProdukt_Material.MaterialID "
+                    + "WHERE StandardProdukt_Material.StandardProduktID = "
+                    + "(SELECT StandardProduktID FROM StandardProdukt WHERE StandardProdukt.Artikelnummer = '" + Artikelnummer + "');";
+            List<HashMap<String, String>> material = idb.fetchRows(fragaMateriallista);
+            StringBuilder info = new StringBuilder();
 
-        if (material != null && !material.isEmpty()) {
-            for (HashMap<String, String> rad : material) {
-                info.append(rad.get("Namn"))
-                    .append(" – ")
-                    .append(rad.get("Typ"))
-                    .append(" – ")
-                    .append(rad.get("Farg"))
-                    .append(" – ")
-                    .append("Mängd: ")
-                    .append(rad.get("Mängd"))
-                    .append(" ") 
-                    .append(rad.get("Enhet"))
-                    .append("\n");
+            if (material != null && !material.isEmpty()) {
+                for (HashMap<String, String> rad : material) {
+                    info.append(rad.get("Namn"))
+                            .append(" – ")
+                            .append(rad.get("Typ"))
+                            .append(" – ")
+                            .append(rad.get("Farg"))
+                            .append(" – ")
+                            .append("Mängd: ")
+                            .append(rad.get("Mängd"))
+                            .append(" ")
+                            .append(rad.get("Enhet"))
+                            .append("\n");
+                }
+            } else {
+                info.append("Inget material hittades.");
             }
-        } else {
-            info.append("Inget material hittades.");
+
+            JOptionPane.showMessageDialog(this, info.toString(), "Materiallista", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
-
-        JOptionPane.showMessageDialog(this, info.toString(), "Materiallista", JOptionPane.INFORMATION_MESSAGE);
-
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
     }
-}
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -131,6 +137,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         btnTaBort = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnSeProdukt = new javax.swing.JButton();
 
         txtSok.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,6 +195,13 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
 
         jLabel2.setText("Sök produkt efter artikelnummer");
 
+        btnSeProdukt.setText("Se information om produkt");
+        btnSeProdukt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeProduktActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,12 +220,15 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnLaggTill)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnLaggTill)
+                                        .addGap(91, 91, 91)
+                                        .addComponent(btnSeProdukt))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(txtSok, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(20, 20, 20)
                                         .addComponent(btnSok)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 539, Short.MAX_VALUE)
                         .addComponent(btnTaBort)
                         .addGap(34, 34, 34))))
             .addGroup(layout.createSequentialGroup()
@@ -235,7 +252,9 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnTaBort)
-                    .addComponent(btnLaggTill))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnLaggTill)
+                        .addComponent(btnSeProdukt)))
                 .addGap(26, 26, 26))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -251,32 +270,32 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
         String artikelnummer = txtSok.getText().trim();
 
-    try {
-        String sql = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt " +
-                     "WHERE Artikelnummer = '" + artikelnummer + "' AND Aktiv = TRUE";
-        
-        List<HashMap<String, String>> produkter = idb.fetchRows(sql);
+        try {
+            String sql = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt "
+                    + "WHERE Artikelnummer = '" + artikelnummer + "' AND Aktiv = TRUE";
 
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Rensa gammal data
+            List<HashMap<String, String>> produkter = idb.fetchRows(sql);
 
-        if (produkter != null && !produkter.isEmpty()) {
-            for (HashMap<String, String> produkt : produkter) {
-                model.addRow(new Object[]{
-                    produkt.get("Artikelnummer"),
-                    produkt.get("Namn"),
-                    produkt.get("Pris"),
-                    produkt.get("Matt"),
-                    "Se material"
-                });
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0); // Rensa gammal data
+
+            if (produkter != null && !produkter.isEmpty()) {
+                for (HashMap<String, String> produkt : produkter) {
+                    model.addRow(new Object[]{
+                        produkt.get("Artikelnummer"),
+                        produkt.get("Namn"),
+                        produkt.get("Pris"),
+                        produkt.get("Matt"),
+                        "Se material"
+                    });
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Ingen aktiv produkt hittades med det artikelnumret.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Ingen aktiv produkt hittades med det artikelnumret.");
-        }
 
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
-    }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid sökning: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnSokActionPerformed
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
@@ -284,36 +303,63 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
- int rad = jTable1.getSelectedRow();
-    if (rad == -1) {
-        JOptionPane.showMessageDialog(this, "Välj en produkt att ta bort.");
-        return;
-    }
-
-    String artikelnummer = jTable1.getValueAt(rad, 0).toString();
-
-    int svar = JOptionPane.showConfirmDialog(this, "Är du säker på att du vill ta bort produkten?", 
-                                             "Bekräfta", JOptionPane.YES_NO_OPTION);
-
-    if (svar == JOptionPane.YES_OPTION) {
-        try {
-            String sql = "UPDATE StandardProdukt SET Aktiv = FALSE WHERE Artikelnummer = '" + artikelnummer + "'";
-            idb.update(sql);
-            JOptionPane.showMessageDialog(this, "Produkten togs bort (inaktiverades).");
-            seLagerfordaProdukter(); // ladda om tabellen
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid borttagning: " + e.getMessage());
-
-
+        int rad = jTable1.getSelectedRow();
+        if (rad == -1) {
+            JOptionPane.showMessageDialog(this, "Välj en produkt att ta bort.");
+            return;
         }
-    }
-        
-        
+
+        String artikelnummer = jTable1.getValueAt(rad, 0).toString();
+
+        int svar = JOptionPane.showConfirmDialog(this, "Är du säker på att du vill ta bort produkten?",
+                "Bekräfta", JOptionPane.YES_NO_OPTION);
+
+        if (svar == JOptionPane.YES_OPTION) {
+            try {
+                String sql = "UPDATE StandardProdukt SET Aktiv = FALSE WHERE Artikelnummer = '" + artikelnummer + "'";
+                idb.update(sql);
+                JOptionPane.showMessageDialog(this, "Produkten togs bort (inaktiverades).");
+                seLagerfordaProdukter(); // ladda om tabellen
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Fel vid borttagning: " + e.getMessage());
+
+            }
+        }
+
+
     }//GEN-LAST:event_btnTaBortActionPerformed
+
+    private void btnSeProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeProduktActionPerformed
+        try {
+            int valdRad = jTable1.getSelectedRow();
+           
+
+            if (valdRad == -1) {
+                JOptionPane.showMessageDialog(this, "Markera en rad för att se produkten.");
+                return;
+            }
+
+            // Hämta StandardProduktID från kolumn 5 (dold)
+            String produktID = jTable1.getValueAt(valdRad, 5).toString();
+
+            if (produktID == null || produktID.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingen produktinformation hittades för vald rad.");
+                return;
+            }
+
+            // Skicka vidare StandardProduktID direkt
+            int antal = 1;
+            new SeSpecifikProdukt(idb, inloggadAnvandare, produktID, true, antal).setVisible(true);
+
+        } catch (Exception ex) {
+            System.out.println("Fel i jButton1ActionPerformed: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnSeProduktActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLaggTill;
+    private javax.swing.JButton btnSeProdukt;
     private javax.swing.JButton btnSok;
     private javax.swing.JButton btnTaBort;
     private javax.swing.JLabel jLabel1;

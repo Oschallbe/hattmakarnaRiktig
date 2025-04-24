@@ -10,8 +10,6 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 
 /**
@@ -21,7 +19,7 @@ import javax.swing.ImageIcon;
 public class SeSpecifikProdukt extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
-    private String produktID; // Viktigt! Spara riktiga ID:t
+    private String produktID;
     private boolean arStandardprodukt;
     private int antalProdukter;
     
@@ -35,10 +33,12 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
         this.antalProdukter = antalProdukter;
         initComponents();
         
-   Tabell.setModel(new javax.swing.table.DefaultTableModel(
+
+        Tabell.setModel(new javax.swing.table.DefaultTableModel(
             new Object[][] {},
-            new String[] { "Artikelnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista" }
+            new String[] { "Produktnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista" }
         ));
+
 
         visaSpecifikProdukt(produktID);
         
@@ -58,82 +58,38 @@ public class SeSpecifikProdukt extends javax.swing.JFrame {
     }
     
     
-    private void visaSpecifikProdukt(String artikelnummer) {
+private void visaSpecifikProdukt(String produktID) {
     try {
-        String fraga = "SELECT * FROM StandardProdukt WHERE StandardProduktID = '" + artikelnummer + "'";
-        HashMap<String, String> resultat = idb.fetchRow(fraga);
-
-        if (resultat != null) {
-            // Visa data i tabell eller textfält
-            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
-            model.setRowCount(0);
-            model.addRow(new Object[]{
-                resultat.get("Namn"),
-                resultat.get("Pris"),
-                resultat.get("Text"),
-                resultat.get("Typ")
-            });
-       //bildUrl != null
-       // bildVag != null && !bildVag.isEmpty()
-            // 🖼️ Visa bilden
-String bildVag = resultat.get("BildVag");
-if (bildVag != null && !bildVag.isEmpty()) {
-    java.net.URL bildUrl = getClass().getClassLoader().getResource(bildVag);
-    if (bildUrl != null) {
-        ImageIcon ikon = new ImageIcon(bildUrl);
-        java.awt.Image scaledImage = ikon.getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
-        ikon = new ImageIcon(scaledImage);
-        jLabelBild.setIcon(ikon);
-    } else {
-        jLabelBild.setIcon(null);
-        System.err.println("🚫 Kunde inte hitta bild i resurser: " + bildVag);
-    }
-} else {
-    jLabelBild.setIcon(null);
-}
-
-   
-
-    }} catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning: " + e.getMessage());
-    }
-}
-    
-    
-    
-    
-    
-/*
- private void visaSpecifikProdukt() {
-        try {
-            String query;
-            if (arStandardprodukt) {
-                query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE StandardProduktID = " + produktID;
-            } else {
-                query = "SELECT SpecialProduktID AS Artikelnummer, Beskrivning AS Namn, Pris, Matt FROM SpecialProdukt WHERE SpecialProduktID = " + produktID;
-            }
-
-            HashMap<String, String> produkt = idb.fetchRow(query);
-            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
-            model.setRowCount(0);
-
-            if (produkt != null) {
-                model.addRow(new Object[]{
-                    produkt.getOrDefault("Artikelnummer", "-"),
-                    produkt.getOrDefault("Namn", "-"),
-                    produkt.getOrDefault("Pris", "-"),
-                    antalProdukter,
-                    produkt.getOrDefault("Matt", "-"),
-                    "Se material"
-                });
-            } else {
-                JOptionPane.showMessageDialog(this, "Kunde inte hitta produktinformation.");
-            }
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
+        String query;
+        if (arStandardprodukt) {
+            query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE StandardProduktID = " + produktID;
+        } else {
+            query = "SELECT SpecialProduktID AS Artikelnummer, Beskrivning AS Namn, Pris, Matt FROM SpecialProdukt WHERE SpecialProduktID = " + produktID;
         }
+
+        HashMap<String, String> produkt = idb.fetchRow(query);
+        DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
+        model.setRowCount(0);
+
+        if (produkt != null) {
+            model.addRow(new Object[]{
+                arStandardprodukt ? produkt.getOrDefault("Artikelnummer", "-") : "-", // Visa artikelnummer endast för standard
+                produkt.getOrDefault("Namn", "-"),
+                produkt.getOrDefault("Pris", "-"),
+                antalProdukter,
+                produkt.getOrDefault("Matt", "-"),
+                "Se material"
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "Kunde inte hitta produktinformation.");
+        }
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
     }
-*/
+}
+    
+    
+
     
    private void visaMaterialForProdukt() {
         try {
