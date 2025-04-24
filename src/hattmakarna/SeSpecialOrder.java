@@ -44,93 +44,91 @@ public class SeSpecialOrder extends javax.swing.JPanel {
     //Metod för att fylla tabellerna med info från databasen. 
     public void fyllTabell() {
         try {
-            // Skapar en array som lagrar kolumnnamnen utan "OrderItemID" (Artikelnummer).
-            String kolumnNamn[] = {"Huvudmått", "Pris", "AntalProdukter", "AnstalldID"};
+        // Skapar en array som lagrar kolumnnamnen (inklusive OrderItemID som vi gömmer sen).
+        String kolumnNamn[] = {"OrderItemID", "Huvudmått", "Pris", "AntalProdukter", "AnstalldID"};
 
-            // Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
-            DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
-                // Gör att tabellen inte går att redigera, men det går fortfarande att markera en rad i tabellen.
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
+        // Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
+        DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;  // Gör så att ingen cell är redigerbar
+            }
+        };
 
-            // Hämtar alla anställdas id och lägger det i Arraylistan "id".
-            String selectOid = "select OrderItemID from orderitem where BestallningID = " + klickatOrderNr + " order by(OrderItemID);";
-            ArrayList<String> oid = idb.fetchColumn(selectOid);
+        // Hämtar alla OrderItemID för den valda beställningen.
+        String selectOid = "select OrderItemID from orderitem where BestallningID = " 
+                            + klickatOrderNr + " order by(OrderItemID);";
+        ArrayList<String> oid = idb.fetchColumn(selectOid);
 
-            // Om AnstalldId inte är tom körs en for-each loop som för varje id hämtar id, förnamn och efternamn om det anställda som placeras i Hashmapen "Info".
-            if (oid != null) {
-                for (String ettOid : oid) {
-                    String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, SpecialProduktID from orderitem where OrderItemID = " + ettOid + ";";
-                    HashMap<String, String> info = idb.fetchRow(selectInfo);
+        if (oid != null) {
+            for (String ettOid : oid) {
+                String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, SpecialProduktID "
+                                  + "from orderitem where OrderItemID = " + ettOid + ";";
+                HashMap<String, String> info = idb.fetchRow(selectInfo);
 
-                    // Hämtar AnstalldID och lagrar det i lokalvariabeln aID.
-                    String aID = info.get("AnstalldID");
-
-                    // Skapar en tom sträng som default för hopslaget namn.
-                    String hopslagetNamn = "";
-
-                    // Om aID inte är null och inte tomt hämtas namn på anställd.
-                    if (aID != null && !aID.isEmpty()) {
-                        String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld where AnstalldID = " + aID + ";";
-                        HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
-
-                        // Om vi får ett resultat, slå ihop förnamn och efternamn.
-                        if (anstalldFornamnEfternamn != null) {
-                            String fornamn = anstalldFornamnEfternamn.get("Fornamn");
-                            String efternamn = anstalldFornamnEfternamn.get("Efternamn");
-
-                            if (fornamn != null && efternamn != null) {
-                                hopslagetNamn = fornamn + " " + efternamn;
-                            }
+                // Hämtar AnstalldID och slår ihop till namn om det finns.
+                String aID = info.get("AnstalldID");
+                String hopslagetNamn = "";
+                if (aID != null && !aID.isEmpty()) {
+                    String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld "
+                                              + "where AnstalldID = " + aID + ";";
+                    HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
+                    if (anstalldFornamnEfternamn != null) {
+                        String fornamn = anstalldFornamnEfternamn.get("Fornamn");
+                        String efternamn = anstalldFornamnEfternamn.get("Efternamn");
+                        if (fornamn != null && efternamn != null) {
+                            hopslagetNamn = fornamn + " " + efternamn;
                         }
                     }
-
-                    // Hämtar pris och namn för produkten från tabellen "specialprodukt".
-                    String ettProduktID = info.get("SpecialProduktID");
-                    String selectProdukt = "select Matt, Pris from specialprodukt where SpecialProduktID = " + ettProduktID + ";";
-                    HashMap<String, String> infoNamnPris = idb.fetchRow(selectProdukt);
-
-                    // Skapar en array som håller data för en rad i tabellen, utan "OrderItemID" (Artikelnummer).
-                    Object[] enRad = new Object[kolumnNamn.length];
-                    enRad[0] = infoNamnPris.get("Matt"); // visas som "Huvudmått" i kolumn
-                    enRad[1] = infoNamnPris.get("Pris");
-                    enRad[2] = info.get("AntalProdukter");
-                    enRad[3] = hopslagetNamn;  // Anställdens namn
-
-                    allaProdukter.addRow(enRad);
                 }
 
-                // Jtable sätts med data från DefaultTableModel.
-                tblAllaProdukter.setModel(allaProdukter);
+                // Hämtar "Matt" (huvudmått) och pris från specialprodukt.
+                String ettProduktID = info.get("SpecialProduktID");
+                String selectProdukt = "select Matt, Pris from specialprodukt "
+                                     + "where SpecialProduktID = " + ettProduktID + ";";
+                HashMap<String, String> infoNamnPris = idb.fetchRow(selectProdukt);
+
+                // Skapar en array som håller data för en rad i tabellen.
+                Object[] enRad = new Object[kolumnNamn.length];
+                enRad[0] = ettOid;                           // OrderItemID (dold)
+                enRad[1] = infoNamnPris.get("Matt");        // Huvudmått
+                enRad[2] = infoNamnPris.get("Pris");        // Pris
+                enRad[3] = info.get("AntalProdukter");      // Antal
+                enRad[4] = hopslagetNamn;                   // Tilldelad (namn eller tomt)
+
+                allaProdukter.addRow(enRad);
             }
 
-            tblAllaProdukter.setAutoResizeMode(tblAllaProdukter.AUTO_RESIZE_OFF);
+            // Sätter modellen i JTable.
+            tblAllaProdukter.setModel(allaProdukter);
 
-            // Sätter storleken på tabellen.
-            TableColumn col = tblAllaProdukter.getColumnModel().getColumn(0); // huvudmått
-            col.setPreferredWidth(103);
-
-            col = tblAllaProdukter.getColumnModel().getColumn(1); // pris
-            col.setPreferredWidth(75);
-
-            col = tblAllaProdukter.getColumnModel().getColumn(2); // antal
-            col.setPreferredWidth(75);
-
-            col = tblAllaProdukter.getColumnModel().getColumn(3); // tilldelad
-            col.setPreferredWidth(154);
-
-            // Ändrar rubrikerna i tabellen.
-            tblAllaProdukter.getColumnModel().getColumn(0).setHeaderValue("Huvudmått (cm)");
-            tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Pris");
-            tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Antal");
-            tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Tilldelad:");
-
-        } catch (InfException ex) {
-            System.out.println(ex);
+            // Gör så att OrderItemID-kolumnen (index 0) blir osynlig:
+            tblAllaProdukter.getColumnModel().getColumn(0).setMinWidth(0);
+            tblAllaProdukter.getColumnModel().getColumn(0).setMaxWidth(0);
+            tblAllaProdukter.getColumnModel().getColumn(0).setWidth(0);
         }
+
+        tblAllaProdukter.setAutoResizeMode(tblAllaProdukter.AUTO_RESIZE_OFF);
+
+        // Sätter storleken på de synliga kolumnerna.
+        TableColumn col = tblAllaProdukter.getColumnModel().getColumn(1); // huvudmått
+        col.setPreferredWidth(75);
+        col = tblAllaProdukter.getColumnModel().getColumn(2);             // pris
+        col.setPreferredWidth(75);
+        col = tblAllaProdukter.getColumnModel().getColumn(3);             // antal
+        col.setPreferredWidth(75);
+        col = tblAllaProdukter.getColumnModel().getColumn(4);             // tilldelad
+        col.setPreferredWidth(154);
+
+        // Ändrar rubrikerna i tabellen.
+        tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Huvudmått");
+        tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Pris");
+        tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Antal");
+        tblAllaProdukter.getColumnModel().getColumn(4).setHeaderValue("Tilldelad:");
+
+    } catch (InfException ex) {
+        System.out.println(ex);
+    }
     }
 
     public void fyllAnstalldTabell() {
@@ -177,7 +175,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
 
     //Skapar en metod för att endast kunna redigera "Tilldelad:"-kolumnen i jtablen.
     private DefaultTableModel genereraRedigerbarModell() {
-        String[] kolumnNamn = {"Artikelnummer", "Matt", "Pris", "Antal", "Tilldelad:"};
+        String[] kolumnNamn = {"ArtiekelNr", "Huvudmått", "Pris", "Antal", "Tilldelad:"};
 
         //Skapar en ny defaulttablemodel.
         DefaultTableModel redigerbarModell = new DefaultTableModel(kolumnNamn, 0) {
@@ -213,36 +211,36 @@ public class SeSpecialOrder extends javax.swing.JPanel {
 
     public void sparaTilldelad() {
         try {
-            //Hämtar datan från tblAllaProdukter och lägger den i "tabell".
+            // Hämtar modellen från JTable.
             DefaultTableModel tabell = (DefaultTableModel) tblAllaProdukter.getModel();
 
-            //Går igenom varje rad i tabellen "tabell".
+            // Går igenom varje rad i tabellen.
             for (int i = 0; i < tabell.getRowCount(); i++) {
-
-                //Försöker hämta artikelnummer och anställningsid från kolumn 1(0) och 5(4) för varje rad.
                 try {
+                    // Hämtar OrderItemID (dolt, kolumn 0) och Tilldelad (kolumn 4).
                     String artNR = tabell.getValueAt(i, 0).toString();
                     String anstID = tabell.getValueAt(i, 4).toString();
 
-                    //Skapar lokalvariabeln uppdateraDatabas.
                     String uppdateraDatabas;
-
-                    //Om anstID är null eller rutan är tom så ändras uppdateraDatabas till att AnstalldID ska vara null för den raden 
+                    // Om anstID är tomt så sätts det till NULL i databasen.
                     if (anstID == null || anstID.isEmpty()) {
-                        uppdateraDatabas = "update orderitem set AnstalldID = null where OrderItemID = " + artNR + ";";
-                    } //Annars sätts AnstalldID till det anställningsid som hämtas och läggs i uppdateraDatabas
-                    else {
-                        uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
+                        uppdateraDatabas = "update orderitem set AnstalldID = null "
+                                + "where OrderItemID = " + artNR + ";";
+                    } else {
+                        // Annars uppdateras med det angivna anställningsID:t.
+                        uppdateraDatabas = "update orderitem set AnstalldID = "
+                                + anstID + " where OrderItemID = " + artNR + ";";
                     }
 
-                    //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
+                    // Kör uppdateringen.
                     idb.update(uppdateraDatabas);
 
                 } catch (NumberFormatException ex) {
-                    System.out.println("Fel på rad: " + i + ":" + ex.getMessage());
+                    System.out.println("Fel på rad: " + i + " – " + ex.getMessage());
                 }
             }
 
+            // Fyll tabellen igen så att ändringen syns.
             fyllTabell();
 
         } catch (InfException ex) {
@@ -252,9 +250,11 @@ public class SeSpecialOrder extends javax.swing.JPanel {
 
     public void sparaStatus() {
         try {
-            //Hämtar status från comboboxen och uppdaterar databasen till det nya värdet.
+            // Hämtar status från comboboxen och uppdaterar databasen.
             String status = (String) cbStatus.getSelectedItem();
-            String updateStatus = "update bestallning set status = '" + status + "' where BestallningID = '" + klickatOrderNr + "';";
+            String updateStatus = "update bestallning set status = '"
+                    + status + "' where BestallningID = '"
+                    + klickatOrderNr + "';";
             idb.update(updateStatus);
 
         } catch (InfException ex) {
