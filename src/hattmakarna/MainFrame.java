@@ -137,8 +137,6 @@ public class MainFrame extends javax.swing.JFrame {
         cl.show(jPanel1, name);
     }
    
-    
-
    
 
 
