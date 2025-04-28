@@ -383,7 +383,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         String ordernummer = "";
         try {
             idb.insert(sql);
-            ordernummer = idb.getAutoIncrement("Bestallning", "BestallningID");
+            ordernummer = idb.fetchSingle("SELECT MAX(BestallningID) FROM Bestallning");
             JOptionPane.showMessageDialog(this, "Ordern har skickats iväg!");
         } catch (InfException ex) {
             JOptionPane.showMessageDialog(this, "Fel vid sparning: " + ex.getMessage());
