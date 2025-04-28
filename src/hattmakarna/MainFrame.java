@@ -31,7 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
     private LäggTillNyKund laggTillKundPanel;
     private LaggTillLagerfordHatt laggTillLagerfordHattPanel;
     private SeForsaljningsstatistikSpecialprodukt statistikSpecialPanel;
-    private LaggTillAnstalld1 laggTillAnstalldPanel;
+    private LaggTillAnstalld laggTillAnstalldPanel;
     //Fält för att anropa validerings klassen
     private Validering validera;
     //private MainFrame parentFrame;  // referens till MainFrame
@@ -778,7 +778,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         taBortValkommen();
         
-        laggTillAnstalldPanel = new LaggTillAnstalld1(idb, txtfEmail.getText());
+        laggTillAnstalldPanel = new LaggTillAnstalld(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
         JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll

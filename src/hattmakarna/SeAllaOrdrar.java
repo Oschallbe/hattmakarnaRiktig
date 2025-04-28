@@ -837,7 +837,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
         if (resultat != null && !resultat.isEmpty()) {
             try {
             // Skapa en instans av LäggTillNyKund som en JPanel
-            SeMaterialListaPanel materialPanel = new SeMaterialListaPanel(resultat, idb, inloggadAnvandare);
+            SeMaterialLista materialPanel = new SeMaterialLista(resultat, idb, inloggadAnvandare);
 
             // Lägg till panelen i MainFrame
             MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
