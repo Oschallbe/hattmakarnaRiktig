@@ -218,8 +218,8 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             for (int i = 0; i < tabell.getRowCount(); i++) {
                 try {
                     // Hämtar OrderItemID (dolt, kolumn 0) och Tilldelad (kolumn 4).
-                   // String artNR = tabell.getValueAt(i, 0).toString();
-                   String artNR = lblOrderNr.getText();
+                   String artNR = tabell.getValueAt(i, 0).toString();
+                   //String artNR = lblOrderNr.getText();
                     String anstID = tabell.getValueAt(i, 4).toString();
 
                     String uppdateraDatabas;
