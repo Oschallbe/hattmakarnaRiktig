@@ -94,8 +94,15 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
                             + "LEFT JOIN StandardProdukt sp1 ON oi.StandardProduktID = sp1.StandardProduktID\n"
                             + "LEFT JOIN SpecialProdukt sp2 ON oi.SpecialProduktID = sp2.SpecialProduktID\n"
                             + "WHERE oi.BestallningID = " + row.get("BestallningID") + ";";
+
                     String totalPrisText = idb.fetchSingle(selectPris);
-                    Double totalPris = Double.parseDouble(totalPrisText);
+                    double totalPris = 0.0;
+
+                    if (totalPrisText != null && !totalPrisText.trim().isEmpty()) {
+                        totalPris = Double.parseDouble(totalPrisText);
+                    } else {
+                        System.out.println("Inget pris hittades för order " + row.get("BestallningID"));
+                    }
 
                     if (expressHamtning.equals("1")) {
                         expressOmvandling = "Ja";
