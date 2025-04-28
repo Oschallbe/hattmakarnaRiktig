@@ -237,7 +237,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
                     idb.update(uppdateraDatabas);
 
                 } catch (NumberFormatException ex) {
-                    System.out.println("Fel på rad: " + i + " – " + ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "Fel på rad: " + i + " – " + ex.getMessage());
                 }
             }
 
@@ -245,7 +245,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             fyllTabell();
 
         } catch (InfException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }
 
@@ -259,7 +259,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             idb.update(updateStatus);
 
         } catch (InfException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }
 
@@ -291,7 +291,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
 
         } catch (InfException ex) {
             // Hantera eventuella fel som kan uppstå under databasfrågor eller uppdatering av labels
-            System.out.println("Fel i fyllLabels: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Fel i fyllLabels: " + ex.getMessage());
         }
 
 //    try {
@@ -598,7 +598,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Ändring sparad!");
 
         } catch (NumberFormatException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {
