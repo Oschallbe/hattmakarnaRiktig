@@ -297,33 +297,32 @@ public class SeVanligOrder extends javax.swing.JPanel {
     }
 
     public void sparaTilldelad() {
-    try {
-        DefaultTableModel model = (DefaultTableModel) tblAllaProdukter.getModel();
+        try {
+            DefaultTableModel model = (DefaultTableModel) tblAllaProdukter.getModel();
 
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String artNR = model.getValueAt(i, 0).toString();    // artikelnummer
-            String anstID = model.getValueAt(i, 4).toString();   // nu ID
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String artNR = model.getValueAt(i, 0).toString();    // artikelnummer
+                String anstID = model.getValueAt(i, 4).toString();   // nu ID
 
-            // om tomt → NULL, annars siffran
-            String idText = anstID.isEmpty() ? "NULL" : anstID;
+                // om tomt → NULL, annars siffran
+                String idText = anstID.isEmpty() ? "NULL" : anstID;
 
-            String sql =
-              "UPDATE OrderItem oi " +
-              "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID " +
-              "SET oi.AnstalldID = " + idText + " " +
-              "WHERE sp.Artikelnummer = '" + artNR + "' " +
-              "  AND oi.BestallningID = " + klickatOrderNr + ";";
+                String sql
+                        = "UPDATE OrderItem oi "
+                        + "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID "
+                        + "SET oi.AnstalldID = " + idText + " "
+                        + "WHERE sp.Artikelnummer = '" + artNR + "' "
+                        + "  AND oi.BestallningID = " + klickatOrderNr + ";";
 
-            System.out.println("Kör SQL: " + sql);
-            idb.update(sql);
+                System.out.println("Kör SQL: " + sql);
+                idb.update(sql);
+            }
+
+            fyllTabell();  // ladda om med nya ID:n
+        } catch (InfException ex) {
+            System.err.println("Databasfel: " + ex.getMessage());
         }
-
-        fyllTabell();  // ladda om med nya ID:n
     }
-    catch (InfException ex) {
-        System.err.println("Databasfel: " + ex.getMessage());
-    }
-}
 
 
     public void sparaStatus() {
