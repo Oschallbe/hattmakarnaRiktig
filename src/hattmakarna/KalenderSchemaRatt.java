@@ -3,202 +3,481 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package hattmakarna;
-import oru.inf.InfDB; 
-import oru.inf.InfException; 
+
+import oru.inf.InfDB;
+import oru.inf.InfException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.*;
 import java.time.format.TextStyle;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author mejaa
  */
 public class KalenderSchemaRatt extends javax.swing.JPanel {
-    private static InfDB idb; 
-    private static String inloggadAnvandare; 
+
+    private static InfDB idb;
+    private static String inloggadAnvandare;
     private JPanel kalenderRuta;
     private JLabel manadLabel;
     private LocalDate visadManad;
+    private JTable produktTabell;
+    private int anstalldID;
 
     /**
      * Creates new form KalenderSchemaRatt
      */
     public KalenderSchemaRatt(InfDB idb, String ePost) {
         initComponents();
-        this.idb = idb; 
+        this.idb = idb;
         this.inloggadAnvandare = ePost;
-        
+
         this.setLayout(new BorderLayout());
         visadManad = LocalDate.now().withDayOfMonth(1);
-        
+
         JPanel toppPanel = new JPanel(new BorderLayout());
         JButton forraKnapp = new JButton("<");
         JButton nastaKnapp = new JButton(">");
-        
+
         manadLabel = new JLabel("", SwingConstants.CENTER);
         toppPanel.add(forraKnapp, BorderLayout.WEST);
         toppPanel.add(manadLabel, BorderLayout.CENTER);
         toppPanel.add(nastaKnapp, BorderLayout.EAST);
-        
+
         this.add(toppPanel, BorderLayout.NORTH);
-        
+
         kalenderRuta = new JPanel();
         kalenderRuta.setLayout(new GridLayout(0, 7));
-        kalenderRuta.setPreferredSize(new Dimension(850, 600)); //NY
-        
-        //NYTT
-        JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 10));
-        wrapper.add(kalenderRuta);
-        
-        this.add(wrapper, BorderLayout.CENTER);
-        
+        wrapper.setBackground(Color.LIGHT_GRAY);
+        wrapper.add(toppPanel, BorderLayout.NORTH);
+        wrapper.add(kalenderRuta, BorderLayout.CENTER);
+
+        JPanel huvudPanel = new JPanel(new BorderLayout());
+
+        JLabel kalenderRubrik = new JLabel("Mitt Kalenderschema", SwingConstants.LEFT);
+        kalenderRubrik.setFont(new Font("Arial", Font.BOLD, 20));
+        kalenderRubrik.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        huvudPanel.add(kalenderRubrik, BorderLayout.NORTH);
+
+        huvudPanel.add(wrapper, BorderLayout.WEST);
+
+        String[] kolumner = {"ID", "Ordernr.", "Produktnamn", "Beställningstyp", "Datum", "Avklarad"};
+        Object[][] data;
+
+        try {
+            String anstalldIDText = idb.fetchSingle("select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "'");
+            anstalldID = Integer.parseInt(anstalldIDText);
+            List<HashMap<String, String>> resultat = idb.fetchRows(
+                    "select b.BestallningID as BestallningID, "
+                    + "case when b.Typ = 'Specialbeställning' then 'Specialprodukt' "
+                    + "     else sp.Namn end as Produktnamn, "
+                    + "case when b.Typ = 'Specialbeställning' then 'Special' "
+                    + "     when b.Typ = 'Standardbeställning' then 'Standard' "
+                    + "     else b.Typ end as Beställningstyp, "
+                    + "b.Datum "
+                    + "from orderitem oi "
+                    + "join bestallning b on oi.BestallningID = b.BestallningID "
+                    + "left join standardprodukt sp on oi.StandardProduktID = sp.StandardProduktID "
+                    + "left join specialprodukt spp on oi.SpecialProduktID = spp.SpecialProduktID "
+                    + "where oi.AnstalldID = " + anstalldID
+            );
+
+            data = new Object[resultat.size()][kolumner.length];
+
+            for (int i = 0; i < resultat.size(); i++) {
+                HashMap<String, String> rad = resultat.get(i);
+
+                data[i][0] = i + 1;
+                data[i][1] = rad.get("BestallningID");
+                data[i][2] = rad.get("Produktnamn");
+                data[i][3] = rad.get("Beställningstyp");
+                data[i][4] = rad.get("Datum");
+                data[i][5] = false; // alla börjar som oavklarade
+            }
+        } catch (InfException ex) {
+            System.out.println(ex);
+            data = new Object[0][kolumner.length];
+        }
+
+        produktTabell = new JTable(new DefaultTableModel(data, kolumner));
+        DefaultTableModel modell = new DefaultTableModel(data, kolumner) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 5) {
+                    return Boolean.class; // kolumn 5 = checkbox
+                }
+                return String.class;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 5; // endast checkbox är redigerbar
+            }
+        };
+        produktTabell = new JTable(modell);
+        JScrollPane tabellScroll = new JScrollPane(produktTabell);
+        tabellScroll.setPreferredSize(new Dimension(450, 600));
+
+        /* for(int i = 0; i < produktTabell.getRowCount(); i++){
+            try{
+                String typ = produktTabell.getValueAt(i, 3).toString();
+                String uppdateradDatabas;
+                
+                if(typ.contains("Special"))
+                
+            }
+            catch
+        }
+         */
+        produktTabell.getColumnModel().getColumn(0).setPreferredWidth(60);
+        produktTabell.getColumnModel().getColumn(1).setPreferredWidth(60);
+        produktTabell.getColumnModel().getColumn(2).setPreferredWidth(175);
+        produktTabell.getColumnModel().getColumn(3).setPreferredWidth(100);
+        produktTabell.getColumnModel().getColumn(4).setPreferredWidth(80);
+
+        JPanel tabellWrapper = new JPanel(new BorderLayout());
+        JLabel tabellRubrik = new JLabel("Åtagna produkter", SwingConstants.LEFT);
+        tabellRubrik.setFont(new Font("Arial", Font.BOLD, 18));
+        tabellRubrik.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        tabellWrapper.add(tabellRubrik, BorderLayout.NORTH);
+        tabellWrapper.add(tabellScroll, BorderLayout.CENTER);
+
+        huvudPanel.add(tabellWrapper, BorderLayout.EAST);
+
+        this.add(huvudPanel, BorderLayout.CENTER);
+
         // ORIGINAL this.add(kalenderRuta, BorderLayout.CENTER);
-        
         forraKnapp.addActionListener(e -> {
             visadManad = visadManad.minusMonths(1);
             fyllKalender();
         });
-        
+
         nastaKnapp.addActionListener(e -> {
             visadManad = visadManad.plusMonths(1);
             fyllKalender();
         });
-        
+
         fyllKalender();
     }
-    
-    private void fyllKalender(){
+
+    private void fyllKalender() {
+        List<JList<String>> allaListor = new java.util.ArrayList<>();
+
         kalenderRuta.removeAll();
-        
+
         String manadText = visadManad.getMonth().getDisplayName(TextStyle.FULL, new Locale("sv")) + " " + visadManad.getYear();
         manadLabel.setText(manadText.substring(0, 1).toUpperCase() + manadText.substring(1));
-        
+
         String[] dagar = {"Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"};
-        for(String dag:dagar){
+        for (String dag : dagar) {
             JLabel lbl = new JLabel(dag, SwingConstants.CENTER);
             lbl.setFont(lbl.getFont().deriveFont(Font.BOLD));
             kalenderRuta.add(lbl);
         }
-        
+
         LocalDate start = visadManad;
         int forstaDag = start.getDayOfWeek().getValue();
         int dagarIManad = visadManad.lengthOfMonth();
-        
-        for(int i = 1; i < forstaDag; i++){
+
+        for (int i = 1; i < forstaDag; i++) {
             kalenderRuta.add(new JLabel(""));
         }
-        
-        String anstalldID = null;
-            try{
-                anstalldID = idb.fetchSingle("select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "'");
-            }
-            catch(InfException ex){
-                System.out.println("Kunde inte hämta anställningsid" + ex.getMessage());
-            }
-            
-        if(anstalldID == null){
+
+        String anstalldID;
+        try {
+            anstalldID = idb.fetchSingle("select AnstalldID from anstalld where epost = '" + inloggadAnvandare + "'");
+        } catch (InfException ex) {
+            System.out.println("Kunde inte hämta anställningsid" + ex.getMessage());
+            return;
+        }
+
+        if (anstalldID == null) {
             JOptionPane.showMessageDialog(this, "hittades ej");
             return;
         }
-        
+
         final String aktuellAnstalldID = anstalldID;
-            
-        for(int dag = 1; dag <= dagarIManad; dag++){
+
+        for (int dag = 1; dag <= dagarIManad; dag++) {
             final int aktuellDag = dag;
             JPanel dagPanel = new JPanel(new BorderLayout());
             dagPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            dagPanel.setPreferredSize(new Dimension(120, 100));
-            
+            dagPanel.setPreferredSize(new Dimension(110, 90));
+
             JLabel dagLabel = new JLabel(String.valueOf(dag), SwingConstants.CENTER);
             dagLabel.setFont(new Font("Arial", Font.BOLD, 18));
-            
+
             DefaultListModel<String> modell = new DefaultListModel<>();
             JList<String> produktLista = new JList<>(modell);
+            allaListor.add(produktLista);
             produktLista.setFont(new Font("Arial", Font.PLAIN, 12));
             produktLista.setVisibleRowCount(3);
-            
+
             JScrollPane scroll = new JScrollPane(produktLista);
-            
+
             JTextField inputFalt = new JTextField();
             Font normalFont = inputFalt.getFont();
             Font italicFont = normalFont.deriveFont(Font.ITALIC);
-            inputFalt.setText("Fyll i här");
+            inputFalt.setText("Fyll i ett ID här");
             inputFalt.setForeground(Color.GRAY);
             inputFalt.setFont(italicFont);
-                              
-                                
-                          
-                    inputFalt.addFocusListener(new FocusAdapter(){
-                    @Override
-                    public void focusGained(FocusEvent e){
-                        if(inputFalt.getText().equals("Fyll i här")){
-                            inputFalt.setText("");
-                        }
-                    }            
-                    
-                    @Override
-                    public void focusLost(FocusEvent e){
-                        if(inputFalt.getText().trim().isEmpty()) {
-                            inputFalt.setText("Fyll i här");
-                        }
-                    }
-                });
 
-                inputFalt.addActionListener(e ->{
-                String text = inputFalt.getText().trim();
-                if(!text.isEmpty()){
-                    modell.addElement(text);
-                    inputFalt.setText("");
-                   try{
-                        LocalDate datum = visadManad.withDayOfMonth(aktuellDag);
-                        String insertProdukt = "insert into kalenderschema (AnstalldID, OrderItemID, Datum) values (" +
-                                aktuellAnstalldID + ", " + text + ", '" + datum + "')"; 
-                        idb.insert(insertProdukt);
+            inputFalt.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if (inputFalt.getText().equals("Fyll i ett ID här")) {
+                        inputFalt.setText("");
                     }
-                    catch(InfException ex){
-                        System.out.println("Fel vid insert:" + ex.getMessage());
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if (inputFalt.getText().trim().isEmpty()) {
+                        inputFalt.setText("Fyll i ett ID här");
                     }
-                    
                 }
             });
 
-            try{
+            /*inputFalt.addActionListener(e -> {
+                String text = inputFalt.getText().trim();
+                if (!text.isEmpty()) {
+                    modell.addElement(text);
+                    inputFalt.setText("");
+                    try {
+                        String orderItemID = text;
+                        String selectInfo = "select oi.OrderItemID, b.BestallningID, b.Datum, b.Typ, sp.Namn "
+                                + "from orderitem oi "
+                                + "join bestallning b on oi.BestallningID = b.BestallningID "
+                                + "join standardprodukt sp on oi.StandardProduktID = sp.StandardProduktID "
+                                + "where oi.OrderItemID = " + orderItemID;
+
+                        HashMap<String, String> produktInfo = idb.fetchRow(selectInfo);
+
+                        if (produktInfo != null) {
+                            String datum = visadManad.withDayOfMonth(aktuellDag).toString();
+                            String maxSql = "select max(TilldelningsID) from kalenderschema where AnstalldID = " + aktuellAnstalldID;
+                            String maxID = idb.fetchSingle(maxSql);
+                            int nastaID = (maxID == null) ? 1 : Integer.parseInt(maxID) + 1;
+
+                            String insert = "insert into kalenderschema (TilldelningsID, AnstalldID, BestallningID, Datum) values ("
+                                    + nastaID + ", " + aktuellAnstalldID + ", " + produktInfo.get("BestallningID") + ", '"
+                                    + datum + "')";
+                            idb.insert(insert);
+                        }
+                    } catch (InfException ex) {
+                        System.out.println(ex.getMessage());
+
+                    }
+                }
+            }); 
+             */
+            inputFalt.addActionListener(e -> {
+                String text = inputFalt.getText().trim();
+
+                if (!text.isEmpty()) {
+                    try {
+                        int tilldelningsID = Integer.parseInt(text);
+
+                        // 🟢 Kontrollera om ID finns i JTable
+                        if (!idFinnsITabellen(tilldelningsID, produktTabell)) {
+                            JOptionPane.showMessageDialog(null, "TilldelningsID " + tilldelningsID + " finns inte i tabellen.");
+                            return;
+                        }
+
+                        // 📅 Hämta datum
+                        String datum = visadManad.withDayOfMonth(aktuellDag).toString();
+
+                        // 🔎 Hämta info från JTable (kolumn 1 = BeställningID)
+                        String bestallningID = null;
+                        for (int i = 0; i < produktTabell.getRowCount(); i++) {
+                            int id = Integer.parseInt(produktTabell.getValueAt(i, 0).toString());
+                            if (id == tilldelningsID) {
+                                bestallningID = produktTabell.getValueAt(i, 1).toString();
+                                break;
+                            }
+                        }
+
+                        if (bestallningID == null) {
+                            JOptionPane.showMessageDialog(null, "Kunde inte hämta BeställningID från tabellen.");
+                            return;
+                        }
+
+                        // 💾 Spara i databasen
+                        String insert = "insert into kalenderschema (TilldelningsID, AnstalldID, BestallningID, Datum) values ("
+                                + tilldelningsID + ", " + aktuellAnstalldID + ", " + bestallningID + ", '" + datum + "')";
+
+                        idb.insert(insert);
+
+                        // 🎉 Visa i kalendern
+                        modell.addElement("" + tilldelningsID);
+                        inputFalt.setText("");
+
+                    } catch (NumberFormatException nfe) {
+                        JOptionPane.showMessageDialog(null, "Endast siffror tillåtna i TilldelningsID.");
+                    } catch (InfException ex) {
+                        System.out.println("Fel vid sparning: " + ex.getMessage());
+                    }
+                }
+            });
+
+            try {
+
+                LocalDate datum = visadManad.withDayOfMonth(dag);
+                String selectText = "select TilldelningsID from kalenderschema where Datum = '" + datum + "' and AnstalldID = " + aktuellAnstalldID;
+                List<String> resultat = idb.fetchColumn(selectText);
+                if (resultat != null) {
+                    for (String text : resultat) {
+                        modell.addElement("" + text);
+                    }
+                }
+            } catch (InfException ex) {
+                System.out.println("Fel vid insert:" + ex.getMessage());
+            }
+
+            /*   }
+            });
+
+            try {
                 LocalDate datum = visadManad.withDayOfMonth(dag);
                 String selectText = "select OrderItemID from kalenderschema where Datum = '" + datum + "' and AnstalldID = " + aktuellAnstalldID;
                 java.util.List<String> resultat = idb.fetchColumn(selectText);
-                if(resultat != null){
-                    for(String text:resultat){
+                if (resultat != null) {
+                    for (String text : resultat) {
                         modell.addElement(text);
                     }
                 }
-            }
-            catch(InfException ex){
+            } catch (InfException ex) {
                 System.out.println(ex.getMessage());
             }
-                 
-                           
+             */
             dagPanel.add(dagLabel, BorderLayout.NORTH);
             dagPanel.add(scroll, BorderLayout.CENTER);
             dagPanel.add(inputFalt, BorderLayout.SOUTH);
             kalenderRuta.add(dagPanel);
-       
+
         }
-         
+        JButton taBortKnapp = new JButton("Ta bort produkt");
+        taBortKnapp.addActionListener(e -> {
+            for (JList<String> lista : allaListor) {
+                String vald = lista.getSelectedValue();
+                if (vald != null) {
+                    String idText = vald.replace("Tilldelning: ", "").trim();
+
+                    try {
+                        int tilldelningsID = Integer.parseInt(idText);
+
+                        // Ta bort från DB (för aktuell användare och månad)
+                        String datum = visadManad.withDayOfMonth(1).toString(); // dummy, datum används ändå i SQL
+                        String delete = "delete from kalenderschema where TilldelningsID = " + tilldelningsID
+                                + " and AnstalldID = " + anstalldID;
+                        idb.delete(delete);
+
+                        // Ta bort från JList
+                        lista.clearSelection();
+                        DefaultListModel<String> modell = (DefaultListModel<String>) lista.getModel();
+                        modell.removeElement(vald);
+
+                        JOptionPane.showMessageDialog(null, "Tilldelning " + tilldelningsID + " borttagen.");
+                        return;
+
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Kunde inte ta bort: " + ex.getMessage());
+                        return;
+                    }
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Inget markerat.");
+        });
+
+        JPanel knappPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        knappPanel.add(taBortKnapp);
+        this.add(knappPanel, BorderLayout.SOUTH);
+
+        JButton klarKnapp = new JButton("Produkt avklarad");
+        klarKnapp.addActionListener(e -> {
+            for (JList<String> lista : allaListor) {
+                String vald = lista.getSelectedValue();
+                if (vald != null) {
+                    String idText = vald.replace("Tilldelning: ", "").trim();
+                    try {
+                        int tilldelningsID = Integer.parseInt(idText);
+
+                        // ✅ Markera som avklarad i tabellen
+                        doljaRadITabellen(tilldelningsID);
+
+                        // 🧹 Ta bort från kalendern
+                        lista.clearSelection();
+                        DefaultListModel<String> modell = (DefaultListModel<String>) lista.getModel();
+                        modell.removeElement(vald);
+
+                        JOptionPane.showMessageDialog(null, "Tilldelning " + tilldelningsID + " är nu avklarad och dold i tabellen.");
+                        return;
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Felaktigt ID.");
+                    }
+                }
+            }
+        });
+
+        knappPanel.add(klarKnapp); // lägg till knappen på samma panel som "ta bort"
+
         kalenderRuta.revalidate();
         kalenderRuta.repaint();
+
     }
-    
-    public static void main(String[] args){
-            
-            SwingUtilities.invokeLater(() -> {
+
+    private boolean idFinnsITabellen(int id, JTable tabell) {
+        for (int i = 0; i < tabell.getRowCount(); i++) {
+            Object cellValue = tabell.getValueAt(i, 0); // kolumn 0 = TilldelningsID
+            if (cellValue != null && Integer.parseInt(cellValue.toString()) == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Filtrera bort rader med Avklarad=true och uppdatera JTable
+    private void uppdateraTabellMedOfiltreradData() {
+        DefaultTableModel modell = (DefaultTableModel) produktTabell.getModel();
+        for (int i = modell.getRowCount() - 1; i >= 0; i--) {
+            Boolean avklarad = (Boolean) modell.getValueAt(i, 5);
+            if (avklarad != null && avklarad) {
+                modell.removeRow(i);
+            }
+        }
+    }
+
+// Markera en rad som avklarad (checkbox true) utan att visa den i tabellen
+    private void doljaRadITabellen(int tilldelningsID) {
+        DefaultTableModel modell = (DefaultTableModel) produktTabell.getModel();
+        for (int i = 0; i < modell.getRowCount(); i++) {
+            int id = Integer.parseInt(modell.getValueAt(i, 0).toString());
+            if (id == tilldelningsID) {
+                modell.setValueAt(true, i, 5); // checkbox för Avklarad
+                break;
+            }
+        }
+        uppdateraTabellMedOfiltreradData(); // filtrera bort avklarade
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
             JFrame fonster = new JFrame("Min Kalender");
             fonster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             fonster.setSize(1000, 800);
-            fonster.setContentPane(new KalenderSchemaRatt(idb,inloggadAnvandare));
+            fonster.setContentPane(new KalenderSchemaRatt(idb, inloggadAnvandare));
             fonster.setVisible(true);
         });
     }

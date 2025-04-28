@@ -3,11 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
-import oru.inf.InfDB; 
-import oru.inf.InfException; 
-import javax.swing.JOptionPane; 
-import java.util.ArrayList; 
-import java.time.LocalDate;
+
+import oru.inf.InfDB;
+import oru.inf.InfException;
+import javax.swing.JOptionPane;
+import java.util.ArrayList;
 import javax.swing.*;
 import java.util.HashMap;
 
@@ -15,18 +15,18 @@ import java.util.HashMap;
  *
  * @author iftinserar
  */
-public class SkapaNyOrder extends javax.swing.JPanel { 
- 
-        private static InfDB idb; 
-        private String inloggadAnvandare; 
-        private ArrayList<Orderrad> orderrader = new ArrayList<>();
-        private String inloggadKundID = "Välj KundID";
-        private static boolean express = false;
+public class SkapaNyOrder extends javax.swing.JPanel {
+
+    private static InfDB idb;
+    private String inloggadAnvandare;
+    private ArrayList<Orderrad> orderrader = new ArrayList<>();
+    private String inloggadKundID = "Välj KundID";
+    private static boolean express = false;
 
     /**
      * Creates new form SkapaVanligOrder
      */
-    public SkapaNyOrder(InfDB idb,  String inloggadAnvandare) {
+    public SkapaNyOrder(InfDB idb, String inloggadAnvandare) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
@@ -37,11 +37,11 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         txtDatum.setText(java.time.LocalDate.now().toString()); // <--- Dagens datum
         uppdateraOrdernummer();
     }
-    
+
     public static boolean isExpress() {
         return express;
     }
-    
+
     private void uppdateraOrdernummer() {
         try {
             // Hämta det senaste BestallningID från databasen
@@ -59,7 +59,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av senaste BestallningID: " + e.getMessage());
         }
     }
-    
+
     private void fyllKundIDComboBox() {
         try {
             cbKundnummer.removeAllItems();
@@ -82,10 +82,10 @@ public class SkapaNyOrder extends javax.swing.JPanel {
 
                     if (!orderrader.isEmpty()) {
                         int svar = JOptionPane.showConfirmDialog(
-                            null,
-                            "Du har redan lagt till produkter. Vill du byta kund och rensa din varukorg?",
-                            "Byt kund",
-                            JOptionPane.YES_NO_OPTION
+                                null,
+                                "Du har redan lagt till produkter. Vill du byta kund och rensa din varukorg?",
+                                "Byt kund",
+                                JOptionPane.YES_NO_OPTION
                         );
 
                         if (svar == JOptionPane.YES_OPTION) {
@@ -111,58 +111,57 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Fel vid hämtning av kundinformation: " + e.getMessage());
         }
     }
-    
-    
-    
-    private void resetOrder() {
-    orderrader.clear();
-    express = false;
-    cbJa.setSelected(false);  // Checkboxen avmarkeras i GUI:t
-    JOptionPane.showMessageDialog(null, "Din varukorg har rensats.");
-    }
-    
-    public void resetForm() {
-    orderrader.clear();
-    express = false;
-    cbJa.setSelected(false);
-    cbKundnummer.removeAllItems();
-    fyllKundIDComboBox();  
-    uppdateraOrdernummer(); 
-    }
-    
-    private void fyllProduktComboBox() {
-    try {
-        cbNamn.removeAllItems();
-        cbNamn.addItem("Välj vara");
-        ArrayList<String> produktNamn = idb.fetchColumn("SELECT Namn FROM StandardProdukt");
-        for (String namn : produktNamn) {
-            cbNamn.addItem(namn);
-        }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid hämtning av produkter: " + e.getMessage());
-    }
-    }
-    
-    private void fyllProduktInfo() {
-    String valtNamn = (String) cbNamn.getSelectedItem();
-    
-    if (valtNamn != null && !valtNamn.equals("Välj vara")) {
-        try {
-            String artikelnummer = idb.fetchSingle("SELECT Artikelnummer FROM StandardProdukt WHERE Namn = '" + valtNamn + "'");
-            String pris = idb.fetchSingle("SELECT Pris FROM StandardProdukt WHERE Namn = '" + valtNamn + "'");
 
-            tfArtikelNummer.setText(artikelnummer);
-            tfPris.setText(pris);
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(null, "Fel vid hämtning av produktinfo: " + e.getMessage());
-        }
-    } else {
-        tfArtikelNummer.setText("");
-        tfPris.setText("");
+    private void resetOrder() {
+        orderrader.clear();
+        express = false;
+        cbJa.setSelected(false);  // Checkboxen avmarkeras i GUI:t
+        JOptionPane.showMessageDialog(null, "Din varukorg har rensats.");
     }
-}
-    
+
+    public void resetForm() {
+        orderrader.clear();
+        express = false;
+        cbJa.setSelected(false);
+        cbKundnummer.removeAllItems();
+        fyllKundIDComboBox();
+        uppdateraOrdernummer();
+    }
+
+    private void fyllProduktComboBox() {
+        try {
+            cbNamn.removeAllItems();
+            cbNamn.addItem("Välj vara");
+            ArrayList<String> produktNamn = idb.fetchColumn("SELECT Namn FROM StandardProdukt");
+            for (String namn : produktNamn) {
+                cbNamn.addItem(namn);
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid hämtning av produkter: " + e.getMessage());
+        }
+    }
+
+    private void fyllProduktInfo() {
+        String valtNamn = (String) cbNamn.getSelectedItem();
+
+        if (valtNamn != null && !valtNamn.equals("Välj vara")) {
+            try {
+                String artikelnummer = idb.fetchSingle("SELECT Artikelnummer FROM StandardProdukt WHERE Namn = '" + valtNamn + "'");
+                String pris = idb.fetchSingle("SELECT Pris FROM StandardProdukt WHERE Namn = '" + valtNamn + "'");
+
+                tfArtikelNummer.setText(artikelnummer);
+                tfPris.setText(pris);
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(null, "Fel vid hämtning av produktinfo: " + e.getMessage());
+            }
+        } else {
+            tfArtikelNummer.setText("");
+            tfPris.setText("");
+        }
+    }
+
     public static class Orderrad {
+
         String artikelnummer;
         String namn;
         int antal;
@@ -174,7 +173,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             this.antal = antal;
             this.pris = pris;
         }
-        
+
         public Orderrad(Orderrad annan) {
             this.artikelnummer = annan.artikelnummer;
             this.namn = annan.namn;
@@ -206,14 +205,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
             this.antal = nyttAntal;
         }
     }
-    
-    
-    
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -455,45 +447,44 @@ public class SkapaNyOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnGaVidareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGaVidareActionPerformed
-    if (orderrader.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
-        return;
-    }
+        if (orderrader.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Du måste lägga till minst en produkt. Använd knappen 'Lägg Till'");
+            return;
+        }
 
-    if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
-        JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
-        return;
-    }
+        if (inloggadKundID == null || inloggadKundID.equals("Välj KundID")) {
+            JOptionPane.showMessageDialog(null, "Välj ett giltigt kundnummer.");
+            return;
+        }
 
-    double totalpris = 0;
-    for (Orderrad rad : orderrader) {
-        totalpris += rad.totalPris();
-    }
+        double totalpris = 0;
+        for (Orderrad rad : orderrader) {
+            totalpris += rad.totalPris();
+        }
 
-    if (express) {
-        totalpris += totalpris * 0.2;
-    }
+        if (express) {
+            totalpris += totalpris * 0.2;
+        }
 
-    String ordernummer = txtfOrdernummer.getText();
-    if (ordernummer.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
-        return;
-    }
-    
-    ArrayList<Orderrad> orderraderKopia = new ArrayList<>();
-    for (Orderrad rad : orderrader) {
-        orderraderKopia.add(new Orderrad(rad));  // Använder copy constructor
-    }
+        String ordernummer = txtfOrdernummer.getText();
+        if (ordernummer.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ordernummer kan inte vara tomt.");
+            return;
+        }
 
-    OrderSammanfattning osPanel = new OrderSammanfattning(idb, inloggadAnvandare, orderraderKopia, totalpris,
-            inloggadKundID, ordernummer, express, "Standardbeställning");
+        ArrayList<Orderrad> orderraderKopia = new ArrayList<>();
+        for (Orderrad rad : orderrader) {
+            orderraderKopia.add(new Orderrad(rad));  // Använder copy constructor
+        }
 
-   
-    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-    mainFrame.addPanelToCardLayout(osPanel, "OrderSammanfattning");
-    mainFrame.showPanel("OrderSammanfattning");
-    resetForm();
-    uppdateraOrdernummer();
+        OrderSammanfattning osPanel = new OrderSammanfattning(idb, inloggadAnvandare, orderraderKopia, totalpris,
+                inloggadKundID, ordernummer, express, "Standardbeställning");
+
+        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+        mainFrame.addPanelToCardLayout(osPanel, "OrderSammanfattning");
+        mainFrame.showPanel("OrderSammanfattning");
+        resetForm();
+        uppdateraOrdernummer();
     }//GEN-LAST:event_btnGaVidareActionPerformed
 
 

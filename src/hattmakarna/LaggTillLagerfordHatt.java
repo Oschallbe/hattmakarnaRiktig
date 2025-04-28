@@ -538,9 +538,16 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
     }//GEN-LAST:event_laggTillMaterialProduktActionPerformed
 
     private void laggTillNyttMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laggTillNyttMaterialActionPerformed
-        // TODO add your handling code here:
-        new LaggTillMaterial(idb, inloggadAnvandare).setVisible(true);
-        //this.dispose();
+        LaggTillMaterial nyttMaterialFönster = new LaggTillMaterial(idb, inloggadAnvandare);
+
+        nyttMaterialFönster.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                fyllMaterialComboBox(); // Uppdatera material-listan efter stängning
+            }
+        });
+
+        nyttMaterialFönster.setVisible(true);
     }//GEN-LAST:event_laggTillNyttMaterialActionPerformed
 
     private void comboMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMaterialActionPerformed
