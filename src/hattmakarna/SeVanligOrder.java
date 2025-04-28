@@ -297,43 +297,34 @@ public class SeVanligOrder extends javax.swing.JPanel {
     }
 
     public void sparaTilldelad() {
-        try {
-            //Hämtar datan från tblAllaProdukter och lägger den i "tabell".
-            DefaultTableModel tabell = (DefaultTableModel) tblAllaProdukter.getModel();
+    try {
+        DefaultTableModel model = (DefaultTableModel) tblAllaProdukter.getModel();
 
-            //Går igenom varje rad i tabellen "tabell".
-            for (int i = 0; i < tabell.getRowCount(); i++) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String artNR = model.getValueAt(i, 0).toString();    // artikelnummer
+            String anstID = model.getValueAt(i, 4).toString();   // nu ID
 
-                //Försöker hämta artikelnummer och anställningsid från kolumn 1(0) och 5(4) för varje rad.
-                try {
-                    String artNR = tabell.getValueAt(i, 0).toString();
-                    String anstID = tabell.getValueAt(i, 4).toString();
+            // om tomt → NULL, annars siffran
+            String idText = anstID.isEmpty() ? "NULL" : anstID;
 
-                    //Skapar lokalvariabeln uppdateraDatabas.
-                    String uppdateraDatabas;
+            String sql =
+              "UPDATE OrderItem oi " +
+              "JOIN StandardProdukt sp ON oi.StandardProduktID = sp.StandardProduktID " +
+              "SET oi.AnstalldID = " + idText + " " +
+              "WHERE sp.Artikelnummer = '" + artNR + "' " +
+              "  AND oi.BestallningID = " + klickatOrderNr + ";";
 
-                    //Om anstID är null eller rutan är tom så ändras uppdateraDatabas till att AnstalldID ska vara null för den raden 
-                    if (anstID == null || anstID.isEmpty()) {
-                        uppdateraDatabas = "update orderitem set AnstalldID = null where OrderItemID = " + artNR + ";";
-                    } //Annars sätts AnstalldID till det anställningsid som hämtas och läggs i uppdateraDatabas
-                    else {
-                        uppdateraDatabas = "update orderitem set AnstalldID = " + anstID + " where OrderItemID = " + artNR + ";";
-                    }
-                    System.out.println(uppdateraDatabas);
-                    //Uppdaterar databasen med det värde vi lagrat i uppdateraDatabas
-                    idb.update(uppdateraDatabas);
-
-                } catch (NumberFormatException ex) {
-                    System.out.println("Fel på rad: " + i + ":" + ex.getMessage());
-                }
-            }
-
-            fyllTabell();
-
-        } catch (InfException ex) {
-            System.out.println(ex);
+            System.out.println("Kör SQL: " + sql);
+            idb.update(sql);
         }
+
+        fyllTabell();  // ladda om med nya ID:n
     }
+    catch (InfException ex) {
+        System.err.println("Databasfel: " + ex.getMessage());
+    }
+}
+
 
     public void sparaStatus() {
         try {
@@ -343,7 +334,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
             idb.update(updateStatus);
 
         } catch (InfException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }
 
@@ -625,7 +616,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Ändring sparad!");
 
         } catch (NumberFormatException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
 
