@@ -11,7 +11,7 @@ import oru.inf.InfException;
  *
  * @author iftinserar
  */
-public class LaggTillAnstalld extends javax.swing.JFrame {
+public class LaggTillAnstalld extends javax.swing.JPanel {
     private static InfDB idb;
     private String inloggadAnvandare;
     
@@ -32,6 +32,9 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtLosenord = new javax.swing.JTextField();
+        BtnLaggTill = new javax.swing.JButton();
+        btnSlumpaLosenord = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -40,22 +43,6 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
         txtFornamn = new javax.swing.JTextField();
         txtEfternamn = new javax.swing.JTextField();
         txtEpost = new javax.swing.JTextField();
-        txtLosenord = new javax.swing.JTextField();
-        BtnLaggTill = new javax.swing.JButton();
-        btnSlumpaLosenord = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        jLabel1.setText("Lägg till anställd");
-
-        jLabel2.setText("Förnamn");
-
-        jLabel3.setText("Efternamn");
-
-        jLabel4.setText("E-post");
-
-        jLabel5.setText("Lösenord");
 
         BtnLaggTill.setText("Lägg till");
         BtnLaggTill.addActionListener(new java.awt.event.ActionListener() {
@@ -71,8 +58,19 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        jLabel1.setText("Lägg till anställd");
+
+        jLabel2.setText("Förnamn");
+
+        jLabel3.setText("Efternamn");
+
+        jLabel4.setText("E-post");
+
+        jLabel5.setText("Lösenord");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -101,7 +99,7 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
                         .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,96 +124,60 @@ public class LaggTillAnstalld extends javax.swing.JFrame {
                     .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSlumpaLosenord)
                     .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLaggTillActionPerformed
-    String fornamn = txtFornamn.getText().trim();
-    String efternamn = txtEfternamn.getText().trim();
-    String epost = txtEpost.getText().trim();
-    String losenord = txtLosenord.getText().trim();
+        String fornamn = txtFornamn.getText().trim();
+        String efternamn = txtEfternamn.getText().trim();
+        String epost = txtEpost.getText().trim();
+        String losenord = txtLosenord.getText().trim();
 
-    if (fornamn.isEmpty() || efternamn.isEmpty() || epost.isEmpty() || losenord.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        if (fornamn.isEmpty() || efternamn.isEmpty() || epost.isEmpty() || losenord.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    String sql = String.format(
-        "INSERT INTO Anstalld (Fornamn, Efternamn, Epost, Losenord, Behorighet) " +
-        "VALUES ('%s', '%s', '%s', '%s', 1)",
-        fornamn.replace("'", "''"), 
-        efternamn.replace("'", "''"), 
-        epost.replace("'", "''"), 
-        losenord.replace("'", "''")
-    );
+        String sql = String.format(
+            "INSERT INTO Anstalld (Fornamn, Efternamn, Epost, Losenord, Behorighet) " +
+            "VALUES ('%s', '%s', '%s', '%s', 1)",
+            fornamn.replace("'", "''"),
+            efternamn.replace("'", "''"),
+            epost.replace("'", "''"),
+            losenord.replace("'", "''")
+        );
 
-    try {
-        idb.insert(sql);
-        JOptionPane.showMessageDialog(this, "Anställd tillagd!\nLösenord: " + losenord);
-        
-        // Tömmer fälten
-        txtFornamn.setText("");
-        txtEfternamn.setText("");
-        txtEpost.setText("");
-        txtLosenord.setText("");
-        this.dispose();
-    } catch (InfException ex) {
-        JOptionPane.showMessageDialog(this, "Fel vid insättning: " + ex.getMessage());
-    }
+        try {
+            idb.insert(sql);
+            JOptionPane.showMessageDialog(this, "Anställd tillagd!\nLösenord: " + losenord);
+
+            // Tömmer fälten
+            txtFornamn.setText("");
+            txtEfternamn.setText("");
+            txtEpost.setText("");
+            txtLosenord.setText("");
+            
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(this, "Fel vid insättning: " + ex.getMessage());
+        }
     }//GEN-LAST:event_BtnLaggTillActionPerformed
 
     private void btnSlumpaLosenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSlumpaLosenordActionPerformed
-    String tecken = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    StringBuilder sb = new StringBuilder();
-    java.util.Random rand = new java.util.Random();
-    int langd = 10; //
+        String tecken = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder();
+        java.util.Random rand = new java.util.Random();
+        int langd = 10; //
 
-    for (int i = 0; i < langd; i++) {
-        int index = rand.nextInt(tecken.length());
-        sb.append(tecken.charAt(index));
-    }
+        for (int i = 0; i < langd; i++) {
+            int index = rand.nextInt(tecken.length());
+            sb.append(tecken.charAt(index));
+        }
 
-    String slumpatLosenord = sb.toString();
-    txtLosenord.setText(slumpatLosenord); // sätt det direkt i fältet
+        String slumpatLosenord = sb.toString();
+        txtLosenord.setText(slumpatLosenord); // sätt det direkt i fältet
     }//GEN-LAST:event_btnSlumpaLosenordActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LaggTillAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LaggTillAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LaggTillAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LaggTillAnstalld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new LaggTillAnstalld().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLaggTill;

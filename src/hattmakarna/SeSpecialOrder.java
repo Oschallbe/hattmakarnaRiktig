@@ -175,7 +175,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
 
     //Skapar en metod för att endast kunna redigera "Tilldelad:"-kolumnen i jtablen.
     private DefaultTableModel genereraRedigerbarModell() {
-        String[] kolumnNamn = {"ArtiekelNr", "Huvudmått", "Pris", "Antal", "Tilldelad:"};
+        String[] kolumnNamn = {"Ordernummer", "Huvudmått", "Pris", "Antal", "Tilldelad:"};
 
         //Skapar en ny defaulttablemodel.
         DefaultTableModel redigerbarModell = new DefaultTableModel(kolumnNamn, 0) {
@@ -218,7 +218,8 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             for (int i = 0; i < tabell.getRowCount(); i++) {
                 try {
                     // Hämtar OrderItemID (dolt, kolumn 0) och Tilldelad (kolumn 4).
-                    String artNR = tabell.getValueAt(i, 0).toString();
+                   String artNR = tabell.getValueAt(i, 0).toString();
+                   //String artNR = lblOrderNr.getText();
                     String anstID = tabell.getValueAt(i, 4).toString();
 
                     String uppdateraDatabas;
@@ -236,7 +237,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
                     idb.update(uppdateraDatabas);
 
                 } catch (NumberFormatException ex) {
-                    System.out.println("Fel på rad: " + i + " – " + ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "Fel på rad: " + i + " – " + ex.getMessage());
                 }
             }
 
@@ -244,7 +245,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             fyllTabell();
 
         } catch (InfException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }
 
@@ -258,7 +259,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             idb.update(updateStatus);
 
         } catch (InfException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }
 
@@ -290,7 +291,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
 
         } catch (InfException ex) {
             // Hantera eventuella fel som kan uppstå under databasfrågor eller uppdatering av labels
-            System.out.println("Fel i fyllLabels: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Fel i fyllLabels: " + ex.getMessage());
         }
 
 //    try {
@@ -426,16 +427,16 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         lblSpecialorder.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSpecialorder.setText("Specialorder:");
         add(lblSpecialorder);
-        lblSpecialorder.setBounds(170, 20, 150, 32);
+        lblSpecialorder.setBounds(150, 20, 170, 30);
 
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad", "Returnerad" }));
         add(cbStatus);
-        cbStatus.setBounds(260, 160, 129, 22);
+        cbStatus.setBounds(260, 160, 138, 23);
 
         lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblOrderNr.setText("jLabel1");
         add(lblOrderNr);
-        lblOrderNr.setBounds(340, 20, 81, 32);
+        lblOrderNr.setBounds(340, 20, 81, 30);
 
         btnRedigeraStatus.setText("Redigera status");
         btnRedigeraStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -449,7 +450,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         lblTillverkningstid.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTillverkningstid.setText("Tillverkningstid:");
         add(lblTillverkningstid);
-        lblTillverkningstid.setBounds(170, 120, 110, 20);
+        lblTillverkningstid.setBounds(170, 120, 110, 17);
 
         tblAllaAnstallda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -470,12 +471,12 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         lblTillverkningstid2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTillverkningstid2.setText("jLabel1");
         add(lblTillverkningstid2);
-        lblTillverkningstid2.setBounds(300, 120, 140, 20);
+        lblTillverkningstid2.setBounds(300, 120, 140, 17);
 
         lblKund.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblKund.setText("Kund: ");
         add(lblKund);
-        lblKund.setBounds(170, 80, 39, 20);
+        lblKund.setBounds(170, 80, 44, 17);
 
         btnAtaProdukt.setText("Åta produkt");
         btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -489,7 +490,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblKundNr.setText("jLabel1");
         add(lblKundNr);
-        lblKundNr.setBounds(220, 80, 30, 20);
+        lblKundNr.setBounds(220, 80, 30, 17);
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -538,7 +539,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblStatus.setText("Status: ");
         add(lblStatus);
-        lblStatus.setBounds(170, 160, 45, 20);
+        lblStatus.setBounds(170, 160, 50, 17);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeSpecifikProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeSpecifikProduktActionPerformed
@@ -597,7 +598,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Ändring sparad!");
 
         } catch (NumberFormatException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
     }//GEN-LAST:event_btnSparaActionPerformed
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {
