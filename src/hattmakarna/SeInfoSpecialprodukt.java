@@ -28,7 +28,6 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
         this.inloggadAnvandare = ePost;
         this.produktID = produktID;
         this.antalProdukter = antalProdukter;
-        initComponents();
         
         
         Tabell.setModel(new javax.swing.table.DefaultTableModel(
@@ -113,7 +112,7 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, info.toString(), "Material för produkt", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av material" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -131,7 +130,7 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         labelBild = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         Tabell.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -158,12 +157,10 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(labelBild)
                         .addGap(0, 641, Short.MAX_VALUE)))
                 .addContainerGap())
