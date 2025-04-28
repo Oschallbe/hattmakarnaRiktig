@@ -55,6 +55,7 @@ import javax.swing.*;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.properties.HorizontalAlignment;
+import java.net.URL;
 
 
 /**
@@ -78,48 +79,56 @@ public class SkapaNyFraktsedel extends javax.swing.JPanel {
     }
     
 private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderLista, double totalpris, String bestallningID) {
-        try {
-            // Kontrollera om beställning redan har fraktsedel
-            String checkSQL = "SELECT FraktsedelID FROM Bestallning WHERE BestallningID = " + bestallningID;
-            Map<String, String> fraktCheck = idb.fetchRow(checkSQL);
+    try {
+        // Kontrollera om beställningen redan har en fraktsedel
+        String checkSQL = "SELECT FraktsedelID FROM Bestallning WHERE BestallningID = " + bestallningID;
+        Map<String, String> fraktCheck = idb.fetchRow(checkSQL);
 
-            boolean fraktsedelRedanFinns = fraktCheck != null && fraktCheck.get("FraktsedelID") != null;
-            String fraktsedelID = "";
+        boolean fraktsedelRedanFinns = fraktCheck != null && fraktCheck.get("FraktsedelID") != null;
+        String fraktsedelID = "";
 
-            if (!fraktsedelRedanFinns) {
-                // Data för fraktsedel
-                String adress = kundInfo.get("LeveransAdress");
-                String mottagare = kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn");
-                String innehall = orderLista.stream()
-                        .map(rad -> rad.antal + "x " + rad.produktNamn)
-                        .collect(Collectors.joining(", "));
-                String exportkod = "SE";
-                double vikt = 1.0; // Placeholder
-                double moms = totalpris * 0.25;
-                double inklMoms = totalpris + moms;
-                String datum = java.time.LocalDate.now().toString();
+        // Om beställningen inte har ett fraktsedelID
+        if (!fraktsedelRedanFinns) {
+            // Data för fraktsedel
+            String adress = kundInfo.get("LeveransAdress").replace("'", "''");  // Escape special characters
+            String mottagare = (kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")).replace("'", "''");
+            String innehall = orderLista.stream()
+                    .map(rad -> (rad.antal + "x " + rad.produktNamn).replace("'", "''"))
+                    .collect(Collectors.joining(", "));
+            String exportkod = "SE";
+            double vikt = 1.0; // Placeholder, kan justeras beroende på produktvikt
+            double moms = totalpris * 0.25;  // 25% moms
+            double inklMoms = totalpris + moms;
+            String datum = java.time.LocalDate.now().toString();
 
-                // Spara i databas
-                String sql = String.format(
-                        "INSERT INTO Fraktsedel (Adress, Avsandare, Mottagare, Innehåll, Exportkod, Pris, Datum, Vikt, Moms, PrisInklMoms) " +
-                                "VALUES ('%s', 'Hattmakarna AB', '%s', '%s', '%s', %.2f, '%s', %.2f, %.2f, %.2f)",
-                        adress, mottagare, innehall, exportkod, totalpris, datum, vikt, moms, inklMoms);
-                idb.insert(sql);
+            // Spara fraktsedel i databasen
+            String sql = String.format(
+                "INSERT INTO Fraktsedel (Adress, Avsandare, Mottagare, Innehåll, Exportkod, Pris, Datum, Vikt, Moms, PrisInklMoms) " +
+                "VALUES ('%s', '%s', '%s', '%s', '%s', %.2f, '%s', %.2f, %.2f, %.2f)",
+                adress, "Hattmakarna AB", mottagare, innehall, exportkod, totalpris, datum, vikt, moms, inklMoms
+            );
+            idb.insert(sql);
 
-                fraktsedelID = idb.getAutoIncrement("Fraktsedel", "FraktsedelID");
-                String update = "UPDATE Bestallning SET FraktsedelID = " + fraktsedelID + " WHERE BestallningID = " + bestallningID;
-                idb.update(update);
-            } else {
-                fraktsedelID = fraktCheck.get("FraktsedelID");
-            }
+            // Hämta det genererade FraktsedelID
+            fraktsedelID = idb.getAutoIncrement("Fraktsedel", "FraktsedelID");
 
-            skapaFraktsedelEtikettPDF(fraktsedelID, kundInfo, 1.0, bestallningID);
+            // Uppdatera Bestallning med det nya FraktsedelID
+            String updateSQL = "UPDATE Bestallning SET FraktsedelID = " + fraktsedelID + " WHERE BestallningID = " + bestallningID;
+            idb.update(updateSQL);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Fel vid skapande av fraktsedel: " + e.getMessage());
-            e.printStackTrace();
+        } else {
+            // Om fraktsedelID redan finns för denna beställning, använd det befintliga fraktsedelID
+            fraktsedelID = fraktCheck.get("FraktsedelID");
         }
+
+        // Skapa fraktsedel etikett PDF (om nödvändigt)
+        skapaFraktsedelEtikettPDF(fraktsedelID, kundInfo, 1.0, bestallningID);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Fel vid skapande av fraktsedel: " + e.getMessage());
+        e.printStackTrace();
     }
+}
 
     private void skapaFraktsedelEtikettPDF(String fraktsedelID, Map<String, String> kundInfo, double viktKg, String bestallningID)
     {   
@@ -137,11 +146,9 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
             PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
             PdfFont normal = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
-            // Ny sökväg för bilden (relativ sökväg från användarens hemkatalog)
-            String loggaPath = System.getProperty("user.home") + "/hattadmin/dhl-logga.png";
-
-            // Skapa bilden från den nya sökvägen
-            Image dhlLogo = new Image(ImageDataFactory.create(loggaPath));
+        URL imageURL = getClass().getResource("/hattmakarna/bilder/DHL-logga.png");
+        if (imageURL != null) {
+            Image dhlLogo = new Image(ImageDataFactory.create(imageURL));
 
             // Hämta bildens ursprungliga dimensioner
             float originalWidth = dhlLogo.getImageWidth();
@@ -163,6 +170,9 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
 
             // Lägg till logotypen i dokumentet
             document.add(dhlLogo);
+        } else {
+            JOptionPane.showMessageDialog(this, "Kunde inte hitta DHL-logotypen!", "Fel", JOptionPane.ERROR_MESSAGE);
+        }
 
             // Lägg till datumet som en text i dokumentet
             document.add(new Paragraph("Datum: " + java.time.LocalDate.now())
@@ -286,6 +296,7 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
         btnHamta = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblBestallningInfo = new javax.swing.JTable();
+        btnTillbaka = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Skapa ny fraktsedel");
@@ -321,14 +332,17 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
         ));
         jScrollPane1.setViewportView(tblBestallningInfo);
 
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTillbakaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSkapaFraktsedel)
-                .addGap(31, 31, 31))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -336,14 +350,19 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtBestallningID, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnHamta)))))
+                                .addComponent(btnHamta))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnTillbaka)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSkapaFraktsedel)
+                                .addGap(15, 15, 15)))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -359,7 +378,9 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addComponent(btnSkapaFraktsedel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSkapaFraktsedel)
+                    .addComponent(btnTillbaka))
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -487,10 +508,16 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
         }
     }//GEN-LAST:event_btnSkapaFraktsedelActionPerformed
 
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+    mainFrame.showPanel("Alla ordrar");
+    }//GEN-LAST:event_btnTillbakaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHamta;
     private javax.swing.JButton btnSkapaFraktsedel;
+    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
