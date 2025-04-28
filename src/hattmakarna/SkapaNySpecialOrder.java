@@ -309,7 +309,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnSpara);
-        btnSpara.setBounds(750, 0, 190, 27);
+        btnSpara.setBounds(850, 500, 80, 27);
 
         jCheckBox1.setText("Ja");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -477,7 +477,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnLaggTillMaterialOrder);
-        btnLaggTillMaterialOrder.setBounds(750, 80, 190, 27);
+        btnLaggTillMaterialOrder.setBounds(750, 90, 190, 27);
 
         jLabel24.setText("Mängd:");
         add(jLabel24);
@@ -490,7 +490,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnLaggTillNyttMaterial);
-        btnLaggTillNyttMaterial.setBounds(750, 40, 190, 27);
+        btnLaggTillNyttMaterial.setBounds(750, 30, 190, 27);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -512,7 +512,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnTaBortMaterialOrder);
-        btnTaBortMaterialOrder.setBounds(750, 120, 190, 27);
+        btnTaBortMaterialOrder.setBounds(750, 130, 190, 27);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDatumActionPerformed

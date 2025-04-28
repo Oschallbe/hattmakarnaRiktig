@@ -31,7 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
     private LäggTillNyKund laggTillKundPanel;
     private LaggTillLagerfordHatt laggTillLagerfordHattPanel;
     private SeForsaljningsstatistikSpecialprodukt statistikSpecialPanel;
-    private LaggTillAnstalld1 laggTillAnstalldPanel;
+    private LaggTillAnstalld laggTillAnstalldPanel;
     //Fält för att anropa validerings klassen
     private Validering validera;
     //private MainFrame parentFrame;  // referens till MainFrame
@@ -227,7 +227,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(pswfLosenord);
-        pswfLosenord.setBounds(483, 548, 228, 41);
+        pswfLosenord.setBounds(700, 530, 228, 41);
 
         btnLoggaIn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnLoggaIn.setText("Logga in");
@@ -237,7 +237,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLoggaIn);
-        btnLoggaIn.setBounds(515, 595, 137, 36);
+        btnLoggaIn.setBounds(740, 580, 137, 28);
 
         lblFelMeddelande.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblFelMeddelande.setText("Felaktig inloggning! ");
@@ -248,35 +248,35 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(lblFelMeddelande);
-        lblFelMeddelande.setBounds(506, 750, 154, 21);
+        lblFelMeddelande.setBounds(506, 750, 153, 21);
 
         lblInloggning.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblInloggning.setText("Inloggning");
         getContentPane().add(lblInloggning);
-        lblInloggning.setBounds(480, 330, 230, 72);
+        lblInloggning.setBounds(700, 310, 300, 72);
 
         txtfEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         getContentPane().add(txtfEmail);
-        txtfEmail.setBounds(483, 459, 228, 41);
+        txtfEmail.setBounds(700, 440, 228, 41);
 
         lblEpost.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblEpost.setText("E-post");
         getContentPane().add(lblEpost);
-        lblEpost.setBounds(385, 464, 80, 31);
+        lblEpost.setBounds(610, 440, 80, 31);
 
         lblLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLosenord.setText("Lösenord");
         getContentPane().add(lblLosenord);
-        lblLosenord.setBounds(385, 557, 75, 25);
+        lblLosenord.setBounds(610, 540, 80, 22);
 
         logotyp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hattmakarna/hattmakarna_logotyp.png"))); // NOI18N
         getContentPane().add(logotyp);
-        logotyp.setBounds(500, 120, 200, 200);
+        logotyp.setBounds(720, 100, 200, 200);
 
         lblValkommen.setFont(new java.awt.Font("Helvetica Neue", 1, 60)); // NOI18N
         lblValkommen.setText("efrgtyh");
         getContentPane().add(lblValkommen);
-        lblValkommen.setBounds(530, 380, 660, 50);
+        lblValkommen.setBounds(750, 360, 660, 50);
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenuBar1.setFont(new java.awt.Font("Helvetica Neue", 0, 16)); // NOI18N
@@ -778,7 +778,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         taBortValkommen();
         
-        laggTillAnstalldPanel = new LaggTillAnstalld1(idb, txtfEmail.getText());
+        laggTillAnstalldPanel = new LaggTillAnstalld(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
         JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll

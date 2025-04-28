@@ -279,7 +279,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        btnFraktsedel.setText("Skapa fraksedel");
+        btnFraktsedel.setText("Skapa fraktsedel");
         btnFraktsedel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFraktsedelActionPerformed(evt);
@@ -712,6 +712,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
     }//GEN-LAST:event_btnSeOrderActionPerformed
 
     private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
+        txtKund.setText("");
         String valdStatus = cbStatus.getSelectedItem().toString();
 
         try {
@@ -839,7 +840,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
         if (resultat != null && !resultat.isEmpty()) {
             try {
             // Skapa en instans av LäggTillNyKund som en JPanel
-            SeMaterialListaPanel materialPanel = new SeMaterialListaPanel(resultat, idb, inloggadAnvandare);
+            SeMaterialLista materialPanel = new SeMaterialLista(resultat, idb, inloggadAnvandare);
 
             // Lägg till panelen i MainFrame
             MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
