@@ -197,7 +197,6 @@ public class MainFrame extends javax.swing.JFrame {
         seOrdrarItem = new javax.swing.JMenuItem();
         skapaNyOrderItem = new javax.swing.JMenuItem();
         skapaNySpecialOrderItem = new javax.swing.JMenuItem();
-        skapaNyFraktsedel = new javax.swing.JMenu();
         seAllaLagerfordaProdukter = new javax.swing.JMenu();
         menuItemAllaLagerfordaProdukter = new javax.swing.JMenuItem();
         menuItemLaggTillLagerfordHatt = new javax.swing.JMenuItem();
@@ -238,7 +237,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLoggaIn);
-        btnLoggaIn.setBounds(515, 595, 137, 28);
+        btnLoggaIn.setBounds(515, 595, 137, 36);
 
         lblFelMeddelande.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblFelMeddelande.setText("Felaktig inloggning! ");
@@ -249,12 +248,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(lblFelMeddelande);
-        lblFelMeddelande.setBounds(506, 750, 153, 21);
+        lblFelMeddelande.setBounds(506, 750, 154, 21);
 
         lblInloggning.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblInloggning.setText("Inloggning");
         getContentPane().add(lblInloggning);
-        lblInloggning.setBounds(480, 330, 251, 72);
+        lblInloggning.setBounds(480, 330, 230, 72);
 
         txtfEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         getContentPane().add(txtfEmail);
@@ -268,7 +267,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLosenord.setText("Lösenord");
         getContentPane().add(lblLosenord);
-        lblLosenord.setBounds(385, 557, 80, 22);
+        lblLosenord.setBounds(385, 557, 75, 25);
 
         logotyp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hattmakarna/hattmakarna_logotyp.png"))); // NOI18N
         getContentPane().add(logotyp);
@@ -309,18 +308,6 @@ public class MainFrame extends javax.swing.JFrame {
         menuOrdrar.add(skapaNySpecialOrderItem);
 
         jMenuBar1.add(menuOrdrar);
-
-        skapaNyFraktsedel.setText("Skapa ny fraktsedel");
-        skapaNyFraktsedel.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                skapaNyFraktsedelMenuSelected(evt);
-            }
-        });
-        jMenuBar1.add(skapaNyFraktsedel);
 
         seAllaLagerfordaProdukter.setText("Lagerförda produkter");
         seAllaLagerfordaProdukter.addMenuListener(new javax.swing.event.MenuListener() {
@@ -626,22 +613,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lblFelMeddelandeComponentHidden
 
-    private void skapaNyFraktsedelMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_skapaNyFraktsedelMenuSelected
-     // TODO add your handling code here:
-    /* taBortValkommen();
-        fraktsedelPanel = new SkapaNyFraktsedel(idb, txtfEmail.getText(), );
-
-        // Skapa en wrapper-panel med centrerad layout
-        JPanel wrapper = new JPanel(new GridBagLayout()); // centrerar automatiskt sitt innehåll
-        wrapper.add(fraktsedelPanel); // lägg SeAllaOrdrar i mitten
-
-        // Lägg till wrappern i card layout-systemet istället för SeAllaOrdrar direkt
-        addPanelToCardLayout(wrapper, "Fraktsedel");
-
-        // Visa
-        showPanel("Fraktsedel");*/
-    }//GEN-LAST:event_skapaNyFraktsedelMenuSelected
-
     private void seOrdrarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seOrdrarItemActionPerformed
         // TODO add your handling code here:
         taBortValkommen();
@@ -849,7 +820,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu seAllaKunder;
     private javax.swing.JMenu seAllaLagerfordaProdukter;
     private javax.swing.JMenuItem seOrdrarItem;
-    private javax.swing.JMenu skapaNyFraktsedel;
     private javax.swing.JMenuItem skapaNyOrderItem;
     private javax.swing.JMenuItem skapaNySpecialOrderItem;
     private javax.swing.JTextField txtfEmail;
