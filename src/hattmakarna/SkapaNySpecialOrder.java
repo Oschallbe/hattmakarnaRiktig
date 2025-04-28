@@ -10,18 +10,11 @@ import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
-/**
- *
- * @author mejaa
- */
 public class SkapaNySpecialOrder extends javax.swing.JPanel {
 
     private static InfDB idb;
     private String inloggadAnvandare;
 
-    /**
-     * Creates new form SkapaSpecialOrder
-     */
     public SkapaNySpecialOrder(InfDB idb, String ePost) {
         initComponents();
         this.idb = idb;
@@ -80,7 +73,6 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
                 return;
             }
 
-            // Exempel: "3 - Agnes Eriksson" → plocka ut "3"
             int kundID = Integer.parseInt(valdKund.split(" - ")[0]);
 
             String sql = "SELECT Matt FROM Kund WHERE KundID = " + kundID;
@@ -131,6 +123,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
         }
     }
 
+    //Fyller comboBox med kundid samt namn
     private void fyllKundComboBox() {
         try {
 
@@ -151,131 +144,82 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
     }
 
     private void sorteraTabellEfterNamn() {
-    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-    int rowCount = model.getRowCount();
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        int rowCount = model.getRowCount();
 
-    // Spara raderna i en lista
-    ArrayList<Object[]> rader = new ArrayList<>();
-    for (int i = 0; i < rowCount; i++) {
-        Object[] radData = new Object[model.getColumnCount()];
-        for (int j = 0; j < model.getColumnCount(); j++) {
-            radData[j] = model.getValueAt(i, j);
+        // Spara raderna i en lista
+        ArrayList<Object[]> rader = new ArrayList<>();
+        for (int i = 0; i < rowCount; i++) {
+            Object[] radData = new Object[model.getColumnCount()];
+            for (int j = 0; j < model.getColumnCount(); j++) {
+                radData[j] = model.getValueAt(i, j);
+            }
+            rader.add(radData);
         }
-        rader.add(radData);
+
+        // Sortera listan efter kolumn 0 (namn)
+        rader.sort((r1, r2) -> r1[0].toString().compareToIgnoreCase(r2[0].toString()));
+
+        // Töm modellen och lägg tillbaka raderna i sorterad ordning
+        model.setRowCount(0);
+        for (Object[] rad : rader) {
+            model.addRow(rad);
+        }
     }
 
-    // Sortera listan efter kolumn 0 (namn)
-    rader.sort((r1, r2) -> r1[0].toString().compareToIgnoreCase(r2[0].toString()));
-
-    // Töm modellen och lägg tillbaka raderna i sorterad ordning
-    model.setRowCount(0);
-    for (Object[] rad : rader) {
-        model.addRow(rad);
-    }
-}
-
+    //metod för att välja material för att sedan kunna lägga till i order
     private void laggTillMaterialIRuta() {
         try {
-        String valtMaterial = (String) comboMaterial.getSelectedItem();
-        String mangdText = txtMangd.getText().trim();
-        String valjFunktion = (String) comboFunktion.getSelectedItem();
+            String valtMaterial = (String) comboMaterial.getSelectedItem();
+            String mangdText = txtMangd.getText().trim();
+            String valjFunktion = (String) comboFunktion.getSelectedItem();
 
-        if (!Validering.faltInteTomt(mangdText)) {
-            JOptionPane.showMessageDialog(null, "Vänligen fyll i mängd material");
-            return;
+            if (!Validering.faltInteTomt(mangdText)) {
+                JOptionPane.showMessageDialog(null, "Vänligen fyll i mängd material");
+                return;
+            }
+
+            if (!Validering.arGiltigtDouble(mangdText)) {
+                JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
+                return;
+            }
+            if (valjFunktion.equals("Välj funktion")) {
+                JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
+                return;
+            }
+            if (valtMaterial.equals("Välj material")) {
+                JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
+                return;
+            }
+
+            // Hämta info om materialet från databasen
+            String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
+            HashMap<String, String> rad = idb.fetchRow(sql);
+
+            if (rad != null && !rad.isEmpty()) {
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+
+                // Lägg till den nya raden
+                model.addRow(new Object[]{
+                    rad.get("Namn"),
+                    rad.get("Typ"),
+                    rad.get("Farg"),
+                    rad.get("Pris"),
+                    mangdText,
+                    rad.get("Enhet"),
+                    valjFunktion
+                });
+
+                // Sortera om raderna efter namn (kolumn 0)
+                sorteraTabellEfterNamn();
+            }
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
         }
 
-        if (!Validering.arGiltigtDouble(mangdText)) {
-            JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
-            return;
-        }
-        if (valjFunktion.equals("Välj funktion")) {
-            JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
-            return;
-        }
-        if (valtMaterial.equals("Välj material")) {
-            JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
-            return;
-        }
-
-        // Hämta info om materialet från databasen
-        String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
-        HashMap<String, String> rad = idb.fetchRow(sql);
-
-        if (rad != null && !rad.isEmpty()) {
-            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-
-            // Lägg till den nya raden
-            model.addRow(new Object[]{
-                rad.get("Namn"),
-                rad.get("Typ"),
-                rad.get("Farg"),
-                rad.get("Pris"),
-                mangdText,
-                rad.get("Enhet"),
-                valjFunktion
-            });
-
-            // Sortera om raderna efter namn (kolumn 0)
-            sorteraTabellEfterNamn();
-        }
-
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
-    }
-       
-//        try {
-//            String valtMaterial = (String) comboMaterial.getSelectedItem();
-//            String mangdText = txtMangd.getText().trim();
-//            String valjFunktion = (String) comboFunktion.getSelectedItem();
-//
-//            if (!Validering.faltInteTomt(mangdText)) {
-//                JOptionPane.showMessageDialog(null, "Vänligen fyll i mängd material");
-//                return;
-//            }
-//
-//            if (!Validering.arGiltigtDouble(mangdText)) {
-//                JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
-//                return;
-//            }
-//            if (valjFunktion.equals("Välj funktion")) {
-//                JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
-//                return;
-//            }
-//            if (valtMaterial.equals("Välj material")) {
-//                JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
-//                return;
-//            }
-//
-//
-//            // Hämta info om materialet från databasen
-//            String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
-//            HashMap<String, String> rad = idb.fetchRow(sql);
-//
-//            if (rad != null && !rad.isEmpty()) {
-//                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-//                model.addRow(new Object[]{
-//                    rad.get("Namn"),
-//                    rad.get("Typ"),
-//                    rad.get("Farg"),
-//                    rad.get("Pris"),
-//                    mangdText,
-//                    rad.get("Enhet"),
-//                    valjFunktion
-//
-//                });
-//            }
-//
-//        } catch (InfException e) {
-//            JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material " + e.getMessage());
-//        }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -923,26 +867,26 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_comboFunktionActionPerformed
 
     private void btnTaBortMaterialOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortMaterialOrderActionPerformed
-     try {
-        int valdRad = jTable1.getSelectedRow();
+        try {
+            int valdRad = jTable1.getSelectedRow();
 
-        if (valdRad == -1) {
-            JOptionPane.showMessageDialog(this, "Markera ett material att ta bort.");
-            return;
+            if (valdRad == -1) {
+                JOptionPane.showMessageDialog(this, "Markera ett material att ta bort.");
+                return;
+            }
+
+            int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort det valda materialet?", "Bekräfta borttagning", JOptionPane.YES_NO_OPTION);
+
+            if (svar == JOptionPane.YES_OPTION) {
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+                model.removeRow(valdRad);
+
+                JOptionPane.showMessageDialog(this, "Materialet har tagits bort.");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Något gick fel vid borttagning: " + e.getMessage());
         }
-
-        int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort det valda materialet?", "Bekräfta borttagning", JOptionPane.YES_NO_OPTION);
-
-        if (svar == JOptionPane.YES_OPTION) {
-            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-            model.removeRow(valdRad);
-
-            JOptionPane.showMessageDialog(this, "Materialet har tagits bort.");
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Något gick fel vid borttagning: " + e.getMessage());
-    }
     }//GEN-LAST:event_btnTaBortMaterialOrderActionPerformed
 
 
