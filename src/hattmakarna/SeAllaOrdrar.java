@@ -712,6 +712,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
     }//GEN-LAST:event_btnSeOrderActionPerformed
 
     private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
+        txtKund.setText("");
         String valdStatus = cbStatus.getSelectedItem().toString();
 
         try {

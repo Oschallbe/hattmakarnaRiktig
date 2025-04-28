@@ -229,7 +229,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
 
             //Sätter label till det totalpris som beräknats.
-            lblPris.setText(String.valueOf(totalPris));
+            lblPris.setText(String.format("%.1f", totalPris));
         } catch (NumberFormatException ex) {
             System.out.println(ex);
         }
