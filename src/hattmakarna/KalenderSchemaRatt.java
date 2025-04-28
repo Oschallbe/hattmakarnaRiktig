@@ -70,7 +70,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
         huvudPanel.add(wrapper, BorderLayout.WEST);
 
-        String[] kolumner = {"ID", "Ordernr.", "Produktnamn", "Beställningstyp", "Datum", "Avklarad"};
+        String[] kolumner = {"ID", "Ordernr.", "Produktnamn", "Beställningstyp", "Datum"};
         Object[][] data;
 
         try {
@@ -101,7 +101,6 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                 data[i][2] = rad.get("Produktnamn");
                 data[i][3] = rad.get("Beställningstyp");
                 data[i][4] = rad.get("Datum");
-                data[i][5] = false; // alla börjar som oavklarade
             }
         } catch (InfException ex) {
             System.out.println(ex);
@@ -368,69 +367,55 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         }
         JButton taBortKnapp = new JButton("Ta bort produkt");
         taBortKnapp.addActionListener(e -> {
-            for (JList<String> lista : allaListor) {
-                String vald = lista.getSelectedValue();
-                if (vald != null) {
-                    String idText = vald.replace("Tilldelning: ", "").trim();
+    for (JList<String> lista : allaListor) {
+        String vald = lista.getSelectedValue();
+        if (vald != null) {
+            String idText = vald.replace("Tilldelning: ", "").trim();
 
-                    try {
-                        int tilldelningsID = Integer.parseInt(idText);
+            try {
+                int tilldelningsID = Integer.parseInt(idText);
 
-                        // Ta bort från DB (för aktuell användare och månad)
-                        String datum = visadManad.withDayOfMonth(1).toString(); // dummy, datum används ändå i SQL
-                        String delete = "delete from kalenderschema where TilldelningsID = " + tilldelningsID
-                                + " and AnstalldID = " + anstalldID;
-                        idb.delete(delete);
-
-                        // Ta bort från JList
-                        lista.clearSelection();
-                        DefaultListModel<String> modell = (DefaultListModel<String>) lista.getModel();
-                        modell.removeElement(vald);
-
-                        JOptionPane.showMessageDialog(null, "Tilldelning " + tilldelningsID + " borttagen.");
-                        return;
-
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Kunde inte ta bort: " + ex.getMessage());
-                        return;
-                    }
+                // 🟰 Hämta dagen från den markerade listan
+                Component parent = lista.getParent();
+                while (!(parent instanceof JPanel) && parent != null) {
+                    parent = parent.getParent();
                 }
-            }
+                JPanel dagPanel = (JPanel) parent;
+                JLabel dagLabel = (JLabel) dagPanel.getComponent(0); // överst i panelen
+                int dagNummer = Integer.parseInt(dagLabel.getText());
+                LocalDate datum = visadManad.withDayOfMonth(dagNummer);
 
-            JOptionPane.showMessageDialog(null, "Inget markerat.");
-        });
+                // 🧹 Rensa i databasen för just den dagen
+                String delete = "delete from kalenderschema where TilldelningsID = " + tilldelningsID
+                        + " and AnstalldID = " + anstalldID
+                        + " and Datum = '" + datum + "'";
+
+                idb.delete(delete);
+
+                // Ta bort från JList
+                lista.clearSelection();
+                DefaultListModel<String> modell = (DefaultListModel<String>) lista.getModel();
+                modell.removeElement(vald);
+
+                JOptionPane.showMessageDialog(null, "Tilldelning " + tilldelningsID + " borttagen från " + datum + ".");
+                return;
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Kunde inte ta bort: " + ex.getMessage());
+                return;
+            }
+        }
+    }
+
+    JOptionPane.showMessageDialog(null, "Inget markerat.");
+});
+
 
         JPanel knappPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         knappPanel.add(taBortKnapp);
         this.add(knappPanel, BorderLayout.SOUTH);
 
-        JButton klarKnapp = new JButton("Produkt avklarad");
-        klarKnapp.addActionListener(e -> {
-            for (JList<String> lista : allaListor) {
-                String vald = lista.getSelectedValue();
-                if (vald != null) {
-                    String idText = vald.replace("Tilldelning: ", "").trim();
-                    try {
-                        int tilldelningsID = Integer.parseInt(idText);
-
-                        // ✅ Markera som avklarad i tabellen
-                        doljaRadITabellen(tilldelningsID);
-
-                        // 🧹 Ta bort från kalendern
-                        lista.clearSelection();
-                        DefaultListModel<String> modell = (DefaultListModel<String>) lista.getModel();
-                        modell.removeElement(vald);
-
-                        JOptionPane.showMessageDialog(null, "Tilldelning " + tilldelningsID + " är nu avklarad och dold i tabellen.");
-                        return;
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(null, "Felaktigt ID.");
-                    }
-                }
-            }
-        });
-
-        knappPanel.add(klarKnapp); // lägg till knappen på samma panel som "ta bort"
+        
 
         kalenderRuta.revalidate();
         kalenderRuta.repaint();
