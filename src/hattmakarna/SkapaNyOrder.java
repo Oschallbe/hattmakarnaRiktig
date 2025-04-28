@@ -132,7 +132,7 @@ public class SkapaNyOrder extends javax.swing.JPanel {
         try {
             cbNamn.removeAllItems();
             cbNamn.addItem("Välj vara");
-            ArrayList<String> produktNamn = idb.fetchColumn("SELECT Namn FROM StandardProdukt");
+            ArrayList<String> produktNamn = idb.fetchColumn("SELECT Namn FROM StandardProdukt where Aktiv = 1");
             for (String namn : produktNamn) {
                 cbNamn.addItem(namn);
             }

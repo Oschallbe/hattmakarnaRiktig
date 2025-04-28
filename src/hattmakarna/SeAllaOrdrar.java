@@ -226,7 +226,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
             }
         });
 
-        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Status:", "Packas", "Skickad", "Produktion pågår", "Under behandling", "Levererad" }));
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Status:", "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad", "Returnerad" }));
         cbStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbStatusActionPerformed(evt);

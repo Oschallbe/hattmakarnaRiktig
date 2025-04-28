@@ -26,7 +26,7 @@ public class Validering {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     //Telefon
-    private static final String PHONE_REGEX = "^[0-9]{3}-[0-9]{3}-[0-9]{4}$";
+    private static final String PHONE_REGEX = "^\\+[0-9]{1,15}$";
     private static final Pattern PHONE_PATTERN = Pattern.compile(PHONE_REGEX);
 
     //Email

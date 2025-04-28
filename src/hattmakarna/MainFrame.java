@@ -237,18 +237,21 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLoggaIn);
-        btnLoggaIn.setBounds(740, 580, 137, 28);
+        btnLoggaIn.setBounds(740, 580, 137, 36);
 
         lblFelMeddelande.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblFelMeddelande.setText("Felaktig inloggning! ");
         lblFelMeddelande.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblFelMeddelande.setMaximumSize(new java.awt.Dimension(175, 21));
+        lblFelMeddelande.setMinimumSize(new java.awt.Dimension(175, 21));
+        lblFelMeddelande.setPreferredSize(new java.awt.Dimension(400, 21));
         lblFelMeddelande.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentHidden(java.awt.event.ComponentEvent evt) {
                 lblFelMeddelandeComponentHidden(evt);
             }
         });
         getContentPane().add(lblFelMeddelande);
-        lblFelMeddelande.setBounds(506, 750, 153, 21);
+        lblFelMeddelande.setBounds(506, 750, 400, 21);
 
         lblInloggning.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblInloggning.setText("Inloggning");
@@ -267,7 +270,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLosenord.setText("Lösenord");
         getContentPane().add(lblLosenord);
-        lblLosenord.setBounds(610, 540, 80, 22);
+        lblLosenord.setBounds(610, 540, 75, 25);
 
         logotyp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hattmakarna/hattmakarna_logotyp.png"))); // NOI18N
         getContentPane().add(logotyp);

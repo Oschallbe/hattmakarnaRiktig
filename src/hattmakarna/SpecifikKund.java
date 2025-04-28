@@ -327,7 +327,7 @@ public class SpecifikKund extends javax.swing.JPanel {
     private void BtnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTaBortActionPerformed
         try {
             // Bekräftelse om användaren verkligen vill ta bort kundens uppgifter
-            int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort kundens uppgifter (förutom KundID)?", "Bekräfta", JOptionPane.YES_NO_OPTION);
+            int svar = JOptionPane.showConfirmDialog(this, "Vill du verkligen ta bort kundens uppgifter?", "Bekräfta", JOptionPane.YES_NO_OPTION);
 
             if (svar == JOptionPane.YES_OPTION) {
                 // SQL-fråga med rätt kolumnnamn
@@ -340,14 +340,18 @@ public class SpecifikKund extends javax.swing.JPanel {
                         + "LeveransOrt = NULL, "
                         + "FakturaOrt = NULL, "
                         + "LeveransAdress = NULL, "
-                        + "FakturaAdress = NULL "
+                        + "FakturaAdress = NULL, "
+                        + "LeveransPostnummer = NULL, "
+                        + "LeveransLand = NULL, "
+                        + "FakturaPostnummer = NULL, "
+                        + "FakturaLand = NULL "
                         + "WHERE KundID = " + kundID + ";";
 
                 // Utför uppdateringen
                 idb.update(rensaKundUppgifter);
 
                 // Feedback till användaren
-                JOptionPane.showMessageDialog(this, "Kundens uppgifter har rensats. KundID finns kvar.");
+                JOptionPane.showMessageDialog(this, "Kundens uppgifter har rensats.");
 
                 // Nollställ fälten
                 txtFornamn.setText("");

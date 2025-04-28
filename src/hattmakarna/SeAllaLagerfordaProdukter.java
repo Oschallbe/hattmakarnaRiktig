@@ -299,7 +299,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
             try {
                 String sql = "UPDATE StandardProdukt SET Aktiv = FALSE WHERE Artikelnummer = '" + artikelnummer + "'";
                 idb.update(sql);
-                JOptionPane.showMessageDialog(this, "Produkten togs bort (inaktiverades).");
+                JOptionPane.showMessageDialog(this, "Produkten togs bort.");
                 seLagerfordaProdukter(); // ladda om tabellen
             } catch (InfException e) {
                 JOptionPane.showMessageDialog(this, "Fel vid borttagning: " + e.getMessage());
