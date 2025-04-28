@@ -58,8 +58,18 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 10));
         wrapper.setBackground(Color.LIGHT_GRAY);
-        wrapper.add(toppPanel, BorderLayout.NORTH);
+        
+        JLabel instruktionLabel = new JLabel("Fyll i ID:t på produktraden du vill tillverka", SwingConstants.CENTER);
+        instruktionLabel.setFont(new Font("Arial", Font.ITALIC, 14));
+        instruktionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        wrapper.add(instruktionLabel, BorderLayout.NORTH);
+        JPanel instruktionOchTopp = new JPanel(new BorderLayout());
+        instruktionOchTopp.add(instruktionLabel, BorderLayout.NORTH);
+        instruktionOchTopp.add(toppPanel, BorderLayout.SOUTH);
+
+        wrapper.add(instruktionOchTopp, BorderLayout.NORTH);
         wrapper.add(kalenderRuta, BorderLayout.CENTER);
+        
 
         JPanel huvudPanel = new JPanel(new BorderLayout());
 
