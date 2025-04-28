@@ -427,7 +427,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         lblSpecialorder.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblSpecialorder.setText("Specialorder:");
         add(lblSpecialorder);
-        lblSpecialorder.setBounds(170, 20, 150, 30);
+        lblSpecialorder.setBounds(150, 20, 170, 30);
 
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad", "Returnerad" }));
         add(cbStatus);

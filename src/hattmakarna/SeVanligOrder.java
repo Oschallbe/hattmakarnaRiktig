@@ -372,8 +372,12 @@ public class SeVanligOrder extends javax.swing.JPanel {
         lblExpress = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
+        setLayout(null);
+
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("Totalpris:");
+        add(jLabel5);
+        jLabel5.setBounds(120, 250, 82, 22);
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -381,9 +385,13 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 btnSparaActionPerformed(evt);
             }
         });
+        add(btnSpara);
+        btnSpara.setBounds(660, 490, 72, 23);
 
         lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblOrderNr.setText("jLabel6");
+        add(lblOrderNr);
+        lblOrderNr.setBounds(210, 30, 110, 30);
 
         tblAllaAnstallda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -398,20 +406,33 @@ public class SeVanligOrder extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(tblAllaAnstallda);
 
+        add(jScrollPane2);
+        jScrollPane2.setBounds(780, 330, 214, 154);
+
         lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblKundNr.setText("jLabel7");
+        add(lblKundNr);
+        lblKundNr.setBounds(200, 80, 62, 22);
 
         lblDatum.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDatum.setText("jLabel8");
+        add(lblDatum);
+        lblDatum.setBounds(200, 130, 139, 22);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel7.setText("Produktlista");
+        add(jLabel7);
+        jLabel7.setBounds(120, 310, 101, 17);
 
         lblPris.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblPris.setText("jLabel10");
+        add(lblPris);
+        lblPris.setBounds(210, 250, 107, 22);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel8.setText("Hitta rätt anställningsnummer här!");
+        add(jLabel8);
+        jLabel8.setBounds(810, 310, 187, 15);
 
         tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -427,6 +448,9 @@ public class SeVanligOrder extends javax.swing.JPanel {
         tblAllaProdukter.setEnabled(false);
         jScrollPane1.setViewportView(tblAllaProdukter);
 
+        add(jScrollPane1);
+        jScrollPane1.setBounds(120, 330, 607, 127);
+
         comboStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad", "Returnerad" }));
         comboStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -434,6 +458,8 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 comboStatusActionPerformed(evt);
             }
         });
+        add(comboStatus);
+        comboStatus.setBounds(190, 170, 144, 21);
 
         btnRedigeraStatus.setText("Redigera status");
         btnRedigeraStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -441,9 +467,13 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 btnRedigeraStatusActionPerformed(evt);
             }
         });
+        add(btnRedigeraStatus);
+        btnRedigeraStatus.setBounds(410, 490, 122, 23);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Order:");
+        add(jLabel1);
+        jLabel1.setBounds(120, 30, 78, 30);
 
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
@@ -451,6 +481,8 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 btnTillbakaActionPerformed(evt);
             }
         });
+        add(btnTillbaka);
+        btnTillbaka.setBounds(920, 20, 75, 23);
 
         btnSeProduktOmProdukt.setText("Se information om produkt");
         btnSeProduktOmProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -458,9 +490,13 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 btnSeProduktOmProduktActionPerformed(evt);
             }
         });
+        add(btnSeProduktOmProdukt);
+        btnSeProduktOmProdukt.setBounds(120, 490, 203, 23);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Kund:");
+        add(jLabel2);
+        jLabel2.setBounds(120, 80, 51, 22);
 
         btnAtaProdukt.setText("Åta produkt");
         btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -468,6 +504,8 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 btnAtaProduktActionPerformed(evt);
             }
         });
+        add(btnAtaProdukt);
+        btnAtaProdukt.setBounds(540, 490, 98, 23);
 
         btnSeKund.setText("Se kundinformation");
         btnSeKund.addActionListener(new java.awt.event.ActionListener() {
@@ -475,136 +513,33 @@ public class SeVanligOrder extends javax.swing.JPanel {
                 btnSeKundActionPerformed(evt);
             }
         });
+        add(btnSeKund);
+        btnSeKund.setBounds(300, 80, 142, 23);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Datum:");
+        add(jLabel3);
+        jLabel3.setBounds(120, 130, 64, 22);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Expressleverans:");
+        add(jLabel6);
+        jLabel6.setBounds(120, 210, 144, 22);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Status:");
+        add(jLabel4);
+        jLabel4.setBounds(120, 170, 60, 22);
 
         lblExpress.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblExpress.setText("jLabel7");
+        add(lblExpress);
+        lblExpress.setBounds(280, 210, 62, 22);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel9.setText("Skriv anställningsnummer i rutan \"Tilldelad\"!");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblPris, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblExpress)))
-                        .addGap(0, 715, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lblOrderNr, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel2))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblKundNr)
-                                                .addGap(46, 46, 46)
-                                                .addComponent(btnSeKund)))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnTillbaka))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(btnSeProduktOmProdukt, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnRedigeraStatus)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnAtaProdukt)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnSpara))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(52, 52, 52)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblOrderNr)
-                            .addComponent(jLabel1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(btnTillbaka)))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(lblKundNr)
-                    .addComponent(btnSeKund))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(lblDatum))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblExpress)
-                    .addComponent(jLabel6))
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(lblPris))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel8))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSeProduktOmProdukt)
-                    .addComponent(btnRedigeraStatus)
-                    .addComponent(btnAtaProdukt)
-                    .addComponent(btnSpara))
-                .addContainerGap(37, Short.MAX_VALUE))
-        );
+        add(jLabel9);
+        jLabel9.setBounds(480, 310, 243, 15);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
