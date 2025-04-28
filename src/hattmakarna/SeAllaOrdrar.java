@@ -106,7 +106,9 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
 
                     if (expressHamtning.equals("1")) {
                         expressOmvandling = "Ja";
-                        totalPris *= 1.2;
+                        if (typ != null && typ.contains("Standard")) {
+                            totalPris *= 1.2;
+                        }
                     }
                     
                     else{
