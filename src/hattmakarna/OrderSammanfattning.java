@@ -189,29 +189,29 @@ public class OrderSammanfattning extends javax.swing.JPanel {
 
         jLabel3.setText("KundID:");
         add(jLabel3);
-        jLabel3.setBounds(530, 460, 42, 16);
+        jLabel3.setBounds(530, 460, 90, 17);
 
         tfKundID.setEnabled(false);
         add(tfKundID);
-        tfKundID.setBounds(650, 450, 39, 26);
+        tfKundID.setBounds(650, 450, 39, 23);
 
         lblTotalpris.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         lblTotalpris.setText("Totalpris:");
         add(lblTotalpris);
-        lblTotalpris.setBounds(780, 500, 65, 19);
+        lblTotalpris.setBounds(780, 500, 65, 18);
 
         tfTotalpris.setEnabled(false);
         add(tfTotalpris);
-        tfTotalpris.setBounds(920, 500, 161, 26);
+        tfTotalpris.setBounds(920, 500, 120, 23);
 
         tfExpress.setEnabled(false);
         add(tfExpress);
-        tfExpress.setBounds(920, 450, 119, 26);
+        tfExpress.setBounds(920, 450, 119, 23);
 
         lblExpressavgift.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         lblExpressavgift.setText("Expressavgift:");
         add(lblExpressavgift);
-        lblExpressavgift.setBounds(780, 450, 101, 19);
+        lblExpressavgift.setBounds(780, 450, 97, 18);
 
         tblOrdersammanfattning.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -232,7 +232,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Orderspecifikation");
         add(jLabel1);
-        jLabel1.setBounds(770, 10, 161, 24);
+        jLabel1.setBounds(770, 10, 159, 23);
 
         btnBekrafta.setText("Slutför order");
         btnBekrafta.addActionListener(new java.awt.event.ActionListener() {
@@ -241,7 +241,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnBekrafta);
-        btnBekrafta.setBounds(920, 560, 140, 27);
+        btnBekrafta.setBounds(920, 560, 140, 23);
 
         btnRedigera.setText("Redigera");
         btnRedigera.addActionListener(new java.awt.event.ActionListener() {
@@ -250,7 +250,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnRedigera);
-        btnRedigera.setBounds(530, 560, 80, 27);
+        btnRedigera.setBounds(530, 560, 82, 23);
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -259,7 +259,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnSpara);
-        btnSpara.setBounds(650, 560, 76, 27);
+        btnSpara.setBounds(650, 560, 72, 23);
 
         btnTaBort.setText("Ta bort");
         btnTaBort.addActionListener(new java.awt.event.ActionListener() {
@@ -268,15 +268,15 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnTaBort);
-        btnTaBort.setBounds(780, 560, 76, 27);
+        btnTaBort.setBounds(780, 560, 72, 23);
 
         jLabel2.setText("Ordernummer:");
         add(jLabel2);
-        jLabel2.setBounds(530, 500, 79, 16);
+        jLabel2.setBounds(530, 500, 110, 17);
 
         tfOrdernummer.setEnabled(false);
         add(tfOrdernummer);
-        tfOrdernummer.setBounds(650, 500, 44, 26);
+        tfOrdernummer.setBounds(650, 500, 44, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed
@@ -315,15 +315,20 @@ public class OrderSammanfattning extends javax.swing.JPanel {
 
     if (!valid) return;
 
-    uppdateraTotalpris();
+    uppdateraTotalpris();  // Detta uppdaterar totalpris och eventuellt expressavgift
     String status = "Under behandling";
     String datum = java.time.LocalDate.now().toString();
     String expressBool = express ? "1" : "0";
 
+    // Beräkna totalpris utan att förändra strängarna onödigt
     String totalprisStr = tfTotalpris.getText().replace("kr", "").trim().replace(",", ".");
     double totalprisDouble = Double.parseDouble(totalprisStr);
-    String formattedTotalpris = String.format("%.2f", totalprisDouble).replace(",", ".");
+    double expressAvgift = express ? totalprisDouble * 0.2 : 0.0;  // Beräkna expressavgiften
+    double slutpris = totalprisDouble + expressAvgift;  // Lägg till expressavgiften i slutpriset
 
+    String formattedTotalpris = String.format("%.2f", slutpris).replace(",", ".");  // Formatera slutpris för SQL
+
+    // SQL-insert för beställningen
     String sql = String.format(
         "INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, Totalpris, Typ) " +
         "VALUES ('%s', '%s', %s, %s, NULL, %s, '%s')",
@@ -333,48 +338,34 @@ public class OrderSammanfattning extends javax.swing.JPanel {
     String ordernummer = "";
     
     try {
-    idb.insert(sql); 
-    ordernummer = idb.fetchSingle("SELECT MAX(BestallningID) FROM Bestallning"); 
+        idb.insert(sql); 
+        ordernummer = idb.fetchSingle("SELECT MAX(BestallningID) FROM Bestallning"); 
 
-    for (SkapaNyOrder.Orderrad rad : orderrader) {
-        String artikelnummer = rad.getArtikelnummer();
-        int antal = rad.getAntal();
+        for (SkapaNyOrder.Orderrad rad : orderrader) {
+            String artikelnummer = rad.getArtikelnummer();
+            int antal = rad.getAntal();
 
-        if (antal <= 0) {
-            JOptionPane.showMessageDialog(this, "Antalet för en produkt är ogiltigt (0 eller mindre).");
-            continue;
+            if (antal <= 0) {
+                JOptionPane.showMessageDialog(this, "Antalet för en produkt är ogiltigt (0 eller mindre).");
+                continue;
+            }
+
+            String produktID = idb.fetchSingle("SELECT StandardProduktID FROM StandardProdukt WHERE Artikelnummer = '" + artikelnummer + "'");
+
+            String orderItemSQL = String.format(
+                "INSERT INTO OrderItem (AntalProdukter, BestallningID, StandardProduktID, ProduktionsSchemaID, AnstalldID) " +
+                "VALUES (%d, %s, %s, 1, NULL)",
+                antal, ordernummer, produktID
+            );
+
+            idb.insert(orderItemSQL);
         }
-
-        String produktID = idb.fetchSingle("SELECT StandardProduktID FROM StandardProdukt WHERE Artikelnummer = '" + artikelnummer + "'");
-
-        String orderItemSQL = String.format(
-            "INSERT INTO OrderItem (AntalProdukter, BestallningID, StandardProduktID, ProduktionsSchemaID, AnstalldID) " +
-            "VALUES (%d, %s, %s, 1, NULL)",
-            antal, ordernummer, produktID
-        );
-
-        idb.insert(orderItemSQL);
-    }
-} catch (InfException ex) {
-    JOptionPane.showMessageDialog(this, "Fel vid sparande av orderrader: " + ex.getMessage());
-    return;
-}
-
-    // FORTSÄTTNING – PDF och kunddata
-    String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, " +
-    "LeveransOrt, LeveransAdress, LeveransPostnummer, LeveransLand, " +
-    "FakturaAdress, FakturaPostnummer, FakturaOrt, FakturaLand " +
-    "FROM Kund WHERE KundID = " + kundID + ";";
-
-    HashMap<String, String> kundInfo = new HashMap<>();
-    try {
-        HashMap<String, String> result = idb.fetchRow(kundQuery);
-        if (result != null) kundInfo.putAll(result);
-        else JOptionPane.showMessageDialog(this, "Kundinformation kunde inte hämtas.");
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av kunddata: " + e.getMessage());
+    } catch (InfException ex) {
+        JOptionPane.showMessageDialog(this, "Fel vid sparande av orderrader: " + ex.getMessage());
+        return;
     }
 
+    // Skapa admin-mapp
     Path admin = null;
     try {
         admin = Paths.get(System.getProperty("user.home"), "hattadmin");
@@ -384,6 +375,24 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "Fel vid skapande av admin-mapp: " + ex.getMessage());
     }
 
+    // Hämta kundinformation från databasen
+    HashMap<String, String> kundInfo = new HashMap<>();
+    try {
+        String kundQuery = "SELECT Fornamn, Efternamn, Epost, Telefonnummer, " +
+            "LeveransOrt, LeveransAdress, LeveransPostnummer, LeveransLand, " +
+            "FakturaAdress, FakturaPostnummer, FakturaOrt, FakturaLand " +
+            "FROM Kund WHERE KundID = " + kundID + ";";
+        HashMap<String, String> result = idb.fetchRow(kundQuery);
+        if (result != null) {
+            kundInfo.putAll(result);
+        } else {
+            JOptionPane.showMessageDialog(this, "Kundinformation kunde inte hämtas.");
+        }
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av kunddata: " + e.getMessage());
+    }
+
+    // Skapa PDF-dokument
     try {
         Path path = Paths.get(admin.toString(), "Orderbekr_" + String.format("%08d", Integer.parseInt(ordernummer)) + ".pdf");
         PdfDocument pdf = new PdfDocument(new PdfWriter(path.toString()));
@@ -413,17 +422,22 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         for (BestallningsRad rad : pdforderlista) {
             document.add(new Paragraph("" + rad.antal + " st '" + rad.produktNamn + "', styckpris: " + rad.styckPris + ", totalt: " + rad.totaltRadPris));
         }
-        document.add(new Paragraph(" "));
+
+        // Lägg till expressavgift och totalpris
+        if (expressAvgift > 0) {
+            document.add(new Paragraph("Expressavgift: " + String.format("%.2f kr", expressAvgift)));
+        }
+        document.add(new Paragraph("Totalt pris: " + String.format("%.2f kr", slutpris)));
+
         document.add(new Paragraph("Vid frågor, kontakta oss via mail och ange ordernummer " + ordernummer));
         document.close();
 
         if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().open(path.toFile());
-        }
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + e.getMessage());
-    }
-
+                    Desktop.getDesktop().open(path.toFile());
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Fel vid skapande av PDF: " + e.getMessage());
+            }
     MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
     mainFrame.showPanel("Skapa ny order"); 
     }//GEN-LAST:event_btnBekraftaActionPerformed
