@@ -18,7 +18,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="txtKundID" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblEfternamn" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -98,15 +103,11 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="BtnSpara" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtKundID" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="btnTillbaka" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -183,7 +184,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="33" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="BtnTaBort" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BtnRedigera" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -234,7 +235,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblFornamn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Fornamn"/>
+        <Property name="text" type="java.lang.String" value="F&#xf6;rnamn"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEfternamn">
