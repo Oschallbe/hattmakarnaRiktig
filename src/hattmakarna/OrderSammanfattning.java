@@ -185,19 +185,33 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         tfOrdernummer = new javax.swing.JTextField();
 
+        setLayout(null);
+
         jLabel3.setText("KundID:");
+        add(jLabel3);
+        jLabel3.setBounds(530, 460, 42, 16);
 
         tfKundID.setEnabled(false);
+        add(tfKundID);
+        tfKundID.setBounds(650, 450, 39, 26);
 
         lblTotalpris.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         lblTotalpris.setText("Totalpris:");
+        add(lblTotalpris);
+        lblTotalpris.setBounds(780, 500, 65, 19);
 
         tfTotalpris.setEnabled(false);
+        add(tfTotalpris);
+        tfTotalpris.setBounds(920, 500, 161, 26);
 
         tfExpress.setEnabled(false);
+        add(tfExpress);
+        tfExpress.setBounds(920, 450, 119, 26);
 
         lblExpressavgift.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         lblExpressavgift.setText("Expressavgift:");
+        add(lblExpressavgift);
+        lblExpressavgift.setBounds(780, 450, 101, 19);
 
         tblOrdersammanfattning.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -212,8 +226,13 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblOrdersammanfattning);
 
+        add(jScrollPane1);
+        jScrollPane1.setBounds(530, 70, 654, 365);
+
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Orderspecifikation");
+        add(jLabel1);
+        jLabel1.setBounds(770, 10, 161, 24);
 
         btnBekrafta.setText("Slutför order");
         btnBekrafta.addActionListener(new java.awt.event.ActionListener() {
@@ -221,6 +240,8 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                 btnBekraftaActionPerformed(evt);
             }
         });
+        add(btnBekrafta);
+        btnBekrafta.setBounds(920, 560, 140, 27);
 
         btnRedigera.setText("Redigera");
         btnRedigera.addActionListener(new java.awt.event.ActionListener() {
@@ -228,6 +249,8 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                 btnRedigeraActionPerformed(evt);
             }
         });
+        add(btnRedigera);
+        btnRedigera.setBounds(530, 560, 80, 27);
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -235,6 +258,8 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                 btnSparaActionPerformed(evt);
             }
         });
+        add(btnSpara);
+        btnSpara.setBounds(650, 560, 76, 27);
 
         btnTaBort.setText("Ta bort");
         btnTaBort.addActionListener(new java.awt.event.ActionListener() {
@@ -242,86 +267,16 @@ public class OrderSammanfattning extends javax.swing.JPanel {
                 btnTaBortActionPerformed(evt);
             }
         });
+        add(btnTaBort);
+        btnTaBort.setBounds(780, 560, 76, 27);
 
         jLabel2.setText("Ordernummer:");
+        add(jLabel2);
+        jLabel2.setBounds(530, 500, 79, 16);
 
         tfOrdernummer.setEnabled(false);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblExpressavgift)
-                .addGap(18, 18, 18)
-                .addComponent(tfExpress, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfKundID, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(145, 145, 145)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRedigera)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSpara)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnTaBort)
-                        .addGap(41, 41, 41)
-                        .addComponent(btnBekrafta))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTotalpris)
-                        .addGap(25, 25, 25)
-                        .addComponent(tfTotalpris, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 26, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(tfKundID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(tfOrdernummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfTotalpris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTotalpris)
-                    .addComponent(tfExpress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblExpressavgift))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBekrafta)
-                    .addComponent(btnRedigera)
-                    .addComponent(btnSpara)
-                    .addComponent(btnTaBort))
-                .addGap(17, 17, 17))
-        );
+        add(tfOrdernummer);
+        tfOrdernummer.setBounds(650, 500, 44, 26);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed
