@@ -211,7 +211,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
             final int aktuellDag = dag;
             JPanel dagPanel = new JPanel(new BorderLayout());
             dagPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            dagPanel.setPreferredSize(new Dimension(110, 90));
+            dagPanel.setPreferredSize(new Dimension(110, 80));
 
             JLabel dagLabel = new JLabel(String.valueOf(dag), SwingConstants.CENTER);
             dagLabel.setFont(new Font("Arial", Font.BOLD, 18));
