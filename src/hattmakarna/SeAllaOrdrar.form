@@ -307,7 +307,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnFraktsedel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Skapa fraksedel"/>
+        <Property name="text" type="java.lang.String" value="Skapa fraktsedel"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFraktsedelActionPerformed"/>

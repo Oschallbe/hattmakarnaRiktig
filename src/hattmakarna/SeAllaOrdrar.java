@@ -277,7 +277,7 @@ private LocalDate aktivDatumFilter = null; // eller String, beroende på din imp
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        btnFraktsedel.setText("Skapa fraksedel");
+        btnFraktsedel.setText("Skapa fraktsedel");
         btnFraktsedel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFraktsedelActionPerformed(evt);
