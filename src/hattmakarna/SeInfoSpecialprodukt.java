@@ -21,23 +21,22 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
     private String inloggadAnvandare;
     private String produktID;
     private int antalProdukter;
-    
+
     public SeInfoSpecialprodukt(InfDB idb, String ePost, String produktID, int antalProdukter) {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         this.produktID = produktID;
         this.antalProdukter = antalProdukter;
-        
-        
+
         Tabell.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][] {},
-            new String[] { "Beskrivning", "Pris", "Text", "Tillverkningstid", "Mått", "Höjd", "Bredd", "Djup", "Materiallista" }
+                new Object[][]{},
+                new String[]{"Beskrivning", "Pris", "Text", "Tillverkningstid", "Mått", "Höjd", "Bredd", "Djup", "Materiallista"}
         ));
-        
+
         visaSpecifikProdukt(produktID);
-        
-                Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
+
+        Tabell.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int rad = Tabell.rowAtPoint(evt.getPoint());
@@ -48,43 +47,43 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
             }
         });
     }
-    
- private void visaSpecifikProdukt(String produktID) {
-    try {
-        
-        String query = "SELECT Beskrivning, Pris, Text, Tillverkningstid, Matt, Hojd, Bredd, Djup " +
-                       "FROM SpecialProdukt WHERE SpecialProduktID = " + produktID;
 
-        HashMap<String, String> produkt = idb.fetchRow(query);
-        DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
-        model.setRowCount(0);
+    private void visaSpecifikProdukt(String produktID) {
+        try {
 
-        if (produkt != null) {
-            model.addRow(new Object[]{
-                produkt.get("Beskrivning"),
-                produkt.get("Pris"),
-                produkt.get("Text"),
-                produkt.get("Tillverkningstid"),
-                produkt.get("Matt"),
-                produkt.get("Hojd"),
-                produkt.get("Bredd"),
-                produkt.get("Djup"),
-                "Se material"
-            });
-        } else {
-            JOptionPane.showMessageDialog(this, "Kunde inte hitta produktinformation.");
+            String query = "SELECT Beskrivning, Pris, Text, Tillverkningstid, Matt, Hojd, Bredd, Djup "
+                    + "FROM SpecialProdukt WHERE SpecialProduktID = " + produktID;
+
+            HashMap<String, String> produkt = idb.fetchRow(query);
+            DefaultTableModel model = (DefaultTableModel) Tabell.getModel();
+            model.setRowCount(0);
+
+            if (produkt != null) {
+                model.addRow(new Object[]{
+                    produkt.get("Beskrivning"),
+                    produkt.get("Pris"),
+                    produkt.get("Text"),
+                    produkt.get("Tillverkningstid"),
+                    produkt.get("Matt"),
+                    produkt.get("Hojd"),
+                    produkt.get("Bredd"),
+                    produkt.get("Djup"),
+                    "Se material"
+                });
+            } else {
+                JOptionPane.showMessageDialog(this, "Kunde inte hitta produktinformation.");
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av produkt:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
     }
-}
 
     private void visaMaterialForProdukt() {
         try {
-            String query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion " +
-                           "FROM Material m " +
-                           "JOIN SpecialProdukt_Material spm ON m.MaterialID = spm.MaterialID " +
-                           "WHERE spm.SpecialProduktID = " + produktID;
+            String query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion "
+                    + "FROM Material m "
+                    + "JOIN SpecialProdukt_Material spm ON m.MaterialID = spm.MaterialID "
+                    + "WHERE spm.SpecialProduktID = " + produktID;
 
             List<HashMap<String, String>> material = idb.fetchRows(query);
             StringBuilder info = new StringBuilder();
@@ -99,11 +98,11 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
                     String funktion = rad.get("Funktion") != null ? rad.get("Funktion") : "";
 
                     info.append(namn).append(" – ")
-                        .append(typ).append(" – ")
-                        .append(farg).append(" – Mängd: ")
-                        .append(mangd).append(" ").append(enhet)
-                        .append(" – Funktion: ").append(funktion)
-                        .append("\n");
+                            .append(typ).append(" – ")
+                            .append(farg).append(" – Mängd: ")
+                            .append(mangd).append(" ").append(enhet)
+                            .append(" – Funktion: ").append(funktion)
+                            .append("\n");
                 }
             } else {
                 info.append("Inget material hittades.");
@@ -115,7 +114,6 @@ public class SeInfoSpecialprodukt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Fel vid hämtning av material" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

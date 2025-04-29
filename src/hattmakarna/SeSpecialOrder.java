@@ -34,7 +34,6 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         this.idb = idb;
         this.inloggadAnvandare = ePost;
         this.klickatOrderNr = klickatOrderNr;
-        //this.kundID = kundID; 
         fyllTabell();
         fyllLabels();
         //hamtaTotalPris();
@@ -44,91 +43,91 @@ public class SeSpecialOrder extends javax.swing.JPanel {
     //Metod för att fylla tabellerna med info från databasen. 
     public void fyllTabell() {
         try {
-        // Skapar en array som lagrar kolumnnamnen (inklusive OrderItemID som vi gömmer sen).
-        String kolumnNamn[] = {"OrderItemID", "Huvudmått", "Pris", "AntalProdukter", "AnstalldID"};
+            // Skapar en array som lagrar kolumnnamnen (inklusive OrderItemID som vi gömmer sen).
+            String kolumnNamn[] = {"OrderItemID", "Huvudmått", "Pris", "AntalProdukter", "AnstalldID"};
 
-        // Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
-        DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;  // Gör så att ingen cell är redigerbar
-            }
-        };
+            // Skapar en DefaultTableModel som håller kolumnnamnen samt sätter antalet rader till noll.
+            DefaultTableModel allaProdukter = new DefaultTableModel(kolumnNamn, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;  // Gör så att ingen cell är redigerbar
+                }
+            };
 
-        // Hämtar alla OrderItemID för den valda beställningen.
-        String selectOid = "select OrderItemID from orderitem where BestallningID = " 
-                            + klickatOrderNr + " order by(OrderItemID);";
-        ArrayList<String> oid = idb.fetchColumn(selectOid);
+            // Hämtar alla OrderItemID för den valda beställningen.
+            String selectOid = "select OrderItemID from orderitem where BestallningID = "
+                    + klickatOrderNr + " order by(OrderItemID);";
+            ArrayList<String> oid = idb.fetchColumn(selectOid);
 
-        if (oid != null) {
-            for (String ettOid : oid) {
-                String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, SpecialProduktID "
-                                  + "from orderitem where OrderItemID = " + ettOid + ";";
-                HashMap<String, String> info = idb.fetchRow(selectInfo);
+            if (oid != null) {
+                for (String ettOid : oid) {
+                    String selectInfo = "select OrderItemID, AntalProdukter, AnstalldID, SpecialProduktID "
+                            + "from orderitem where OrderItemID = " + ettOid + ";";
+                    HashMap<String, String> info = idb.fetchRow(selectInfo);
 
-                // Hämtar AnstalldID och slår ihop till namn om det finns.
-                String aID = info.get("AnstalldID");
-                String hopslagetNamn = "";
-                if (aID != null && !aID.isEmpty()) {
-                    String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld "
-                                              + "where AnstalldID = " + aID + ";";
-                    HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
-                    if (anstalldFornamnEfternamn != null) {
-                        String fornamn = anstalldFornamnEfternamn.get("Fornamn");
-                        String efternamn = anstalldFornamnEfternamn.get("Efternamn");
-                        if (fornamn != null && efternamn != null) {
-                            hopslagetNamn = fornamn + " " + efternamn;
+                    // Hämtar AnstalldID och slår ihop till namn om det finns.
+                    String aID = info.get("AnstalldID");
+                    String hopslagetNamn = "";
+                    if (aID != null && !aID.isEmpty()) {
+                        String selectNamnAnstalld = "select Fornamn, Efternamn from anstalld "
+                                + "where AnstalldID = " + aID + ";";
+                        HashMap<String, String> anstalldFornamnEfternamn = idb.fetchRow(selectNamnAnstalld);
+                        if (anstalldFornamnEfternamn != null) {
+                            String fornamn = anstalldFornamnEfternamn.get("Fornamn");
+                            String efternamn = anstalldFornamnEfternamn.get("Efternamn");
+                            if (fornamn != null && efternamn != null) {
+                                hopslagetNamn = fornamn + " " + efternamn;
+                            }
                         }
                     }
+
+                    // Hämtar "Matt" (huvudmått) och pris från specialprodukt.
+                    String ettProduktID = info.get("SpecialProduktID");
+                    String selectProdukt = "select Matt, Pris from specialprodukt "
+                            + "where SpecialProduktID = " + ettProduktID + ";";
+                    HashMap<String, String> infoNamnPris = idb.fetchRow(selectProdukt);
+
+                    // Skapar en array som håller data för en rad i tabellen.
+                    Object[] enRad = new Object[kolumnNamn.length];
+                    enRad[0] = ettOid;                           // OrderItemID (dold)
+                    enRad[1] = infoNamnPris.get("Matt");        // Huvudmått
+                    enRad[2] = infoNamnPris.get("Pris");        // Pris
+                    enRad[3] = info.get("AntalProdukter");      // Antal
+                    enRad[4] = hopslagetNamn;                   // Tilldelad (namn eller tomt)
+
+                    allaProdukter.addRow(enRad);
                 }
 
-                // Hämtar "Matt" (huvudmått) och pris från specialprodukt.
-                String ettProduktID = info.get("SpecialProduktID");
-                String selectProdukt = "select Matt, Pris from specialprodukt "
-                                     + "where SpecialProduktID = " + ettProduktID + ";";
-                HashMap<String, String> infoNamnPris = idb.fetchRow(selectProdukt);
+                // Sätter modellen i JTable.
+                tblAllaProdukter.setModel(allaProdukter);
 
-                // Skapar en array som håller data för en rad i tabellen.
-                Object[] enRad = new Object[kolumnNamn.length];
-                enRad[0] = ettOid;                           // OrderItemID (dold)
-                enRad[1] = infoNamnPris.get("Matt");        // Huvudmått
-                enRad[2] = infoNamnPris.get("Pris");        // Pris
-                enRad[3] = info.get("AntalProdukter");      // Antal
-                enRad[4] = hopslagetNamn;                   // Tilldelad (namn eller tomt)
-
-                allaProdukter.addRow(enRad);
+                // Gör så att OrderItemID-kolumnen (index 0) blir osynlig:
+                tblAllaProdukter.getColumnModel().getColumn(0).setMinWidth(0);
+                tblAllaProdukter.getColumnModel().getColumn(0).setMaxWidth(0);
+                tblAllaProdukter.getColumnModel().getColumn(0).setWidth(0);
             }
 
-            // Sätter modellen i JTable.
-            tblAllaProdukter.setModel(allaProdukter);
+            tblAllaProdukter.setAutoResizeMode(tblAllaProdukter.AUTO_RESIZE_OFF);
 
-            // Gör så att OrderItemID-kolumnen (index 0) blir osynlig:
-            tblAllaProdukter.getColumnModel().getColumn(0).setMinWidth(0);
-            tblAllaProdukter.getColumnModel().getColumn(0).setMaxWidth(0);
-            tblAllaProdukter.getColumnModel().getColumn(0).setWidth(0);
+            // Sätter storleken på de synliga kolumnerna.
+            TableColumn col = tblAllaProdukter.getColumnModel().getColumn(1); // huvudmått
+            col.setPreferredWidth(75);
+            col = tblAllaProdukter.getColumnModel().getColumn(2);             // pris
+            col.setPreferredWidth(75);
+            col = tblAllaProdukter.getColumnModel().getColumn(3);             // antal
+            col.setPreferredWidth(75);
+            col = tblAllaProdukter.getColumnModel().getColumn(4);             // tilldelad
+            col.setPreferredWidth(154);
+
+            // Ändrar rubrikerna i tabellen.
+            tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Huvudmått");
+            tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Pris");
+            tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Antal");
+            tblAllaProdukter.getColumnModel().getColumn(4).setHeaderValue("Tilldelad:");
+
+        } catch (InfException ex) {
+            System.out.println(ex);
         }
-
-        tblAllaProdukter.setAutoResizeMode(tblAllaProdukter.AUTO_RESIZE_OFF);
-
-        // Sätter storleken på de synliga kolumnerna.
-        TableColumn col = tblAllaProdukter.getColumnModel().getColumn(1); // huvudmått
-        col.setPreferredWidth(75);
-        col = tblAllaProdukter.getColumnModel().getColumn(2);             // pris
-        col.setPreferredWidth(75);
-        col = tblAllaProdukter.getColumnModel().getColumn(3);             // antal
-        col.setPreferredWidth(75);
-        col = tblAllaProdukter.getColumnModel().getColumn(4);             // tilldelad
-        col.setPreferredWidth(154);
-
-        // Ändrar rubrikerna i tabellen.
-        tblAllaProdukter.getColumnModel().getColumn(1).setHeaderValue("Huvudmått");
-        tblAllaProdukter.getColumnModel().getColumn(2).setHeaderValue("Pris");
-        tblAllaProdukter.getColumnModel().getColumn(3).setHeaderValue("Antal");
-        tblAllaProdukter.getColumnModel().getColumn(4).setHeaderValue("Tilldelad:");
-
-    } catch (InfException ex) {
-        System.out.println(ex);
-    }
     }
 
     public void fyllAnstalldTabell() {
@@ -218,8 +217,8 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             for (int i = 0; i < tabell.getRowCount(); i++) {
                 try {
                     // Hämtar OrderItemID (dolt, kolumn 0) och Tilldelad (kolumn 4).
-                   String artNR = tabell.getValueAt(i, 0).toString();
-                   //String artNR = lblOrderNr.getText();
+                    String artNR = tabell.getValueAt(i, 0).toString();
+                    //String artNR = lblOrderNr.getText();
                     String anstID = tabell.getValueAt(i, 4).toString();
 
                     String uppdateraDatabas;
@@ -294,102 +293,8 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Fel i fyllLabels: " + ex.getMessage());
         }
 
-//    try {
-//        String selectOrderNr = "select SpecialProduktID from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
-//        String orderNr = idb.fetchSingle(selectOrderNr);
-//        lblOrderNr.setText(orderNr);
-//
-//        String selectTillverkningstid = "select Tillverkningstid from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
-//        String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
-//        lblTillverkningstid2.setText(tillverkningstid);
-//
-//        String selectKund = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = '" + klickatOrderNr + "'";
-//        HashMap<String, String> kund = idb.fetchRow(selectKund);
-//
-//        if (kund != null) {
-//            kundID = Integer.parseInt(kund.get("KundID")); // Spara endast siffran här
-//            String kundIDochNamn = kund.get("KundID") + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
-//            lblKundNr.setText(kundIDochNamn);
-//        } else {
-//            lblKundNr.setText("Ingen kund hittades.");
-//        }
-//
-//        String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
-//        String status = idb.fetchSingle(selectStatus);
-//        cbStatus.setSelectedItem(status); 
-//        cbStatus.setEnabled(false); 
-//
-//    } catch (InfException ex) {
-//        System.out.println(ex);
-//    }
     }
 
-    // Metod som fyller i labels med information om en specifik specialprodukt.
-    /*
-    public void fyllLabels() {
-        //Dessa metoder hämtar info från databasen och fyler textfälten. 
-        try {
-            String selectOrderNr = "select SpecialProduktID from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
-            String orderNr = idb.fetchSingle(selectOrderNr);
-            lblOrderNr.setText(orderNr);
-
-            String selectTillverkningstid = "select Tillverkningstid from specialprodukt where SpecialProduktID = '" + klickatOrderNr + "';";
-            String tillverkningstid = idb.fetchSingle(selectTillverkningstid);
-            lblTillverkningstid2.setText(tillverkningstid);
-
-            String selectKund = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = '" + klickatOrderNr + "'";
-            HashMap<String, String> kund = idb.fetchRow(selectKund);
-
-            if (kund != null) {
-                String kundIDochNamn = kund.get("KundID") + " – " + kund.get("Fornamn") + " " + kund.get("Efternamn");
-                lblKundNr.setText(kundIDochNamn);
-            } else {
-                lblKundNr.setText("Ingen kund hittades.");
-            }
-
-            String selectStatus = "select Status from bestallning where BestallningID = '" + klickatOrderNr + "';";
-            String status = idb.fetchSingle(selectStatus);
-            cbStatus.setSelectedItem(status); 
-            cbStatus.setEnabled(false); 
-
-        } // Om något går fel vid databasanrop skrivs felet ut i konsolen.
-        catch (InfException ex) {
-            System.out.println(ex);
-
-        }
-    }
-     */
- /*public void hamtaTotalPris() {
-        try {
-            double totalPris = 0.0;
-            DefaultTableModel prisTabell = (DefaultTableModel) tblTabell.getModel();
-
-            for (int i = 0; i < prisTabell.getRowCount(); i++) {
-                Object ettPris = prisTabell.getValueAt(i, 0); //Ändras till fyra när listan är klar!
-                Object ettAntal = prisTabell.getValueAt(i, 1);
-                System.out.println(ettPris);
-                System.out.println(ettAntal);
-
-                try {
-                    double pris = Double.parseDouble(ettPris.toString());
-                    int antal = Integer.parseInt(ettAntal.toString());
-                    totalPris = totalPris + (pris * antal);
-                } catch (NumberFormatException ex) {
-                    System.out.println(ex);
-                }
-
-            }
-            lblPris.setText(String.valueOf(totalPris));
-        } catch (NumberFormatException ex) {
-            System.out.println(ex);
-        }
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -557,7 +462,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             // Hämta antal från tabellen
             String antal = tblAllaProdukter.getValueAt(valdRad, 3).toString();
 
-            // 🧠 Hämta det faktiska SpecialProduktID:t från OrderItem-tabellen
+            //Hämta det faktiska SpecialProduktID:t från OrderItem-tabellen
             String specialProduktID = idb.fetchSingle("SELECT SpecialProduktID FROM OrderItem WHERE OrderItemID = " + orderItemID + ";");
 
             if (specialProduktID != null && !specialProduktID.equals("null")) {
@@ -602,44 +507,32 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSparaActionPerformed
     private void btnSeKundinfoActionPerformed(java.awt.event.ActionEvent evt) {
-    try {
-        String kundNrText = lblKundNr.getText();
-        if (kundNrText != null && !kundNrText.isEmpty()) {
-            int kundID = Integer.parseInt(kundNrText);
+        try {
+            String kundNrText = lblKundNr.getText();
+            if (kundNrText != null && !kundNrText.isEmpty()) {
+                int kundID = Integer.parseInt(kundNrText);
 
-            MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
+                MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
 
-            // ✅ Lägg till denna panel i CardLayout med ett namn
-            main.addPanelToCardLayout(this, "SeSpecialOrder");
+                //Lägg till denna panel i CardLayout med ett namn
+                main.addPanelToCardLayout(this, "SeSpecialOrder");
 
-            // ✅ Skapa en panel för kund och skicka namnet på denna panel
-            SpecifikKund kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeSpecialOrder");
+                // Skapa en panel för kund och skicka namnet på denna panel
+                SpecifikKund kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeSpecialOrder");
 
-            // ✅ Lägg till kundpanelen
-            main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
+                //Lägg till kundpanelen
+                main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
 
-            // ✅ Visa kundpanelen
-            main.showPanel("specifikKundPanel");
+                //Visa kundpanelen
+                main.showPanel("specifikKundPanel");
 
-        } else {
-            JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Kundnummer saknas.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Kundnummer är ogiltigt.");
-    }
 
-//        try {
-//            if (kundID > 0) {
-//                JPanel kundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, "SeAllaOrdrar");
-//                MainFrame main = (MainFrame) SwingUtilities.getWindowAncestor(this);
-//                main.addPanelToCardLayout(kundPanel, "specifikKundPanel");
-//                main.showPanel("specifikKundPanel");
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Kundnummer saknas eller kunde inte laddas.");
-//            }
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, "Kunde inte öppna kundinformationen: " + e.getMessage());
-//        }
     }
 
     /*

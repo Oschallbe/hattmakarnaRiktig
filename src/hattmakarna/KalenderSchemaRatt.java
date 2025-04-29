@@ -58,7 +58,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 10));
         wrapper.setBackground(Color.LIGHT_GRAY);
-        
+
         JLabel instruktionLabel = new JLabel("Fyll i ID:t på produktraden du vill tillverka", SwingConstants.CENTER);
         instruktionLabel.setFont(new Font("Arial", Font.ITALIC, 14));
         instruktionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -69,7 +69,6 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
         wrapper.add(instruktionOchTopp, BorderLayout.NORTH);
         wrapper.add(kalenderRuta, BorderLayout.CENTER);
-        
 
         JPanel huvudPanel = new JPanel(new BorderLayout());
 
@@ -136,17 +135,11 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         JScrollPane tabellScroll = new JScrollPane(produktTabell);
         tabellScroll.setPreferredSize(new Dimension(450, 600));
 
-        /* for(int i = 0; i < produktTabell.getRowCount(); i++){
-            try{
-                String typ = produktTabell.getValueAt(i, 3).toString();
-                String uppdateradDatabas;
-                
-                if(typ.contains("Special"))
-                
-            }
-            catch
-        }
-         */
+        // Inget val överhuvudtaget
+        produktTabell.setRowSelectionAllowed(false);
+        produktTabell.setColumnSelectionAllowed(false);
+        produktTabell.setCellSelectionEnabled(false);
+
         produktTabell.getColumnModel().getColumn(0).setPreferredWidth(60);
         produktTabell.getColumnModel().getColumn(1).setPreferredWidth(60);
         produktTabell.getColumnModel().getColumn(2).setPreferredWidth(175);
@@ -165,7 +158,6 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
         this.add(huvudPanel, BorderLayout.CENTER);
 
-        // ORIGINAL this.add(kalenderRuta, BorderLayout.CENTER);
         forraKnapp.addActionListener(e -> {
             visadManad = visadManad.minusMonths(1);
             fyllKalender();
@@ -257,39 +249,6 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                 }
             });
 
-            /*inputFalt.addActionListener(e -> {
-                String text = inputFalt.getText().trim();
-                if (!text.isEmpty()) {
-                    modell.addElement(text);
-                    inputFalt.setText("");
-                    try {
-                        String orderItemID = text;
-                        String selectInfo = "select oi.OrderItemID, b.BestallningID, b.Datum, b.Typ, sp.Namn "
-                                + "from orderitem oi "
-                                + "join bestallning b on oi.BestallningID = b.BestallningID "
-                                + "join standardprodukt sp on oi.StandardProduktID = sp.StandardProduktID "
-                                + "where oi.OrderItemID = " + orderItemID;
-
-                        HashMap<String, String> produktInfo = idb.fetchRow(selectInfo);
-
-                        if (produktInfo != null) {
-                            String datum = visadManad.withDayOfMonth(aktuellDag).toString();
-                            String maxSql = "select max(TilldelningsID) from kalenderschema where AnstalldID = " + aktuellAnstalldID;
-                            String maxID = idb.fetchSingle(maxSql);
-                            int nastaID = (maxID == null) ? 1 : Integer.parseInt(maxID) + 1;
-
-                            String insert = "insert into kalenderschema (TilldelningsID, AnstalldID, BestallningID, Datum) values ("
-                                    + nastaID + ", " + aktuellAnstalldID + ", " + produktInfo.get("BestallningID") + ", '"
-                                    + datum + "')";
-                            idb.insert(insert);
-                        }
-                    } catch (InfException ex) {
-                        System.out.println(ex.getMessage());
-
-                    }
-                }
-            }); 
-             */
             inputFalt.addActionListener(e -> {
                 String text = inputFalt.getText().trim();
 
@@ -297,16 +256,16 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                     try {
                         int tilldelningsID = Integer.parseInt(text);
 
-                        // 🟢 Kontrollera om ID finns i JTable
+                        //Kontrollera om ID finns i JTable
                         if (!idFinnsITabellen(tilldelningsID, produktTabell)) {
                             JOptionPane.showMessageDialog(null, "TilldelningsID " + tilldelningsID + " finns inte i tabellen.");
                             return;
                         }
 
-                        // 📅 Hämta datum
+                        //Hämta datum
                         String datum = visadManad.withDayOfMonth(aktuellDag).toString();
 
-                        // 🔎 Hämta info från JTable (kolumn 1 = BeställningID)
+                        //Hämta info från JTable (kolumn 1 = BeställningID)
                         String bestallningID = null;
                         for (int i = 0; i < produktTabell.getRowCount(); i++) {
                             int id = Integer.parseInt(produktTabell.getValueAt(i, 0).toString());
@@ -321,13 +280,13 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                             return;
                         }
 
-                        // 💾 Spara i databasen
+                        //Spara i databasen
                         String insert = "insert into kalenderschema (TilldelningsID, AnstalldID, BestallningID, Datum) values ("
                                 + tilldelningsID + ", " + aktuellAnstalldID + ", " + bestallningID + ", '" + datum + "')";
 
                         idb.insert(insert);
 
-                        // 🎉 Visa i kalendern
+                        //Visa i kalendern
                         modell.addElement("" + tilldelningsID);
                         inputFalt.setText("");
 
@@ -353,22 +312,6 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
                 System.out.println("Fel vid insert:" + ex.getMessage());
             }
 
-            /*   }
-            });
-
-            try {
-                LocalDate datum = visadManad.withDayOfMonth(dag);
-                String selectText = "select OrderItemID from kalenderschema where Datum = '" + datum + "' and AnstalldID = " + aktuellAnstalldID;
-                java.util.List<String> resultat = idb.fetchColumn(selectText);
-                if (resultat != null) {
-                    for (String text : resultat) {
-                        modell.addElement(text);
-                    }
-                }
-            } catch (InfException ex) {
-                System.out.println(ex.getMessage());
-            }
-             */
             dagPanel.add(dagLabel, BorderLayout.NORTH);
             dagPanel.add(scroll, BorderLayout.CENTER);
             dagPanel.add(inputFalt, BorderLayout.SOUTH);
@@ -377,55 +320,52 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         }
         JButton taBortKnapp = new JButton("Ta bort produkt");
         taBortKnapp.addActionListener(e -> {
-    for (JList<String> lista : allaListor) {
-        String vald = lista.getSelectedValue();
-        if (vald != null) {
-            String idText = vald.replace("Tilldelning: ", "").trim();
+            for (JList<String> lista : allaListor) {
+                String vald = lista.getSelectedValue();
+                if (vald != null) {
+                    String idText = vald.replace("Tilldelning: ", "").trim();
 
-            try {
-                int tilldelningsID = Integer.parseInt(idText);
+                    try {
+                        int tilldelningsID = Integer.parseInt(idText);
 
-                // 🟰 Hämta dagen från den markerade listan
-                Component parent = lista.getParent();
-                while (!(parent instanceof JPanel) && parent != null) {
-                    parent = parent.getParent();
+                        //Hämta dagen från den markerade listan
+                        Component parent = lista.getParent();
+                        while (!(parent instanceof JPanel) && parent != null) {
+                            parent = parent.getParent();
+                        }
+                        JPanel dagPanel = (JPanel) parent;
+                        JLabel dagLabel = (JLabel) dagPanel.getComponent(0); // överst i panelen
+                        int dagNummer = Integer.parseInt(dagLabel.getText());
+                        LocalDate datum = visadManad.withDayOfMonth(dagNummer);
+
+                        //Rensa i databasen för just den dagen
+                        String delete = "delete from kalenderschema where TilldelningsID = " + tilldelningsID
+                                + " and AnstalldID = " + anstalldID
+                                + " and Datum = '" + datum + "'";
+
+                        idb.delete(delete);
+
+                        //Ta bort från JList
+                        lista.clearSelection();
+                        DefaultListModel<String> modell = (DefaultListModel<String>) lista.getModel();
+                        modell.removeElement(vald);
+
+                        JOptionPane.showMessageDialog(null, "Tilldelning " + tilldelningsID + " borttagen från " + datum + ".");
+                        return;
+
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Kunde inte ta bort: " + ex.getMessage());
+                        return;
+                    }
                 }
-                JPanel dagPanel = (JPanel) parent;
-                JLabel dagLabel = (JLabel) dagPanel.getComponent(0); // överst i panelen
-                int dagNummer = Integer.parseInt(dagLabel.getText());
-                LocalDate datum = visadManad.withDayOfMonth(dagNummer);
-
-                // 🧹 Rensa i databasen för just den dagen
-                String delete = "delete from kalenderschema where TilldelningsID = " + tilldelningsID
-                        + " and AnstalldID = " + anstalldID
-                        + " and Datum = '" + datum + "'";
-
-                idb.delete(delete);
-
-                // Ta bort från JList
-                lista.clearSelection();
-                DefaultListModel<String> modell = (DefaultListModel<String>) lista.getModel();
-                modell.removeElement(vald);
-
-                JOptionPane.showMessageDialog(null, "Tilldelning " + tilldelningsID + " borttagen från " + datum + ".");
-                return;
-
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Kunde inte ta bort: " + ex.getMessage());
-                return;
             }
-        }
-    }
 
-    JOptionPane.showMessageDialog(null, "Inget markerat.");
-});
-
+            JOptionPane.showMessageDialog(null, "Inget markerat.");
+        });
 
         JPanel knappPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         knappPanel.add(taBortKnapp);
         this.add(knappPanel, BorderLayout.SOUTH);
-
-        
 
         kalenderRuta.revalidate();
         kalenderRuta.repaint();
@@ -442,7 +382,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         return false;
     }
 
-    // Filtrera bort rader med Avklarad=true och uppdatera JTable
+    //Filtrera bort rader med Avklarad=true och uppdatera JTable
     private void uppdateraTabellMedOfiltreradData() {
         DefaultTableModel modell = (DefaultTableModel) produktTabell.getModel();
         for (int i = modell.getRowCount() - 1; i >= 0; i--) {
@@ -453,17 +393,17 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         }
     }
 
-// Markera en rad som avklarad (checkbox true) utan att visa den i tabellen
+//Markera en rad som avklarad (checkbox true) utan att visa den i tabellen
     private void doljaRadITabellen(int tilldelningsID) {
         DefaultTableModel modell = (DefaultTableModel) produktTabell.getModel();
         for (int i = 0; i < modell.getRowCount(); i++) {
             int id = Integer.parseInt(modell.getValueAt(i, 0).toString());
             if (id == tilldelningsID) {
-                modell.setValueAt(true, i, 5); // checkbox för Avklarad
+                modell.setValueAt(true, i, 5); //checkbox för Avklarad
                 break;
             }
         }
-        uppdateraTabellMedOfiltreradData(); // filtrera bort avklarade
+        uppdateraTabellMedOfiltreradData(); //filtrera bort avklarade
     }
 
     public static void main(String[] args) {
@@ -476,11 +416,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
             fonster.setVisible(true);
         });
     }
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

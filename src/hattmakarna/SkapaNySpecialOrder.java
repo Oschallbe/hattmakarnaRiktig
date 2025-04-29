@@ -166,6 +166,26 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             model.addRow(rad);
         }
     }
+    
+    private void nollstallFormular() {
+    txtDatum.setText(java.time.LocalDate.now().toString());
+    txtPris.setText("");
+    txtBeskrivning.setText("");
+    txtTillverkningsTid.setText("");
+    txtText.setText("");
+    txtHuvudMatt.setText("");
+    txtHojd.setText("");
+    txtBredd.setText("");
+    txtDjup.setText("");
+    jComboKund.setSelectedIndex(0);
+    comboMaterial.setSelectedIndex(0);
+    comboFunktion.setSelectedIndex(0);
+    lblEnhet.setText("");
+    jCheckBox1.setSelected(false);
+    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+    seOrderNummer();
+}
 
     //metod för att välja material för att sedan kunna lägga till i order
     private void laggTillMaterialIRuta() {
@@ -642,6 +662,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             idb.insert(insertOrderItem);
 
             JOptionPane.showMessageDialog(null, "Specialbeställning sparad!");
+            nollstallFormular();
         } catch (InfException e) {
             JOptionPane.showMessageDialog(null, "Fel vid tilläggning av material eller pris: " + e.getMessage());
         }

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hattmakarna;
+
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import oru.inf.InfDB; //importeras i alla klasser som vi ska använda
@@ -14,14 +15,17 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
  *
  * @author iftinserar
  */
 public class SeAllaKunder extends javax.swing.JPanel {
+
     private static InfDB idb;
-    private String inloggadAnvandare; 
+    private String inloggadAnvandare;
     private boolean harFiltrerat = false;
+
     /**
      * Creates new form AllaKunder
      */
@@ -32,8 +36,8 @@ public class SeAllaKunder extends javax.swing.JPanel {
         hanteraSearchListener(); // separat metod för sök
         fyllKundTabell();
     }
-    
-     // Laddar alla kunder till tabellen
+
+    // Laddar alla kunder till tabellen
     public void fyllKundTabell() {
         try {
             // Kolumnnamn för tabellen (endast Fornamn och Efternamn visas – KundID används men döljs)
@@ -84,9 +88,9 @@ public class SeAllaKunder extends javax.swing.JPanel {
     }
 
     private void hanteraSearchListener() {
-    BtnSok.addActionListener((ActionEvent e) -> {
-        // Be användaren om sökterm
-        String sokTerm = JOptionPane.showInputDialog("Ange KundID, eller Förnamn och Efternamn, för att söka efter en kund:");
+        BtnSok.addActionListener((ActionEvent e) -> {
+            // Be användaren om sökterm
+            String sokTerm = JOptionPane.showInputDialog("Ange KundID, eller Förnamn och Efternamn, för att söka efter en kund:");
 
             if (sokTerm == null) {
                 // Användaren tryckte på Avbryt — gör inget
@@ -97,86 +101,84 @@ public class SeAllaKunder extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Du måste ange en sökterm!");
                 return;
             }
-            
-        try {
-            String query = "";
-            DefaultTableModel tomModell = new DefaultTableModel(new String[]{
+
+            try {
+                String query = "";
+                DefaultTableModel tomModell = new DefaultTableModel(new String[]{
                     "KundID", "Fornamn", "Efternamn"
-            }, 0);
+                }, 0);
 
-            // Om sökterm innehåller ett mellanslag, anta att det är förnamn + efternamn
-            if (sokTerm.contains(" ")) {
-                String[] namnDelar = sokTerm.split(" ", 2);
-                String fornamn = namnDelar[0].trim().toLowerCase();
-                String efternamn = namnDelar[1].trim().toLowerCase();
+                // Om sökterm innehåller ett mellanslag, anta att det är förnamn + efternamn
+                if (sokTerm.contains(" ")) {
+                    String[] namnDelar = sokTerm.split(" ", 2);
+                    String fornamn = namnDelar[0].trim().toLowerCase();
+                    String efternamn = namnDelar[1].trim().toLowerCase();
 
-                query = "SELECT KundID, Fornamn, Efternamn FROM kund " +
-                        "WHERE LOWER(fornamn) = '" + fornamn + "' " +
-                        "AND LOWER(efternamn) = '" + efternamn + "';"; // Sök efter kund baserat på förnamn och efternamn
-            } else {
-                // Om sökterm inte innehåller mellanslag, anta att det är KundID
-                // Kontrollera om sökterm är ett giltigt nummer
-                try {
-                    int kundID = Integer.parseInt(sokTerm.trim()); // Försök att konvertera till ett heltal
-                    query = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = " + kundID + ";"; // Sök efter kund baserat på KundID
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Ogiltigt KundID. Var god och ange ett giltigt numeriskt KundID.");
-                    return; // Avsluta om det inte är ett giltigt KundID
+                    query = "SELECT KundID, Fornamn, Efternamn FROM kund "
+                            + "WHERE LOWER(fornamn) = '" + fornamn + "' "
+                            + "AND LOWER(efternamn) = '" + efternamn + "';"; // Sök efter kund baserat på förnamn och efternamn
+                } else {
+                    // Om sökterm inte innehåller mellanslag, anta att det är KundID
+                    // Kontrollera om sökterm är ett giltigt nummer
+                    try {
+                        int kundID = Integer.parseInt(sokTerm.trim()); // Försök att konvertera till ett heltal
+                        query = "SELECT KundID, Fornamn, Efternamn FROM kund WHERE KundID = " + kundID + ";"; // Sök efter kund baserat på KundID
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Ogiltigt KundID. Var god och ange ett giltigt numeriskt KundID.");
+                        return; // Avsluta om det inte är ett giltigt KundID
+                    }
                 }
-            }
 
-            // Hämta resultat från databasen
-            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
+                // Hämta resultat från databasen
+                ArrayList<HashMap<String, String>> resultat = idb.fetchRows(query);
 
-            if (resultat == null || resultat.isEmpty()) {
-                // Om ingen kund hittas, visa meddelande och återställ tabellen till den normala listan
-                JOptionPane.showMessageDialog(null, "Ingen kund hittades med den angivna termen.");
+                if (resultat == null || resultat.isEmpty()) {
+                    // Om ingen kund hittas, visa meddelande och återställ tabellen till den normala listan
+                    JOptionPane.showMessageDialog(null, "Ingen kund hittades med den angivna termen.");
 
-                // Återställ tabellen genom att fylla den med alla kunder
-                fyllKundTabell();
-                harFiltrerat = false;  // Se till att vi återställer harFiltrerat till false
-                return; // Avsluta sökfunktionen så att ingen vidare kod körs
-            }
+                    // Återställ tabellen genom att fylla den med alla kunder
+                    fyllKundTabell();
+                    harFiltrerat = false;  // Se till att vi återställer harFiltrerat till false
+                    return; // Avsluta sökfunktionen så att ingen vidare kod körs
+                }
 
-            // Om resultatet inte är tomt, sätt harFiltrerat till true
-            harFiltrerat = true;
+                // Om resultatet inte är tomt, sätt harFiltrerat till true
+                harFiltrerat = true;
 
-            // Skapa en ny tabellmodell för att visa resultatet
-            String[] kolumnNamn = {
+                // Skapa en ny tabellmodell för att visa resultatet
+                String[] kolumnNamn = {
                     "KundID", "Förnamn", "Efternamn"
-            };
-            DefaultTableModel filtreradModell = new DefaultTableModel(kolumnNamn, 0);
+                };
+                DefaultTableModel filtreradModell = new DefaultTableModel(kolumnNamn, 0);
 
-            // Lägg till rader i modellen baserat på resultatet
-            for (HashMap<String, String> rad : resultat) {
-                filtreradModell.addRow(new Object[]{
-                rad.get("KundID") != null ? rad.get("KundID") : "Saknas",
-                rad.get("Fornamn") != null ? rad.get("Fornamn") : "Saknas",
-                rad.get("Efternamn") != null ? rad.get("Efternamn") : "Saknas"
-                });
+                // Lägg till rader i modellen baserat på resultatet
+                for (HashMap<String, String> rad : resultat) {
+                    filtreradModell.addRow(new Object[]{
+                        rad.get("KundID") != null ? rad.get("KundID") : "Saknas",
+                        rad.get("Fornamn") != null ? rad.get("Fornamn") : "Saknas",
+                        rad.get("Efternamn") != null ? rad.get("Efternamn") : "Saknas"
+                    });
+                }
+
+                // Uppdatera tabellen med den filtrerade modellen
+                TblAllaKunder.setModel(filtreradModell);
+
+                // Automatisk justering av tabellstorlek
+                TblAllaKunder.setAutoResizeMode(TblAllaKunder.AUTO_RESIZE_OFF);
+
+                // Ställ in kolumnbredder
+                TableColumn col = TblAllaKunder.getColumnModel().getColumn(0); // KundID
+                col.setPreferredWidth(60);
+                col = TblAllaKunder.getColumnModel().getColumn(1); // Förnamn
+                col.setPreferredWidth(100);
+                col = TblAllaKunder.getColumnModel().getColumn(2); // Efternamn
+                col.setPreferredWidth(100);
+
+            } catch (InfException ex) {
+                JOptionPane.showMessageDialog(null, "Ett fel inträffade vid sökningen: " + ex.getMessage());
             }
-
-            // Uppdatera tabellen med den filtrerade modellen
-            TblAllaKunder.setModel(filtreradModell);
-
-            // Automatisk justering av tabellstorlek
-            TblAllaKunder.setAutoResizeMode(TblAllaKunder.AUTO_RESIZE_OFF);
-
-            // Ställ in kolumnbredder
-            TableColumn col = TblAllaKunder.getColumnModel().getColumn(0); // KundID
-            col.setPreferredWidth(60);
-            col = TblAllaKunder.getColumnModel().getColumn(1); // Förnamn
-            col.setPreferredWidth(100);
-            col = TblAllaKunder.getColumnModel().getColumn(2); // Efternamn
-            col.setPreferredWidth(100);
-
-        } catch (InfException ex) {
-            JOptionPane.showMessageDialog(null, "Ett fel inträffade vid sökningen: " + ex.getMessage());
-        }
-    });
-}
-    
-
+        });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -261,27 +263,27 @@ public class SeAllaKunder extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TblAllaKunderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblAllaKunderMouseClicked
-    if(evt.getSource() == TblAllaKunder) {
-        int row = TblAllaKunder.rowAtPoint(evt.getPoint());
-        int column = TblAllaKunder.columnAtPoint(evt.getPoint());
+        if (evt.getSource() == TblAllaKunder) {
+            int row = TblAllaKunder.rowAtPoint(evt.getPoint());
+            int column = TblAllaKunder.columnAtPoint(evt.getPoint());
 
-        if (column == 0 || column == 1 || column == 2) {
-            int kundID = Integer.parseInt(TblAllaKunder.getValueAt(row, 0).toString());
+            if (column == 0 || column == 1 || column == 2) {
+                int kundID = Integer.parseInt(TblAllaKunder.getValueAt(row, 0).toString());
 
-            // Skicka med en flagga om varifrån vi kommer, t.ex. "SeAllaKunder"
-            String previousPanel = "SeAllaKunder"; // Kan vara "SeVanligOrder" eller andra paneler
+                // Skicka med en flagga om varifrån vi kommer, t.ex. "SeAllaKunder"
+                String previousPanel = "SeAllaKunder"; // Kan vara "SeVanligOrder" eller andra paneler
 
-            // Skapa instansen av SpecifikKund och skicka med previousPanel
-            SpecifikKund specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, previousPanel);
+                // Skapa instansen av SpecifikKund och skicka med previousPanel
+                SpecifikKund specifikKundPanel = new SpecifikKund(idb, inloggadAnvandare, kundID, previousPanel);
 
-            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-            JPanel wrapper = new JPanel(new GridBagLayout());
-            wrapper.add(specifikKundPanel);
+                MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+                JPanel wrapper = new JPanel(new GridBagLayout());
+                wrapper.add(specifikKundPanel);
 
-            mainFrame.addPanelToCardLayout(wrapper, "SpecifikKund" + kundID);
-            mainFrame.showPanel("SpecifikKund" + kundID);
+                mainFrame.addPanelToCardLayout(wrapper, "SpecifikKund" + kundID);
+                mainFrame.showPanel("SpecifikKund" + kundID);
+            }
         }
-    }
     }//GEN-LAST:event_TblAllaKunderMouseClicked
 
     private void btnAterstallTabellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAterstallTabellActionPerformed
@@ -298,7 +300,7 @@ public class SeAllaKunder extends javax.swing.JPanel {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        /*try {
+ /*try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -313,7 +315,7 @@ public class SeAllaKunder extends javax.swing.JPanel {
             java.util.logging.Logger.getLogger(SeSpecifikProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SeSpecifikProdukt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        */
+         */
         //</editor-fold>
 
         /* Create and display the form */

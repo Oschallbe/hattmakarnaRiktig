@@ -17,11 +17,11 @@ import javax.swing.ImageIcon;
  * @author teami
  */
 public class SeInfoStandardprodukt extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
     private String produktID;
     private int antalProdukter;
-    
 
     public SeInfoStandardprodukt(InfDB idb, String ePost, String produktID, int antalProdukter) {
         this.idb = idb;
@@ -30,11 +30,9 @@ public class SeInfoStandardprodukt extends javax.swing.JFrame {
         this.antalProdukter = antalProdukter;
         initComponents();
 
-        
-
         Tabell.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][] {},
-            new String[] { "Artikelnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista" }
+                new Object[][]{},
+                new String[]{"Artikelnummer", "Namn", "Pris", "Antal", "Mått", "Materiallista"}
         ));
 
         visaSpecifikProdukt(produktID);
@@ -51,7 +49,7 @@ public class SeInfoStandardprodukt extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void visaSpecifikProdukt(String produktID) {
         try {
             String query = "SELECT Artikelnummer, Namn, Pris, Matt FROM StandardProdukt WHERE StandardProduktID = " + produktID;
@@ -79,10 +77,10 @@ public class SeInfoStandardprodukt extends javax.swing.JFrame {
     private void visaMaterialForProdukt() {
         try {
             List<HashMap<String, String>> material;
-            String query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion " +
-                           "FROM Material m " +
-                           "JOIN StandardProdukt_Material spm ON m.MaterialID = spm.MaterialID " +
-                           "WHERE spm.StandardProduktID = " + produktID;
+            String query = "SELECT m.Namn, m.Typ, m.Farg, spm.Mängd, m.Enhet, spm.Funktion "
+                    + "FROM Material m "
+                    + "JOIN StandardProdukt_Material spm ON m.MaterialID = spm.MaterialID "
+                    + "WHERE spm.StandardProduktID = " + produktID;
 
             material = idb.fetchRows(query);
             StringBuilder info = new StringBuilder();
@@ -97,11 +95,11 @@ public class SeInfoStandardprodukt extends javax.swing.JFrame {
                     String funktion = rad.get("Funktion") != null ? rad.get("Funktion") : "";
 
                     info.append(namn).append(" – ")
-                        .append(typ).append(" – ")
-                        .append(farg).append(" – Mängd: ")
-                        .append(mangd).append(" ").append(enhet)
-                        .append(" – Funktion: ").append(funktion)
-                        .append("\n");
+                            .append(typ).append(" – ")
+                            .append(farg).append(" – Mängd: ")
+                            .append(mangd).append(" ").append(enhet)
+                            .append(" – Funktion: ").append(funktion)
+                            .append("\n");
                 }
             } else {
                 info.append("Inget material hittades.");
@@ -113,10 +111,6 @@ public class SeInfoStandardprodukt extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Fel vid hämtning av material:\n" + e.getMessage(), "Fel", JOptionPane.ERROR_MESSAGE);
         }
     }
-   
-   
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -193,14 +187,14 @@ public class SeInfoStandardprodukt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-       //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn. 
-        new SeAllaLagerfordaProdukter(idb, inloggadAnvandare).setVisible(true); 
+        //Kod för tillbaka kappen som skickar tillbaka användaren till huvudmenyn. 
+        new SeAllaLagerfordaProdukter(idb, inloggadAnvandare).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
     private void TabellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabellMouseClicked
-     
+
     }//GEN-LAST:event_TabellMouseClicked
 
     /**

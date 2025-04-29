@@ -14,8 +14,7 @@ import oru.inf.InfException;
  * @author iftinserar
  */
 public class LäggTillNyKund extends javax.swing.JPanel {
-    
-    
+
     private static InfDB idb;
     private String inloggadAnvandare;
     private Validering validera;
@@ -24,156 +23,152 @@ public class LäggTillNyKund extends javax.swing.JPanel {
 
         initComponents();
         this.idb = idb;
-        //this.inloggadAnvandare = inloggadAnvandare;
-        
+
         comboSamma.addActionListener(new java.awt.event.ActionListener() {
-    public void actionPerformed(java.awt.event.ActionEvent evt) {
-        SammaAdressCheckbox();
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SammaAdressCheckbox();
+            }
+        });
     }
-});
-    }
-    
+
     private void SammaAdressCheckbox() {
-    boolean samma = comboSamma.isSelected();
+        boolean samma = comboSamma.isSelected();
 
-    if (samma) {
-        // Kopiera från leveransadress
-        txtFakturaAdress.setText(TxtLeveransAdress.getText());
-        txtFakturaPostnummer.setText(txtLeveransPostnummer.getText());
-        txtFakturaOrt.setText(txtLeveransOrt.getText());
-        txtFakturaLand.setText(txtLeveransLand.getText());
+        if (samma) {
+            //Kopiera från leveransadress
+            txtFakturaAdress.setText(TxtLeveransAdress.getText());
+            txtFakturaPostnummer.setText(txtLeveransPostnummer.getText());
+            txtFakturaOrt.setText(txtLeveransOrt.getText());
+            txtFakturaLand.setText(txtLeveransLand.getText());
 
-        // Lås fälten så att de inte kan ändras
-        txtFakturaAdress.setEditable(false);
-        txtFakturaPostnummer.setEditable(false);
-        txtFakturaOrt.setEditable(false);
-        txtFakturaLand.setEditable(false);
-    } else {
-        // Töm fälten om checkboxen avmarkeras
+            //Lås fälten så att de inte kan ändras
+            txtFakturaAdress.setEditable(false);
+            txtFakturaPostnummer.setEditable(false);
+            txtFakturaOrt.setEditable(false);
+            txtFakturaLand.setEditable(false);
+        } else {
+            //Töm fälten om checkboxen avmarkeras
+            txtFakturaAdress.setText("");
+            txtFakturaPostnummer.setText("");
+            txtFakturaOrt.setText("");
+            txtFakturaLand.setText("");
+
+            //Gör fälten redigerbara igen
+            txtFakturaAdress.setEditable(true);
+            txtFakturaPostnummer.setEditable(true);
+            txtFakturaOrt.setEditable(true);
+            txtFakturaLand.setEditable(true);
+        }
+    }
+
+    private void sparaKund() {
+
+        //Hämta inmatade värden
+        String fornamn = txtFornamn.getText();
+        String efternamn = TxtEfternamn.getText();
+        String epost = TxtEpost.getText();
+        String telefon = txtTelefonNr.getText();
+        String huvudmatt = txtHuvudmått.getText();
+
+        String levAdress = TxtLeveransAdress.getText();
+        String levPostNr = txtLeveransPostnummer.getText();
+        String levOrt = txtLeveransOrt.getText();
+        String levLand = txtLeveransLand.getText();
+
+        String fakAdress = txtFakturaAdress.getText();
+        String fakPostNr = txtFakturaPostnummer.getText();
+        String fakOrt = txtFakturaOrt.getText();
+        String fakLand = txtFakturaLand.getText();
+
+        //Validera att inga fält är tomma
+        if (!Validering.faltInteTomt(fornamn) || !Validering.faltInteTomt(efternamn)
+                || !Validering.faltInteTomt(epost) || !Validering.faltInteTomt(telefon)
+                || !Validering.faltInteTomt(huvudmatt) || !Validering.faltInteTomt(levAdress)
+                || !Validering.faltInteTomt(levPostNr) || !Validering.faltInteTomt(levOrt)
+                || !Validering.faltInteTomt(levLand)
+                || !Validering.faltInteTomt(fakAdress) || !Validering.faltInteTomt(fakPostNr)
+                || !Validering.faltInteTomt(fakOrt) || !Validering.faltInteTomt(fakLand)) {
+
+            JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //Validera dataformat
+        if (!Validering.arEndastBokstaver(fornamn)) {
+            visaFel("Förnamn får endast innehålla bokstäver");
+            return;
+        }
+
+        if (!Validering.arEndastBokstaver(efternamn)) {
+            visaFel("Efternamn får endast innehålla bokstäver");
+            return;
+        }
+
+        if (!Validering.valideringEmail(epost)) {
+            visaFel("Ogiltig e-postadress");
+            return;
+        }
+
+        if (!Validering.valideringTelefon(telefon)) {
+            visaFel("Telefonnummer måste börja på +");
+            return;
+        }
+
+        if (!Validering.arEndastSiffror(huvudmatt)) {
+            visaFel("Huvudmått får endast innehålla siffror");
+            return;
+        }
+
+        if (!Validering.arEndastSiffror(levPostNr) || !Validering.arEndastSiffror(fakPostNr)) {
+            visaFel("Postnummer får endast innehålla siffror");
+            return;
+        }
+
+        try {
+            String sql = "INSERT INTO Kund (Fornamn, Efternamn, Matt, Epost, Telefonnummer, LeveransAdress, FakturaAdress, "
+                    + "LeveransPostnummer, LeveransOrt, LeveransLand, FakturaPostnummer, FakturaOrt, FakturaLand) VALUES ("
+                    + "'" + fornamn.replace("'", "''") + "', "
+                    + "'" + efternamn.replace("'", "''") + "', "
+                    + "'" + huvudmatt + "', "
+                    + "'" + epost.replace("'", "''") + "', "
+                    + "'" + telefon + "', "
+                    + "'" + levAdress.replace("'", "''") + "', "
+                    + "'" + fakAdress.replace("'", "''") + "', "
+                    + "'" + levPostNr + "', "
+                    + "'" + levOrt.replace("'", "''") + "', "
+                    + "'" + levLand.replace("'", "''") + "', "
+                    + "'" + fakPostNr + "', "
+                    + "'" + fakOrt.replace("'", "''") + "', "
+                    + "'" + fakLand.replace("'", "''") + "')";
+
+            idb.insert(sql);
+            JOptionPane.showMessageDialog(this, "Kunddata har sparats!");
+            rensaFalt();
+        } catch (InfException e) {
+            visaFel("Fel vid sparning till databas: " + e.getMessage());
+        }
+    }
+
+    private void visaFel(String meddelande) {
+        JOptionPane.showMessageDialog(this, meddelande, "Fel", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void rensaFalt() {
+        txtFornamn.setText("");
+        TxtEfternamn.setText("");
+        TxtEpost.setText("");
+        txtTelefonNr.setText("");
+        txtHuvudmått.setText("");
+        TxtLeveransAdress.setText("");
+        txtLeveransPostnummer.setText("");
+        txtLeveransOrt.setText("");
+        txtLeveransLand.setText("");
         txtFakturaAdress.setText("");
         txtFakturaPostnummer.setText("");
         txtFakturaOrt.setText("");
         txtFakturaLand.setText("");
-
-        // Gör fälten redigerbara igen
-        txtFakturaAdress.setEditable(true);
-        txtFakturaPostnummer.setEditable(true);
-        txtFakturaOrt.setEditable(true);
-        txtFakturaLand.setEditable(true);
-    }
-}
-
-
-
-//skyddar mot sql-injektion, genom att byta ut ' mot två'' (så att databasen inte tror att man avslutar koden)
-    private void sparaKund() {
-
-    // Hämta inmatade värden
-    String fornamn = txtFornamn.getText();
-    String efternamn = TxtEfternamn.getText();
-    String epost = TxtEpost.getText();
-    String telefon = txtTelefonNr.getText();
-    String huvudmatt = txtHuvudmått.getText();
-
-    String levAdress = TxtLeveransAdress.getText();
-    String levPostNr = txtLeveransPostnummer.getText();
-    String levOrt = txtLeveransOrt.getText();
-    String levLand = txtLeveransLand.getText(); 
-
-    String fakAdress = txtFakturaAdress.getText();
-    String fakPostNr = txtFakturaPostnummer.getText();
-    String fakOrt = txtFakturaOrt.getText();
-    String fakLand = txtFakturaLand.getText();    
-
-    // Validera att inga fält är tomma
-    if (!Validering.faltInteTomt(fornamn) || !Validering.faltInteTomt(efternamn) ||
-        !Validering.faltInteTomt(epost) || !Validering.faltInteTomt(telefon) ||
-        !Validering.faltInteTomt(huvudmatt) || !Validering.faltInteTomt(levAdress) ||
-        !Validering.faltInteTomt(levPostNr) || !Validering.faltInteTomt(levOrt) ||
-        !Validering.faltInteTomt(levLand) ||     // 👈 NYTT
-        !Validering.faltInteTomt(fakAdress) || !Validering.faltInteTomt(fakPostNr) ||
-        !Validering.faltInteTomt(fakOrt) || !Validering.faltInteTomt(fakLand)) {   // 👈 NYTT
-
-        JOptionPane.showMessageDialog(this, "Alla fält måste fyllas i!", "Fel", JOptionPane.ERROR_MESSAGE);
-        return;
     }
 
-    // Validera dataformat
-    if (!Validering.arEndastBokstaver(fornamn)) {
-        visaFel("Förnamn får endast innehålla bokstäver");
-        return;
-    }
-
-    if (!Validering.arEndastBokstaver(efternamn)) {
-        visaFel("Efternamn får endast innehålla bokstäver");
-        return;
-    }
-
-    if (!Validering.valideringEmail(epost)) {
-        visaFel("Ogiltig e-postadress");
-        return;
-    }
-
-    if (!Validering.valideringTelefon(telefon)) {
-        visaFel("Telefonnummer måste ha formatet XXX-XXX-XXXX");
-        return;
-    }
-
-    if (!Validering.arEndastSiffror(huvudmatt)) {
-        visaFel("Huvudmått får endast innehålla siffror");
-        return;
-    }
-
-    if (!Validering.arEndastSiffror(levPostNr) || !Validering.arEndastSiffror(fakPostNr)) {
-        visaFel("Postnummer får endast innehålla siffror");
-        return;
-    }
-
-    // 3. Spara till databas
-try {
-    String sql = "INSERT INTO Kund (Fornamn, Efternamn, Matt, Epost, Telefonnummer, LeveransAdress, FakturaAdress, " +
-                 "LeveransPostnummer, LeveransOrt, LeveransLand, FakturaPostnummer, FakturaOrt, FakturaLand) VALUES (" +
-                 "'" + fornamn.replace("'", "''") + "', " +
-                 "'" + efternamn.replace("'", "''") + "', " +
-                 "'" + huvudmatt + "', " +
-                 "'" + epost.replace("'", "''") + "', " +
-                 "'" + telefon + "', " +
-                 "'" + levAdress.replace("'", "''") + "', " +
-                 "'" + fakAdress.replace("'", "''") + "', " +
-                 "'" + levPostNr + "', " +
-                 "'" + levOrt.replace("'", "''") + "', " +
-                 "'" + levLand.replace("'", "''") + "', " +
-                 "'" + fakPostNr + "', " +
-                 "'" + fakOrt.replace("'", "''") + "', " +
-                 "'" + fakLand.replace("'", "''") + "')";
-
-        idb.insert(sql);
-        JOptionPane.showMessageDialog(this, "Kunddata har sparats!");
-        rensaFalt();
-    } catch (InfException e) {
-        visaFel("Fel vid sparning till databas: " + e.getMessage());
-    }
-    }
-
-    private void visaFel(String meddelande) {
-    JOptionPane.showMessageDialog(this, meddelande, "Fel", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void rensaFalt() {
-    txtFornamn.setText("");
-    TxtEfternamn.setText("");
-    TxtEpost.setText("");
-    txtTelefonNr.setText("");
-    txtHuvudmått.setText("");
-    TxtLeveransAdress.setText("");
-    txtLeveransPostnummer.setText("");
-    txtLeveransOrt.setText("");
-    txtLeveransLand.setText("");
-    txtFakturaAdress.setText("");
-    txtFakturaPostnummer.setText("");
-    txtFakturaOrt.setText("");
-    txtFakturaLand.setText("");
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -366,7 +361,6 @@ try {
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         sparaKund();
     }//GEN-LAST:event_btnSparaActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

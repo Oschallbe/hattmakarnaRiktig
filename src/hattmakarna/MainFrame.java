@@ -10,14 +10,16 @@ import java.net.URL;
 import javax.swing.*;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+
 /**
  *
  * @author linodeluca
  */
 public class MainFrame extends javax.swing.JFrame {
+
     private static InfDB idb;
     ImageIcon icon;
-    
+
     //Skapar fält för varje panel som ska visas i menyn
     private KalenderSchemaRatt kalenderPanel;
     private SeAllaOrdrar allaOrdrarPanel;
@@ -36,76 +38,72 @@ public class MainFrame extends javax.swing.JFrame {
     private Validering validera;
     //private MainFrame parentFrame;  // referens till MainFrame
 
-
-    
-    
     /**
      * Creates new form MainFrame
      */
     public MainFrame(InfDB idb) {
-    initComponents();
-     // centrerar fönstret på skärmen (snyggt)
-    // Se till att layouten på MainFrame är BorderLayout
-    lblValkommen.setVisible(false);
-    this.setLayout(new BorderLayout());
-    
-    // Hämta skärmstorlek
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        initComponents();
+        // centrerar fönstret på skärmen (snyggt)
+        // Se till att layouten på MainFrame är BorderLayout
+        lblValkommen.setVisible(false);
+        this.setLayout(new BorderLayout());
 
-    // Sätt fönstrets storlek till hela skärmen
-    setSize(screenSize);
-    setLocation(0, 0);
+        // Hämta skärmstorlek
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-    // Alternativ: gör det till riktig helskärm (utan fönsterkant)
-    // setUndecorated(true); // OBS: detta måste göras före setVisible(true)
+        // Sätt fönstrets storlek till hela skärmen
+        setSize(screenSize);
+        setLocation(0, 0);
 
-    setVisible(true);
+        // Alternativ: gör det till riktig helskärm (utan fönsterkant)
+        // setUndecorated(true); // OBS: detta måste göras före setVisible(true)
+        setVisible(true);
 
-    // Lägg till jPanel1 i mitten
-    this.add(jPanel1, BorderLayout.CENTER);
+        // Lägg till jPanel1 i mitten
+        this.add(jPanel1, BorderLayout.CENTER);
 
-    // Lägg padding runt om
-    jPanel1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
-    this.idb = idb;
-    lblFelMeddelande.setVisible(false);
-    txtfEmail.setText("karin@hattmakarna.se");
-    pswfLosenord.setText("hatt123");
-    lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    // Vi vill inte att menyn ska visas förens vi loggat in
-    jMenuBar1.setVisible(false);
+        // Lägg padding runt om
+        jPanel1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
+        this.idb = idb;
+        lblFelMeddelande.setVisible(false);
+        txtfEmail.setText("karin@hattmakarna.se");
+        pswfLosenord.setText("hatt123");
+        lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        // Vi vill inte att menyn ska visas förens vi loggat in
+        jMenuBar1.setVisible(false);
 
-    // Anpassa menyn (eventuella justeringar för menyer)
-    for (int i = 0; i < jMenuBar1.getMenuCount(); i++) {
-        JMenu menu = jMenuBar1.getMenu(i);
-        menu.setOpaque(true);
-        menu.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(5, 10, 5, 10), // spacing
-            BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)
-        ));
+        // Anpassa menyn (eventuella justeringar för menyer)
+        for (int i = 0; i < jMenuBar1.getMenuCount(); i++) {
+            JMenu menu = jMenuBar1.getMenu(i);
+            menu.setOpaque(true);
+            menu.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10), // spacing
+                    BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)
+            ));
+        }
+
+        // Ladda bilden från src/hattmakarna/hattmakarna_logotyp.png
+        URL imageURL = getClass().getResource("/hattmakarna/hattmakarna_logotyp.png");
+
+        // Kontrollera om bilden finns
+        if (imageURL != null) {
+            // Skapa en ImageIcon med den laddade bilden
+            ImageIcon icon = new ImageIcon(imageURL);
+
+            // Skala om bilden till t.ex. 200x200 pixlar
+            Image scaledImage = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+
+            // Lägg in den skalade bilden i JLabel
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            logotyp.setIcon(scaledIcon);
+        } else {
+            // Om bilden inte hittades, skriv ut ett felmeddelande
+            System.out.println("Bilden kunde inte hittas. Kontrollera sökvägen.");
+        }
     }
-    
-    // Ladda bilden från src/hattmakarna/hattmakarna_logotyp.png
-    URL imageURL = getClass().getResource("/hattmakarna/hattmakarna_logotyp.png");
 
-    // Kontrollera om bilden finns
-    if (imageURL != null) {
-        // Skapa en ImageIcon med den laddade bilden
-        ImageIcon icon = new ImageIcon(imageURL);
-
-        // Skala om bilden till t.ex. 200x200 pixlar
-        Image scaledImage = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-
-        // Lägg in den skalade bilden i JLabel
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        logotyp.setIcon(scaledIcon);
-    } else {
-        // Om bilden inte hittades, skriv ut ett felmeddelande
-        System.out.println("Bilden kunde inte hittas. Kontrollera sökvägen.");
-    }
-}
-
-        private void loggaUt() {
+    private void loggaUt() {
         //När man trycker på logga ut får man upp ett fönster där mna behöver bekräfta utloggning
         int svar = JOptionPane.showConfirmDialog(this, "Vill du logga ut?", "Bekräfta", JOptionPane.YES_NO_OPTION);
         //Om man väljer jag loggas man ut
@@ -115,26 +113,21 @@ public class MainFrame extends javax.swing.JFrame {
             nyMainFrame.setVisible(true);
         }
     }
-        
-        
 
-
-    public void hanteraAnstallda(){
-        try{
+    public void hanteraAnstallda() {
+        try {
             String hamtaAnstallda = "select Behorighet from Anstalld where Epost = '" + txtfEmail.getText() + "';";
-            String behorighet = idb.fetchSingle(hamtaAnstallda); 
-                if(behorighet.equals("1")){
-                    hanteraAnstallda.setVisible(false);
-                }
-                else if(behorighet.equals("2")){                           
-                    hanteraAnstallda.setVisible(true);
-                }
-        }
-        catch(InfException ex){
+            String behorighet = idb.fetchSingle(hamtaAnstallda);
+            if (behorighet.equals("1")) {
+                hanteraAnstallda.setVisible(false);
+            } else if (behorighet.equals("2")) {
+                hanteraAnstallda.setVisible(true);
+            }
+        } catch (InfException ex) {
             System.out.println(ex);
         }
     }
-    
+
     public void addPanelToCardLayout(JPanel panel, String name) {
         jPanel1.add(panel, name);
     }
@@ -142,36 +135,33 @@ public class MainFrame extends javax.swing.JFrame {
     public void showPanel(String name) {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, name);
-        
+
         // Uppdatera layouten för att undvika att logotypen blir beskuren
         revalidate();
         repaint();
     }
-    
-    public String getForNamn() {
-    String anvandarnamn = txtfEmail.getText();
-    String[] delar = anvandarnamn.split("@"); // Dela på "@" för att få användarnamnet
-    String baraNamn = delar[0]; // Få användarnamnet före "@"
-    String namn = "";
 
-    // Kolla om namnet innehåller en punkt, vilket indikerar för- och efternamn
-    if (baraNamn.contains(".")) {
-        // Dela på punkten och ta första delen (förnamnet)
-        baraNamn = baraNamn.split("\\.")[0];
+    public String getForNamn() {
+        String anvandarnamn = txtfEmail.getText();
+        String[] delar = anvandarnamn.split("@"); // Dela på "@" för att få användarnamnet
+        String baraNamn = delar[0]; // Få användarnamnet före "@"
+        String namn = "";
+
+        // Kolla om namnet innehåller en punkt, vilket indikerar för- och efternamn
+        if (baraNamn.contains(".")) {
+            // Dela på punkten och ta första delen (förnamnet)
+            baraNamn = baraNamn.split("\\.")[0];
+        }
+
+        // Sätt förnamnet så att första bokstaven blir versal och resten gemener
+        namn = baraNamn.substring(0, 1).toUpperCase() + baraNamn.substring(1).toLowerCase();
+
+        return namn; // Returnera det formaterade förnamnet
     }
 
-    // Sätt förnamnet så att första bokstaven blir versal och resten gemener
-    namn = baraNamn.substring(0, 1).toUpperCase() + baraNamn.substring(1).toLowerCase();
-
-    return namn; // Returnera det formaterade förnamnet
-}
-    
-    public void taBortValkommen(){
+    public void taBortValkommen() {
         lblValkommen.setVisible(false);
     }
-   
-   
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -482,9 +472,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         // Visa
         showPanel("Kalenderschema");
-        
-        
-        
+
+
     }//GEN-LAST:event_visaKalenderMenuSelected
 
     private void seAllaKunderMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_seAllaKunderMenuSelected
@@ -512,7 +501,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         taBortValkommen();
         loggaUt();
-        
+
     }//GEN-LAST:event_loggaUtActionPerformed
 
     private void pswfLosenordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswfLosenordActionPerformed
@@ -522,94 +511,92 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnLoggaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaInActionPerformed
         //Hämtar användarinmatning
         String ePost = txtfEmail.getText();
-    char[] losenord = pswfLosenord.getPassword();
-    String losen = new String(losenord);
+        char[] losenord = pswfLosenord.getPassword();
+        String losen = new String(losenord);
 
-    try {
-        lblFelMeddelande.setVisible(false);
+        try {
+            lblFelMeddelande.setVisible(false);
 
-        if (!Validering.faltInteTomt(ePost) || !Validering.faltInteTomt(losen)) {
-            lblFelMeddelande.setText("Inget av fälten får vara tomma");
-            lblFelMeddelande.setVisible(true);
-            return;
+            if (!Validering.faltInteTomt(ePost) || !Validering.faltInteTomt(losen)) {
+                lblFelMeddelande.setText("Inget av fälten får vara tomma");
+                lblFelMeddelande.setVisible(true);
+                return;
+            }
+
+            if (!Validering.valideringEmail(ePost)) {
+                lblFelMeddelande.setText("Ange korrekt format för e-postadress");
+                lblFelMeddelande.setVisible(true);
+                return;
+            }
+
+            if (!Validering.finnsEpost(ePost, idb)) {
+                lblFelMeddelande.setText("Finns ingen användare med denna epost");
+                lblFelMeddelande.setVisible(true);
+                return;
+            }
+
+            if (!Validering.arLosenordKorrekt(ePost, losen, idb)) {
+                lblFelMeddelande.setText("Fel lösenord för denna användare");
+                lblFelMeddelande.setVisible(true);
+                pswfLosenord.setText("");
+                return;
+            }
+
+            // Hämta behörighet från databasen
+            String behorighetQuery = "SELECT Behorighet FROM Anstalld WHERE Epost = '" + ePost + "'";
+            String behorighet = idb.fetchSingle(behorighetQuery);
+            if ("1".equals(behorighet)) {
+                hanteraAnstallda.setVisible(false);
+            } else {
+                hanteraAnstallda.setVisible(true);
+            }
+
+            // Dölj inloggningskomponenter
+            lblInloggning.setVisible(false);
+            lblEpost.setVisible(false);
+            txtfEmail.setVisible(false);
+            lblLosenord.setVisible(false);
+            pswfLosenord.setVisible(false);
+            btnLoggaIn.setVisible(false);
+            lblFelMeddelande.setVisible(false);
+
+            // Visa menyrad
+            jMenuBar1.setVisible(true);
+            logotyp.setVisible(false);
+            // Visa inloggade användare välkommen
+
+            // Ladda bilden från src/hattmakarna/hattmakarna_logotyp.png
+            URL imageURL = getClass().getResource("/hattmakarna/hattmakarna_logotyp.png");
+
+            // Kontrollera om bilden finns
+            // Kontrollera om bilden finns
+            if (imageURL != null) {
+                // Skapa en ImageIcon med den laddade bilden
+                ImageIcon icon = new ImageIcon(imageURL);
+
+                // Skala om bilden till t.ex. 100x100 pixlar
+                Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+                // Lägg in den skalade bilden i JLabel
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+                logotyp.setIcon(scaledIcon);
+
+                //Sätt bounds EFTER setIcon men INNAN du visar logotypen
+                logotyp.setBounds(10, 10, 100, 100);
+
+                //Visa logotypen (om den var dold tidigare)
+                logotyp.setVisible(true);
+            } else {
+                System.out.println("Bilden kunde inte hittas. Kontrollera sökvägen.");
+            }
+
+            lblValkommen.setText("Välkommen" + " " + getForNamn());
+            lblValkommen.setVisible(true);
+
+            // hanteraAnstallda();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Något gick fel: " + ex.getMessage());
         }
-
-        if (!Validering.valideringEmail(ePost)) {
-            lblFelMeddelande.setText("Ange korrekt format för e-postadress");
-            lblFelMeddelande.setVisible(true);
-            return;
-        }
-
-        if (!Validering.finnsEpost(ePost, idb)) {
-            lblFelMeddelande.setText("Finns ingen användare med denna epost");
-            lblFelMeddelande.setVisible(true);
-            return;
-        }
-
-        if (!Validering.arLosenordKorrekt(ePost, losen, idb)) {
-            lblFelMeddelande.setText("Fel lösenord för denna användare");
-            lblFelMeddelande.setVisible(true);
-            pswfLosenord.setText("");
-            return;
-        }
-
-        // Hämta behörighet från databasen
-        String behorighetQuery = "SELECT Behorighet FROM Anstalld WHERE Epost = '" + ePost + "'";
-        String behorighet = idb.fetchSingle(behorighetQuery);
-        if("1".equals(behorighet)){
-            hanteraAnstallda.setVisible(false);
-        }else{
-            hanteraAnstallda.setVisible(true);
-        }
-
-        // Dölj inloggningskomponenter
-        lblInloggning.setVisible(false);
-        lblEpost.setVisible(false);
-        txtfEmail.setVisible(false);
-        lblLosenord.setVisible(false);
-        pswfLosenord.setVisible(false);
-        btnLoggaIn.setVisible(false);
-        lblFelMeddelande.setVisible(false);
-
-        // Visa menyrad
-        jMenuBar1.setVisible(true);
-        logotyp.setVisible(false);
-        // Visa inloggade användare välkommen
-        
-        // Ladda bilden från src/hattmakarna/hattmakarna_logotyp.png
-        URL imageURL = getClass().getResource("/hattmakarna/hattmakarna_logotyp.png");
-
-        // Kontrollera om bilden finns
-        // Kontrollera om bilden finns
-           if (imageURL != null) {
-            // Skapa en ImageIcon med den laddade bilden
-            ImageIcon icon = new ImageIcon(imageURL);
-
-            // Skala om bilden till t.ex. 100x100 pixlar
-            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-
-            // Lägg in den skalade bilden i JLabel
-            ImageIcon scaledIcon = new ImageIcon(scaledImage);
-            logotyp.setIcon(scaledIcon);
-
-            // 🟢 Sätt bounds EFTER setIcon men INNAN du visar logotypen
-            logotyp.setBounds(10, 10, 100, 100);
-
-            // 🟢 Visa logotypen (om den var dold tidigare)
-            logotyp.setVisible(true);
-        } else {
-            System.out.println("Bilden kunde inte hittas. Kontrollera sökvägen.");
-        }
-
-        lblValkommen.setText("Välkommen" + " " + getForNamn());
-        lblValkommen.setVisible(true);
-        
-       // hanteraAnstallda();
-        
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Något gick fel: " + ex.getMessage());
-    }
     }//GEN-LAST:event_btnLoggaInActionPerformed
 
     private void lblFelMeddelandeComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_lblFelMeddelandeComponentHidden
@@ -763,7 +750,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void menuItemHanteraAnstalldaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemHanteraAnstalldaActionPerformed
         // TODO add your handling code here:
         taBortValkommen();
-        
+
         hanteraAllaAnstalldaPanel = new HanteraAllaAnstallda(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -780,7 +767,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void menuItemLaggTillAnstalldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLaggTillAnstalldActionPerformed
         // TODO add your handling code here:
         taBortValkommen();
-        
+
         laggTillAnstalldPanel = new LaggTillAnstalld(idb, txtfEmail.getText());
 
         // Skapa en wrapper-panel med centrerad layout
@@ -794,7 +781,6 @@ public class MainFrame extends javax.swing.JFrame {
         showPanel("Hantera anställda");
     }//GEN-LAST:event_menuItemLaggTillAnstalldActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoggaIn;

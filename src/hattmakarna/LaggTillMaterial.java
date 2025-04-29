@@ -18,9 +18,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class LaggTillMaterial extends javax.swing.JFrame {
 
-        private InfDB idb;
-        private String inloggadAnvandare;
-        private Validering validera;
+    private InfDB idb;
+    private String inloggadAnvandare;
+    private Validering validera;
 
     public LaggTillMaterial(InfDB idb, String ePost) {
         initComponents();
@@ -189,65 +189,64 @@ public class LaggTillMaterial extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPrisActionPerformed
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-    // Hämta värden från textfälten
-    String namn = txtNamn.getText(); // från textruta
-    String typ = txtTyp.getText();
-    String farg = txtFarg.getText(); // från textruta
-    String pris = txtPris.getText(); // från textruta (som text)
-    String enhet = txtEnhet.getText();
-    String beskrivning = txtBeskrivning.getText();
+        // Hämta värden från textfälten
+        String namn = txtNamn.getText();
+        String typ = txtTyp.getText();
+        String farg = txtFarg.getText();
+        String pris = txtPris.getText();
+        String enhet = txtEnhet.getText();
+        String beskrivning = txtBeskrivning.getText();
 
-    // Kontrollera att fälten inte är tomma
-    if (!Validering.faltInteTomt(namn) || !Validering.faltInteTomt(typ) || 
-        !Validering.faltInteTomt(farg) || !Validering.faltInteTomt(pris) || 
-        !Validering.faltInteTomt(enhet) || !Validering.faltInteTomt(beskrivning)) {
-        JOptionPane.showMessageDialog(null, "Fyll i alla fält!");
-        return;
-    }
-    
-    if (!Validering.arEndastBokstaver(namn) || !Validering.arEndastBokstaver(typ) || 
-        !Validering.arEndastBokstaver(farg) || !Validering.arEndastBokstaver(enhet)) {
-        JOptionPane.showMessageDialog(null, "Fält som namn, typ, färg, enhet måste bestå av bokstäver.");
-        return;
-    }
+        //Kontrollera att fälten inte är tomma
+        if (!Validering.faltInteTomt(namn) || !Validering.faltInteTomt(typ)
+                || !Validering.faltInteTomt(farg) || !Validering.faltInteTomt(pris)
+                || !Validering.faltInteTomt(enhet) || !Validering.faltInteTomt(beskrivning)) {
+            JOptionPane.showMessageDialog(null, "Fyll i alla fält!");
+            return;
+        }
 
-    // Kontrollera att en giltig typ är vald
-    if (typ.equals("Välj typ")) {
-        JOptionPane.showMessageDialog(null, "Vänligen välj typ");
-        return;
-    }
-    
-    
-    try {
-        // Konvertera pris till double
-        double priset = Double.parseDouble(pris);
+        if (!Validering.arEndastBokstaver(namn) || !Validering.arEndastBokstaver(typ)
+                || !Validering.arEndastBokstaver(farg) || !Validering.arEndastBokstaver(enhet)) {
+            JOptionPane.showMessageDialog(null, "Fält som namn, typ, färg, enhet måste bestå av bokstäver.");
+            return;
+        }
 
-        // Skapa SQL-fråga
-                String fraga = "INSERT INTO Material (Namn, Typ, Farg, Pris, Enhet, Beskrivning) VALUES " +
-                     "('" + namn + "', '" + typ + "', '" + farg + "', " + priset + ", '" + enhet + "', '" + beskrivning + "')";
-        idb.insert(fraga);
+        //Kontrollera att en giltig typ är vald
+        if (typ.equals("Välj typ")) {
+            JOptionPane.showMessageDialog(null, "Vänligen välj typ");
+            return;
+        }
 
-        JOptionPane.showMessageDialog(null, "Material sparat!");
-        // Rensa fälten efter sparning
-        txtNamn.setText("");
-        txtTyp.setText("");
-        txtFarg.setText("");
-        txtPris.setText("");
-        txtEnhet.setText("");
-        txtBeskrivning.setText("");
-        this.dispose();
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Pris måste vara ett nummer.");
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel vid databasåtkomst.");
-        
-    }    
+        try {
+            //Konvertera pris till double
+            double priset = Double.parseDouble(pris);
+
+            //SQL-fråga
+            String fraga = "INSERT INTO Material (Namn, Typ, Farg, Pris, Enhet, Beskrivning) VALUES "
+                    + "('" + namn + "', '" + typ + "', '" + farg + "', " + priset + ", '" + enhet + "', '" + beskrivning + "')";
+            idb.insert(fraga);
+
+            JOptionPane.showMessageDialog(null, "Material sparat!");
+            //Rensa fälten efter sparning
+            txtNamn.setText("");
+            txtTyp.setText("");
+            txtFarg.setText("");
+            txtPris.setText("");
+            txtEnhet.setText("");
+            txtBeskrivning.setText("");
+            this.dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Pris måste vara ett nummer.");
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel vid databasåtkomst.");
+
+        }
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void txtBeskrivningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBeskrivningActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBeskrivningActionPerformed
-     
+
     /**
      * @param args the command line arguments
      */

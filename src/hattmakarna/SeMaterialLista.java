@@ -11,11 +11,12 @@ import java.util.HashMap;
 import oru.inf.InfDB;
 
 public class SeMaterialLista extends JPanel {
-private String inloggadAnvandare;
-private InfDB idb;
+
+    private String inloggadAnvandare;
+    private InfDB idb;
 
     public SeMaterialLista(List<HashMap<String, String>> data, InfDB idb, String inloggadAnvandare) {
-        initComponents(); 
+        initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         fyllTabell(data);
@@ -29,15 +30,16 @@ private InfDB idb;
             System.out.println(row);
             // Förutsätter att kolumnerna är: MaterialNamn, Typ, Farg, TotalMangd
             model.addRow(new Object[]{
-                        row.get("Namn"),
-                        row.get("Typ"),
-                        row.get("Farg"),
-                        row.get("TotalMangd")
-               
-        });
+                row.get("Namn"),
+                row.get("Typ"),
+                row.get("Farg"),
+                row.get("TotalMangd")
+
+            });
+        }
+
     }
-        
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -103,10 +105,9 @@ private InfDB idb;
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
-        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);  
+        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnTillbakaActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -40,7 +40,7 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
             comboMaterial.addItem("Välj material"); // Dummy-post först
             String sqlFraga = "SELECT Namn FROM Material";
             ArrayList<String> materialLista = idb.fetchColumn(sqlFraga);
-            
+
             java.util.Collections.sort(materialLista, String.CASE_INSENSITIVE_ORDER);
 
             for (String namn : materialLista) {
@@ -59,7 +59,7 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
 
         try {
             txtArtikelnummer.setText(String.valueOf(genereraNyttArtikelnummer()));
-            txtArtikelnummer.setEditable(false); // Gör det icke-redigerbart
+            txtArtikelnummer.setEditable(false); //Gör det icke-redigerbart
         } catch (InfException e) {
             JOptionPane.showMessageDialog(null, "Kunde inte generera artikelnummer: " + e.getMessage());
         }
@@ -69,7 +69,7 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
         try {
             String valtMaterial = (String) comboMaterial.getSelectedItem();
 
-            // Hoppa över dummy-posten
+            //Hoppa över dummy-posten
             if (valtMaterial == null || valtMaterial.equals("Välj material")) {
                 lblEnhet.setText("");
                 return;
@@ -88,32 +88,32 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Kunde inte hämta enhet: " + e.getMessage());
         }
     }
-    
+
     private void rensaFormulär() {
-    txtNamn.setText("");
-    txtPris.setText("");
-    txtHuvudmatt.setText("");
-    txtModell.setText("");
-    txtText.setText("");
-    txtFarg.setText("");
-    txtTyp.setText("");
-    
-    // Generera nytt artikelnummer
-    try {
-        txtArtikelnummer.setText(String.valueOf(genereraNyttArtikelnummer()));
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Kunde inte generera nytt artikelnummer: " + e.getMessage());
+        txtNamn.setText("");
+        txtPris.setText("");
+        txtHuvudmatt.setText("");
+        txtModell.setText("");
+        txtText.setText("");
+        txtFarg.setText("");
+        txtTyp.setText("");
+
+        //Generera nytt artikelnummer
+        try {
+            txtArtikelnummer.setText(String.valueOf(genereraNyttArtikelnummer()));
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Kunde inte generera nytt artikelnummer: " + e.getMessage());
+        }
+
+        //Rensa material-tabellen
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        //Återställ combo-rutor
+        comboMaterial.setSelectedIndex(0);
+        comboFunktion.setSelectedIndex(0);
+        lblEnhet.setText("");
     }
-
-    // Rensa material-tabellen
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-    model.setRowCount(0);
-
-    // Återställ combo-rutor
-    comboMaterial.setSelectedIndex(0);
-    comboFunktion.setSelectedIndex(0);
-    lblEnhet.setText("");
-}
 
     private int genereraNyttArtikelnummer() throws InfException {
         String sql = "SELECT MAX(Artikelnummer) FROM StandardProdukt";
@@ -122,7 +122,7 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
         if (maxArtikelnummer != null) {
             return Integer.parseInt(maxArtikelnummer) + 1;
         } else {
-            return 1000; // Börja på ett basnummer
+            return 1000; //Börja på ett basnummer
         }
     }
 
@@ -141,17 +141,17 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "En mängd måste bestå av siffror");
                 return;
             }
-            
-            if (valjFunktion.equals("Välj funktion")) {
-            JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
-            return;
-}
-            if (valtMaterial.equals("Välj material")) {
-            JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
-            return;
-}
 
-            // Hämta info om materialet från databasen
+            if (valjFunktion.equals("Välj funktion")) {
+                JOptionPane.showMessageDialog(null, "Välj en funktion för materialet innan du lägger till det.");
+                return;
+            }
+            if (valtMaterial.equals("Välj material")) {
+                JOptionPane.showMessageDialog(null, "Välj vilket material innan du lägger till det.");
+                return;
+            }
+
+            //Hämta info om materialet från databasen
             String sql = "SELECT Namn, Typ, Farg, Pris, Enhet FROM Material WHERE Namn = '" + valtMaterial + "'";
             HashMap<String, String> rad = idb.fetchRow(sql);
 
@@ -518,25 +518,25 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
             int artikelNummer = Integer.parseInt(txtArtikelnummer.getText());
 
             if (Validering.faltInteTomt(namn)
-                && Validering.faltInteTomt(textPris)
-                && Validering.faltInteTomt(textHuvudmatt)
-                && Validering.faltInteTomt(modell)
-                && Validering.faltInteTomt(text)
-                && Validering.faltInteTomt(farg)
-                && Validering.faltInteTomt(typ)) {
+                    && Validering.faltInteTomt(textPris)
+                    && Validering.faltInteTomt(textHuvudmatt)
+                    && Validering.faltInteTomt(modell)
+                    && Validering.faltInteTomt(text)
+                    && Validering.faltInteTomt(farg)
+                    && Validering.faltInteTomt(typ)) {
                 try {
                     String hamtaID = "Select max(StandardProduktID) from StandardProdukt;";
                     String nyHamtaID = idb.fetchSingle(hamtaID);
                     int nyID = Integer.parseInt(nyHamtaID) + 1;
 
                     String fragaLaggTill = "INSERT INTO StandardProdukt "
-                    + "(StandardProduktID, Namn, Modell, Typ, Farg, Text, Matt, Pris, Artikelnummer) "
-                    + "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + typ + "', '" + farg + "', '" + text
-                    + "', " + huvudmatt + ", " + pris + ", '" + artikelNummer + "');";
+                            + "(StandardProduktID, Namn, Modell, Typ, Farg, Text, Matt, Pris, Artikelnummer) "
+                            + "VALUES (" + nyID + ", '" + namn + "', '" + modell + "', '" + typ + "', '" + farg + "', '" + text
+                            + "', " + huvudmatt + ", " + pris + ", '" + artikelNummer + "');";
 
                     idb.insert(fragaLaggTill);
 
-                    // Kontrollera att minst ett material har lagts till
+                    //Kolla att minst ett material har lagts till
                     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                     int rowCount = model.getRowCount();
                     if (rowCount == 0) {
@@ -556,7 +556,7 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
                         }
 
                         String insertMaterial = "INSERT INTO StandardProdukt_Material (StandardProduktID, MaterialID, Mängd, Funktion) "
-                        + "VALUES (" + nyID + ", " + materialID + ", " + mangd + ", '" + funktion + "')";
+                                + "VALUES (" + nyID + ", " + materialID + ", " + mangd + ", '" + funktion + "')";
 
                         idb.insert(insertMaterial);
                     }
@@ -585,7 +585,7 @@ public class LaggTillLagerfordHatt extends javax.swing.JPanel {
         nyttMaterialFönster.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                fyllMaterialComboBox(); // Uppdatera material-listan efter stängning
+                fyllMaterialComboBox(); //Uppdatera material-listan efter stängning
             }
         });
 
