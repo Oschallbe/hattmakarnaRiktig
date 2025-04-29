@@ -377,7 +377,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("Totalpris:");
         add(jLabel5);
-        jLabel5.setBounds(120, 250, 82, 22);
+        jLabel5.setBounds(120, 250, 140, 25);
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -386,12 +386,12 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
         add(btnSpara);
-        btnSpara.setBounds(660, 490, 72, 23);
+        btnSpara.setBounds(660, 490, 76, 27);
 
-        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblOrderNr.setText("jLabel6");
         add(lblOrderNr);
-        lblOrderNr.setBounds(210, 30, 110, 30);
+        lblOrderNr.setBounds(210, 30, 110, 25);
 
         tblAllaAnstallda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -412,27 +412,27 @@ public class SeVanligOrder extends javax.swing.JPanel {
         lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblKundNr.setText("jLabel7");
         add(lblKundNr);
-        lblKundNr.setBounds(200, 80, 62, 22);
+        lblKundNr.setBounds(200, 80, 200, 25);
 
         lblDatum.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDatum.setText("jLabel8");
         add(lblDatum);
-        lblDatum.setBounds(200, 130, 139, 22);
+        lblDatum.setBounds(200, 130, 139, 25);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel7.setText("Produktlista");
         add(jLabel7);
-        jLabel7.setBounds(120, 310, 101, 17);
+        jLabel7.setBounds(120, 310, 101, 20);
 
         lblPris.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblPris.setText("jLabel10");
         add(lblPris);
-        lblPris.setBounds(210, 250, 107, 22);
+        lblPris.setBounds(210, 250, 250, 25);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel8.setText("Hitta rätt anställningsnummer här!");
         add(jLabel8);
-        jLabel8.setBounds(810, 310, 187, 15);
+        jLabel8.setBounds(810, 310, 187, 16);
 
         tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -459,7 +459,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
         add(comboStatus);
-        comboStatus.setBounds(190, 170, 144, 21);
+        comboStatus.setBounds(190, 170, 137, 26);
 
         btnRedigeraStatus.setText("Redigera status");
         btnRedigeraStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -468,12 +468,12 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
         add(btnRedigeraStatus);
-        btnRedigeraStatus.setBounds(410, 490, 122, 23);
+        btnRedigeraStatus.setBounds(390, 490, 130, 27);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Order:");
         add(jLabel1);
-        jLabel1.setBounds(120, 30, 78, 30);
+        jLabel1.setBounds(120, 30, 54, 25);
 
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
@@ -482,7 +482,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
         add(btnTillbaka);
-        btnTillbaka.setBounds(920, 20, 75, 23);
+        btnTillbaka.setBounds(910, 20, 76, 27);
 
         btnSeProduktOmProdukt.setText("Se information om produkt");
         btnSeProduktOmProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -491,12 +491,12 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
         add(btnSeProduktOmProdukt);
-        btnSeProduktOmProdukt.setBounds(120, 490, 203, 23);
+        btnSeProduktOmProdukt.setBounds(120, 490, 203, 27);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Kund:");
         add(jLabel2);
-        jLabel2.setBounds(120, 80, 51, 22);
+        jLabel2.setBounds(120, 80, 210, 25);
 
         btnAtaProdukt.setText("Åta produkt");
         btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -505,7 +505,7 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
         add(btnAtaProdukt);
-        btnAtaProdukt.setBounds(540, 490, 98, 23);
+        btnAtaProdukt.setBounds(540, 490, 97, 27);
 
         btnSeKund.setText("Se kundinformation");
         btnSeKund.addActionListener(new java.awt.event.ActionListener() {
@@ -514,32 +514,32 @@ public class SeVanligOrder extends javax.swing.JPanel {
             }
         });
         add(btnSeKund);
-        btnSeKund.setBounds(300, 80, 142, 23);
+        btnSeKund.setBounds(300, 80, 139, 27);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Datum:");
         add(jLabel3);
-        jLabel3.setBounds(120, 130, 64, 22);
+        jLabel3.setBounds(120, 130, 110, 25);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Expressleverans:");
         add(jLabel6);
-        jLabel6.setBounds(120, 210, 144, 22);
+        jLabel6.setBounds(120, 210, 230, 25);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Status:");
         add(jLabel4);
-        jLabel4.setBounds(120, 170, 60, 22);
+        jLabel4.setBounds(120, 170, 180, 25);
 
         lblExpress.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblExpress.setText("jLabel7");
         add(lblExpress);
-        lblExpress.setBounds(280, 210, 62, 22);
+        lblExpress.setBounds(280, 210, 170, 25);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel9.setText("Skriv anställningsnummer i rutan \"Tilldelad\"!");
         add(jLabel9);
-        jLabel9.setBounds(480, 310, 243, 15);
+        jLabel9.setBounds(480, 310, 243, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed

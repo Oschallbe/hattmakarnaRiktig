@@ -174,7 +174,7 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Produktlista");
 
         jLabel2.setText("Sök produkt efter artikelnummer");
@@ -198,9 +198,6 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(442, 442, 442)
-                .addComponent(jLabel1))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1130, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
@@ -218,6 +215,9 @@ public class SeAllaLagerfordaProdukter extends javax.swing.JPanel {
                 .addComponent(btnSeProdukt)
                 .addGap(784, 784, 784)
                 .addComponent(btnTaBort))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

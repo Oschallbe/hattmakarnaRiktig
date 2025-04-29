@@ -329,7 +329,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnSpara);
-        btnSpara.setBounds(850, 500, 80, 27);
+        btnSpara.setBounds(880, 500, 80, 27);
 
         jCheckBox1.setText("Ja");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -425,9 +425,10 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
         add(txtBredd);
         txtBredd.setBounds(200, 400, 53, 26);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Skapa specialbeställning");
         add(jLabel1);
-        jLabel1.setBounds(410, 0, 180, 16);
+        jLabel1.setBounds(20, 0, 210, 30);
 
         jLabel17.setText("Höjd");
         add(jLabel17);
@@ -510,7 +511,7 @@ public class SkapaNySpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnLaggTillNyttMaterial);
-        btnLaggTillNyttMaterial.setBounds(750, 30, 190, 27);
+        btnLaggTillNyttMaterial.setBounds(750, 40, 190, 27);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

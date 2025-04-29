@@ -326,21 +326,21 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnSeSpecifikProdukt);
-        btnSeSpecifikProdukt.setBounds(160, 460, 210, 23);
+        btnSeSpecifikProdukt.setBounds(160, 460, 210, 27);
 
-        lblSpecialorder.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblSpecialorder.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblSpecialorder.setText("Specialorder:");
         add(lblSpecialorder);
-        lblSpecialorder.setBounds(150, 20, 170, 30);
+        lblSpecialorder.setBounds(170, 20, 170, 25);
 
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Under behandling", "Produktion pågår", "Packas", "Skickad", "Levererad", "Returnerad" }));
         add(cbStatus);
-        cbStatus.setBounds(260, 160, 138, 23);
+        cbStatus.setBounds(260, 160, 133, 26);
 
-        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblOrderNr.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblOrderNr.setText("jLabel1");
         add(lblOrderNr);
-        lblOrderNr.setBounds(340, 20, 81, 30);
+        lblOrderNr.setBounds(340, 20, 81, 25);
 
         btnRedigeraStatus.setText("Redigera status");
         btnRedigeraStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -349,12 +349,12 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnRedigeraStatus);
-        btnRedigeraStatus.setBounds(380, 460, 150, 23);
+        btnRedigeraStatus.setBounds(380, 460, 150, 27);
 
         lblTillverkningstid.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTillverkningstid.setText("Tillverkningstid:");
         add(lblTillverkningstid);
-        lblTillverkningstid.setBounds(170, 120, 110, 17);
+        lblTillverkningstid.setBounds(170, 120, 110, 20);
 
         tblAllaAnstallda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -375,12 +375,12 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         lblTillverkningstid2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTillverkningstid2.setText("jLabel1");
         add(lblTillverkningstid2);
-        lblTillverkningstid2.setBounds(300, 120, 140, 17);
+        lblTillverkningstid2.setBounds(300, 120, 140, 20);
 
         lblKund.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblKund.setText("Kund: ");
         add(lblKund);
-        lblKund.setBounds(170, 80, 44, 17);
+        lblKund.setBounds(170, 80, 120, 20);
 
         btnAtaProdukt.setText("Åta produkt");
         btnAtaProdukt.addActionListener(new java.awt.event.ActionListener() {
@@ -389,12 +389,12 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnAtaProdukt);
-        btnAtaProdukt.setBounds(560, 460, 150, 23);
+        btnAtaProdukt.setBounds(560, 460, 150, 27);
 
         lblKundNr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblKundNr.setText("jLabel1");
         add(lblKundNr);
-        lblKundNr.setBounds(220, 80, 30, 17);
+        lblKundNr.setBounds(220, 80, 300, 20);
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -403,7 +403,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnSpara);
-        btnSpara.setBounds(720, 460, 72, 23);
+        btnSpara.setBounds(720, 460, 76, 27);
 
         tblAllaProdukter.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -429,7 +429,7 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnSeKundinfo);
-        btnSeKundinfo.setBounds(260, 80, 180, 23);
+        btnSeKundinfo.setBounds(260, 80, 180, 27);
 
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(new java.awt.event.ActionListener() {
@@ -438,12 +438,12 @@ public class SeSpecialOrder extends javax.swing.JPanel {
             }
         });
         add(btnTillbaka);
-        btnTillbaka.setBounds(640, 30, 90, 23);
+        btnTillbaka.setBounds(640, 30, 90, 27);
 
         lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblStatus.setText("Status: ");
         add(lblStatus);
-        lblStatus.setBounds(170, 160, 50, 17);
+        lblStatus.setBounds(170, 160, 45, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeSpecifikProduktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeSpecifikProduktActionPerformed

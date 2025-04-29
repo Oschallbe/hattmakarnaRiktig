@@ -67,7 +67,7 @@ public class SeMaterialLista extends JPanel {
         ));
         jScrollPane1.setViewportView(materialLista);
 
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLabel1.setText("Sammanställd materiallista");
 
         btnTillbaka.setText("Tillbaka");
@@ -99,7 +99,7 @@ public class SeMaterialLista extends JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnTillbaka)
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
