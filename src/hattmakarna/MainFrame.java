@@ -67,8 +67,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
         this.idb = idb;
         lblFelMeddelande.setVisible(false);
-        txtfEmail.setText("otto@hattmakarna.se");
-        pswfLosenord.setText("adminpass");
+        txtfEmail.setText("karin@hattmakarna.se");
+        pswfLosenord.setText("hatt123");
         lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         // Vi vill inte att menyn ska visas förens vi loggat in
         jMenuBar1.setVisible(false);
@@ -176,29 +176,30 @@ public class MainFrame extends javax.swing.JFrame {
         pswfLosenord = new javax.swing.JPasswordField();
         btnLoggaIn = new javax.swing.JButton();
         lblFelMeddelande = new javax.swing.JLabel();
+        lblInloggning = new javax.swing.JLabel();
         txtfEmail = new javax.swing.JTextField();
         lblEpost = new javax.swing.JLabel();
         lblLosenord = new javax.swing.JLabel();
         logotyp = new javax.swing.JLabel();
         lblValkommen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        hanteraAnstallda = new javax.swing.JMenu();
-        menuItemHanteraAnstallda = new javax.swing.JMenuItem();
-        menuItemLaggTillAnstalld = new javax.swing.JMenuItem();
-        seAllaKunder = new javax.swing.JMenu();
-        menuItemSeAllaKunder = new javax.swing.JMenuItem();
-        menuItemLaggTillKund = new javax.swing.JMenuItem();
-        seAllaLagerfordaProdukter = new javax.swing.JMenu();
-        menuItemAllaLagerfordaProdukter = new javax.swing.JMenuItem();
-        menuItemLaggTillLagerfordHatt = new javax.swing.JMenuItem();
         menuOrdrar = new javax.swing.JMenu();
         seOrdrarItem = new javax.swing.JMenuItem();
         skapaNyOrderItem = new javax.swing.JMenuItem();
         skapaNySpecialOrderItem = new javax.swing.JMenuItem();
-        visaKalender = new javax.swing.JMenu();
+        seAllaLagerfordaProdukter = new javax.swing.JMenu();
+        menuItemAllaLagerfordaProdukter = new javax.swing.JMenuItem();
+        menuItemLaggTillLagerfordHatt = new javax.swing.JMenuItem();
         forsalningsstatistik = new javax.swing.JMenu();
         menuItemStandard = new javax.swing.JMenuItem();
         menuItemSpecial = new javax.swing.JMenuItem();
+        visaKalender = new javax.swing.JMenu();
+        hanteraAnstallda = new javax.swing.JMenu();
+        menuItemHanteraAnstallda = new javax.swing.JMenuItem();
+        menuItemLaggTillAnstalld = new javax.swing.JMenuItem();
+        seAllaKunder = new javax.swing.JMenu();
+        menuItemLaggTillKund = new javax.swing.JMenuItem();
+        menuItemSeAllaKunder = new javax.swing.JMenuItem();
         installningar = new javax.swing.JMenu();
         loggaUt = new javax.swing.JMenuItem();
 
@@ -209,7 +210,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().add(jPanel1);
         jPanel1.setBounds(109, 1541, 0, 0);
 
-        pswfLosenord.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        pswfLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         pswfLosenord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pswfLosenordActionPerformed(evt);
@@ -218,7 +219,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().add(pswfLosenord);
         pswfLosenord.setBounds(700, 530, 228, 41);
 
-        btnLoggaIn.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        btnLoggaIn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnLoggaIn.setText("Logga in");
         btnLoggaIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,9 +227,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLoggaIn);
-        btnLoggaIn.setBounds(740, 610, 137, 30);
+        btnLoggaIn.setBounds(740, 580, 137, 36);
 
-        lblFelMeddelande.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        lblFelMeddelande.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblFelMeddelande.setText("Felaktig inloggning! ");
         lblFelMeddelande.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblFelMeddelande.setMaximumSize(new java.awt.Dimension(175, 21));
@@ -242,132 +243,39 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().add(lblFelMeddelande);
         lblFelMeddelande.setBounds(506, 750, 400, 21);
 
-        txtfEmail.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        lblInloggning.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        lblInloggning.setText("Inloggning");
+        getContentPane().add(lblInloggning);
+        lblInloggning.setBounds(700, 310, 300, 72);
+
+        txtfEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         getContentPane().add(txtfEmail);
         txtfEmail.setBounds(700, 440, 228, 41);
 
-        lblEpost.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        lblEpost.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblEpost.setText("E-post");
         getContentPane().add(lblEpost);
         lblEpost.setBounds(610, 440, 80, 31);
 
-        lblLosenord.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        lblLosenord.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLosenord.setText("Lösenord");
         getContentPane().add(lblLosenord);
-        lblLosenord.setBounds(591, 540, 90, 23);
+        lblLosenord.setBounds(610, 540, 75, 25);
 
         logotyp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hattmakarna/hattmakarna_logotyp.png"))); // NOI18N
         getContentPane().add(logotyp);
-        logotyp.setBounds(710, 170, 200, 200);
+        logotyp.setBounds(720, 100, 200, 200);
 
-        lblValkommen.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
+        lblValkommen.setFont(new java.awt.Font("Helvetica Neue", 1, 60)); // NOI18N
         lblValkommen.setText("efrgtyh");
         getContentPane().add(lblValkommen);
-        lblValkommen.setBounds(520, 360, 660, 50);
+        lblValkommen.setBounds(750, 360, 660, 50);
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenuBar1.setFont(new java.awt.Font("Helvetica Neue", 0, 16)); // NOI18N
 
-        hanteraAnstallda.setText("Anställda");
-        hanteraAnstallda.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        hanteraAnstallda.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                hanteraAnstalldaMenuSelected(evt);
-            }
-        });
-
-        menuItemHanteraAnstallda.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemHanteraAnstallda.setText("Hantera alla anställda");
-        menuItemHanteraAnstallda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemHanteraAnstalldaActionPerformed(evt);
-            }
-        });
-        hanteraAnstallda.add(menuItemHanteraAnstallda);
-
-        menuItemLaggTillAnstalld.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemLaggTillAnstalld.setText("Lägg till ny anställd");
-        menuItemLaggTillAnstalld.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemLaggTillAnstalldActionPerformed(evt);
-            }
-        });
-        hanteraAnstallda.add(menuItemLaggTillAnstalld);
-
-        jMenuBar1.add(hanteraAnstallda);
-
-        seAllaKunder.setText("Kunder");
-        seAllaKunder.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        seAllaKunder.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                seAllaKunderMenuSelected(evt);
-            }
-        });
-
-        menuItemSeAllaKunder.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemSeAllaKunder.setText("Se alla kunder");
-        menuItemSeAllaKunder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemSeAllaKunderActionPerformed(evt);
-            }
-        });
-        seAllaKunder.add(menuItemSeAllaKunder);
-
-        menuItemLaggTillKund.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemLaggTillKund.setText("Lägg till ny kund");
-        menuItemLaggTillKund.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemLaggTillKundActionPerformed(evt);
-            }
-        });
-        seAllaKunder.add(menuItemLaggTillKund);
-
-        jMenuBar1.add(seAllaKunder);
-
-        seAllaLagerfordaProdukter.setText("Lagerförda produkter");
-        seAllaLagerfordaProdukter.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        seAllaLagerfordaProdukter.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                seAllaLagerfordaProdukterMenuSelected(evt);
-            }
-        });
-
-        menuItemAllaLagerfordaProdukter.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemAllaLagerfordaProdukter.setText("Se alla lagerförda produkter");
-        menuItemAllaLagerfordaProdukter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemAllaLagerfordaProdukterActionPerformed(evt);
-            }
-        });
-        seAllaLagerfordaProdukter.add(menuItemAllaLagerfordaProdukter);
-
-        menuItemLaggTillLagerfordHatt.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemLaggTillLagerfordHatt.setText("Lägg till ny lagerförd hatt");
-        menuItemLaggTillLagerfordHatt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemLaggTillLagerfordHattActionPerformed(evt);
-            }
-        });
-        seAllaLagerfordaProdukter.add(menuItemLaggTillLagerfordHatt);
-
-        jMenuBar1.add(seAllaLagerfordaProdukter);
-
         menuOrdrar.setText("Ordrar");
-        menuOrdrar.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
 
-        seOrdrarItem.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         seOrdrarItem.setText("Se alla ordrar");
         seOrdrarItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -376,7 +284,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         menuOrdrar.add(seOrdrarItem);
 
-        skapaNyOrderItem.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         skapaNyOrderItem.setText("Skapa ny order");
         skapaNyOrderItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -385,7 +292,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         menuOrdrar.add(skapaNyOrderItem);
 
-        skapaNySpecialOrderItem.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         skapaNySpecialOrderItem.setText("Skapa ny specialorder");
         skapaNySpecialOrderItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -396,8 +302,65 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(menuOrdrar);
 
+        seAllaLagerfordaProdukter.setText("Lagerförda produkter");
+        seAllaLagerfordaProdukter.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                seAllaLagerfordaProdukterMenuSelected(evt);
+            }
+        });
+
+        menuItemAllaLagerfordaProdukter.setText("Se alla lagerförda produkter");
+        menuItemAllaLagerfordaProdukter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemAllaLagerfordaProdukterActionPerformed(evt);
+            }
+        });
+        seAllaLagerfordaProdukter.add(menuItemAllaLagerfordaProdukter);
+
+        menuItemLaggTillLagerfordHatt.setText("Lägg till ny lagerförd hatt");
+        menuItemLaggTillLagerfordHatt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemLaggTillLagerfordHattActionPerformed(evt);
+            }
+        });
+        seAllaLagerfordaProdukter.add(menuItemLaggTillLagerfordHatt);
+
+        jMenuBar1.add(seAllaLagerfordaProdukter);
+
+        forsalningsstatistik.setText("Försäljningsstatistik");
+        forsalningsstatistik.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                forsalningsstatistikMenuSelected(evt);
+            }
+        });
+
+        menuItemStandard.setText("Standard");
+        menuItemStandard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemStandardActionPerformed(evt);
+            }
+        });
+        forsalningsstatistik.add(menuItemStandard);
+
+        menuItemSpecial.setText("Special");
+        menuItemSpecial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSpecialActionPerformed(evt);
+            }
+        });
+        forsalningsstatistik.add(menuItemSpecial);
+
+        jMenuBar1.add(forsalningsstatistik);
+
         visaKalender.setText("Visa Kalenderschema");
-        visaKalender.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         visaKalender.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
@@ -409,40 +372,65 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(visaKalender);
 
-        forsalningsstatistik.setText("Försäljningsstatistik");
-        forsalningsstatistik.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        forsalningsstatistik.addMenuListener(new javax.swing.event.MenuListener() {
+        hanteraAnstallda.setText("Anställda");
+        hanteraAnstallda.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
-                forsalningsstatistikMenuSelected(evt);
+                hanteraAnstalldaMenuSelected(evt);
             }
         });
 
-        menuItemStandard.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemStandard.setText("Standard");
-        menuItemStandard.addActionListener(new java.awt.event.ActionListener() {
+        menuItemHanteraAnstallda.setText("Hantera alla anställda");
+        menuItemHanteraAnstallda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemStandardActionPerformed(evt);
+                menuItemHanteraAnstalldaActionPerformed(evt);
             }
         });
-        forsalningsstatistik.add(menuItemStandard);
+        hanteraAnstallda.add(menuItemHanteraAnstallda);
 
-        menuItemSpecial.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        menuItemSpecial.setText("Special");
-        menuItemSpecial.addActionListener(new java.awt.event.ActionListener() {
+        menuItemLaggTillAnstalld.setText("Lägg till ny anställd");
+        menuItemLaggTillAnstalld.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemSpecialActionPerformed(evt);
+                menuItemLaggTillAnstalldActionPerformed(evt);
             }
         });
-        forsalningsstatistik.add(menuItemSpecial);
+        hanteraAnstallda.add(menuItemLaggTillAnstalld);
 
-        jMenuBar1.add(forsalningsstatistik);
+        jMenuBar1.add(hanteraAnstallda);
+
+        seAllaKunder.setText("Kunder");
+        seAllaKunder.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                seAllaKunderMenuSelected(evt);
+            }
+        });
+
+        menuItemLaggTillKund.setText("Lägg till ny kund");
+        menuItemLaggTillKund.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemLaggTillKundActionPerformed(evt);
+            }
+        });
+        seAllaKunder.add(menuItemLaggTillKund);
+
+        menuItemSeAllaKunder.setText("Se alla kunder");
+        menuItemSeAllaKunder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSeAllaKunderActionPerformed(evt);
+            }
+        });
+        seAllaKunder.add(menuItemSeAllaKunder);
+
+        jMenuBar1.add(seAllaKunder);
 
         installningar.setText("Inställningar");
-        installningar.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         installningar.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
@@ -453,7 +441,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        loggaUt.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         loggaUt.setText("Logga ut");
         loggaUt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -565,7 +552,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
 
             // Dölj inloggningskomponenter
-            
+            lblInloggning.setVisible(false);
             lblEpost.setVisible(false);
             txtfEmail.setVisible(false);
             lblLosenord.setVisible(false);
@@ -804,6 +791,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblFelMeddelande;
+    private javax.swing.JLabel lblInloggning;
     private javax.swing.JLabel lblLosenord;
     private javax.swing.JLabel lblValkommen;
     private javax.swing.JMenuItem loggaUt;

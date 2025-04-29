@@ -66,20 +66,20 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
 
                 //Jtable sätts med data från DefaultTableModel.
                 tblAllaAnstallda.setModel(allaAnstallda);
-                tblAllaAnstallda.setRowHeight(38);
+
             }
 
             tblAllaAnstallda.setAutoResizeMode(tblAllaAnstallda.AUTO_RESIZE_OFF);
 
             //Sätter storleken på tabellen.
             TableColumn col = tblAllaAnstallda.getColumnModel().getColumn(0); //id.
-            col.setPreferredWidth(200);
+            col.setPreferredWidth(100);
 
             col = tblAllaAnstallda.getColumnModel().getColumn(1); //Förnamn.
-            col.setPreferredWidth(200);
+            col.setPreferredWidth(149);
 
             col = tblAllaAnstallda.getColumnModel().getColumn(2); //Efternamn.
-            col.setPreferredWidth(200);
+            col.setPreferredWidth(149);
         } catch (InfException ex) {
             System.out.println(ex);
         }
@@ -94,7 +94,6 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
         tblAllaAnstallda = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
-        btnTaBort.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btnTaBort.setText("Ta bort anställd");
         btnTaBort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,7 +101,6 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
             }
         });
 
-        tblAllaAnstallda.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         tblAllaAnstallda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -116,8 +114,8 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblAllaAnstallda);
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel1.setText("ALLA ANSTÄLLDA");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Alla anställda");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -126,25 +124,25 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(225, 225, 225)
-                        .addComponent(jLabel1))
+                        .addGap(158, 158, 158)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnTaBort)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(98, Short.MAX_VALUE))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTaBort, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addComponent(btnTaBort)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
