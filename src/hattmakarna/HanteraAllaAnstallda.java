@@ -114,7 +114,7 @@ public class HanteraAllaAnstallda extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblAllaAnstallda);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Alla anställda");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
