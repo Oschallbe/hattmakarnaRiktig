@@ -225,7 +225,7 @@ public class LäggTillNyKund extends javax.swing.JPanel {
 
         comboSamma.setText("Fakturaadress är samma som leveransadress");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Lägg till ny kund ");
 
         lblFörnamn.setText("Förnamn");

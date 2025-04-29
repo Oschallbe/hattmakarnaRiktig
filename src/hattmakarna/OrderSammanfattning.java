@@ -183,29 +183,27 @@ public class OrderSammanfattning extends javax.swing.JPanel {
 
         jLabel3.setText("KundID:");
         add(jLabel3);
-        jLabel3.setBounds(530, 460, 90, 17);
+        jLabel3.setBounds(540, 460, 90, 16);
 
         tfKundID.setEnabled(false);
         add(tfKundID);
-        tfKundID.setBounds(650, 450, 39, 23);
+        tfKundID.setBounds(630, 450, 50, 22);
 
-        lblTotalpris.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         lblTotalpris.setText("Totalpris:");
         add(lblTotalpris);
-        lblTotalpris.setBounds(780, 500, 65, 18);
+        lblTotalpris.setBounds(800, 500, 90, 16);
 
         tfTotalpris.setEnabled(false);
         add(tfTotalpris);
-        tfTotalpris.setBounds(920, 500, 120, 23);
+        tfTotalpris.setBounds(880, 500, 120, 22);
 
         tfExpress.setEnabled(false);
         add(tfExpress);
-        tfExpress.setBounds(920, 450, 119, 23);
+        tfExpress.setBounds(880, 460, 119, 22);
 
-        lblExpressavgift.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         lblExpressavgift.setText("Expressavgift:");
         add(lblExpressavgift);
-        lblExpressavgift.setBounds(780, 450, 97, 18);
+        lblExpressavgift.setBounds(800, 460, 120, 16);
 
         tblOrdersammanfattning.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -226,7 +224,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Orderspecifikation");
         add(jLabel1);
-        jLabel1.setBounds(770, 10, 159, 23);
+        jLabel1.setBounds(761, 10, 170, 24);
 
         btnBekrafta.setText("Slutför order");
         btnBekrafta.addActionListener(new java.awt.event.ActionListener() {
@@ -235,7 +233,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnBekrafta);
-        btnBekrafta.setBounds(920, 560, 140, 23);
+        btnBekrafta.setBounds(1070, 560, 110, 23);
 
         btnRedigera.setText("Redigera");
         btnRedigera.addActionListener(new java.awt.event.ActionListener() {
@@ -244,7 +242,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnRedigera);
-        btnRedigera.setBounds(530, 560, 82, 23);
+        btnRedigera.setBounds(530, 560, 80, 23);
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -253,7 +251,7 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnSpara);
-        btnSpara.setBounds(650, 560, 72, 23);
+        btnSpara.setBounds(740, 560, 72, 23);
 
         btnTaBort.setText("Ta bort");
         btnTaBort.addActionListener(new java.awt.event.ActionListener() {
@@ -262,15 +260,15 @@ public class OrderSammanfattning extends javax.swing.JPanel {
             }
         });
         add(btnTaBort);
-        btnTaBort.setBounds(780, 560, 72, 23);
+        btnTaBort.setBounds(640, 560, 72, 23);
 
         jLabel2.setText("Ordernummer:");
         add(jLabel2);
-        jLabel2.setBounds(530, 500, 110, 17);
+        jLabel2.setBounds(540, 500, 110, 16);
 
         tfOrdernummer.setEnabled(false);
         add(tfOrdernummer);
-        tfOrdernummer.setBounds(650, 500, 44, 23);
+        tfOrdernummer.setBounds(630, 490, 50, 22);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBekraftaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBekraftaActionPerformed

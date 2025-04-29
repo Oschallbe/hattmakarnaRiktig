@@ -14,97 +14,6 @@
         </Property>
       </Properties>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="menuOrdrar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Ordrar"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="seOrdrarItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Se alla ordrar"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seOrdrarItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="skapaNyOrderItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Skapa ny order"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="skapaNyOrderItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="skapaNySpecialOrderItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Skapa ny specialorder"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="skapaNySpecialOrderItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="seAllaLagerfordaProdukter">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Lagerf&#xf6;rda produkter"/>
-          </Properties>
-          <Events>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaLagerfordaProdukterMenuSelected"/>
-          </Events>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuItemAllaLagerfordaProdukter">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemAllaLagerfordaProdukterActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuItemLaggTillLagerfordHatt">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny lagerf&#xf6;rd hatt"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemLaggTillLagerfordHattActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="forsalningsstatistik">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="F&#xf6;rs&#xe4;ljningsstatistik"/>
-          </Properties>
-          <Events>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="forsalningsstatistikMenuSelected"/>
-          </Events>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuItemStandard">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Standard"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemStandardActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuItemSpecial">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Special"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemSpecialActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="visaKalender">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Visa Kalenderschema"/>
-          </Properties>
-          <Events>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="visaKalenderMenuSelected"/>
-          </Events>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="hanteraAnstallda">
           <Properties>
             <Property name="text" type="java.lang.String" value="Anst&#xe4;llda"/>
@@ -153,6 +62,97 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemSeAllaKunderActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="seAllaLagerfordaProdukter">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Lagerf&#xf6;rda produkter"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="seAllaLagerfordaProdukterMenuSelected"/>
+          </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemAllaLagerfordaProdukter">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se alla lagerf&#xf6;rda produkter"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemAllaLagerfordaProdukterActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemLaggTillLagerfordHatt">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny lagerf&#xf6;rd hatt"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemLaggTillLagerfordHattActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="menuOrdrar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ordrar"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="seOrdrarItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se alla ordrar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seOrdrarItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="skapaNyOrderItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Skapa ny order"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="skapaNyOrderItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="skapaNySpecialOrderItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Skapa ny specialorder"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="skapaNySpecialOrderItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="visaKalender">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Visa Kalenderschema"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="visaKalenderMenuSelected"/>
+          </Events>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="forsalningsstatistik">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="F&#xf6;rs&#xe4;ljningsstatistik"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="forsalningsstatistikMenuSelected"/>
+          </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemStandard">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Standard"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemStandardActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemSpecial">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Special"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemSpecialActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

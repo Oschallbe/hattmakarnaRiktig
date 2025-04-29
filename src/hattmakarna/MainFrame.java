@@ -183,23 +183,23 @@ public class MainFrame extends javax.swing.JFrame {
         logotyp = new javax.swing.JLabel();
         lblValkommen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        menuOrdrar = new javax.swing.JMenu();
-        seOrdrarItem = new javax.swing.JMenuItem();
-        skapaNyOrderItem = new javax.swing.JMenuItem();
-        skapaNySpecialOrderItem = new javax.swing.JMenuItem();
-        seAllaLagerfordaProdukter = new javax.swing.JMenu();
-        menuItemAllaLagerfordaProdukter = new javax.swing.JMenuItem();
-        menuItemLaggTillLagerfordHatt = new javax.swing.JMenuItem();
-        forsalningsstatistik = new javax.swing.JMenu();
-        menuItemStandard = new javax.swing.JMenuItem();
-        menuItemSpecial = new javax.swing.JMenuItem();
-        visaKalender = new javax.swing.JMenu();
         hanteraAnstallda = new javax.swing.JMenu();
         menuItemHanteraAnstallda = new javax.swing.JMenuItem();
         menuItemLaggTillAnstalld = new javax.swing.JMenuItem();
         seAllaKunder = new javax.swing.JMenu();
         menuItemLaggTillKund = new javax.swing.JMenuItem();
         menuItemSeAllaKunder = new javax.swing.JMenuItem();
+        seAllaLagerfordaProdukter = new javax.swing.JMenu();
+        menuItemAllaLagerfordaProdukter = new javax.swing.JMenuItem();
+        menuItemLaggTillLagerfordHatt = new javax.swing.JMenuItem();
+        menuOrdrar = new javax.swing.JMenu();
+        seOrdrarItem = new javax.swing.JMenuItem();
+        skapaNyOrderItem = new javax.swing.JMenuItem();
+        skapaNySpecialOrderItem = new javax.swing.JMenuItem();
+        visaKalender = new javax.swing.JMenu();
+        forsalningsstatistik = new javax.swing.JMenu();
+        menuItemStandard = new javax.swing.JMenuItem();
+        menuItemSpecial = new javax.swing.JMenuItem();
         installningar = new javax.swing.JMenu();
         loggaUt = new javax.swing.JMenuItem();
 
@@ -227,7 +227,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLoggaIn);
-        btnLoggaIn.setBounds(740, 580, 137, 36);
+        btnLoggaIn.setBounds(740, 580, 137, 32);
 
         lblFelMeddelande.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblFelMeddelande.setText("Felaktig inloggning! ");
@@ -273,104 +273,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenuBar1.setFont(new java.awt.Font("Helvetica Neue", 0, 16)); // NOI18N
-
-        menuOrdrar.setText("Ordrar");
-
-        seOrdrarItem.setText("Se alla ordrar");
-        seOrdrarItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seOrdrarItemActionPerformed(evt);
-            }
-        });
-        menuOrdrar.add(seOrdrarItem);
-
-        skapaNyOrderItem.setText("Skapa ny order");
-        skapaNyOrderItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                skapaNyOrderItemActionPerformed(evt);
-            }
-        });
-        menuOrdrar.add(skapaNyOrderItem);
-
-        skapaNySpecialOrderItem.setText("Skapa ny specialorder");
-        skapaNySpecialOrderItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                skapaNySpecialOrderItemActionPerformed(evt);
-            }
-        });
-        menuOrdrar.add(skapaNySpecialOrderItem);
-
-        jMenuBar1.add(menuOrdrar);
-
-        seAllaLagerfordaProdukter.setText("Lagerförda produkter");
-        seAllaLagerfordaProdukter.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                seAllaLagerfordaProdukterMenuSelected(evt);
-            }
-        });
-
-        menuItemAllaLagerfordaProdukter.setText("Se alla lagerförda produkter");
-        menuItemAllaLagerfordaProdukter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemAllaLagerfordaProdukterActionPerformed(evt);
-            }
-        });
-        seAllaLagerfordaProdukter.add(menuItemAllaLagerfordaProdukter);
-
-        menuItemLaggTillLagerfordHatt.setText("Lägg till ny lagerförd hatt");
-        menuItemLaggTillLagerfordHatt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemLaggTillLagerfordHattActionPerformed(evt);
-            }
-        });
-        seAllaLagerfordaProdukter.add(menuItemLaggTillLagerfordHatt);
-
-        jMenuBar1.add(seAllaLagerfordaProdukter);
-
-        forsalningsstatistik.setText("Försäljningsstatistik");
-        forsalningsstatistik.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                forsalningsstatistikMenuSelected(evt);
-            }
-        });
-
-        menuItemStandard.setText("Standard");
-        menuItemStandard.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemStandardActionPerformed(evt);
-            }
-        });
-        forsalningsstatistik.add(menuItemStandard);
-
-        menuItemSpecial.setText("Special");
-        menuItemSpecial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemSpecialActionPerformed(evt);
-            }
-        });
-        forsalningsstatistik.add(menuItemSpecial);
-
-        jMenuBar1.add(forsalningsstatistik);
-
-        visaKalender.setText("Visa Kalenderschema");
-        visaKalender.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                visaKalenderMenuSelected(evt);
-            }
-        });
-        jMenuBar1.add(visaKalender);
 
         hanteraAnstallda.setText("Anställda");
         hanteraAnstallda.addMenuListener(new javax.swing.event.MenuListener() {
@@ -429,6 +331,104 @@ public class MainFrame extends javax.swing.JFrame {
         seAllaKunder.add(menuItemSeAllaKunder);
 
         jMenuBar1.add(seAllaKunder);
+
+        seAllaLagerfordaProdukter.setText("Lagerförda produkter");
+        seAllaLagerfordaProdukter.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                seAllaLagerfordaProdukterMenuSelected(evt);
+            }
+        });
+
+        menuItemAllaLagerfordaProdukter.setText("Se alla lagerförda produkter");
+        menuItemAllaLagerfordaProdukter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemAllaLagerfordaProdukterActionPerformed(evt);
+            }
+        });
+        seAllaLagerfordaProdukter.add(menuItemAllaLagerfordaProdukter);
+
+        menuItemLaggTillLagerfordHatt.setText("Lägg till ny lagerförd hatt");
+        menuItemLaggTillLagerfordHatt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemLaggTillLagerfordHattActionPerformed(evt);
+            }
+        });
+        seAllaLagerfordaProdukter.add(menuItemLaggTillLagerfordHatt);
+
+        jMenuBar1.add(seAllaLagerfordaProdukter);
+
+        menuOrdrar.setText("Ordrar");
+
+        seOrdrarItem.setText("Se alla ordrar");
+        seOrdrarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seOrdrarItemActionPerformed(evt);
+            }
+        });
+        menuOrdrar.add(seOrdrarItem);
+
+        skapaNyOrderItem.setText("Skapa ny order");
+        skapaNyOrderItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                skapaNyOrderItemActionPerformed(evt);
+            }
+        });
+        menuOrdrar.add(skapaNyOrderItem);
+
+        skapaNySpecialOrderItem.setText("Skapa ny specialorder");
+        skapaNySpecialOrderItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                skapaNySpecialOrderItemActionPerformed(evt);
+            }
+        });
+        menuOrdrar.add(skapaNySpecialOrderItem);
+
+        jMenuBar1.add(menuOrdrar);
+
+        visaKalender.setText("Visa Kalenderschema");
+        visaKalender.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                visaKalenderMenuSelected(evt);
+            }
+        });
+        jMenuBar1.add(visaKalender);
+
+        forsalningsstatistik.setText("Försäljningsstatistik");
+        forsalningsstatistik.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                forsalningsstatistikMenuSelected(evt);
+            }
+        });
+
+        menuItemStandard.setText("Standard");
+        menuItemStandard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemStandardActionPerformed(evt);
+            }
+        });
+        forsalningsstatistik.add(menuItemStandard);
+
+        menuItemSpecial.setText("Special");
+        menuItemSpecial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSpecialActionPerformed(evt);
+            }
+        });
+        forsalningsstatistik.add(menuItemSpecial);
+
+        jMenuBar1.add(forsalningsstatistik);
 
         installningar.setText("Inställningar");
         installningar.addMenuListener(new javax.swing.event.MenuListener() {

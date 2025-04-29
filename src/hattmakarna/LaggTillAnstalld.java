@@ -61,7 +61,7 @@ public class LaggTillAnstalld extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Lägg till anställd");
 
         jLabel2.setText("Förnamn");
@@ -78,9 +78,6 @@ public class LaggTillAnstalld extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,7 +100,11 @@ public class LaggTillAnstalld extends javax.swing.JPanel {
                         .addComponent(jLabel5))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(106, 106, 106)
-                        .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(190, 190, 190)))
                 .addGap(75, 101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -130,7 +131,7 @@ public class LaggTillAnstalld extends javax.swing.JPanel {
                     .addComponent(btnSlumpaLosenord))
                 .addGap(18, 18, 18)
                 .addComponent(BtnLaggTill, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
