@@ -36,7 +36,6 @@ public class SeSpecialOrder extends javax.swing.JPanel {
         this.klickatOrderNr = klickatOrderNr;
         fyllTabell();
         fyllLabels();
-        //hamtaTotalPris();
         fyllAnstalldTabell();
     }
 

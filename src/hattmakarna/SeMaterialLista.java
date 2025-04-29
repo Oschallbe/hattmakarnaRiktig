@@ -105,8 +105,8 @@ public class SeMaterialLista extends JPanel {
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
-        new SeAllaOrdrar(idb, inloggadAnvandare).setVisible(true);
-        this.setVisible(false);
+            MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            mainFrame.showPanel("Alla ordrar");
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
