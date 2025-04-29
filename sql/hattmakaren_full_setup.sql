@@ -870,8 +870,115 @@ VALUES
 ('Levererad', '2025-04-15', FALSE, 1, 1, 898, 'Standardbeställning'),
 ('Levererad', '2025-04-16', FALSE, 2, 2, 1347, 'Standardbeställning');
 
+-- test
 -- Två beställningar av samma hatt (samma namn, olika artikelnummer/produktID)
 INSERT INTO OrderItem (AntalProdukter, BestallningID, StandardProduktID, ProduktionsSchemaID, AnstalldID)
 VALUES
 (1, 6, 6, 1, 1),  -- Klassisk blå mössa
 (2, 7, 7, 1, 2);  -- Klassisk guldmössa
+
+-- === KUND ===
+INSERT INTO Kund (Fornamn, Efternamn, Epost, Telefonnummer, LeveransOrt, LeveransAdress, FakturaAdress, StatistikID, LeveransPostnummer, LeveransLand, FakturaPostnummer, FakturaOrt, FakturaLand, Matt)
+VALUES
+('Anna', 'Nilsson', 'anna.nilsson@mail.se', '0701010101', 'Västerås', 'Gata 1', 'Gata 1', 1, '722 10', 'Sverige', '722 10', 'Västerås', 'Sverige', 57),
+('Erik', 'Larsson', 'erik.larsson@mail.se', '0702020202', 'Örebro', 'Gata 2', 'Gata 2', 2, '703 60', 'Sverige', '703 60', 'Örebro', 'Sverige', 58),
+('Sara', 'Johansson', 'sara.johansson@mail.se', '0703030303', 'Linköping', 'Gata 3', 'Gata 3', 3, '582 20', 'Sverige', '582 20', 'Linköping', 'Sverige', 59),
+('Oskar', 'Lind', 'oskar.lind@mail.se', '0704040404', 'Helsingborg', 'Gata 4', 'Gata 4', 4, '252 20', 'Sverige', '252 20', 'Helsingborg', 'Sverige', 60),
+('Emelie', 'Svensson', 'emelie.svensson@mail.se', '0705050505', 'Norrköping', 'Gata 5', 'Gata 5', 5, '602 10', 'Sverige', '602 10', 'Norrköping', 'Sverige', 57),
+('Lucas', 'Berg', 'lucas.berg@mail.se', '0706060606', 'Luleå', 'Gata 6', 'Gata 6', 1, '972 32', 'Sverige', '972 32', 'Luleå', 'Sverige', 58),
+('Tove', 'Holm', 'tove.holm@mail.se', '0707070707', 'Borås', 'Gata 7', 'Gata 7', 2, '504 30', 'Sverige', '504 30', 'Borås', 'Sverige', 59),
+('Simon', 'Ek', 'simon.ek@mail.se', '0708080808', 'Gävle', 'Gata 8', 'Gata 8', 3, '802 50', 'Sverige', '802 50', 'Gävle', 'Sverige', 60),
+('Nina', 'Bäck', 'nina.back@mail.se', '0709090909', 'Falun', 'Gata 9', 'Gata 9', 4, '791 31', 'Sverige', '791 31', 'Falun', 'Sverige', 57),
+('Axel', 'Åsberg', 'axel.asberg@mail.se', '0700101010', 'Sundsvall', 'Gata 10', 'Gata 10', 5, '852 34', 'Sverige', '852 34', 'Sundsvall', 'Sverige', 58),
+('Mira', 'Haglund', 'mira.haglund@mail.se', '0701111111', 'Karlstad', 'Gata 11', 'Gata 11', 1, '653 40', 'Sverige', '653 40', 'Karlstad', 'Sverige', 59),
+('Jonas', 'Palm', 'jonas.palm@mail.se', '0701212121', 'Trollhättan', 'Gata 12', 'Gata 12', 2, '461 30', 'Sverige', '461 30', 'Trollhättan', 'Sverige', 60);
+
+-- === MATERIAL ===
+INSERT INTO Material (Namn, Typ, Farg, Pris, Enhet, Beskrivning)
+VALUES
+('Filt Svart', 'Filt', 'Svart', 36.0, 'Kvadratdecimeter', 'Mörkt filtmaterial för eleganta hattar'),
+('Bomull Blå', 'Tyg', 'Blå', 10.5, 'Decimeter', 'Bomullstyg för klassiska kepsar'),
+('Fjäder Blå', 'Fjädrar', 'Blå', 13.0, 'Styck', 'För dekoration'),
+('Dekorband Röd', 'Dekoration', 'Röd', 6.0, 'Meter', 'Används som dekorband'),
+('Ståltråd', 'Special', 'Silver', 3.0, 'Meter', 'Används i stomkonstruktion'),
+('Pärlor Guld', 'Dekoration', 'Guld', 22.0, 'Styck', 'Lyxig pärldekoration'),
+('Tyll Svart', 'Textil', 'Svart', 6.0, 'Decimeter', 'Används för slöjor'),
+('Organza Lila', 'Textil', 'Lila', 8.5, 'Decimeter', 'För cosplay och effekter'),
+('Sammet Svart', 'Tyg', 'Svart', 30.0, 'Decimeter', 'Lyxig textil till eleganta hattar'),
+('Strutsfjäder Vit', 'Fjädrar', 'Vit', 15.0, 'Styck', 'Dekorativ fjäder för showhattar');
+
+
+-- ====== FLER KUNDER ======
+INSERT INTO Kund (Fornamn, Efternamn, Epost, Telefonnummer, LeveransOrt, LeveransAdress, FakturaAdress, StatistikID, LeveransPostnummer, LeveransLand, FakturaPostnummer, FakturaOrt, FakturaLand, Matt)
+VALUES
+('Anna', 'Berg', 'anna.berg@example.com', '070-1122334', 'Örebro', 'Slottsgatan 1', 'Slottsgatan 1', 1, '702 11', 'Sverige', '702 11', 'Örebro', 'Sverige', 58),
+('Lars', 'Johansson', 'lars.j@example.com', '070-2233445', 'Västerås', 'Hattgatan 12', 'Hattgatan 12', 2, '721 30', 'Sverige', '721 30', 'Västerås', 'Sverige', 57),
+('Eva', 'Nilsson', 'eva.nilsson@example.com', '070-3344556', 'Norrköping', 'Nygatan 45', 'Nygatan 45', 3, '602 21', 'Sverige', '602 21', 'Norrköping', 'Sverige', 59);
+
+-- ====== FLER FRAKTSEDELAR ======
+INSERT INTO Fraktsedel (Adress, Avsandare, Mottagare, Innehåll, Exportkod, Pris, Datum, Vikt, Moms, PrisInklMoms)
+VALUES
+('Slottsgatan 1, Örebro', 'Hattmakarna AB', 'Anna Berg', 'Studentmössa', 'HATTSTUD2025', 89, '2025-04-17', 0.4, 22.25, 111.25),
+('Hattgatan 12, Västerås', 'Hattmakarna AB', 'Lars Johansson', 'Cosplay Ninja', 'HATTNIN2025', 95, '2025-04-18', 0.5, 23.75, 118.75),
+('Nygatan 45, Norrköping', 'Hattmakarna AB', 'Eva Nilsson', 'Festhatt glitter', 'HATTGLIT2025', 79, '2025-04-19', 0.3, 19.75, 98.75);
+
+-- ====== FLER BESTÄLLNINGAR ======
+INSERT INTO Bestallning (Status, Datum, Expressbestallning, KundID, FraktsedelID, TotalPris, Typ)
+VALUES
+('Packas', '2025-04-17', TRUE, 9, 6, 449, 'Standardbeställning'),
+('Produktion pågår', '2025-04-18', FALSE, 10, 7, 489, 'Standardbeställning'),
+('Under behandling', '2025-04-19', TRUE, 11, 8, 129, 'Standardbeställning');
+
+-- ====== FLER ORDERITEMS ======
+INSERT INTO OrderItem (AntalProdukter, BestallningID, StandardProduktID, ProduktionsSchemaID, AnstalldID)
+VALUES
+(1, 8, 1, 1, 1),
+(2, 9, 4, 2, 2),
+(1, 10, 5, 3, NULL);
+
+-- ====== FLER SPECIALPRODUKTER ======
+INSERT INTO SpecialProdukt (Text, Pris, Beskrivning, Tillverkningstid, StatistikID, Matt, Hojd, Bredd, Djup, StommeID)
+VALUES
+('Gläns i natten!', 1050, 'Svart topphatt med glittereffekt', '9 dagar', 3, 57, 18.5, 22.0, 26.5, 1),
+('Stolt som en tupp!', 980, 'Röd hög hatt med fjädrar', '8 dagar', 2, 58, 20.0, 23.0, 27.0, 2);
+
+-- ====== FLER PRODUKTIONSSCHEMAN ======
+INSERT INTO ProduktionsSchema (Namn) VALUES
+('Helgschema'),
+('Sommarteam');
+
+-- ====== FLER MATERIALBESTÄLLNINGAR ======
+INSERT INTO MaterialBestallning (Namn, Antal, BestallningsDatum) VALUES
+('Extra glitterband', 100, '2025-04-01'),
+('Sommarstrå', 200, '2025-04-02');
+
+-- ====== FLER MATERIAL ======
+INSERT INTO Material (Namn, Typ, Farg, Pris, Enhet, Beskrivning)
+VALUES
+('Sidenband', 'Textil', 'Rött', 6.5, 'Meter', 'Används för dekorativa inslag på högtidshattar'),
+('Bomullsvadd', 'Textil', 'Vit', 4.0, 'Decimeter', 'Fyllning för komfort'),
+('Skimrande tyg', 'Tyg', 'Silver', 15.0, 'Decimeter', 'Används i galahattar');
+
+-- ====== FLER ANSTÄLLDA ======
+INSERT INTO Anstalld (Fornamn, Efternamn, Losenord, Epost, Behorighet, ProduktionsSchemaID)
+VALUES
+('Eva', 'Söm', 'evasom123', 'eva@hattmakarna.se', 1, 1),
+('Tom', 'Syfast', 'tompass', 'tom@hattmakarna.se', 1, 2);
+
+-- 1. Ta bort foreign key från SpecialProdukt
+ALTER TABLE SpecialProdukt DROP FOREIGN KEY specialprodukt_ibfk_2;
+
+-- 2. Ta bort kolumnen StommeID från SpecialProdukt
+ALTER TABLE SpecialProdukt DROP COLUMN StommeID;
+
+-- 3. Ta bort foreign key från StandardProdukt
+ALTER TABLE StandardProdukt DROP FOREIGN KEY standardprodukt_ibfk_2;
+
+-- 4. Ta bort kolumnen StommeID från StandardProdukt
+ALTER TABLE StandardProdukt DROP COLUMN StommeID;
+
+-- 5. Ta bort kopplingstabellen mellan Stomme och Material (om den finns)
+DROP TABLE IF EXISTS Stomme_Material;
+
+-- 6. Ta bort tabellen Stomme
+DROP TABLE IF EXISTS Stomme;
