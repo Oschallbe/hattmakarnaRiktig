@@ -42,7 +42,12 @@ public class Validering {
         if (telefon == null || telefon.isEmpty()) {
             return false;
         }
-        return PHONE_PATTERN.matcher(telefon).matches();
+
+        // Ta bort alla mellanslag före kontroll
+        String rensadTelefon = telefon.replace(" ", "");
+
+        // Kontrollera att det börjar med + och bara innehåller siffror efteråt
+        return rensadTelefon.matches("^\\+[0-9]{1,15}$");
     }
 
     //Datum

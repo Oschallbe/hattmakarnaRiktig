@@ -152,6 +152,9 @@
     <Component class="javax.swing.JTextField" name="txtFornamn">
     </Component>
     <Component class="javax.swing.JTextField" name="txtTelefonNr">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTelefonNrActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TxtEpost">
     </Component>

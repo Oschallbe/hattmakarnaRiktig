@@ -67,7 +67,7 @@ public class LäggTillNyKund extends javax.swing.JPanel {
         String fornamn = txtFornamn.getText();
         String efternamn = TxtEfternamn.getText();
         String epost = TxtEpost.getText();
-        String telefon = txtTelefonNr.getText();
+        String telefon = txtTelefonNr.getText().trim().replace(" ", "");
         String huvudmatt = txtHuvudmått.getText();
 
         String levAdress = TxtLeveransAdress.getText();
@@ -207,6 +207,12 @@ public class LäggTillNyKund extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtLeveransLand = new javax.swing.JTextField();
         txtFakturaLand = new javax.swing.JTextField();
+
+        txtTelefonNr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTelefonNrActionPerformed(evt);
+            }
+        });
 
         btnSpara.setText("Spara");
         btnSpara.addActionListener(new java.awt.event.ActionListener() {
@@ -361,6 +367,10 @@ public class LäggTillNyKund extends javax.swing.JPanel {
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         sparaKund();
     }//GEN-LAST:event_btnSparaActionPerformed
+
+    private void txtTelefonNrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonNrActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelefonNrActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
