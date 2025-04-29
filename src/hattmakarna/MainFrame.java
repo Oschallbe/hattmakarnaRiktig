@@ -67,8 +67,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(new CardLayout()); // säkerställ att den verkligen har rätt layout
         this.idb = idb;
         lblFelMeddelande.setVisible(false);
-        txtfEmail.setText("karin@hattmakarna.se");
-        pswfLosenord.setText("hatt123");
         lblFelMeddelande.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         // Vi vill inte att menyn ska visas förens vi loggat in
         jMenuBar1.setVisible(false);
