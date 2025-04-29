@@ -59,8 +59,8 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         wrapper.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 10));
         wrapper.setBackground(Color.LIGHT_GRAY);
 
-        JLabel instruktionLabel = new JLabel("Fyll i ID:t på produktraden du vill tillverka", SwingConstants.CENTER);
-        instruktionLabel.setFont(new Font("Arial", Font.ITALIC, 14));
+        JLabel instruktionLabel = new JLabel("Fyll i ID:t på produktrad du vill tillverka", SwingConstants.CENTER);
+        instruktionLabel.setFont(new Font("Century Gothic", Font.ITALIC, 14));
         instruktionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         wrapper.add(instruktionLabel, BorderLayout.NORTH);
         JPanel instruktionOchTopp = new JPanel(new BorderLayout());
@@ -73,7 +73,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         JPanel huvudPanel = new JPanel(new BorderLayout());
 
         JLabel kalenderRubrik = new JLabel("Mitt Kalenderschema", SwingConstants.LEFT);
-        kalenderRubrik.setFont(new Font("Arial", Font.BOLD, 20));
+        kalenderRubrik.setFont(new Font("Century Gothic", Font.BOLD, 26));
         kalenderRubrik.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         huvudPanel.add(kalenderRubrik, BorderLayout.NORTH);
 
@@ -139,16 +139,20 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
         produktTabell.setRowSelectionAllowed(false);
         produktTabell.setColumnSelectionAllowed(false);
         produktTabell.setCellSelectionEnabled(false);
+        
+        produktTabell.setRowHeight(30);
 
         produktTabell.getColumnModel().getColumn(0).setPreferredWidth(60);
         produktTabell.getColumnModel().getColumn(1).setPreferredWidth(60);
         produktTabell.getColumnModel().getColumn(2).setPreferredWidth(175);
         produktTabell.getColumnModel().getColumn(3).setPreferredWidth(100);
         produktTabell.getColumnModel().getColumn(4).setPreferredWidth(80);
+        
+        produktTabell.setFont(new Font("Century Gothic", Font.PLAIN, 12));
 
         JPanel tabellWrapper = new JPanel(new BorderLayout());
         JLabel tabellRubrik = new JLabel("Åtagna produkter", SwingConstants.LEFT);
-        tabellRubrik.setFont(new Font("Arial", Font.BOLD, 18));
+        tabellRubrik.setFont(new Font("Century Gothic", Font.BOLD, 26));
         tabellRubrik.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         tabellWrapper.add(tabellRubrik, BorderLayout.NORTH);
@@ -178,11 +182,12 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
         String manadText = visadManad.getMonth().getDisplayName(TextStyle.FULL, new Locale("sv")) + " " + visadManad.getYear();
         manadLabel.setText(manadText.substring(0, 1).toUpperCase() + manadText.substring(1));
+        manadLabel.setFont(new Font("Century Gothic", Font.BOLD, 18));
 
         String[] dagar = {"Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"};
         for (String dag : dagar) {
             JLabel lbl = new JLabel(dag, SwingConstants.CENTER);
-            lbl.setFont(lbl.getFont().deriveFont(Font.BOLD));
+            lbl.setFont(new Font("Century Gothic", Font.BOLD, 16));
             kalenderRuta.add(lbl);
         }
 
@@ -216,22 +221,21 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
             dagPanel.setPreferredSize(new Dimension(110, 80));
 
             JLabel dagLabel = new JLabel(String.valueOf(dag), SwingConstants.CENTER);
-            dagLabel.setFont(new Font("Arial", Font.BOLD, 18));
+            dagLabel.setFont(new Font("Century Gothic", Font.BOLD, 18));
 
             DefaultListModel<String> modell = new DefaultListModel<>();
             JList<String> produktLista = new JList<>(modell);
             allaListor.add(produktLista);
-            produktLista.setFont(new Font("Arial", Font.PLAIN, 12));
+            produktLista.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             produktLista.setVisibleRowCount(3);
 
             JScrollPane scroll = new JScrollPane(produktLista);
 
             JTextField inputFalt = new JTextField();
-            Font normalFont = inputFalt.getFont();
-            Font italicFont = normalFont.deriveFont(Font.ITALIC);
             inputFalt.setText("Fyll i ett ID här");
+            inputFalt.setFont(new Font("Century Gothic", Font.ITALIC, 12));
             inputFalt.setForeground(Color.GRAY);
-            inputFalt.setFont(italicFont);
+            
 
             inputFalt.addFocusListener(new FocusAdapter() {
                 @Override
@@ -319,6 +323,7 @@ public class KalenderSchemaRatt extends javax.swing.JPanel {
 
         }
         JButton taBortKnapp = new JButton("Ta bort produkt");
+        taBortKnapp.setFont(new Font("Century Gothic", Font.PLAIN, 14));
         taBortKnapp.addActionListener(e -> {
             for (JList<String> lista : allaListor) {
                 String vald = lista.getSelectedValue();
