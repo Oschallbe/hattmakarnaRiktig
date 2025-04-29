@@ -3,18 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package hattmakarna;
+
 import com.itextpdf.barcodes.Barcode128;
 import oru.inf.InfDB;
-import oru.inf.InfException; 
+import oru.inf.InfException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.stream.Collectors;
 
-
-
 //package com.itextpdf.highlevel.chapter01;
-
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -57,13 +55,13 @@ import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import java.net.URL;
 
-
 /**
  *
  * @author iftinserar
  */
 public class SkapaNyFraktsedel extends javax.swing.JPanel {
-    private static InfDB idb; 
+
+    private static InfDB idb;
     private static String inloggadAnvandare;
     private static String klickatOrderNr;
 
@@ -71,67 +69,66 @@ public class SkapaNyFraktsedel extends javax.swing.JPanel {
      * Creates new form SkapaNyFraktsedel
      */
     public SkapaNyFraktsedel(InfDB idb, String inloggadAnvandare, String klickatOrderNr) {
-      this.inloggadAnvandare = inloggadAnvandare;
-      this.idb = idb;
-      this.klickatOrderNr = klickatOrderNr;
-      initComponents();
-      txtBestallningID.setText(klickatOrderNr);
+        this.inloggadAnvandare = inloggadAnvandare;
+        this.idb = idb;
+        this.klickatOrderNr = klickatOrderNr;
+        initComponents();
+        txtBestallningID.setText(klickatOrderNr);
     }
-    
-private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderLista, double totalpris, String bestallningID) {
-    try {
-        // Kontrollera om beställningen redan har en fraktsedel
-        String checkSQL = "SELECT FraktsedelID FROM Bestallning WHERE BestallningID = " + bestallningID;
-        Map<String, String> fraktCheck = idb.fetchRow(checkSQL);
 
-        boolean fraktsedelRedanFinns = fraktCheck != null && fraktCheck.get("FraktsedelID") != null;
-        String fraktsedelID = "";
+    private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderLista, double totalpris, String bestallningID) {
+        try {
+            // Kontrollera om beställningen redan har en fraktsedel
+            String checkSQL = "SELECT FraktsedelID FROM Bestallning WHERE BestallningID = " + bestallningID;
+            Map<String, String> fraktCheck = idb.fetchRow(checkSQL);
 
-        // Om beställningen inte har ett fraktsedelID
-        if (!fraktsedelRedanFinns) {
-            // Data för fraktsedel
-            String adress = kundInfo.get("LeveransAdress").replace("'", "''");  // Escape special characters
-            String mottagare = (kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")).replace("'", "''");
-            String innehall = orderLista.stream()
-                    .map(rad -> (rad.antal + "x " + rad.produktNamn).replace("'", "''"))
-                    .collect(Collectors.joining(", "));
-            String exportkod = "SE";
-            double vikt = 1.0; // Placeholder, kan justeras beroende på produktvikt
-            double moms = totalpris * 0.25;  // 25% moms
-            double inklMoms = totalpris + moms;
-            String datum = java.time.LocalDate.now().toString();
+            boolean fraktsedelRedanFinns = fraktCheck != null && fraktCheck.get("FraktsedelID") != null;
+            String fraktsedelID = "";
 
-            // Spara fraktsedel i databasen
-            String sql = String.format(
-                "INSERT INTO Fraktsedel (Adress, Avsandare, Mottagare, Innehåll, Exportkod, Pris, Datum, Vikt, Moms, PrisInklMoms) " +
-                "VALUES ('%s', '%s', '%s', '%s', '%s', %.2f, '%s', %.2f, %.2f, %.2f)",
-                adress, "Hattmakarna AB", mottagare, innehall, exportkod, totalpris, datum, vikt, moms, inklMoms
-            );
-            idb.insert(sql);
+            // Om beställningen inte har ett fraktsedelID
+            if (!fraktsedelRedanFinns) {
+                // Data för fraktsedel
+                String adress = kundInfo.get("LeveransAdress").replace("'", "''");  // Escape special characters
+                String mottagare = (kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")).replace("'", "''");
+                String innehall = orderLista.stream()
+                        .map(rad -> (rad.antal + "x " + rad.produktNamn).replace("'", "''"))
+                        .collect(Collectors.joining(", "));
+                String exportkod = "SE";
+                double vikt = 1.0; // Placeholder, kan justeras beroende på produktvikt
+                double moms = totalpris * 0.25;  // 25% moms
+                double inklMoms = totalpris + moms;
+                String datum = java.time.LocalDate.now().toString();
 
-            // Hämta det genererade FraktsedelID
-            fraktsedelID = idb.getAutoIncrement("Fraktsedel", "FraktsedelID");
+                // Spara fraktsedel i databasen
+                String sql = String.format(
+                        "INSERT INTO Fraktsedel (Adress, Avsandare, Mottagare, Innehåll, Exportkod, Pris, Datum, Vikt, Moms, PrisInklMoms) "
+                        + "VALUES ('%s', '%s', '%s', '%s', '%s', %.2f, '%s', %.2f, %.2f, %.2f)",
+                        adress, "Hattmakarna AB", mottagare, innehall, exportkod, totalpris, datum, vikt, moms, inklMoms
+                );
+                idb.insert(sql);
 
-            // Uppdatera Bestallning med det nya FraktsedelID
-            String updateSQL = "UPDATE Bestallning SET FraktsedelID = " + fraktsedelID + " WHERE BestallningID = " + bestallningID;
-            idb.update(updateSQL);
+                // Hämta det genererade FraktsedelID
+                fraktsedelID = idb.getAutoIncrement("Fraktsedel", "FraktsedelID");
 
-        } else {
-            // Om fraktsedelID redan finns för denna beställning, använd det befintliga fraktsedelID
-            fraktsedelID = fraktCheck.get("FraktsedelID");
+                // Uppdatera Bestallning med det nya FraktsedelID
+                String updateSQL = "UPDATE Bestallning SET FraktsedelID = " + fraktsedelID + " WHERE BestallningID = " + bestallningID;
+                idb.update(updateSQL);
+
+            } else {
+                // Om fraktsedelID redan finns för denna beställning, använd det befintliga fraktsedelID
+                fraktsedelID = fraktCheck.get("FraktsedelID");
+            }
+
+            // Skapa fraktsedel etikett PDF om det behövs
+            skapaFraktsedelEtikettPDF(fraktsedelID, kundInfo, 1.0, bestallningID);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Fel vid skapande av fraktsedel: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        // Skapa fraktsedel etikett PDF (om nödvändigt)
-        skapaFraktsedelEtikettPDF(fraktsedelID, kundInfo, 1.0, bestallningID);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Fel vid skapande av fraktsedel: " + e.getMessage());
-        e.printStackTrace();
     }
-}
 
-    private void skapaFraktsedelEtikettPDF(String fraktsedelID, Map<String, String> kundInfo, double viktKg, String bestallningID)
-    {   
+    private void skapaFraktsedelEtikettPDF(String fraktsedelID, Map<String, String> kundInfo, double viktKg, String bestallningID) {
         try {
             Path path = Paths.get(System.getProperty("user.home"), "hattadmin", "Fraktsedel_" + fraktsedelID + ".pdf");
             Files.createDirectories(path.getParent());
@@ -146,39 +143,39 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
             PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
             PdfFont normal = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
-        URL imageURL = getClass().getResource("/hattmakarna/bilder/DHL-logga.png");
-        if (imageURL != null) {
-            Image dhlLogo = new Image(ImageDataFactory.create(imageURL));
+            URL imageURL = getClass().getResource("/hattmakarna/bilder/DHL-logga.png");
+            if (imageURL != null) {
+                Image dhlLogo = new Image(ImageDataFactory.create(imageURL));
 
-            // Hämta bildens ursprungliga dimensioner
-            float originalWidth = dhlLogo.getImageWidth();
-            float originalHeight = dhlLogo.getImageHeight();
+                // Hämta bildens ursprungliga dimensioner
+                float originalWidth = dhlLogo.getImageWidth();
+                float originalHeight = dhlLogo.getImageHeight();
 
-            // Maximal bredd (kan justeras för att passa din layout)
-            float maxWidth = 150;
+                // Maximal bredd (kan justeras för att passa layout)
+                float maxWidth = 150;
 
-            // Beräkna den nya höjden baserat på maximal bredd för att bevara proportionerna
-            float newWidth = maxWidth;
-            float newHeight = (newWidth / originalWidth) * originalHeight;
+                // Beräkna den nya höjden baserat på maximal bredd för att bevara proportionerna
+                float newWidth = maxWidth;
+                float newHeight = (newWidth / originalWidth) * originalHeight;
 
-            // Sätt den nya bredden och höjden på bilden
-            dhlLogo.setWidth(newWidth);
-            dhlLogo.setHeight(newHeight);
+                // Sätt den nya bredden och höjden på bilden
+                dhlLogo.setWidth(newWidth);
+                dhlLogo.setHeight(newHeight);
 
-            // Justera bildens horisontella position
-            dhlLogo.setHorizontalAlignment(HorizontalAlignment.RIGHT);  // Placera logotypen till höger
+                // Justera bildens horisontella position
+                dhlLogo.setHorizontalAlignment(HorizontalAlignment.RIGHT);  // Placera logotypen till höger
 
-            // Lägg till logotypen i dokumentet
-            document.add(dhlLogo);
-        } else {
-            JOptionPane.showMessageDialog(this, "Kunde inte hitta DHL-logotypen!", "Fel", JOptionPane.ERROR_MESSAGE);
-        }
+                // Lägg till logotypen i dokumentet
+                document.add(dhlLogo);
+            } else {
+                JOptionPane.showMessageDialog(this, "Kunde inte hitta DHL-logotypen!", "Fel", JOptionPane.ERROR_MESSAGE);
+            }
 
             // Lägg till datumet som en text i dokumentet
             document.add(new Paragraph("Datum: " + java.time.LocalDate.now())
-                .setFontSize(8)
-                .setMarginBottom(10));
-           
+                    .setFontSize(8)
+                    .setMarginBottom(10));
+
             // MOTTAGARE
             document.add(new Paragraph(kundInfo.get("Fornamn") + " " + kundInfo.get("Efternamn")).setFont(bold).setFontSize(10));
             document.add(new Paragraph(kundInfo.get("LeveransAdress") + " " + kundInfo.get("LeveransPostnummer")).setFont(normal).setFontSize(9));
@@ -260,25 +257,26 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
             e.printStackTrace();
         }
     }
-    
+
     public class OrderRad {
-    int antal;
-    String produktNamn;
 
-    public OrderRad(int antal, String produktNamn) {
-        this.antal = antal;
-        this.produktNamn = produktNamn;
-    }
+        int antal;
+        String produktNamn;
 
-    // Getters och setters om du behöver
-    public int getAntal() {
-        return antal;
-    }
+        public OrderRad(int antal, String produktNamn) {
+            this.antal = antal;
+            this.produktNamn = produktNamn;
+        }
 
-    public String getProduktNamn() {
-        return produktNamn;
+        // Getters och setters om du behöver
+        public int getAntal() {
+            return antal;
+        }
+
+        public String getProduktNamn() {
+            return produktNamn;
+        }
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -386,56 +384,56 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHamtaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHamtaActionPerformed
-    String bestallningID = txtBestallningID.getText().trim();
+        String bestallningID = txtBestallningID.getText().trim();
 
-    if (bestallningID.isEmpty() || !bestallningID.matches("\\d+")) {
-        JOptionPane.showMessageDialog(this, "Ange ett giltigt numeriskt beställnings-ID.");
-        return;
-    }
-
-    try {
-        String sql = "SELECT oi.AntalProdukter, " +
-                     "COALESCE(stdp.Namn, specp.Text) AS ProduktNamn, " +
-                     "COALESCE(stdp.Pris, specp.Pris) AS ProduktPris " +
-                     "FROM OrderItem oi " +
-                     "LEFT JOIN StandardProdukt stdp ON oi.StandardProduktID = stdp.StandardProduktID " +
-                     "LEFT JOIN SpecialProdukt specp ON oi.SpecialProduktID = specp.SpecialProduktID " +
-                     "WHERE oi.BestallningID = " + bestallningID + ";";
-
-        ArrayList<HashMap<String, String>> produkter = idb.fetchRows(sql);
-
-        if (produkter.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingen beställning hittades med ID: " + bestallningID);
+        if (bestallningID.isEmpty() || !bestallningID.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Ange ett giltigt numeriskt beställnings-ID.");
             return;
         }
 
-        String[] kolumner = {"Produkt", "Antal", "Pris (kr)"};
-        DefaultTableModel modell = new DefaultTableModel(kolumner, 0);
+        try {
+            String sql = "SELECT oi.AntalProdukter, "
+                    + "COALESCE(stdp.Namn, specp.Text) AS ProduktNamn, "
+                    + "COALESCE(stdp.Pris, specp.Pris) AS ProduktPris "
+                    + "FROM OrderItem oi "
+                    + "LEFT JOIN StandardProdukt stdp ON oi.StandardProduktID = stdp.StandardProduktID "
+                    + "LEFT JOIN SpecialProdukt specp ON oi.SpecialProduktID = specp.SpecialProduktID "
+                    + "WHERE oi.BestallningID = " + bestallningID + ";";
 
-        for (HashMap<String, String> rad : produkter) {
-            String produktNamn = rad.get("ProduktNamn");
-            int antal = Integer.parseInt(rad.get("AntalProdukter"));
-            double prisPerSt = Double.parseDouble(rad.get("ProduktPris"));
-            double totalPris = prisPerSt * antal;
+            ArrayList<HashMap<String, String>> produkter = idb.fetchRows(sql);
 
-            modell.addRow(new Object[]{
-                produktNamn,
-                antal,
-                String.format("%.2f", totalPris) + " kr"
-            });
+            if (produkter.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingen beställning hittades med ID: " + bestallningID);
+                return;
+            }
+
+            String[] kolumner = {"Produkt", "Antal", "Pris (kr)"};
+            DefaultTableModel modell = new DefaultTableModel(kolumner, 0);
+
+            for (HashMap<String, String> rad : produkter) {
+                String produktNamn = rad.get("ProduktNamn");
+                int antal = Integer.parseInt(rad.get("AntalProdukter"));
+                double prisPerSt = Double.parseDouble(rad.get("ProduktPris"));
+                double totalPris = prisPerSt * antal;
+
+                modell.addRow(new Object[]{
+                    produktNamn,
+                    antal,
+                    String.format("%.2f", totalPris) + " kr"
+                });
+            }
+
+            tblBestallningInfo.setModel(modell);
+
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning: " + ex.getMessage());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Fel vid beräkning av pris: " + e.getMessage());
         }
-
-        tblBestallningInfo.setModel(modell);
-
-    } catch (InfException ex) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning: " + ex.getMessage());
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Fel vid beräkning av pris: " + e.getMessage());
-    }
     }//GEN-LAST:event_btnHamtaActionPerformed
 
     private void btnSkapaFraktsedelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSkapaFraktsedelActionPerformed
-    try {
+        try {
             String bestallningID = txtBestallningID.getText().trim();
 
             if (bestallningID.isEmpty() || !bestallningID.matches("\\d+")) {
@@ -449,13 +447,13 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
             boolean fraktsedelRedanFinns = fraktCheck != null && fraktCheck.get("FraktsedelID") != null;
 
             // Hämta kundinfo
-            String sqlKund = 
-                "SELECT k.Fornamn, k.Efternamn, k.Epost, k.Telefonnummer, " +
-                "k.LeveransAdress, k.LeveransOrt, k.LeveransPostnummer, k.LeveransLand, " +
-                "k.FakturaAdress, k.FakturaPostnummer, k.FakturaOrt, k.FakturaLand " +
-                "FROM Kund k " +
-                "JOIN Bestallning b ON k.KundID = b.KundID " +
-                "WHERE b.BestallningID = " + bestallningID;
+            String sqlKund
+                    = "SELECT k.Fornamn, k.Efternamn, k.Epost, k.Telefonnummer, "
+                    + "k.LeveransAdress, k.LeveransOrt, k.LeveransPostnummer, k.LeveransLand, "
+                    + "k.FakturaAdress, k.FakturaPostnummer, k.FakturaOrt, k.FakturaLand "
+                    + "FROM Kund k "
+                    + "JOIN Bestallning b ON k.KundID = b.KundID "
+                    + "WHERE b.BestallningID = " + bestallningID;
 
             Map<String, String> kundInfo = idb.fetchRow(sqlKund);
 
@@ -465,14 +463,14 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
             }
 
             // Hämta produkter
-            String sqlProdukter = 
-                "SELECT oi.AntalProdukter, " +
-                "COALESCE(stdp.Namn, specp.Text) AS ProduktNamn, " +
-                "COALESCE(stdp.Pris, specp.Pris) AS ProduktPris " +
-                "FROM OrderItem oi " +
-                "LEFT JOIN StandardProdukt stdp ON oi.StandardProduktID = stdp.StandardProduktID " +
-                "LEFT JOIN SpecialProdukt specp ON oi.SpecialProduktID = specp.SpecialProduktID " +
-                "WHERE oi.BestallningID = " + bestallningID;
+            String sqlProdukter
+                    = "SELECT oi.AntalProdukter, "
+                    + "COALESCE(stdp.Namn, specp.Text) AS ProduktNamn, "
+                    + "COALESCE(stdp.Pris, specp.Pris) AS ProduktPris "
+                    + "FROM OrderItem oi "
+                    + "LEFT JOIN StandardProdukt stdp ON oi.StandardProduktID = stdp.StandardProduktID "
+                    + "LEFT JOIN SpecialProdukt specp ON oi.SpecialProduktID = specp.SpecialProduktID "
+                    + "WHERE oi.BestallningID = " + bestallningID;
 
             ArrayList<HashMap<String, String>> produkter = idb.fetchRows(sqlProdukter);
 
@@ -509,8 +507,8 @@ private void skapaFraktsedel(Map<String, String> kundInfo, List<OrderRad> orderL
     }//GEN-LAST:event_btnSkapaFraktsedelActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-    mainFrame.showPanel("Alla ordrar");
+        MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+        mainFrame.showPanel("Alla ordrar");
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
 

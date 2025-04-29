@@ -21,11 +21,11 @@ import oru.inf.InfException;
  */
 public class Validering {
 
-    //Email
+    //Email regex
     private static final String EMAIL_REGEX = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
-    //Telefon
+    //Telefon regex
     private static final String PHONE_REGEX = "^\\+[0-9]{1,15}$";
     private static final Pattern PHONE_PATTERN = Pattern.compile(PHONE_REGEX);
 
@@ -82,26 +82,27 @@ public class Validering {
     public static boolean arEndastBokstaver(String input) {
         return input.trim().matches("^[a-zA-ZåäöÅÄÖ]+$");
     }
-    
+
     public static boolean finnsEpost(String epost, InfDB idb) {
-    try {
-        String fraga = "SELECT Epost FROM anstalld WHERE Epost = '" + epost + "';";
-        String resultat = idb.fetchSingle(fraga);
-        return resultat != null;
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel");
-        return false;
-    }}
-    
-    public static boolean arLosenordKorrekt(String epost, String losenord, InfDB idb) {
-    try {
-        String fraga = "SELECT Losenord FROM anstalld WHERE Epost = '" + epost + "';";
-        String dbLosen = idb.fetchSingle(fraga);
-        return losenord.equals(dbLosen);
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Fel");
-        return false;
+        try {
+            String fraga = "SELECT Epost FROM anstalld WHERE Epost = '" + epost + "';";
+            String resultat = idb.fetchSingle(fraga);
+            return resultat != null;
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel");
+            return false;
+        }
     }
-}
+
+    public static boolean arLosenordKorrekt(String epost, String losenord, InfDB idb) {
+        try {
+            String fraga = "SELECT Losenord FROM anstalld WHERE Epost = '" + epost + "';";
+            String dbLosen = idb.fetchSingle(fraga);
+            return losenord.equals(dbLosen);
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Fel");
+            return false;
+        }
+    }
 
 }

@@ -367,11 +367,10 @@ public class SpecifikKund extends javax.swing.JPanel {
                 txtFakturaPostnummer.setText("");
                 txtLeveransLand.setText("");
                 txtFakturaLand.setText("");
-                
 
                 // Öppna AllaKunder och stäng nuvarande fönster
                 new SeAllaKunder(idb, inloggadAnvandare).setVisible(true);
-                
+
             }
         } catch (InfException ex) {
             JOptionPane.showMessageDialog(this, "Ett fel inträffade vid rensning av kundens uppgifter: " + ex.getMessage());
@@ -453,9 +452,8 @@ public class SpecifikKund extends javax.swing.JPanel {
             // Om användaren kom från SeAllaKunder, visa den panelen igen
             MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
             mainFrame.showPanel("Alla kunder");
-        }
-        else if ("SeSpecialOrder".equals(previousPanel)) {
-            // Om användaren kom från SeAllaKunder, visa den panelen igen
+        } else if ("SeSpecialOrder".equals(previousPanel)) {
+            // Om användaren kom från SeSpecialOrder, visa den panelen igen
             MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
             mainFrame.showPanel("SeSpecialOrder");
         }
